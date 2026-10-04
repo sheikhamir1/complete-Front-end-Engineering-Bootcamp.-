@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 6</title>
+    <style>
+      /* List */
+      /* ul.a {
+        list-style-type: circle;
+      }
+      ul.b {
+        list-style-type: disc;
+      }
+      ul.c {
+        list-style-type: square;
+      }
+
+      ol.d {
+        list-style-type: upper-roman;
+      }
+      ol.e {
+        list-style-type: lower-roman;
+      }
+      ol.f {
+        list-style: lower-alpha;
+      }
+      ol.g {
+        list-style-type: decimal;
+      } */
+
+      /* Replace marker with an image */
+
+      /* ul {
+        list-style-image: url("android-brands-solid-full.svg");
+        list-style-type: disc;
+      }
+
+      ol {
+        list-style-image: url("android-brands-solid-full.svg");
+        list-style-type: decimal;
+      } */
+
+      /* Positing List-item Marker */
+      /* ul.a {
+        list-style-position: outside;
+      }
+      ul.b {
+        list-style-position: inside;
+      } */
+
+      /* ul {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+      } */
+
+      /* ul {
+        list-style: square outside url("android-brands-solid-full.svg");
+      } */
+
+      /* ul {
+        background-color: powderblue;
+        padding: 20px;
+      }
+      ul li {
+        background: mistyrose;
+        color: darkblue;
+        padding: 10px;
+        margin-left: 20px;
+      } */
+
+      /* Table in Css */
+      /* table,
+      th,
+      td {
+        border: 1px solid green;
+      }
+      table {
+        border-collapse: collapse;
+        width: 600px;
+      }
+      th,
+      td {
+        padding: 10px;
+      }
+      th {
+        height: 0px;
+        text-align: left;
+      }
+      td {
+        text-align: left;
+        height: 30px;
+        vertical-align: bottom;
+      } */
+
+      /* body {
+        background-color: rgb(247, 247, 247);
+      }
+      table,
+      td,
+      th {
+        border: 1px solid #c5c4c4;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 10px;
+      } */
+
+      /* table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #b1b1b1;
+      }
+      th {
+        background-color: #04aa6d;
+      }
+      tr:hover {
+        background-color: rgb(182, 240, 148);
+      }
+
+      tr:nth-child(even) {
+        background-color: #d8d6d6;
+      } */
+
+      /* div.tablecontainer {
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #9c9b9b;
+        padding: 8px;
+        text-align: left;
+      } */
+
+      /* inline, block , contents, flex , grid, inline-block, none */
+
+      /* ul {
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+      }
+      li {
+        display: inline;
+      } */
+
+      /* span {
+        display: block;
+      } */
+      /* p {
+        background-color: blue;
+        padding: 10px;
+      }
+
+      span {
+        background-color: red;
+        color: white;
+        padding: 10px;
+      }
+
+      p.ex1 {
+        display: none;
+      }
+      p.ex2 {
+        display: inline;
+      }
+      p.ex3 {
+        display: block;
+      }
+      p.ex4 {
+        display: inline-block;
+      }
+      p.ex5 {
+        display: flex;
+      }
+      p.ex6 {
+        display: grid;
+      } */
+
+      #panel,
+      .flip {
+        padding: 10px;
+        text-align: center;
+        background-color: #04aa6d;
+        color: white;
+        border: 1px solid #a6d8a8;
+        margin: auto;
+        cursor: pointer;
+      }
+
+      #panel {
+        display: none;
+        cursor: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- List -->
+
+    <!-- <div>
+      <h2>The list-style-type Property</h2>
+
+      <p>Example of unordered lists:</p>
+      <ul class="a">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ul>
+
+      <ul class="b">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ul>
+
+      <ul class="c">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ul>
+
+      <p>Example of ordered lists:</p>
+      <ol class="d">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ol>
+
+      <ol class="e">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ol>
+
+      <ol class="f">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ol>
+
+      <ol class="g">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Coca Cola</li>
+      </ol>
+    </div> -->
+
+    <!-- <h2>list-style-position: outside (default):</h2>
+    <ul class="a">
+      <li>
+        Coffee - A brewed drink prepared from roasted coffee beans, which are
+        the seeds of berries from the Coffea plant
+      </li>
+      <li>
+        Tea - An aromatic beverage commonly prepared by pouring hot or boiling
+        water over cured leaves of the Camellia sinensis, an evergreen shrub
+        (bush) native to Asia
+      </li>
+      <li>
+        Coca Cola - A carbonated soft drink produced by The Coca-Cola Company.
+        The drink's name refers to two of its original ingredients, which were
+        kola nuts (a source of caffeine) and coca leaves
+      </li>
+    </ul>
+
+    <h2>list-style-position: inside:</h2>
+    <ul class="b">
+      <li>
+        Coffee - A brewed drink prepared from roasted coffee beans, which are
+        the seeds of berries from the Coffea plant
+      </li>
+      <li>
+        Tea - An aromatic beverage commonly prepared by pouring hot or boiling
+        water over cured leaves of the Camellia sinensis, an evergreen shrub
+        (bush) native to Asia
+      </li>
+      <li>
+        Coca Cola - A carbonated soft drink produced by The Coca-Cola Company.
+        The drink's name refers to two of its original ingredients, which were
+        kola nuts (a source of caffeine) and coca leaves
+      </li>
+    </ul> -->
+
+    <!-- <table>
+      <tr>
+        <th>Company</th>
+        <th>Contact</th>
+        <th>Country</th>
+      </tr>
+      <tr>
+        <td>Alfreds Futterkiste</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>Berglunds snabbköp</td>
+        <td>Christina Berglund</td>
+        <td>Sweden</td>
+      </tr>
+      <tr>
+        <td>Centro comercial Moctezuma</td>
+        <td>Francisco Chang</td>
+        <td>Mexico</td>
+      </tr>
+      <tr>
+        <td>Ernst Handel</td>
+        <td>Roland Mendel</td>
+        <td>Austria</td>
+      </tr>
+      <tr>
+        <td>Island Trading</td>
+        <td>Helen Bennett</td>
+        <td>UK</td>
+      </tr>
+      <tr>
+        <td>Königlich Essen</td>
+        <td>Philip Cramer</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>Laughing Bacchus Winecellars</td>
+        <td>Yoshi Tannamuri</td>
+        <td>Canada</td>
+      </tr>
+      <tr>
+        <td>Magazzini Alimentari Riuniti</td>
+        <td>Giovanni Rovelli</td>
+        <td>Italy</td>
+      </tr>
+      <tr>
+        <td>North/South</td>
+        <td>Simon Crowther</td>
+        <td>UK</td>
+      </tr>
+      <tr>
+        <td>Paris spécialités</td>
+        <td>Marie Bertrand</td>
+        <td>France</td>
+      </tr>
+    </table> -->
+
+    <!-- <div class="tablecontainer">
+      <table>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+          <th>Points</th>
+        </tr>
+        <tr>
+          <td>Jill</td>
+          <td>Smith</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Eve</td>
+          <td>Jackson</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+          <td>94</td>
+        </tr>
+        <tr>
+          <td>Adam</td>
+          <td>Johnson</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+          <td>67</td>
+        </tr>
+      </table>
+    </div> -->
+
+    <!-- <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+    </ul> -->
+    <!-- <span>A display property with</span>
+    <span>a value of "block" results in</span>
+    <span>a line break between each span elements.</span> -->
+
+    <!-- <h1>The display Property</h1>
+
+    <h2>display: none:</h2>
+    <p class="ex1">
+      <span>Text 1</span>
+      <span>Text 2</span>
+      <span>Text 3</span>
+    </p>
+
+    <h2>display: inline:</h2>
+    <p class="ex2">
+      <span>Text 1</span>
+      <span>Text 2</span>
+      <span>Text 3</span>
+    </p>
+
+    <h2>display: block:</h2>
+    <p class="ex3">
+      <span>Text 1</span>
+      <span>Text 2</span>
+      <span>Text 3</span>
+    </p>
+
+    <h2>display: inline-block:</h2>
+    <p class="ex4">
+      <span>Text 1</span>
+      <span>Text 2</span>
+      <span>Text 3</span>
+    </p>
+
+    <h2>display: flex:</h2>
+    <p class="ex5">
+      <span>Text 1</span>
+      <span>Text 2</span>
+      <span>Text 3</span>
+    </p>
+
+    <h2>display: grid:</h2>
+    <p class="ex6">
+      <span>Text 1</span>
+      <span>Text 2</span>
+      <span>Text 3</span>
+    </p> -->
+
+    <p class="flip" onclick="myFunction()">Click to show/hide panel</p>
+
+    <div id="panel">
+      <p>The panel toggles between hiding and showing a div element.</p>
+      <p>W use JavaScript to open and close it.</p>
+      <p>You will learn more about JavaScript in our JavaScript Tutorial.</p>
+    </div>
+
+    <script>
+      function myFunction() {
+        let panel = document.getElementById("panel");
+        if (panel.style.display === "none") {
+          panel.style.display = "block";
+        } else {
+          panel.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

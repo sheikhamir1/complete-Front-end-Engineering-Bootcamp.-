@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Tutorial - Complete Guide</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        animation: fadeIn 0.6s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .slide-header {
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+
+      .slide-title {
+        font-size: 2.5em;
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2em;
+        color: #666;
+        font-style: italic;
+      }
+
+      .text-section {
+        margin: 20px 0;
+        font-size: 1.1em;
+      }
+
+      .highlight-box {
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        border-left: 5px solid #667eea;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+      }
+
+      .code-block {
+        background: #2d2d2d;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+        margin: 20px 0;
+        font-size: 0.9em;
+      }
+
+      .code-block .comment {
+        color: #6a9955;
+      }
+
+      .code-block .tag {
+        color: #569cd6;
+      }
+
+      .code-block .attribute {
+        color: #9cdcfe;
+      }
+
+      .code-block .value {
+        color: #ce9178;
+      }
+
+      .code-block .selector {
+        color: #d7ba7d;
+      }
+
+      .code-block .property {
+        color: #9cdcfe;
+      }
+
+      .list-section {
+        margin: 20px 0;
+      }
+
+      .list-section ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .list-section li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 30px;
+      }
+
+      .list-section li:before {
+        content: "▶";
+        color: #667eea;
+        position: absolute;
+        left: 0;
+      }
+
+      .table-section {
+        margin: 20px 0;
+        overflow-x: auto;
+      }
+
+      .table-section table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .table-section th {
+        background: #667eea;
+        color: white;
+        padding: 15px;
+        text-align: left;
+      }
+
+      .table-section td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .table-section tr:hover {
+        background: #f8f9fa;
+      }
+
+      .navigation {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+        z-index: 1000;
+      }
+
+      .nav-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .nav-btn:hover {
+        background: #764ba2;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 1001;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 30px;
+        color: white;
+        font-size: 1.1em;
+      }
+
+      .example-output {
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 2em;
+        }
+
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .badge {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        margin: 5px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">CSS Tutorial</h1>
+          <p class="slide-subtitle">Complete Guide to Cascading Style Sheets</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              This comprehensive CSS tutorial covers both basic and advanced
+              concepts, including layout techniques and responsive design.
+              Perfect for beginners learning web design and professionals
+              enhancing their front-end development skills.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              <strong>CSS stands for:</strong> Cascading Style Sheets - The
+              language that brings life and style to HTML documents
+            </p>
+          </div>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>🎨 Styling</h3>
+              <p>Control colors, fonts, spacing, and layout</p>
+            </div>
+            <div class="feature-card">
+              <h3>📱 Responsive</h3>
+              <p>Create designs that adapt to all screen sizes</p>
+            </div>
+            <div class="feature-card">
+              <h3>✨ Animations</h3>
+              <p>Add transitions and visual effects</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: HTML and CSS Relationship -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML & CSS Relationship</h1>
+          <p class="slide-subtitle">How structure and style work together</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="text-section">
+              <h3>HTML (Structure)</h3>
+              <ul>
+                <li>Creates basic structure</li>
+                <li>Defines headings, paragraphs, images</li>
+                <li>Provides semantic meaning</li>
+                <li>Plain without styling</li>
+              </ul>
+            </div>
+            <div class="text-section">
+              <h3>CSS (Presentation)</h3>
+              <ul>
+                <li>Controls visual appearance</li>
+                <li>Adds colors, fonts, layouts</li>
+                <li>Creates responsive designs</li>
+                <li>Enhances user experience</li>
+              </ul>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              CSS allows developers to
+              <strong>separate content from design</strong>, resulting in
+              cleaner code and better maintainability.
+            </p>
+          </div>
+          <div class="code-block">
+            <span class="comment">&lt;!-- HTML provides structure --&gt;</span
+            ><br />
+            <span class="tag">&lt;h1&gt;</span>Welcome<span class="tag"
+              >&lt;/h1&gt;</span
+            ><br />
+            <span class="tag">&lt;p&gt;</span>This is a paragraph<span
+              class="tag"
+              >&lt;/p&gt;</span
+            ><br /><br />
+            <span class="comment">/* CSS provides style */</span><br />
+            <span class="selector">h1</span> {<br />
+            &nbsp;&nbsp;<span class="property">color</span>:
+            <span class="value">#667eea</span>;<br />
+            &nbsp;&nbsp;<span class="property">font-size</span>:
+            <span class="value">2em</span>;<br />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: What CSS Is Used For -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">What CSS Is Used For?</h1>
+          <p class="slide-subtitle">The power of CSS in web development</p>
+        </div>
+        <div class="slide-content">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>🎨 Visual Styling</h3>
+              <p>Colors, fonts, spacing, alignment</p>
+            </div>
+            <div class="feature-card">
+              <h3>📐 Layout Control</h3>
+              <p>Positioning, grids, flexbox</p>
+            </div>
+            <div class="feature-card">
+              <h3>📱 Responsive Design</h3>
+              <p>Adapt to mobile, tablet, desktop</p>
+            </div>
+            <div class="feature-card">
+              <h3>🎬 Animations</h3>
+              <p>Transitions, hover effects, keyframes</p>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              CSS transforms plain HTML into visually appealing, interactive
+              experiences that engage users and communicate your brand
+              effectively.
+            </p>
+          </div>
+          <div class="code-block">
+            <span class="comment">/* Example of CSS styling */</span><br />
+            <span class="selector">body</span> {<br />
+            &nbsp;&nbsp;<span class="property">background</span>:
+            <span class="value">linear-gradient(135deg, #667eea, #764ba2)</span
+            >;<br />
+            &nbsp;&nbsp;<span class="property">font-family</span>:
+            <span class="value">'Arial', sans-serif</span>;<br />
+            }<br />
+            <span class="selector">.button</span> {<br />
+            &nbsp;&nbsp;<span class="property">padding</span>:
+            <span class="value">10px 20px</span>;<br />
+            &nbsp;&nbsp;<span class="property">transition</span>:
+            <span class="value">all 0.3s ease</span>;<br />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: CSS in Action -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">CSS in Action</h1>
+          <p class="slide-subtitle">See the transformation</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Without CSS:</h3>
+            <div class="example-output">
+              <p>Hello Everyone!</p>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>With CSS:</h3>
+            <div
+              class="example-output"
+              style="background-color: rgb(249, 207, 252)"
+            >
+              <p
+                style="
+                  font-family: sans-serif;
+                  font-size: 20px;
+                  color: rgb(24, 4, 105);
+                  font-weight: bold;
+                "
+              >
+                Hello Everyone!
+              </p>
+            </div>
+          </div>
+          <div class="code-block">
+            <span class="tag">&lt;style&gt;</span><br />
+            <span class="selector">body</span> {<br />
+            &nbsp;&nbsp;<span class="property">background-color</span>:
+            <span class="value">rgb(249, 207, 252)</span>;<br />
+            }<br />
+            <span class="selector">p</span> {<br />
+            &nbsp;&nbsp;<span class="property">font-family</span>:
+            <span class="value">sans-serif</span>;<br />
+            &nbsp;&nbsp;<span class="property">font-size</span>:
+            <span class="value">20px</span>;<br />
+            &nbsp;&nbsp;<span class="property">color</span>:
+            <span class="value">rgb(24, 4, 105)</span>;<br />
+            &nbsp;&nbsp;<span class="property">font-weight</span>:
+            <span class="value">bold</span>;<br />
+            }<br />
+            <span class="tag">&lt;/style&gt;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Why Learn CSS? -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Why Learn CSS?</h1>
+          <p class="slide-subtitle">Benefits and opportunities</p>
+        </div>
+        <div class="slide-content">
+          <div class="list-section">
+            <ul>
+              <li>
+                <strong>🎨 Creating Beautiful Websites:</strong> Transform plain
+                HTML into visually stunning pages
+              </li>
+              <li>
+                <strong>📱 Making Responsive Designs:</strong> Ensure your site
+                works on all devices
+              </li>
+              <li>
+                <strong>⚙️ Customizing Anything:</strong> Create dark themes,
+                stylish menus, animated text
+              </li>
+              <li>
+                <strong>💼 Boosting Your Career:</strong> Essential skill for
+                web developers and UI/UX designers
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              CSS is a <strong>must-have skill</strong> in the tech world. Every
+              website uses CSS, making it an invaluable skill for any web
+              professional.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Career Opportunities:</h3>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <h4>Front-End Developer</h4>
+                <p>$70k - $150k</p>
+              </div>
+              <div class="feature-card">
+                <h4>UI/UX Designer</h4>
+                <p>$65k - $140k</p>
+              </div>
+              <div class="feature-card">
+                <h4>Web Designer</h4>
+                <p>$50k - $100k</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: CSS Versions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">CSS Versions</h1>
+          <p class="slide-subtitle">Evolution of CSS</p>
+        </div>
+        <div class="slide-content">
+          <div class="table-section">
+            <table>
+              <thead>
+                <tr>
+                  <th>Version</th>
+                  <th>Release Year</th>
+                  <th>Key Features</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge">CSS1</span></td>
+                  <td>1996</td>
+                  <td>Basic styling, font properties, selectors</td>
+                </tr>
+                <tr>
+                  <td><span class="badge">CSS2</span></td>
+                  <td>1998</td>
+                  <td>Positioning, z-index, media types</td>
+                </tr>
+                <tr>
+                  <td><span class="badge">CSS2.1</span></td>
+                  <td>2011</td>
+                  <td>Color properties (rgba, hsl), box model</td>
+                </tr>
+                <tr>
+                  <td><span class="badge">CSS3</span></td>
+                  <td>1999-2015</td>
+                  <td>Flexbox, Grid, animations, transitions</td>
+                </tr>
+                <tr>
+                  <td><span class="badge">CSS4</span></td>
+                  <td>Upcoming</td>
+                  <td>Container queries, cascade layers</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <p>
+              CSS3 introduced <strong>modular architecture</strong>, allowing
+              features to be developed and released independently.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Types of CSS -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Types of CSS</h1>
+          <p class="slide-subtitle">Three ways to apply styles</p>
+        </div>
+        <div class="slide-content">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>1. Inline CSS</h3>
+              <p>Applied directly to HTML elements using the style attribute</p>
+              <div class="code-block">
+                <span class="tag">&lt;h1</span>
+                <span class="attribute">style</span>=<span class="value"
+                  >"color: red;"</span
+                ><span class="tag">&gt;</span>Text<span class="tag"
+                  >&lt;/h1&gt;</span
+                >
+              </div>
+            </div>
+            <div class="feature-card">
+              <h3>2. Internal CSS</h3>
+              <p>Defined within the HTML document using &lt;style&gt; tags</p>
+              <div class="code-block">
+                <span class="tag">&lt;style&gt;</span><br />
+                <span class="selector">h1</span> {
+                <span class="property">color</span>:
+                <span class="value">blue</span>; }<br />
+                <span class="tag">&lt;/style&gt;</span>
+              </div>
+            </div>
+            <div class="feature-card">
+              <h3>3. External CSS</h3>
+              <p>Linked from a separate .css file</p>
+              <div class="code-block">
+                <span class="tag">&lt;link</span>
+                <span class="attribute">rel</span>=<span class="value"
+                  >"stylesheet"</span
+                >
+                <span class="attribute">href</span>=<span class="value"
+                  >"styles.css"</span
+                ><span class="tag">&gt;</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              <strong>Priority Order:</strong> Inline (highest) → Internal →
+              External (lowest)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: CSS Selectors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">CSS Selectors</h1>
+          <p class="slide-subtitle">How to target HTML elements</p>
+        </div>
+        <div class="slide-content">
+          <div class="table-section">
+            <table>
+              <thead>
+                <tr>
+                  <th>Selector Type</th>
+                  <th>Syntax</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Element</td>
+                  <td>tagname</td>
+                  <td>p { color: blue; }</td>
+                </tr>
+                <tr>
+                  <td>ID</td>
+                  <td>#idname</td>
+                  <td>#header { font-size: 2em; }</td>
+                </tr>
+                <tr>
+                  <td>Class</td>
+                  <td>.classname</td>
+                  <td>.button { padding: 10px; }</td>
+                </tr>
+                <tr>
+                  <td>Universal</td>
+                  <td>*</td>
+                  <td>* { margin: 0; }</td>
+                </tr>
+                <tr>
+                  <td>Attribute</td>
+                  <td>[attribute]</td>
+                  <td>[type="text"] { border: 1px; }</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="code-block">
+            <span class="comment">/* Combined selectors */</span><br />
+            <span class="selector">nav ul li a</span> {<br />
+            &nbsp;&nbsp;<span class="property">text-decoration</span>:
+            <span class="value">none</span>;<br />
+            }<br />
+            <span class="selector">#main .content p:first-child</span> {<br />
+            &nbsp;&nbsp;<span class="property">font-weight</span>:
+            <span class="value">bold</span>;<br />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: CSS Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Essential CSS Properties</h1>
+          <p class="slide-subtitle">Building blocks of styling</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="text-section">
+              <h3>Text Properties</h3>
+              <ul>
+                <li><code>color</code> - Text color</li>
+                <li><code>font-size</code> - Text size</li>
+                <li><code>font-family</code> - Font type</li>
+                <li><code>text-align</code> - Alignment</li>
+                <li><code>line-height</code> - Spacing</li>
+              </ul>
+            </div>
+            <div class="text-section">
+              <h3>Box Properties</h3>
+              <ul>
+                <li><code>margin</code> - Outside space</li>
+                <li><code>padding</code> - Inside space</li>
+                <li><code>border</code> - Edge styling</li>
+                <li><code>width/height</code> - Dimensions</li>
+                <li><code>display</code> - Layout type</li>
+              </ul>
+            </div>
+          </div>
+          <div class="code-block">
+            <span class="comment">/* Box Model Example */</span><br />
+            <span class="selector">.card</span> {<br />
+            &nbsp;&nbsp;<span class="property">width</span>:
+            <span class="value">300px</span>;<br />
+            &nbsp;&nbsp;<span class="property">padding</span>:
+            <span class="value">20px</span>;<br />
+            &nbsp;&nbsp;<span class="property">margin</span>:
+            <span class="value">10px</span>;<br />
+            &nbsp;&nbsp;<span class="property">border</span>:
+            <span class="value">2px solid #667eea</span>;<br />
+            &nbsp;&nbsp;<span class="property">border-radius</span>:
+            <span class="value">10px</span>;<br />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: CSS Colors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">CSS Colors</h1>
+          <p class="slide-subtitle">Different ways to specify colors</p>
+        </div>
+        <div class="slide-content">
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>Color Names</h3>
+              <div class="example-output">
+                <div style="background: red; color: white; padding: 10px">
+                  red
+                </div>
+                <div style="background: blue; color: white; padding: 10px">
+                  blue
+                </div>
+                <div style="background: green; color: white; padding: 10px">
+                  green
+                </div>
+              </div>
+            </div>
+            <div class="feature-card">
+              <h3>Hex Codes</h3>
+              <div class="example-output">
+                <div style="background: #ff0000; color: white; padding: 10px">
+                  #FF0000
+                </div>
+                <div style="background: #0000ff; color: white; padding: 10px">
+                  #0000FF
+                </div>
+                <div style="background: #00ff00; padding: 10px">#00FF00</div>
+              </div>
+            </div>
+            <div class="feature-card">
+              <h3>RGB/RGBA</h3>
+              <div class="example-output">
+                <div
+                  style="
+                    background: rgb(255, 0, 0);
+                    color: white;
+                    padding: 10px;
+                  "
+                >
+                  rgb(255,0,0)
+                </div>
+                <div
+                  style="
+                    background: rgba(0, 0, 255, 0.5);
+                    color: white;
+                    padding: 10px;
+                  "
+                >
+                  rgba(0,0,255,0.5)
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="code-block">
+            <span class="selector">.element</span> {<br />
+            &nbsp;&nbsp;<span class="property">color</span>:
+            <span class="value">#667eea</span>;
+            <span class="comment">/* Hex */</span><br />
+            &nbsp;&nbsp;<span class="property">background</span>:
+            <span class="value">rgb(102, 126, 234)</span>;
+            <span class="comment">/* RGB */</span><br />
+            &nbsp;&nbsp;<span class="property">border</span>:
+            <span class="value">2px solid rgba(102, 126, 234, 0.5)</span>;
+            <span class="comment">/* RGBA */</span><br />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: CSS Layout -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">CSS Layout Techniques</h1>
+          <p class="slide-subtitle">Modern layout methods</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>1. Flexbox</h3>
+            <p>Perfect for one-dimensional layouts</p>
+          </div>
+          <div class="code-block">
+            <span class="selector">.container</span> {<br />
+            &nbsp;&nbsp;<span class="property">display</span>:
+            <span class="value">flex</span>;<br />
+            &nbsp;&nbsp;<span class="property">justify-content</span>:
+            <span class="value">space-between</span>;<br />
+            &nbsp;&nbsp;<span class="property">align-items</span>:
+            <span class="value">center</span>;<br />
+            }
+          </div>
+          <div class="text-section">
+            <h3>2. CSS Grid</h3>
+            <p>Ideal for two-dimensional layouts</p>
+          </div>
+          <div class="code-block">
+            <span class="selector">.grid</span> {<br />
+            &nbsp;&nbsp;<span class="property">display</span>:
+            <span class="value">grid</span>;<br />
+            &nbsp;&nbsp;<span class="property">grid-template-columns</span>:
+            <span class="value">repeat(3, 1fr)</span>;<br />
+            &nbsp;&nbsp;<span class="property">gap</span>:
+            <span class="value">20px</span>;<br />
+            }
+          </div>
+          <div class="highlight-box">
+            <p>
+              Both Flexbox and Grid are essential for modern responsive design!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Best Practices & Conclusion -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Best Practices & Conclusion</h1>
+          <p class="slide-subtitle">Key takeaways for CSS mastery</p>
+        </div>
+        <div class="slide-content">
+          <div class="list-section">
+            <h3>CSS Best Practices:</h3>
+            <ul>
+              <li>Use external CSS for better maintainability</li>
+              <li>Follow naming conventions (BEM, SMACSS)</li>
+              <li>Minimize the use of !important</li>
+              <li>Optimize for performance (minify, compress)</li>
+              <li>Use CSS variables for consistency</li>
+              <li>Write mobile-first responsive CSS</li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              <strong>Remember:</strong> CSS is not just about making things
+              look pretty—it's about creating intuitive, accessible, and
+              performant user experiences.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Next Steps:</h3>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <h4>📚 Learn More</h4>
+                <p>Preprocessors (SASS, LESS)</p>
+              </div>
+              <div class="feature-card">
+                <h4>🛠️ Practice</h4>
+                <p>Build real projects</p>
+              </div>
+              <div class="feature-card">
+                <h4>🚀 Explore</h4>
+                <p>CSS frameworks (Bootstrap, Tailwind)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to Top">↑</button>
+      <button class="nav-btn" id="downBtn" title="Go to Bottom">↓</button>
+    </div>
+
+    <div class="footer">
+      CSS Tutorial Presentation | Master Cascading Style Sheets
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

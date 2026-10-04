@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class 8</title>
+    <style>
+      /* css Combinators */
+      /* 4 = Descendant , child , Next sibling , subsquent-sibling  */
+
+      /* Descendant Combinator */
+      /* div p {
+        background-color: green;
+      } */
+
+      /* div > p {
+        background-color: red;
+      } */
+
+      /* div + p {
+        background-color: aqua;
+      } */
+
+      /* div ~ p {
+        background-color: aquamarine;
+      } */
+
+      /* Pseudo Classes
+      move mouse , visited / unvisited links , focus , valid /invalid/required/optional, first child
+      */
+
+      /* 
+      selector:pseudo-class {
+      css properties
+      }
+      */
+      /* interactive Pseudo Classes */
+      /* unvisited link */
+      /* a:link {
+        color: red;
+      }
+
+      a:visited {
+        color: green;
+      }
+
+      a:hover {
+        color: hotpink;
+      }
+
+      a:active {
+        color: blue;
+      } */
+
+      /* div {
+        background-color: green;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 29px;
+      }
+
+      div:hover {
+        background-color: blue;
+        cursor: pointer;
+      } */
+
+      /* input:focus {
+        background-color: aquamarine;
+      } */
+
+      /* a.highlight:hover {
+        color: red;
+      } */
+
+      /* p {
+        background-color: aqua;
+        padding: 15px;
+        display: none;
+      }
+      div:hover p {
+        display: block;
+      } */
+
+      /* p:first-child {
+        color: blue;
+      } */
+
+      /* p em:first-child {
+        color: rgb(0, 132, 255);
+      } */
+
+      /* p:first-child em:first-child {
+        color: blue;
+      } */
+
+      /* 
+      selector::Pseudo element {
+      }
+      */
+
+      /* p::first-line {
+        color: red;
+        font-variant: small-caps;
+        font: 20px;
+      } */
+
+      /* p::first-letter {
+        color: red;
+        font-size: xx-large;
+      } */
+
+      /* p.intro::first-letter {
+        color: #ff0000;
+        font-size: 200px;
+      } */
+
+      /* p::first-letter {
+        color: red;
+        font-size: xx-large;
+      }
+      p::first-line {
+        color: blue;
+        font-variant: small-caps;
+      } */
+
+      /* h1::before {
+        content: url("https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyYmV6ZmU0ZjY5aXZ6dW40Y3dseXYwbzhuNzhzM2VyemZ0YjNwZTF5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/dt7FtL4RHIQs0XEoL0/200w.gif");
+      } */
+      /* h1::after {
+        content: url("https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyYmV6ZmU0ZjY5aXZ6dW40Y3dseXYwbzhuNzhzM2VyemZ0YjNwZTF5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/dt7FtL4RHIQs0XEoL0/200w.gif");
+      } */
+
+      /* ::marker {
+        color: red;
+        font-size: 23px;
+      } */
+
+      /* ::selection {
+        color: red;
+        background-color: yellow;
+      } */
+
+      /* button {
+        font-size: 15px;
+        padding: 5px 15px;
+      }
+      dialog::backdrop {
+        background-color: aqua;
+      } */
+
+      /* Opacity */
+      /* img {
+        width: 200px;
+      }
+      img:hover {
+        opacity: 0.5;
+      } */
+
+      /* div {
+        background-color: green;
+        padding: 10px;
+      }
+
+      div.first {
+        opacity: 0.1;
+      }
+
+      div.second {
+        opacity: 0.3;
+      }
+
+      div.third {
+        opacity: 0.6;
+      } */
+
+      div {
+        background-color: rgb(4, 170, 109);
+        padding: 10px;
+      }
+
+      div.first {
+        background-color: rgba(4, 170, 109, 0.1);
+      }
+
+      div.second {
+        background-color: rgba(4, 170, 109, 0.3);
+      }
+
+      div.third {
+        background-color: rgba(4, 170, 109, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div>
+      <p>Paragraph 1 in the div.</p>
+      <p>Paragraph 2 in the div.</p>
+      <section><p>Paragraph 3 in the div.</p></section>
+    </div>
+
+    <p>Paragraph 4. Not in a div.</p>
+    <p>Paragraph 5. Not in a div.</p> -->
+    <!-- <p>
+      <b><a href="default.asp" target="_blank">This is a link</a></b>
+    </p> -->
+
+    <!-- <div>Mouse over me</div> -->
+    <!-- <form action="/action_page.php" method="get">
+      First name: <input type="text" name="fname" /><br /><br />
+      Last name: <input type="text" name="lname" /><br /><br />
+      <input type="submit" value="Submit" />
+    </form> -->
+
+    <!-- <p><a class="highlight" href="css_syntax.asp">CSS Syntax</a></p>
+
+    <p><a href="default.asp">CSS Tutorial</a></p> -->
+    <!-- <div>
+      Hover over this div element to show the p element
+      <p>Tada! Here I am!</p>
+    </div> -->
+
+    <!-- <p>Style any p element that is the first child of any element:</p>
+
+    <div>
+      <p>This is some text.1</p>
+      <p>This is some text.</p>
+      <div>
+        <p>This is some text.1</p>
+        <p>This is some text.</p>
+      </div>
+    </div>
+
+    <div>
+      <p>This is some text.1</p>
+      <p>This is some text.</p>
+    </div> -->
+
+    <!-- <p>Style the first em element in all p elements:</p>
+
+    <p>I am a <em>strong</em> person. I am a <em>strong</em> person.</p>
+    <p>I am a <em>strong</em> person. I am a <em>strong</em> person.</p> -->
+
+    <!-- <p>
+      Style all em elements in p elements that are the first child of another
+      element:
+    </p>
+
+    <p>I am a <em>strong</em> person. I am a <em>strong</em> person.</p>
+    <p>I am a <em>strong</em> person. I am a <em>strong</em> person.</p>
+
+    <div>
+      <p>I am a <em>strong</em> person. I am a <em>strong</em> person.</p>
+      <p>I am a <em>strong</em> person. I am a <em>strong</em> person.</p>
+    </div> -->
+
+    <!-- <p class="intro">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, quia?
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad provident
+      quasi molestias magni unde obcaecati molestiae, sit ipsa pariatur. Quidem?
+    </p> -->
+
+    <!-- <h1>this is heading</h1> -->
+
+    <!-- <ul>
+      <li>Coffee</li>
+      <li>Tea</li>
+      <li>Milk</li>
+    </ul>
+
+    <ol>
+      <li>First</li>
+      <li>Second</li>
+      <li>Third</li>
+    </ol> -->
+
+    <!-- <button id="dialogBtn">Show dialog</button>
+
+    <dialog id="myDialog">
+      <form method="dialog">
+        <p>The background behind this dialog, is a backdrop.</p>
+        <button>Close dialog</button>
+      </form>
+    </dialog>
+
+    <script>
+      const dialogBtn = document.getElementById("dialogBtn");
+      const myDialog = document.getElementById("myDialog");
+      dialogBtn.addEventListener("click", () => myDialog.showModal());
+    </script> -->
+
+    <!-- <div>
+      <img
+        src="https://sm.ign.com/t/ign_in/articlepage/n/new-dragon-ball-z-battle-of-gods-images-hit/new-dragon-ball-z-battle-of-gods-images-hit_1vuf.1280.jpg"
+        alt=""
+      />
+    </div> -->
+
+    <p>With opacity (the text also gets transparent):</p>
+    <div style="opacity: 0.1"><p>10% opacity</p></div>
+    <div style="opacity: 0.3"><p>30% opacity</p></div>
+    <div style="opacity: 0.6"><p>60% opacity</p></div>
+    <div><p>opacity 1</p></div>
+
+    <p>With background-color and RGBA (the text is fully opaque):</p>
+    <div class="first"><p>10% opacity</p></div>
+    <div class="second"><p>30% opacity</p></div>
+    <div class="third"><p>60% opacity</p></div>
+    <div><p>default</p></div>
+  </body>
+</html>

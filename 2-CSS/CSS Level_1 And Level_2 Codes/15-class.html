@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 15</title>
+    <style>
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        position: relative;
+        animation-name: myani;
+        animation-duration: 6s;
+      } */
+
+      /* @keyframes myani {
+        from {
+          background-color: blue;
+        }
+        to {
+          background-color: orchid;
+        }
+      } */
+      /* @keyframes myani {
+        0% {
+          background-color: blue;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: orange;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: red;
+          left: 200px;
+          top: 100px;
+        }
+        75% {
+          background-color: aqua;
+          left: 0px;
+          top: 100px;
+        }
+        100% {
+          background-color: rgb(6, 223, 96);
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* The animation definition */
+      /* @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loader {
+        width: 60px;
+        height: 60px;
+        border: 8px solid #ddd;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+
+        animation-name: spin;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 4s;
+        animation-delay: 2s;
+      }
+
+      @keyframes myAnimation {
+        0% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background-color: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 4s;
+        animation-delay: -2s;
+      }
+
+      @keyframes myAnimation {
+        0% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background-color: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes myAnimation {
+        0% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background-color: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 50px;
+        margin: 5px;
+        background-color: red;
+        font-weight: bold;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 5s;
+        animation-fill-mode: forwards;
+      }
+
+      #div1 {
+        animation-timing-function: linear;
+      }
+      #div2 {
+        animation-timing-function: ease;
+      }
+      #div3 {
+        animation-timing-function: ease-in;
+      }
+      #div4 {
+        animation-timing-function: ease-out;
+      }
+      #div5 {
+        animation-timing-function: ease-in-out;
+      }
+
+      @keyframes myAnimation {
+        from {
+          left: 0px;
+        }
+        to {
+          left: 300px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+        animation: mymove 2s infinite;
+        animation-timing-function: ease-in;
+      }
+
+      @keyframes mymove {
+        from {
+          left: 0px;
+        }
+        to {
+          left: 200px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 4s;
+        animation-direction: reverse;
+      }
+
+      @keyframes myAnimation {
+        0% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background-color: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 2s;
+        animation-iteration-count: 4;
+        animation-direction: alternate-reverse;
+      }
+
+      @keyframes myAnimation {
+        0% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background-color: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes myAnimation {
+        from {
+          top: 0px;
+        }
+        to {
+          top: 200px;
+          background-color: blue;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 3s;
+        animation-delay: 2s;
+        animation-fill-mode: both;
+      }
+
+      @keyframes myAnimation {
+        from {
+          top: 0px;
+          background-color: yellow;
+        }
+        to {
+          top: 200px;
+        }
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation: myAnimation 5s linear 2s infinite alternate;
+      }
+
+      @keyframes myAnimation {
+        0% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+        25% {
+          background-color: yellow;
+          left: 200px;
+          top: 0px;
+        }
+        50% {
+          background-color: blue;
+          left: 200px;
+          top: 200px;
+        }
+        75% {
+          background-color: green;
+          left: 0px;
+          top: 200px;
+        }
+        100% {
+          background-color: red;
+          left: 0px;
+          top: 0px;
+        }
+      } */
+
+      /* tooltip */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        cursor: pointer;
+        margin-left: 20px;
+        margin-top: 100px;
+      }
+
+      .tooltiptext {
+        visibility: hidden;
+        width: 130px;
+        background-color: black;
+        color: #ffffff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 130%;
+        left: 60%;
+        margin-left: -74px;
+        opacity: 0;
+        transition: opacity 2s;
+      }
+
+      .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+
+        border-color: black transparent transparent transparent;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .demo {
+        zoom: 300%;
+        margin: 50px;
+        width: 0px;
+        height: 0px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgb(14, 13, 13) transparent transparent transparent;
+      }
+    </style>
+  </head>
+  <body style="zoom: 200%">
+    <!-- <h1>class 15</h1> -->
+    <!-- <div></div> -->
+    <!-- <div class="loader"></div> -->
+    <!-- <div></div> -->
+    <!-- <div></div> -->
+    <!-- <div id="div1">linear</div>
+    <div id="div2">ease</div>
+    <div id="div3">ease-in</div>
+    <div id="div4">ease-out</div>
+    <div id="div5">ease-in-out</div> -->
+    <!-- <div></div> -->
+
+    <!-- tooltip -->
+    <div class="tooltip">
+      Hover Over me
+      <span class="tooltiptext">Lorem ipsum </span>
+    </div>
+    <div class="demo"></div>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Queries</title>
+    <style>
+      /* ---Base Style--- */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0px;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+        background: #e6e7e9;
+      }
+
+      header {
+        background-color: #0f172a;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+      }
+
+      nav {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+      }
+
+      .menu-toggle {
+        display: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .hero {
+        padding: 6rem 2rem;
+        text-align: center;
+        background: linear-gradient(to right, #1e293b, #334155);
+        color: white;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .container {
+        padding: 4rem 10%;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+
+      .card {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+      }
+
+      footer {
+        background-color: #0f172a;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      /* === MEDIA QUERY: TABLET === */
+
+      @media (max-width: 992px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+      }
+      /* === MEDIA QUERY: MOBILE === */
+
+      @media (max-width: 768px) {
+        nav {
+          display: none;
+          flex-direction: column;
+          background-color: #1e293b;
+          position: absolute;
+          top: 70px;
+          right: 0;
+          width: 200px;
+          padding: 1rem;
+        }
+
+        nav.active {
+          display: flex;
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .hero h1 {
+          font-size: 2rem;
+        }
+      }
+
+      /* Orientation Query */
+      @media (orientation: landscape) {
+        .hero {
+          padding: 4rem 2rem;
+        }
+      }
+
+      /* Hover Capability */
+      @media (hover: none) {
+        .card:hover {
+          transform: none;
+        }
+      }
+
+      /* Dark Mode */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #0f172a;
+          color: white;
+        }
+        .card {
+          background-color: #1e293b;
+          color: white;
+        }
+      }
+
+      /* Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+
+      /* Print */
+      @media print {
+        header,
+        footer,
+        .menu-toggle {
+          display: none;
+        }
+
+        body {
+          background: white;
+          color: black;
+        }
+      }
+    </style>
+
+    <script>
+      function toggleMenu() {
+        document.querySelector("nav").classList.toggle("active");
+      }
+    </script>
+  </head>
+  <body style="zoom: 100%">
+    <header>
+      <div class="logo">Media Query</div>
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Professional Media Query Demo</h1>
+      <p>
+        Resize the browser to see layout , typography, and navigation adapt.
+      </p>
+    </section>
+
+    <section class="container">
+      <div class="grid">
+        <div class="card">
+          <h3>Responsive Grid</h3>
+          <p>3 columns → 2 columns → 1 column.</p>
+        </div>
+        <div class="card">
+          <h3>Adaptive Navigation</h3>
+          <p>Desktop Nav Converts To mobile menu</p>
+        </div>
+        <div class="card">
+          <h3>Dark Mode</h3>
+          <p>Automatically adapts to system theme.</p>
+        </div>
+        <div class="card">
+          <h3>Reduced Motion</h3>
+          <p>Animations disabled for accessibility users.</p>
+        </div>
+        <div class="card">
+          <h3>Print Mode</h3>
+          <p>Clean print-friendly layout.</p>
+        </div>
+        <div class="card">
+          <h3>Orientation Aware</h3>
+          <p>Layout adjusts for landscape screens.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 MediaQueryPro | Complete Media Query Showcase</p>
+    </footer>
+  </body>
+</html>

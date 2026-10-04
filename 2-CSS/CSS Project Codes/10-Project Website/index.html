@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Vortex Gaming - Next Gen Cloud Gaming & eSports Infrastructure. Low latency, high fidelity, infinite possibilities."
+    />
+    <meta
+      name="keywords"
+      content="gaming, esports, cloud gaming, low latency, 4k gaming"
+    />
+    <meta name="author" content="Vortex Gaming" />
+    <title>Vortex Gaming</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container nav-container">
+        <a href="#" class="logo">VORTEX<span>.GG</span></a>
+        <nav>
+          <ul class="nav-links" id="navLinks">
+            <li><a href="#hero" class="nav-link">Home</a></li>
+            <li><a href="#features" class="nav-link">Features</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#pricing" class="nav-link">Plans</a></li>
+            <li><a href="#about" class="nav-link">Intel</a></li>
+            <li>
+              <a
+                href="#contact"
+                class="btn btn-outline"
+                style="padding: 8px 20px"
+                >Login</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <button
+            id="themeToggle"
+            class="theme-toggle"
+            aria-label="Switch Theme"
+          >
+            ☀
+          </button>
+          <button id="hamburger" class="hamburger" aria-label="Menu">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <div class="container hero-content hidden-el">
+          <span class="hero-badge">System Online v2.0</span>
+          <h1>Next Level <br /><span class="glitch">Immersion</span></h1>
+          <p>
+            Experience zero-latency cloud gaming with our quantum-grid
+            infrastructure. Play 4K titles on any device, anywhere.
+          </p>
+          <div style="display: flex; gap: 1rem">
+            <a href="#pricing" class="btn btn-primary">Start Trial</a>
+            <a href="#features" class="btn btn-outline">System Specs</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <div class="section-header hidden-el">
+            <p>Architecture</p>
+            <h2>System Core</h2>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card hidden-el">
+              <div class="feature-icon">⚡</div>
+              <h3>Zero Latency</h3>
+              <p>
+                Direct fiber connection nodes ensure sub-10ms response times
+                globally.
+              </p>
+            </div>
+            <div class="feature-card hidden-el">
+              <div class="feature-icon">💎</div>
+              <h3>RTX ON</h3>
+              <p>
+                Dedicated ray-tracing cores for every user session.
+                Hyper-realistic lighting.
+              </p>
+            </div>
+            <div class="feature-card hidden-el">
+              <div class="feature-icon">🛡️</div>
+              <h3>DDoS Shield</h3>
+              <p>
+                Military-grade encryption and traffic filtering to keep your
+                stream uninterrupted.
+              </p>
+            </div>
+            <div class="feature-card hidden-el">
+              <div class="feature-icon">🌐</div>
+              <h3>Cross-Platform</h3>
+              <p>
+                Seamlessly switch from PC to Mobile to Console without losing
+                progress.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="container about-wrapper">
+          <div class="about-image hidden-el">
+            <div
+              style="
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: rgba(255, 255, 255, 0.2);
+              "
+            >
+              [HOLOGRAPHIC_DATA_STREAM]
+            </div>
+          </div>
+          <div class="about-content hidden-el">
+            <p class="subhead" style="color: var(--secondary)">Our Mission</p>
+            <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem">
+              Rewriting the Rules of Reality
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem">
+              Vortex Gaming wasn't built by corporations; it was built by gamers
+              who were tired of hardware limitations. We utilize distributed
+              edge computing to render graphics remotely.
+            </p>
+            <ul
+              style="
+                color: var(--text-main);
+                font-family: &quot;Rajdhani&quot;;
+                font-size: 1.1rem;
+                space-y: 10px;
+              "
+            >
+              <li style="margin-bottom: 10px">✓ 120 FPS Guaranteed</li>
+              <li style="margin-bottom: 10px">✓ No Downloads Required</li>
+              <li style="margin-bottom: 10px">✓ 8K Support Ready</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" style="background: var(--bg-body)">
+        <div class="container">
+          <div class="section-header hidden-el">
+            <p>Community</p>
+            <h2>Player Stats</h2>
+          </div>
+          <div class="features-grid">
+            <div
+              class="feature-card hidden-el"
+              style="background: transparent; border: 1px dashed var(--border)"
+            >
+              <p>
+                "The latency is nonexistent. I played a competitive FPS match
+                from a coffee shop wifi and won."
+              </p>
+              <h4 style="margin-top: 1rem; color: var(--primary)">
+                Kael_Sniper
+              </h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted)"
+                >Pro Esports Player</span
+              >
+            </div>
+            <div
+              class="feature-card hidden-el"
+              style="background: transparent; border: 1px dashed var(--border)"
+            >
+              <p>
+                "Finally, I don't need to spend $3000 on a GPU. Vortex runs
+                Cyberpunk on my tablet."
+              </p>
+              <h4 style="margin-top: 1rem; color: var(--primary)">Sarah.Exe</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted)"
+                >Streamer</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing" id="pricing">
+        <div class="container">
+          <div class="section-header hidden-el">
+            <p>Access Level</p>
+            <h2>Select Pass</h2>
+          </div>
+          <div class="pricing-grid">
+            <div class="price-card hidden-el">
+              <h3>Scout</h3>
+              <div class="price-amount">$9.99<span>/mo</span></div>
+              <ul class="price-features">
+                <li><span>●</span> 1080p 60fps</li>
+                <li><span>●</span> 4 Hour Session Limit</li>
+                <li><span>●</span> Standard Access</li>
+              </ul>
+              <a
+                href="#"
+                class="btn btn-outline"
+                style="width: 100%; margin-top: 2rem"
+                >Equip</a
+              >
+            </div>
+            <div class="price-card featured hidden-el">
+              <div
+                style="
+                  background: var(--secondary);
+                  display: inline-block;
+                  padding: 2px 10px;
+                  font-size: 0.8rem;
+                  margin-bottom: 10px;
+                  color: white;
+                "
+              >
+                BEST VALUE
+              </div>
+              <h3>Elite</h3>
+              <div class="price-amount">$19.99<span>/mo</span></div>
+              <ul class="price-features">
+                <li><span>●</span> 4K 120fps</li>
+                <li><span>●</span> 8 Hour Session Limit</li>
+                <li><span>●</span> RTX On</li>
+                <li><span>●</span> Priority Queue</li>
+              </ul>
+              <a
+                href="#"
+                class="btn btn-primary"
+                style="width: 100%; margin-top: 2rem"
+                >Equip</a
+              >
+            </div>
+            <div class="price-card hidden-el">
+              <h3>Warlord</h3>
+              <div class="price-amount">$29.99<span>/mo</span></div>
+              <ul class="price-features">
+                <li><span>●</span> 8K 144fps</li>
+                <li><span>●</span> Unlimited Sessions</li>
+                <li><span>●</span> Private Server</li>
+              </ul>
+              <a
+                href="#"
+                class="btn btn-outline"
+                style="width: 100%; margin-top: 2rem"
+                >Equip</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq" id="faq">
+        <div class="container">
+          <div class="section-header hidden-el">
+            <p>Database</p>
+            <h2>Common Queries</h2>
+          </div>
+          <div class="accordion">
+            <div class="faq-item hidden-el">
+              <button class="faq-header" aria-expanded="false">
+                Do I need a high-end PC?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-body">
+                <p>
+                  Negative. Our servers handle all the processing power. You
+                  just need a stable internet connection (15Mbps+).
+                </p>
+              </div>
+            </div>
+            <div class="faq-item hidden-el">
+              <button class="faq-header" aria-expanded="false">
+                Is there input lag?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-body">
+                <p>
+                  We utilize predictive algorithms and edge nodes to keep
+                  latency below 15ms in supported regions, making it
+                  imperceptible.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item hidden-el">
+              <button class="faq-header" aria-expanded="false">
+                Supported Controllers?
+                <span class="faq-icon">▼</span>
+              </button>
+              <div class="faq-body">
+                <p>
+                  Xbox, PlayStation, and generic HID controllers are fully
+                  supported via Bluetooth or USB.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="container">
+          <div class="section-header hidden-el">
+            <h2>Uplink to Support</h2>
+          </div>
+          <div class="contact-form-container hidden-el">
+            <form id="contactForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="gamertag">Gamertag / Name</label>
+                <input
+                  type="text"
+                  id="gamertag"
+                  class="form-input"
+                  placeholder="Enter ID"
+                  required
+                />
+                <span class="error-msg">ID is required</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="email"
+                  >Comms Channel (Email)</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  class="form-input"
+                  placeholder="email@domain.com"
+                  required
+                />
+                <span class="error-msg">Invalid signal format (Email)</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="message">Transmission</label>
+                <textarea
+                  id="message"
+                  class="form-input"
+                  rows="5"
+                  placeholder="Type message..."
+                  required
+                ></textarea>
+                <span class="error-msg">Empty transmission</span>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%">
+                Send Signal
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <a href="#" class="footer-logo">VORTEX.GG</a>
+            <p class="footer-desc">
+              The future of interactive entertainment. Powered by quantum
+              computing and pure adrenaline.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Platform</h4>
+            <ul>
+              <li><a href="#">Download App</a></li>
+              <li><a href="#">Server Status</a></li>
+              <li><a href="#">Patch Notes</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">Our Team</a></li>
+              <li><a href="#">Jobs</a></li>
+              <li><a href="#">Press Kit</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Settings</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          &copy; 2026 Vortex Gaming Industries. All Systems Operational.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 1. SCROLL ANIMATION (Intersection Observer)
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show-el");
+            }
+          });
+        }, observerOptions);
+
+        document
+          .querySelectorAll(".hidden-el")
+          .forEach((el) => observer.observe(el));
+
+        // 2. MOBILE MENU
+        const hamburger = document.getElementById("hamburger");
+        const navLinks = document.getElementById("navLinks");
+
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+          hamburger.textContent = navLinks.classList.contains("active")
+            ? "✕"
+            : "☰";
+        });
+
+        // Close menu on link click
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.addEventListener("click", () => {
+            navLinks.classList.remove("active");
+            hamburger.textContent = "☰";
+          });
+        });
+
+        // 3. THEME TOGGLE (Cyberpunk <-> Light Tech)
+        const themeBtn = document.getElementById("themeToggle");
+        const html = document.documentElement;
+
+        // Check local storage
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        html.setAttribute("data-theme", savedTheme);
+        themeBtn.textContent = savedTheme === "dark" ? "☀" : "☾";
+
+        themeBtn.addEventListener("click", () => {
+          const current = html.getAttribute("data-theme");
+          const next = current === "dark" ? "light" : "dark";
+
+          html.setAttribute("data-theme", next);
+          themeBtn.textContent = next === "dark" ? "☀" : "☾";
+          localStorage.setItem("theme", next);
+        });
+
+        // 4. FAQ ACCORDION
+        document.querySelectorAll(".faq-header").forEach((header) => {
+          header.addEventListener("click", () => {
+            const expanded = header.getAttribute("aria-expanded") === "true";
+
+            // Close all others
+            document.querySelectorAll(".faq-header").forEach((h) => {
+              h.setAttribute("aria-expanded", "false");
+              h.nextElementSibling.style.maxHeight = null;
+            });
+
+            // Toggle current
+            if (!expanded) {
+              header.setAttribute("aria-expanded", "true");
+              header.nextElementSibling.style.maxHeight =
+                header.nextElementSibling.scrollHeight + "px";
+            }
+          });
+        });
+
+        // 5. FORM VALIDATION
+        const form = document.getElementById("contactForm");
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          let valid = true;
+
+          const validate = (id, regex) => {
+            const el = document.getElementById(id);
+            const val = el.value.trim();
+            if (!val || (regex && !regex.test(val))) {
+              el.classList.add("invalid");
+              valid = false;
+            } else {
+              el.classList.remove("invalid");
+            }
+          };
+
+          validate("gamertag");
+          validate("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+          validate("message");
+
+          if (valid) {
+            const btn = form.querySelector("button");
+            const originalText = btn.textContent;
+            btn.textContent = "TRANSMITTING...";
+            btn.style.opacity = "0.7";
+
+            setTimeout(() => {
+              alert("SIGNAL RECEIVED. WE WILL RESPOND SHORTLY.");
+              form.reset();
+              btn.textContent = originalText;
+              btn.style.opacity = "1";
+            }, 1500);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

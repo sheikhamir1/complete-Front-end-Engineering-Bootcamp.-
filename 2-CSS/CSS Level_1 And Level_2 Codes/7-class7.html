@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 7</title>
+    <style>
+      /* Max-width */
+      /* div.ex1 {
+        width: 500px;
+        margin: auto;
+        border: 3px solid rgb(230, 186, 121);
+        border: 3px solid rgb(230, 186, 121);
+      }
+      div.ex2 {
+        max-width: 500px;
+        margin: auto;
+        border: 3px solid rgb(230, 186, 121);
+      } */
+
+      /* Position
+      Relative , fixed , absolute , sticky
+      */
+      /* div.static {
+        position: relative;
+        right: 30px;
+        border: 2px solid black;
+      } */
+
+      /* div.static {
+        border: 2px solid black;
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        width: 300px;
+      } */
+      /* div.relative {
+        position: relative;
+        width: 400px;
+        height: 200px;
+        border: 2px solid black;
+        top: 100px;
+        left: 50px;
+      }
+
+      div.absolute {
+        position: absolute;
+        top: 80px;
+        right: 0px;
+        width: 200px;
+        height: 100px;
+        border: 3px solid red;
+      } */
+
+      /* div.sticky {
+        position: sticky;
+        top: 0px;
+        background-color: green;
+        border: 2px solid #4caf50;
+      } */
+
+      /* Z-index */
+      /* img {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: -1;
+      } */
+
+      /* .container {
+        position: relative;
+      }
+
+      .black-box {
+        position: relative;
+        z-index: 1;
+        border: 2px solid black;
+        height: 100px;
+        margin: 30px;
+      }
+
+      .gray-box {
+        position: absolute;
+        z-index: 3; 
+        background: lightgray;
+        height: 60px;
+        width: 70%;
+        left: 50px;
+        top: 50px;
+      }
+
+      .green-box {
+        position: absolute;
+        z-index: 2; 
+        background: lightgreen;
+        width: 35%;
+        left: 270px;
+        top: -15px;
+        height: 200px;
+      } */
+
+      /* Overflow */
+      /* div.div1 {
+        border: 2px solid green;
+        width: 200px;
+        height: 100px;
+        background-color: aquamarine;
+        overflow-y: scroll;
+      } */
+
+      /* Float */
+      /* img {
+        width: 200px;
+        margin-left: 15px;
+        float: right;
+      }
+      .mydiv1 {
+        border: 2px solid rgb(204, 204, 197);
+      }
+      .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+      } */
+      /* .div1 {
+        float: left;
+        padding: 10px;
+        border: 3px solid red;
+      }
+      .div2 {
+        padding: 10px;
+        border: 3px solid red;
+        width: 200px;
+      }
+
+      .div3 {
+        float: left;
+        padding: 10px;
+        border: 3px solid red;
+      }
+      .div4 {
+        padding: 10px;
+        border: 3px solid red;
+        width: 200px;
+        clear: left;
+      } */
+
+      /* Inline-bock */
+      /* span.a {
+        display: inline;
+        padding: 5px;
+        border: 2px solid red;
+      }
+
+      span.b {
+        display: inline-block;
+        width: 100px;
+        height: 35px;
+        padding: 5px;
+        border: 2px solid red;
+      }
+
+      span.c {
+        display: block;
+        width: 100px;
+        height: 35px;
+        padding: 5px;
+        border: 2px solid red;
+      } */
+      /* .nav {
+        background-color: lightgray;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav li {
+        display: inline-block;
+        font-size: 18px;
+        padding: 15px;
+      } */
+
+      /* .center {
+        border: 2px red solid;
+        height: 200px;
+        width: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      } */
+
+      /* Center alignment -
+      horizontal Alignment -
+      (Margin:auto, text-align:center , float or position)
+      vertical Alignment -
+      flexbox , grid , Position + transform
+      */
+    </style>
+  </head>
+  <body>
+    <!-- <div class="ex1">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia,
+      voluptate!
+    </div>
+    <div class="ex2">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia,
+      voluptate!
+    </div>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil, sapiente.
+      Error autem repellat sunt rem corrupti nam. Numquam, cum qui!
+    </p> -->
+    <!-- <div class="static">This div element has position: static;</div> -->
+    <!-- <div class="relative">
+      This div element has position: relative;
+      <div class="absolute">This div element has position: absolute;</div>
+    </div> -->
+
+    <!-- <div class="sticky">I have position sticky!</div>
+
+    <div style="padding-bottom: 2000px">
+      <p>Scroll back up to remove the stickyness!</p>
+      <p>
+        Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum
+        definitiones no quo, maluisset concludaturque et eum, altera fabulas ut
+        quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert
+        laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no
+        molestiae voluptatibus.
+      </p>
+      <p>
+        Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum
+        definitiones no quo, maluisset concludaturque et eum, altera fabulas ut
+        quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert
+        laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no
+        molestiae voluptatibus.
+      </p>
+      <p>
+        Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum
+        definitiones no quo, maluisset concludaturque et eum, altera fabulas ut
+        quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert
+        laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no
+        molestiae voluptatibus.
+      </p>
+      <p>
+        Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum
+        definitiones no quo, maluisset concludaturque et eum, altera fabulas ut
+        quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert
+        laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no
+        molestiae voluptatibus.
+      </p>
+    </div> -->
+
+    <!-- <div>
+      <h1>i am heading one</h1>
+      <img
+        src="https://m.media-amazon.com/images/M/MV5BMTAxYmFlYjctNTZiZC00YjFhLWEyNDktNzdlYzAyZTBjNDYzXkEyXkFqcGdeQXVyNzU1NzE3NTg@._V1_.jpg"
+        alt="img"
+      />
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, quod.
+      </p>
+    </div> -->
+
+    <!-- <div class="container">
+      <div class="black-box">Black box (z-index: 1)</div>
+      <div class="gray-box">Gray box (z-index: 3)</div>
+      <div class="green-box">Green box (z-index: 2)</div>
+    </div> -->
+
+    <!-- <div class="mydiv1 clearfix">
+      <img
+        src="https://p325k7wa.twic.pics/high/dragon-ball/dragonball-project-z/00-page-setup/dbzk_game-thumbnail.jpg?twic=v1/resize=760/step=10/quality=80"
+        alt=""
+      />
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Explicabo sint
+      accusamus fugiat, facilis quibusdam placeat harum ipsa velit numquam
+    </div> -->
+
+    <!-- <h2>Without clear</h2>
+    <div class="div1">div1</div>
+    <div class="div2">
+      div2 - Notice that div2 is after div1 in the HTML code. However, since
+      div2 has no clear, the text in div2 floats around div1.
+    </div>
+
+    <h2>With clear: left</h2>
+    <div class="div3">div3</div>
+    <div class="div4">
+      div4 - Here, clear: left; pushes div4 down below the floating div3, on its
+      left side.
+    </div> -->
+
+    <!-- <h2>display: inline</h2>
+    <div>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+      consequat scelerisque elit sit amet consequat. Aliquam erat volutpat.
+      <span class="a">Aliquam</span> <span class="a">venenatis</span> gravida
+      nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet.
+    </div>
+
+    <h2>display: inline-block</h2>
+    <div>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+      consequat scelerisque elit sit amet consequat. Aliquam erat volutpat.
+      <span class="b">Aliquam</span> <span class="b">venenatis</span> gravida
+      nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet.
+    </div>
+
+    <h2>display: block</h2>
+    <div>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+      consequat scelerisque elit sit amet consequat. Aliquam erat volutpat.
+      <span class="c">Aliquam</span> <span class="c">venenatis</span> gravida
+      nisl sit amet facilisis. Nullam cursus fermentum velit sed laoreet.
+    </div> -->
+
+    <!-- <ul class="nav">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#clients">Our Clients</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul> -->
+
+    <div class="center">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iusto harum vel
+      atque unde quia natus eveniet ipsa quidem saepe fugit.
+    </div>
+  </body>
+</html>

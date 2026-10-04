@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Modern CSS Units Showcase</title>
+
+    <style>
+      html {
+        font-size: 16px;
+      }
+
+      body {
+        margin: 0px;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f4f6f9;
+        color: #1e293b;
+        line-height: 1.6;
+      }
+
+      section {
+        padding: 5rem 10%;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 2rem;
+      }
+
+      .hero {
+        height: 90vh;
+        background: linear-gradient(to right, #0f172a, #1e293b);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0px 10%;
+      }
+
+      .hero h1 {
+        font-size: calc(2rem + 3vw);
+      }
+
+      /* base = 16px
+      1rem = 16px*2 = 32px
+
+      vw = viewport width
+      1vw = 1% browser width
+      if screen width = 1000px
+      1vw = 10px
+      if screen width = 600px
+      1vw = 6px
+
+      19* 3 = 57
+
+      (32 + 57) = 89px
+      */
+
+      .hero p {
+        font-size: 1.2rem;
+        max-width: 60ch;
+        margin: auto;
+        opacity: 0.9;
+      }
+
+      /* ch =  character unit
+      1ch = width of 0 character in the current font
+      real world use case CH
+      *blog content containers
+      *Docutmention sites
+      *Artical layouts
+      *input fileds (e.g., 20ch wide search box)
+      *code editors
+      *long-form contnt platform
+
+      ========Mental Model===========
+      px -> screen-based
+      % -> parent-based
+      vw -> Viewport-based
+      rem -> root-based
+      ch -> text-based
+      */
+
+      /* ================= REM TYPOGRAPHY ================= */
+
+      .rem-demo h3 {
+        font-size: 2rem;
+      }
+
+      .rem-demo p {
+        font-size: 1rem;
+        max-width: 65ch;
+        margin: auto;
+        text-align: center;
+      }
+
+      /* ================= EM COMPONENT ================= */
+
+      .card-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      .card {
+        font-size: 1rem;
+        padding: 2em;
+        background: white;
+        border-radius: 12px;
+        width: 40%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      .card h4 {
+        font-size: 1.5em;
+      }
+
+      .card p {
+        font-size: 1em;
+      }
+
+      /* ================= ABSOLUTE UNITS ================= */
+
+      .absolute-container {
+        text-align: center;
+      }
+
+      .px-box {
+        width: 200px;
+        margin: 20px auto;
+        padding: 1rem;
+        background: #e3f2fd;
+      }
+
+      .cm-box {
+        width: 5cm;
+        margin: 20px auto;
+        padding: 1rem;
+        background: #f8bbd0;
+      }
+
+      /* ================= PERCENT LAYOUT ================= */
+
+      .percent-wrapper {
+        width: 80%;
+        margin: auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      /* ================= VIEWPORT WIDTH ================= */
+
+      .vw-demo h3 {
+        font-size: 6vw;
+        text-align: center;
+      }
+
+      /* ================= VMIN BOX ================= */
+
+      .vmin-box {
+        width: 20vmin;
+        height: 20vmin;
+        background: #9575cd;
+        margin: 3rem auto;
+        border-radius: 20px;
+      }
+
+      /* VMIN
+      
+      1vmin = 1% of the samller dimension of viewport
+      viewport = browser window
+      mysize = 1920x911
+
+      is width smaller?
+      is height smaller?
+
+      1vmin of 900 = 9px
+      20vmin = 180px
+
+      ex - 2
+      1vmin of 600px = 6px
+      20vim = 120px
+
+      */
+    </style>
+  </head>
+
+  <body>
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+      <div>
+        <h1>Responsive Typography System</h1>
+        <p>
+          This modern layout demonstrates how rem, em, vw, vh, %, ch, and
+          absolute units behave in real-world design.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= REM ================= -->
+
+    <section class="rem-demo">
+      <h2>REM – Global Scalable Typography</h2>
+      <h3>Main Heading (2rem)</h3>
+      <p>
+        rem units scale based on the root HTML font size. Change html {
+        font-size } and the entire system scales proportionally. This is how
+        professional design systems handle typography.
+      </p>
+    </section>
+
+    <!-- ================= EM ================= -->
+
+    <section>
+      <h2>EM – Component-Based Scaling</h2>
+
+      <div class="card-wrapper">
+        <div class="card">
+          <h4>Reusable Card Component</h4>
+          <p>
+            This card uses em units. If the card font-size changes, all internal
+            spacing and text adjust automatically.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VW ================= -->
+
+    <section class="vw-demo">
+      <h2>VW – Fluid Headings</h2>
+      <h3>Resize The Browser</h3>
+    </section>
+
+    <!-- ================= PERCENT ================= -->
+
+    <section>
+      <h2>Percentage-Based Layout</h2>
+
+      <div class="percent-wrapper">
+        <p>
+          This container is 80% width of its parent. Percentage units are ideal
+          for fluid layouts.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= ABSOLUTE ================= -->
+
+    <section class="absolute-container">
+      <h2>Absolute Units (Fixed Size)</h2>
+
+      <div class="px-box">200px wide (Fixed pixel size)</div>
+      <div class="cm-box">5cm wide (Print-based unit)</div>
+
+      <p>
+        Absolute units do not respond to screen size changes. Useful for print
+        or controlled output environments.
+      </p>
+    </section>
+
+    <!-- ================= VMIN ================= -->
+
+    <section>
+      <h2>vmin – Adaptive Shape</h2>
+
+      <div class="vmin-box"></div>
+
+      <p style="text-align: center">
+        This square scales based on the smaller viewport dimension.
+      </p>
+    </section>
+  </body>
+</html>

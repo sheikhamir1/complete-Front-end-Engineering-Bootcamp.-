@@ -1,0 +1,274 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+body {
+  background: #f8fafc;
+}
+
+/* ================= SECTION ================= */
+
+section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+/* layered background */
+/* .bg-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #f8fafc, #eff6ff, #eef2ff);
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.45;
+}
+
+.blob.one {
+  width: 420px;
+  height: 420px;
+  right: 100px;
+  top: 20%;
+  background: #bfdbfe;
+}
+
+.blob.two {
+  width: 350px;
+  height: 350px;
+  right: 260px;
+  bottom: 15%;
+  background: #c7d2fe;
+  animation-delay: 3s;
+} */
+
+/* ================= NAV ================= */
+
+nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  background: linear-gradient(to bottom right, #3b82f6, #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.nav-links {
+  display: none;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+  }
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: #475569;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-links button:hover {
+  color: #0f172a;
+}
+
+.nav-btn {
+  border-radius: 14px;
+  padding: 0.65rem 1.6rem;
+  background: #0f172a;
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  position: relative;
+  z-index: 10;
+  padding: 4rem 3rem 6rem;
+}
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.45rem 1.2rem;
+  border-radius: 99px;
+  background: #dbeafe;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 3.2rem;
+  margin-top: 1.8rem;
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 4rem;
+  }
+}
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 4.8rem;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #2563eb, #4f46e5, #7c3aed);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  margin-top: 1.6rem;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5rem;
+  color: #475569;
+}
+
+/* ================= GRID ================= */
+
+.grid {
+  display: grid;
+  gap: 1.8rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 35px 60px rgba(0, 0, 0, 0.12);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  opacity: 0;
+  transition: 0.35s;
+}
+
+.card:hover .card-overlay {
+  opacity: 1;
+}
+
+.icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.card p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #475569;
+}
+
+.cta {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.cta button {
+  border-radius: 18px;
+  padding: 1rem 3rem;
+  background: linear-gradient(to right, #2563eb, #4f46e5);
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cta button:hover {
+  transform: scale(1.07);
+  box-shadow: 0 30px 70px rgba(59, 130, 246, 0.35);
+}

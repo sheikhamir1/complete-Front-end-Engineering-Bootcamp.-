@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 12</title>
+    <style>
+      /* Border Images */
+      /* .b1 {
+        border: 10px solid transparent;
+        padding: 15px;
+        border-image: url("https://www.w3schools.com/css/border.png") 30 stretch;
+      } */
+
+      /* .b1 {
+        border: 10px solid transparent;
+        padding: 10px;
+        border-image-source: url("https://www.w3schools.com/css/border.png");
+        border-image-slice: 30;
+        border-image-width: 15px;
+        border-image-outset: 5px;
+        border-image-repeat: round;
+      } */
+      /* 30px inward form each edge of the image */
+      /* .b1 {
+        border: 10px solid transparent;
+        border-image: url("https://www.w3schools.com/css/border.png") 30 round;
+      } */
+      /* .b1 {
+        border: 10px solid transparent;
+        border-image: linear-gradient(red, blue) 30 round;
+      } */
+
+      /* background image Advance */
+      /* .ex1 {
+        background-image:
+          url("https://cliply.co/wp-content/uploads/2021/09/142109030_SMILING_FLOWER_400px.gif"),
+          url("https://img.freepik.com/free-photo/abstract-empty-dark-white-grey-gradient-with-black-solid-vignette-lighting-studio-wall-floor-bac_1258-52405.jpg");
+        background-position:
+          right bottom,
+          left top;
+        background-repeat: no-repeat, repeat;
+        padding: 15px;
+        height: 300px;
+      } */
+
+      /* .ex1 {
+        background:
+          url("https://freepngimg.com/save/9202-abstract-flower-picture/1271x1500")
+            right bottom no-repeat,
+          url("https://img.freepik.com/free-photo/abstract-empty-dark-white-grey-gradient-with-black-solid-vignette-lighting-studio-wall-floor-bac_1258-52405.jpg")
+            left top repeat;
+        padding: 15px;
+        height: 300px;
+        background-size: contain;
+      } */
+
+      /* .ex1 {
+        padding: 15px;
+        height: 300px;
+        background-image:
+          url("https://png.pngtree.com/png-clipart/20230312/ourmid/pngtree-transparent-watercolor-flowers-png-image_6646331.png"),
+          url("https://img.freepik.com/free-photo/abstract-empty-dark-white-grey-gradient-with-black-solid-vignette-lighting-studio-wall-floor-bac_1258-52405.jpg");
+        background-position:
+          right top,
+          left top;
+        background-repeat: no-repeat, repeat;
+        background-size: contain, cover;
+        background-clip: padding-box;
+      } */
+
+      /* #div1 {
+        border: 5px dotted black;
+        padding: 35px;
+        background-color: lightblue;
+        background-clip: border-box;
+      }
+
+      #div2 {
+        border: 5px dotted black;
+        padding: 35px;
+        background-color: lightblue;
+        background-clip: padding-box;
+      }
+
+      #div3 {
+        border: 5px dotted black;
+        padding: 35px;
+        background-color: lightblue;
+        background-clip: content-box;
+      } */
+
+      /* Color */
+
+      /* rbgs (red , green ,blue , alpha) */
+      /* #p1 {
+        background-color: rgba(52, 3, 107, 0.356);
+      }
+      #p2 {
+        background-color: rgba(0, 255, 0, 0.3);
+      }
+      #p3 {
+        background-color: rgba(0, 0, 255, 0.3);
+      }
+      #p4 {
+        background-color: rgba(192, 192, 192, 0.3);
+      }
+      #p5 {
+        background-color: rgba(255, 255, 0, 0.3);
+      }
+      #p6 {
+        background-color: rgba(255, 0, 255, 0.3);
+      } */
+
+      /* hsla (hue , saturation , lightness , alpha) */
+      /* #p1 {
+        background-color: hsla(194, 100%, 28%, 0.568);
+      }
+      #p2 {
+        background-color: hsla(120, 100%, 75%, 0.3);
+      }
+      #p3 {
+        background-color: hsla(120, 100%, 25%, 0.3);
+      }
+      #p4 {
+        background-color: hsla(120, 60%, 70%, 0.3);
+      }
+      #p5 {
+        background-color: hsla(290, 100%, 50%, 0.3);
+      }
+      #p6 {
+        background-color: hsla(290, 60%, 70%, 0.3);
+      } */
+
+      /* hax (red , green ,blue) */
+
+      /* .p1 {
+        color: rgb(8, 189, 202);
+        border: 2px solid currentColor;
+        padding: 10px;
+      } */
+
+      body {
+        color: purple;
+      }
+      div {
+        background-color: currentColor;
+      }
+      div p {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <h1 class="b1">class 12</h1> -->
+    <!-- <div class="ex1">
+      <h1>Lorem ipsum dolor sit amet.</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum non
+        alias repellendus est pariatur ratione!
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum non
+        alias repellendus est pariatur ratione!
+      </p>
+    </div> -->
+
+    <!-- <p>background-clip: border-box (this is default):</p>
+    <div id="div1">
+      <h2>Lorem Ipsum Dolor</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+        volutpat.
+      </p>
+    </div>
+
+    <p>background-clip: padding-box:</p>
+    <div id="div2">
+      <h2>Lorem Ipsum Dolor</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+        volutpat.
+      </p>
+    </div>
+
+    <p>background-clip: content-box:</p>
+    <div id="div3">
+      <h2>Lorem Ipsum Dolor</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
+        volutpat.
+      </p>
+    </div> -->
+    <!-- 
+    <p id="p1">Red</p>
+    <p id="p2">Green</p>
+    <p id="p3">Blue</p>
+    <p id="p4">Grey</p>
+    <p id="p5">Yellow</p>
+    <p id="p6">Cerise</p> -->
+
+    <div>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni,
+        mollitia.
+      </p>
+    </div>
+  </body>
+</html>

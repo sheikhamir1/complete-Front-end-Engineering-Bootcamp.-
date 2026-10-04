@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CSS Counters - Online Course System</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background: #f4f6f9;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      section {
+        margin-bottom: 60px;
+      }
+
+      hr {
+        margin: 50px 0;
+      }
+
+      /* ================= MODULE SYSTEM ================= */
+
+      .course {
+        counter-reset: module;
+      }
+
+      .module {
+        counter-reset: lesson;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+      }
+
+      .module h2::before {
+        counter-increment: module;
+        content: "Module " counter(module) ": ";
+        color: darkblue;
+        font-weight: bold;
+      }
+
+      .lesson h3::before {
+        counter-increment: lesson;
+        content: counter(module) "." counter(lesson) " ";
+        color: darkgreen;
+        font-weight: bold;
+      }
+
+      /* ================= DEEP LESSON STRUCTURE ================= */
+
+      .topics {
+        counter-reset: topic;
+        list-style-type: none;
+        padding-left: 20px;
+      }
+
+      .topics li {
+        counter-increment: topic;
+        margin: 5px 0;
+      }
+
+      .topics li::before {
+        content: counter(module) "." counter(lesson) "." counter(topic) " ";
+        color: purple;
+        font-weight: bold;
+      }
+
+      /* ================= CUSTOM INCREMENT (+2) ================= */
+
+      .advanced-track {
+        counter-reset: chapter;
+      }
+
+      .advanced-track h2::before {
+        counter-increment: chapter 2;
+        content: "Advanced Chapter " counter(chapter) ": ";
+        color: brown;
+        font-weight: bold;
+      }
+
+      /* ================= COUNTDOWN (DECREMENT) ================= */
+
+      .bonus-section {
+        counter-reset: bonus 4;
+      }
+
+      .bonus-section h2::before {
+        counter-increment: bonus -1;
+        content: "Bonus Unlock In: " counter(bonus) " → ";
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Online Course Structure (Powered by CSS Counters)</h1>
+
+    <hr />
+
+    <!-- ================= MAIN COURSE STRUCTURE ================= -->
+
+    <section class="course">
+      <div class="module">
+        <h2>HTML Foundations</h2>
+
+        <div class="lesson">
+          <h3>Introduction to HTML</h3>
+          <ul class="topics">
+            <li>What is HTML?</li>
+            <li>HTML Structure</li>
+            <li>Basic Tags</li>
+          </ul>
+        </div>
+
+        <div class="lesson">
+          <h3>Forms and Inputs</h3>
+          <ul class="topics">
+            <li>Text Fields</li>
+            <li>Validation</li>
+            <li>Submission</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <h2>CSS Fundamentals</h2>
+
+        <div class="lesson">
+          <h3>Selectors and Properties</h3>
+          <ul class="topics">
+            <li>Class Selectors</li>
+            <li>ID Selectors</li>
+            <li>Attribute Selectors</li>
+          </ul>
+        </div>
+
+        <div class="lesson">
+          <h3>Layout and Box Model</h3>
+          <ul class="topics">
+            <li>Margin and Padding</li>
+            <li>Border and Radius</li>
+            <li>Box Sizing</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- ================= ADVANCED TRACK (+2 increment) ================= -->
+
+    <section class="advanced-track">
+      <h2>Performance Optimization</h2>
+      <h2>Accessibility Mastery</h2>
+      <h2>Production Deployment</h2>
+    </section>
+
+    <hr />
+
+    <!-- ================= BONUS COUNTDOWN (DECREMENT) ================= -->
+
+    <section class="bonus-section">
+      <h2>Exclusive Project Template</h2>
+      <h2>Premium UI Kit</h2>
+      <h2>Certification Guide</h2>
+    </section>
+  </body>
+</html>

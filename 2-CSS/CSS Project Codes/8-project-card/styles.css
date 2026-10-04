@@ -1,0 +1,295 @@
+/* --- 1. CORE VARIABLES & RESET --- */
+:root {
+  --bg-body: #0a0a0a;
+  --bg-body-light: #fff8f8;
+  --bg-card: #171717;
+  --bg-card-hover: #202020;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --accent: #6366f1; /* Indigo */
+  --accent-glow: rgba(99, 102, 241, 0.4);
+  --border: #333333;
+  --radius: 24px;
+  --gap: 20px;
+  --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+body {
+  background-color: var(--bg-body-light);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+/* --- 2. GRID LAYOUT SYSTEM --- */
+.bento-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 180px; /* Base height for single row items */
+  gap: var(--gap);
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .bento-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .bento-container {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+}
+
+/* --- 3. CARD BASE STYLES --- */
+.bento-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* 3D Transform setup */
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Hover Effects */
+.bento-card:hover {
+  border-color: var(--text-muted);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.card-content {
+  z-index: 2;
+  transform: translateZ(20px); /* Lifts content off card in 3D */
+}
+/* --- 4. UTILITY CLASSES (Spanning) --- */
+.col-span-2 {
+  grid-column: span 2;
+}
+.row-span-2 {
+  grid-row: span 2;
+}
+
+/* Mobile override */
+@media (max-width: 600px) {
+  .col-span-2,
+  .row-span-2 {
+    grid-column: span 1;
+    grid-row: span 1;
+    mien-hight: 250px;
+  }
+}
+
+/* Category 1: Identity (Profile) */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+.avatar {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #fff, #999);
+  border-radius: 50%;
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+/* Category 2: Analytics (Data) */
+.chart-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100px;
+  width: 100%;
+  padding-top: 20px;
+}
+.bar {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+.bar:hover {
+  opacity: 1;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #aaa);
+  background-clip: text;
+  color: transparent;
+}
+
+/* Category 3: Interactive (Tools) */
+.music-player {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 16px;
+  margin-top: auto;
+  backdrop-filter: blur(5px);
+}
+.album-art {
+  width: 50px;
+  height: 50px;
+  background: #333;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.wave-anim {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+}
+.wave-bar {
+  width: 3px;
+  background: var(--accent);
+  animation: wave 1s infinite ease-in-out;
+}
+
+/* Category 4: Media (Visual) */
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop")
+    center/cover;
+  opacity: 0.5;
+  transition: 0.5s;
+  z-index: 0;
+}
+.bento-card:hover .bg-image {
+  transform: scale(1.1);
+  opacity: 0.2;
+}
+/* Category 5: Stack (Infinite Scroll) */
+.stack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+.tech-pill {
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: 0.3s;
+}
+.tech-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+/* Typography */
+h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+@keyframes wave {
+  0%,
+  100% {
+    height: 5px;
+  }
+  50% {
+    height: 20px;
+  }
+}
+/* Staggered Entrance Animation */
+.bento-card {
+  animation: fadeUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.bento-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.bento-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.bento-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.bento-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.bento-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

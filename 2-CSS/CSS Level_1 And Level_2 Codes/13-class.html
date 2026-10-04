@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 13</title>
+    <style>
+      body {
+        margin-bottom: 200px;
+      }
+      div {
+        height: 200px;
+        width: 200px;
+        background-color: rgb(7, 182, 226);
+        margin: auto;
+        margin-bottom: 30px;
+      }
+      /* .div1 {
+        background-image: linear-gradient(rgb(196, 64, 64), yellow);
+      } */
+      /* .div1 {
+        background-image: linear-gradient(to bottom right, #4e73df, #1cc88a);
+      } */
+      /* .div1 {
+        background-image: linear-gradient(
+          to top,
+          red,
+          orange,
+          yellow,
+          green,
+          blue,
+          indigo,
+          violet
+        );
+      } */
+      /* .div1 {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://www.superherotoystore.com/cdn/shop/articles/e33c2fa94c03efa06678116f80d62d0d_1c4bccf2-0e38-4f4c-8dcd-f51830857d15_600x.jpg?v=1757494254");
+        background-size: contain;
+        background-repeat: no-repeat;
+      } */
+
+      /* .div1 {
+        background-image: repeating-linear-gradient(
+          45deg,
+          yellow,
+          yellow 10px,
+          black 10px,
+          black 20px
+        );
+      } */
+      /* .div1 {
+        background-image: repeating-linear-gradient(
+          45deg,
+          red,
+          blue 7%,
+          green 10%
+        );
+      } */
+      /* .div1 {
+        background-image: repeating-linear-gradient(
+          45deg,
+          red,
+          blue 7%,
+          green 10%
+        );
+      } */
+
+      button {
+        margin: 20px;
+        padding: 6px 20px;
+        color: rgba(0, 0, 0, 0.966);
+        font-weight: 900;
+      }
+      /* .btn1 {
+        background-image: radial-gradient(circle at center, #00ffcc, #003333);
+      } */
+      /* .btn1 {
+        background-image: radial-gradient(
+          rgba(92, 12, 12, 0.815) 1%,
+          rgba(212, 155, 30, 0.658) 1%,
+          rgb(9, 197, 204) 60%
+        );
+      } */
+
+      /* .div1 {
+        background-image: radial-gradient(circle, red, yellow, green);
+        height: 400px;
+      } */
+      /* .div1 {
+        background-image: radial-gradient(
+          closest-side at 30% 50%,
+
+          red,
+          yellow,
+          green
+        );
+        height: 400px;
+      } */
+      /* .div1 {
+        background-image: radial-gradient(
+          farthest-side at 50% 80%,
+
+          red,
+          yellow,
+          green
+        );
+        height: 400px;
+      } */
+      /* .div1 {
+        background-image: radial-gradient(
+          closest-corner at 20% 50%,
+
+          red,
+          yellow,
+          green
+        );
+        height: 400px;
+      } */
+      /* .div1 {
+        background-image: repeating-radial-gradient(red, yellow 5%, green 10%);
+      } */
+
+      /* .div1 {
+        background-image: conic-gradient(
+          red 0deg 90deg,
+          yellow 90deg 180deg,
+          green 180deg 270deg,
+          blue 270deg 360deg
+        );
+        border-radius: 50%;
+      } */
+      /* .div1 {
+        background-image: conic-gradient(
+          red,
+          yellow,
+          green,
+          blue,
+          black,
+          indigo
+        );
+      } */
+      /* .div1 {
+        background-image: conic-gradient(red 45deg, yellow 90deg, green 210deg);
+      } */
+      /* .div1 {
+        background-image: conic-gradient(red, yellow, green, blue, black);
+        border-radius: 50%;
+      } */
+      /* .div1 {
+        background-image: conic-gradient(
+          red 0deg,
+          red 90deg,
+          yellow 90deg,
+          yellow 180deg,
+          green 180deg,
+          green 270deg,
+          blue 270deg,
+          blue 270deg
+        );
+        border-radius: 50%;
+      } */
+      /* .div1 {
+        background-image: conic-gradient(from 90deg, red, blue, green);
+        border-radius: 50%;
+      } */
+      /* .div1 {
+        background-image: conic-gradient(at 70%, red, blue, green);
+        border-radius: 50%;
+      } */
+
+      /* .div1 {
+        background-image: repeating-conic-gradient(red 10%, yellow 20%);
+        border-radius: 50%;
+      } */
+      .div1 {
+        background-image: repeating-conic-gradient(
+          red 0deg 10deg,
+          yellow 10deg 20deg,
+          blue 20deg 30deg
+        );
+        border-radius: 50%;
+      }
+
+      /* h1 {
+        text-shadow: 2px 2px 5px rgba(3, 110, 197, 0.726);
+        color: rgb(104, 82, 82);
+      } */
+      /* h1 {
+        text-shadow:
+          2px 2px 5px rgba(255, 255, 255, 0.726),
+          0px 0px 5px #0000ff;
+        color: rgb(0, 0, 0);
+      } */
+      /* h1 {
+        text-shadow:
+          1px 1px 2px black,
+          0px 0px 25px blue,
+          0px 0px 5px darkblue;
+        color: white;
+      } */
+      /* h1 {
+        text-shadow:
+          -1px 0px black,
+          0px 1px black,
+          1px 0px black,
+          0px -1px black;
+        color: coral;
+      } */
+      h1 {
+        text-shadow: 0px 0px 5px #ff0000;
+        color: white;
+      }
+
+      /* .div2 {
+        box-shadow: 10px 10px 10px 18px rgba(9, 34, 116, 0.712) inset;
+      } */
+      /* .div2 {
+        box-shadow:
+          5px 5px 8px blue,
+          10px 10px 8px red,
+          15px 15px 8px green;
+      } */
+      /* .div2 {
+        box-shadow:
+          0 4px 8px rgba(0, 0, 0, 0.2),
+          0 6px 20px rgba(0, 0, 0, 0.19);
+      }
+      .div2:hover {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        transform: translateY(-5px);
+      } */
+      /* .div2 {
+        box-shadow:
+          0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      } */
+      .btn1 {
+        box-shadow: 0 5px #666;
+      }
+      .btn1:active {
+        box-shadow: 0 2px #666;
+        transform: translateY(3px);
+      }
+
+      /* .p1 {
+        width: 200px;
+        border: 1px solid black;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      } */
+      /* .p1:hover {
+        overflow: visible;
+      } */
+      /* .p1 {
+        width: 200px;
+        border: 1px solid black;
+        padding: 10px;
+        word-wrap: break-word;
+      } */
+      /* .p1 {
+        width: 100px;
+        border: 1px solid black;
+        padding: 10px;
+        word-break: normal;
+      } */
+      /* .p1 {
+        border: 1px solid black;
+        padding: 10px;
+        writing-mode: vertical-lr;
+      } */
+      .p1 {
+        border: 1px solid black;
+        padding: 10px;
+        writing-mode: vertical-rl;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="div1"></div>
+    <button class="btn1">Button</button>
+    <h1>Text shadow effect</h1>
+    <div class="div2">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim accusamus
+      saepe expedita tempora consectetur corporis, cum iste omnis minus numquam.
+    </div>
+
+    <p class="p1">Lorem, ipsum dolor this-is-demo</p>
+  </body>
+</html>

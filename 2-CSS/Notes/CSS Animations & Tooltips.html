@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Animations & Tooltips Complete Tutorial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --text: #374151;
+            --border: #e5e7eb;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+        }
+
+        #progressBar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .slide-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .text-section {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .text-section h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .text-section p, .text-section li {
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .text-section ul {
+            margin-left: 20px;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'CSS';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .comment { color: #64748b; }
+        .selector { color: #f472b6; }
+        .property { color: #60a5fa; }
+        .value { color: #34d399; }
+        .keyword { color: #fbbf24; }
+        .important { color: #f87171; font-weight: bold; }
+
+        .table-section {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: var(--light);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .demo-box {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .highlight-box p {
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-top: 3px solid var(--primary);
+        }
+
+        .feature-card h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* Animation Examples */
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .pulse-box {
+            width: 100px;
+            height: 100px;
+            background: var(--success);
+            margin: 20px auto;
+            border-radius: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .slide-in-box {
+            width: 200px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--warning), var(--danger));
+            margin: 20px auto;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            animation: slideUp 1s ease forwards;
+        }
+
+        @keyframes slideUp {
+            0% {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tooltip:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            opacity: 0;
+            width: 200px;
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            position: absolute;
+            z-index: 1;
+            transition: opacity 0.4s ease;
+            font-size: 0.9rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip.top .tooltiptext {
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tooltip.top .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--dark) transparent transparent transparent;
+        }
+
+        .tooltip.bottom .tooltiptext {
+            top: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tooltip.bottom .tooltiptext::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent transparent var(--dark) transparent;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .animation-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 30px;
+            background: var(--light);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .animation-item {
+            text-align: center;
+        }
+
+        .animation-item h4 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .comparison-table th {
+            background: var(--secondary);
+        }
+
+        .stagger-demo {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .stagger-box {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 8px;
+            animation: slideUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .stagger-box:nth-child(1) { animation-delay: 0s; }
+        .stagger-box:nth-child(2) { animation-delay: 0.2s; }
+        .stagger-box:nth-child(3) { animation-delay: 0.4s; }
+        .stagger-box:nth-child(4) { animation-delay: 0.6s; }
+        .stagger-box:nth-child(5) { animation-delay: 0.8s; }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <div id="progressBar"></div>
+    </div>
+
+    <div class="container">
+        <!-- Slide 1: Title -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎬 CSS Animations & Tooltips</h1>
+                <p class="slide-subtitle">Master Dynamic Web Interactions and Professional UI Components</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🎯 What You'll Learn</h3>
+                    <ul>
+                        <li>CSS Animations - Creating automatic, looping effects</li>
+                        <li>@keyframes - The brain of animation</li>
+                        <li>Animation Properties - Complete control over timing and behavior</li>
+                        <li>Real-world Applications - Loading spinners, card animations, micro-interactions</li>
+                        <li>Professional Tooltips - Advanced positioning and styling</li>
+                        <li>Best Practices - When and how to use animations effectively</li>
+                    </ul>
+                </div>
+                <div class="animation-demo">
+                    <div class="animation-item">
+                        <h4>Spinner</h4>
+                        <div class="spinner"></div>
+                    </div>
+                    <div class="animation-item">
+                        <h4>Pulse</h4>
+                        <div class="pulse-box"></div>
+                    </div>
+                    <div class="animation-item">
+                        <h4>Slide In</h4>
+                        <div class="slide-in-box">Animated!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: What Are CSS Animations -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎭 What Are CSS Animations?</h1>
+                <p class="slide-subtitle">The real meaning and power of automatic animations</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>📖 Definition</h3>
+                    <p><strong>Animation</strong> = something that moves or changes automatically over time.</p>
+                    <p>Unlike transitions, animations can run without user interaction!</p>
+                </div>
+                <div class="table-section">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Transition</th>
+                                <th>Animation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Trigger</td>
+                                <td>Needs hover/focus/change</td>
+                                <td>✔ Runs automatically</td>
+                            </tr>
+                            <tr>
+                                <td>Looping</td>
+                                <td>❌ No</td>
+                                <td>✔ Can loop infinitely</td>
+                            </tr>
+                            <tr>
+                                <td>Multiple Steps</td>
+                                <td>❌ Only start/end</td>
+                                <td>✔ Multiple keyframes</td>
+                            </tr>
+                            <tr>
+                                <td>Direction Control</td>
+                                <td>❌ No</td>
+                                <td>✔ Forward/reverse/alternate</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="highlight-box">
+                    <p>💡 <strong>Key Insight:</strong> Animations are perfect for loading indicators, background effects, and attention-grabbing elements that need to move continuously!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Real World Loading Spinner -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔄 Real World: Loading Spinner</h1>
+                <p class="slide-subtitle">The most common animation in web applications</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🎯 Where It's Used</h3>
+                    <ul>
+                        <li>💳 Payment processing</li>
+                        <li>📊 Data fetching from APIs</li>
+                        <li>🔐 Login/authentication requests</li>
+                        <li>📤 File uploads</li>
+                        <li>🔄 Content loading</li>
+                    </ul>
+                </div>
+                <div class="code-block">
+<span class="comment">/* The animation definition */</span><br>
+<span class="keyword">@keyframes</span> <span class="value">spin</span> {<br>
+&nbsp;&nbsp;<span class="keyword">from</span> { <span class="property">transform</span>: <span class="value">rotate(0deg)</span>; }<br>
+&nbsp;&nbsp;<span class="keyword">to</span> { <span class="property">transform</span>: <span class="value">rotate(360deg)</span>; }<br>
+}<br><br>
+<span class="comment">/* Apply to loader element */</span><br>
+<span class="selector">.loader</span> {<br>
+&nbsp;&nbsp;<span class="property">animation-name</span>: <span class="value">spin</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-duration</span>: <span class="value">1s</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-iteration-count</span>: <span class="value">infinite</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-timing-function</span>: <span class="value">linear</span>;<br>
+}
+                </div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <div class="spinner" style="width: 80px; height: 80px; border-width: 8px;"></div>
+                    <p style="margin-top: 20px; color: var(--text);"><strong>Why linear?</strong> Because spinner should rotate at constant speed!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: @keyframes - The Brain -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🧠 @keyframes - The Brain of Animation</h1>
+                <p class="slide-subtitle">Define what happens over time</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>📋 Keyframes Syntax</h3>
+                    <p>Keyframes define the animation timeline with specific points.</p>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Card Slide-In Animation */</span><br>
+<span class="keyword">@keyframes</span> <span class="value">slideUp</span> {<br>
+&nbsp;&nbsp;<span class="keyword">0%</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateY(100px)</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">0</span>;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">50%</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateY(20px)</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">0.5</span>;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="keyword">100%</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateY(0)</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">1</span>;<br>
+&nbsp;&nbsp;}<br>
+}<br><br>
+<span class="selector">.card</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">slideUp 0.8s ease forwards</span>;<br>
+}
+                </div>
+                <div class="highlight-box">
+                    <p>🎨 <strong>Pro Tip:</strong> Use opacity + transform for smooth, professional animations. Avoid animating layout properties like margin or padding!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Animation Properties Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">⚙️ Animation Properties</h1>
+                <p class="slide-subtitle">Complete control over your animations</p>
+            </div>
+            <div class="slide-content">
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Purpose</th>
+                                <th>Common Values</th>
+                                <th>Example Use</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>animation-name</td>
+                                <td>Links to @keyframes</td>
+                                <td>spin, slideUp, pulse</td>
+                                <td>Which animation to use</td>
+                            </tr>
+                            <tr>
+                                <td>animation-duration</td>
+                                <td>Length of one cycle</td>
+                                <td>0.5s, 1s, 2s</td>
+                                <td>How fast it runs</td>
+                            </tr>
+                            <tr>
+                                <td>animation-delay</td>
+                                <td>Wait before starting</td>
+                                <td>0s, 0.2s, 1s</td>
+                                <td>Staggered effects</td>
+                            </tr>
+                            <tr>
+                                <td>animation-iteration-count</td>
+                                <td>How many times to run</td>
+                                <td>1, 3, infinite</td>
+                                <td>Loop or once</td>
+                            </tr>
+                            <tr>
+                                <td>animation-timing-function</td>
+                                <td>Speed curve</td>
+                                <td>ease, linear, ease-in</td>
+                                <td>Animation feel</td>
+                            </tr>
+                            <tr>
+                                <td>animation-direction</td>
+                                <td>Direction of animation</td>
+                                <td>normal, reverse, alternate</td>
+                                <td>Forward/backward</td>
+                            </tr>
+                            <tr>
+                                <td>animation-fill-mode</td>
+                                <td>State before/after</td>
+                                <td>forwards, backwards, both</td>
+                                <td>Keep final state</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Animation Name & Duration -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🏷️ Animation Name & Duration</h1>
+                <p class="slide-subtitle">The fundamental building blocks</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🎯 animation-name</h3>
+                    <p>Connects the element to the keyframes definition.</p>
+                    <p><strong>Think:</strong> "Which animation should I use?"</p>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Define multiple animations */</span><br>
+<span class="keyword">@keyframes</span> <span class="value">bounce</span> { ... }<br>
+<span class="keyword">@keyframes</span> <span class="value">fade</span> { ... }<br>
+<span class="keyword">@keyframes</span> <span class="value">slide</span> { ... }<br><br>
+<span class="comment">/* Apply specific animation */</span><br>
+<span class="selector">.button</span> {<br>
+&nbsp;&nbsp;<span class="property">animation-name</span>: <span class="value">bounce</span>;<br>
+}<br><br>
+<span class="selector">.modal</span> {<br>
+&nbsp;&nbsp;<span class="property">animation-name</span>: <span class="value">fade</span>;<br>
+}
+                </div>
+                <div class="text-section">
+                    <h3>⏱️ animation-duration</h3>
+                    <p>How long one complete cycle takes.</p>
+                </div>
+                <div class="demo-grid">
+                    <div class="demo-box" style="animation: spin 2s linear infinite;">
+                        2s
+                    </div>
+                    <div class="demo-box" style="animation: spin 1s linear infinite;">
+                        1s
+                    </div>
+                    <div class="demo-box" style="animation: spin 0.5s linear infinite;">
+                        0.5s
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <p>⚡ <strong>Real World Timing:</strong> Button bounce (0.5s), Hero intro (1s), Page transition (0.8s). If duration = 0s, animation doesn't run!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Animation Delay & Iteration -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">⏰ Animation Delay & Iteration</h1>
+                <p class="slide-subtitle">Control when and how many times</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🕐 animation-delay</h3>
+                    <p>Wait time before animation starts. Perfect for staggered effects!</p>
+                </div>
+                <div class="stagger-demo">
+                    <div class="stagger-box">1</div>
+                    <div class="stagger-box">2</div>
+                    <div class="stagger-box">3</div>
+                    <div class="stagger-box">4</div>
+                    <div class="stagger-box">5</div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Staggered card animation */</span><br>
+<span class="selector">.card1</span> { <span class="property">animation-delay</span>: <span class="value">0s</span>; }<br>
+<span class="selector">.card2</span> { <span class="property">animation-delay</span>: <span class="value">0.2s</span>; }<br>
+<span class="selector">.card3</span> { <span class="property">animation-delay</span>: <span class="value">0.4s</span>; }<br>
+<span class="selector">.card4</span> { <span class="property">animation-delay</span>: <span class="value">0.6s</span>; }
+                </div>
+                <div class="text-section">
+                    <h3>🔁 animation-iteration-count</h3>
+                    <p>How many times the animation should repeat.</p>
+                </div>
+                <div class="demo-grid">
+                    <div class="demo-box" style="animation: pulse 2s ease-in-out 1;">
+                        Once
+                    </div>
+                    <div class="demo-box" style="animation: pulse 2s ease-in-out 3;">
+                        3 Times
+                    </div>
+                    <div class="demo-box" style="animation: pulse 2s ease-in-out infinite;">
+                        Infinite
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Animation Timing Functions -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎨 Animation Timing Functions</h1>
+                <p class="slide-subtitle">Control the speed and feel of animations</p>
+            </div>
+            <div class="slide-content">
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timing Function</th>
+                                <th>Speed Pattern</th>
+                                <th>Best For</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>linear</td>
+                                <td>Constant speed</td>
+                                <td>Spinners, loading bars</td>
+                                <td>🔄</td>
+                            </tr>
+                            <tr>
+                                <td>ease (default)</td>
+                                <td>Slow → Fast → Slow</td>
+                                <td>Most UI animations</td>
+                                <td>✨</td>
+                            </tr>
+                            <tr>
+                                <td>ease-in</td>
+                                <td>Slow start</td>
+                                <td>Elements entering screen</td>
+                                <td>🚀</td>
+                            </tr>
+                            <tr>
+                                <td>ease-out</td>
+                                <td>Slow end</td>
+                                <td>Modals, tooltips</td>
+                                <td>💫</td>
+                            </tr>
+                            <tr>
+                                <td>ease-in-out</td>
+                                <td>Slow start & end</td>
+                                <td>Floating effects</td>
+                                <td>🌊</td>
+                            </tr>
+                            <tr>
+                                <td>cubic-bezier()</td>
+                                <td>Custom curve</td>
+                                <td>Bounce, elastic effects</td>
+                                <td>⚡</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Custom bounce effect */</span><br>
+<span class="selector">.bounce</span> {<br>
+&nbsp;&nbsp;<span class="property">animation-timing-function</span>: <span class="value">cubic-bezier(0.68, -0.55, 0.265, 1.55)</span>;<br>
+}<br><br>
+<span class="comment">/* Elastic effect */</span><br>
+<span class="selector">.elastic</span> {<br>
+&nbsp;&nbsp;<span class="property">animation-timing-function</span>: <span class="value">cubic-bezier(0.175, 0.885, 0.32, 1.275)</span>;<br>
+}
+                </div>
+                <div class="highlight-box">
+                    <p>🎯 <strong>Pro Tip:</strong> Use <a href="https://cubic-bezier.com/" target="_blank" style="color: var(--primary);">cubic-bezier.com</a> to create custom timing functions visually!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Animation Direction & Fill Mode -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔄 Animation Direction & Fill Mode</h1>
+                <p class="slide-subtitle">Control animation flow and final state</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>↩️ animation-direction</h3>
+                    <p>Controls which direction the animation runs.</p>
+                </div>
+                <div class="demo-grid">
+                    <div class="demo-box" style="animation: slideUp 2s ease-in-out infinite normal;">
+                        Normal
+                    </div>
+                    <div class="demo-box" style="animation: slideUp 2s ease-in-out infinite reverse;">
+                        Reverse
+                    </div>
+                    <div class="demo-box" style="animation: slideUp 2s ease-in-out infinite alternate;">
+                        Alternate
+                    </div>
+                </div>
+                <div class="text-section">
+                    <h3>🎯 animation-fill-mode (Very Important!)</h3>
+                    <p>Controls what happens before and after animation.</p>
+                </div>
+                <div class="code-block">
+<span class="selector">.slide-in</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">slideUp 1s ease forwards</span>;<br>
+&nbsp;&nbsp;<span class="comment">/* forwards = keeps final state */</span><br>
+}<br><br>
+<span class="selector">.stagger</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">fadeIn 0.5s ease both</span>;<br>
+&nbsp;&nbsp;<span class="comment">/* both = applies styles before and after */</span><br>
+}
+                </div>
+                <div class="highlight-box">
+                    <p>💡 <strong>Key Insight:</strong> Without fill-mode: forwards, elements return to original state after animation ends!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Professional Shorthand -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">⚡ Professional Shorthand</h1>
+                <p class="slide-subtitle">Write clean, production-ready animation code</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>📝 Long Form (Beginner)</h3>
+                </div>
+                <div class="code-block">
+<span class="selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="property">animation-name</span>: <span class="value">slideUp</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-duration</span>: <span class="value">1s</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-timing-function</span>: <span class="value">ease</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-delay</span>: <span class="value">0.3s</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-iteration-count</span>: <span class="value">1</span>;<br>
+&nbsp;&nbsp;<span class="property">animation-fill-mode</span>: <span class="value">forwards</span>;<br>
+}
+                </div>
+                <div class="text-section">
+                    <h3>🚀 Shorthand (Professional)</h3>
+                </div>
+                <div class="code-block">
+<span class="selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">slideUp 1s ease 0.3s 1 forwards</span>;<br>
+}
+                </div>
+                <div class="text-section">
+                    <h3>📋 Order Matters!</h3>
+                    <p>animation: [name] [duration] [timing-function] [delay] [iteration-count] [direction] [fill-mode];</p>
+                </div>
+                <div class="highlight-box">
+                    <p>✨ <strong>Pro Tip:</strong> Shorthand is cleaner, more maintainable, and what professionals use in production!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Complete Project Example -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🚀 Complete Project Example</h1>
+                <p class="slide-subtitle">All concepts together - Interactive Dashboard</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>📊 Dashboard with Animated Cards</h3>
+                    <p>Professional animations used in modern web applications</p>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Keyframes for different animations */</span><br>
+<span class="keyword">@keyframes</span> <span class="value">slideInUp</span> {<br>
+&nbsp;&nbsp;<span class="keyword">0%</span> { <span class="property">transform</span>: <span class="value">translateY(50px)</span>; <span class="property">opacity</span>: <span class="value">0</span>; }<br>
+&nbsp;&nbsp;<span class="keyword">100%</span> { <span class="property">transform</span>: <span class="value">translateY(0)</span>; <span class="property">opacity</span>: <span class="value">1</span>; }<br>
+}<br><br>
+<span class="keyword">@keyframes</span> <span class="value">pulse</span> {<br>
+&nbsp;&nbsp;<span class="keyword">0%</span>, <span class="keyword">100%</span> { <span class="property">transform</span>: <span class="value">scale(1)</span>; }<br>
+&nbsp;&nbsp;<span class="keyword">50%</span> { <span class="property">transform</span>: <span class="value">scale(1.05)</span>; }<br>
+}<br><br>
+<span class="keyword">@keyframes</span> <span class="value">spin</span> {<br>
+&nbsp;&nbsp;<span class="keyword">from</span> { <span class="property">transform</span>: <span class="value">rotate(0deg)</span>; }<br>
+&nbsp;&nbsp;<span class="keyword">to</span> { <span class="property">transform</span>: <span class="value">rotate(360deg)</span>; }<br>
+}<br><br>
+<span class="comment">/* Apply animations with stagger */</span><br>
+<span class="selector">.dashboard-card</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">slideInUp 0.6s ease forwards</span>;<br>
+&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">0</span>;<br>
+}<br><br>
+<span class="selector">.card1</span> { <span class="property">animation-delay</span>: <span class="value">0s</span>; }<br>
+<span class="selector">.card2</span> { <span class="property">animation-delay</span>: <span class="value">0.1s</span>; }<br>
+<span class="selector">.card3</span> { <span class="property">animation-delay</span>: <span class="value">0.2s</span>; }<br><br>
+<span class="selector">.notification</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">pulse 2s ease-in-out infinite</span>;<br>
+}<br><br>
+<span class="selector">.loader</span> {<br>
+&nbsp;&nbsp;<span class="property">animation</span>: <span class="value">spin 1s linear infinite</span>;<br>
+}
+                </div>
+                <div class="highlight-box">
+                    <p>🎯 <strong>Result:</strong> Professional dashboard with staggered card entrance, pulsing notifications, and smooth loading indicators!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: When to Use Animations -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎯 When to Use Animations</h1>
+                <p class="slide-subtitle">Best practices for effective animations</p>
+            </div>
+            <div class="slide-content">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>✅ Use Animation For</h3>
+                        <ul>
+                            <li>🔄 Loading indicators</li>
+                            <li>🎯 Attention-grabbing CTAs</li>
+                            <li>📱 Smooth page entries</li>
+                            <li>⚡ Micro-interactions</li>
+                            <li>🎨 Floating hero graphics</li>
+                            <li>✅ Success checkmarks</li>
+                            <li>📊 Data visualization</li>
+                            <li>🎬 Storytelling elements</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>❌ When NOT to Overuse</h3>
+                        <ul>
+                            <li>🚫 Don't animate everything</li>
+                            <li>🐌 Don't make it too slow</li>
+                            <li>💥 Don't distract users</li>
+                            <li>🤢 Don't cause motion sickness</li>
+                            <li>📱 Don't ignore mobile performance</li>
+                            <li>♿ Don't forget accessibility</li>
+                            <li>🔋 Don't drain battery</li>
+                            <li>🎯 Don't animate for no reason</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-section">
+                    <h3>🧠 Mental Model</h3>
+                    <p><strong>Transition</strong> = Simple state change (hover, focus, active)</p>
+                    <p><strong>Animation</strong> = Timeline with full control (automatic, looping, multi-step)</p>
+                </div>
+                <div class="highlight-box">
+                    <p>💡 <strong>Golden Rule:</strong> Every animation should enhance user experience, not distract from it!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Introduction to Tooltips -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">💬 What Is a Tooltip?</h1>
+                <p class="slide-subtitle">Creating professional UI hints and help text</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>📖 Definition</h3>
+                    <p>A tooltip is a small message that appears when you hover your mouse over something.</p>
+                    <p><strong>Example Flow:</strong> 👉 Hover on text → Small box appears → Shows extra information</p>
+                </div>
+                <div class="text-section">
+                    <h3>🧠 How Tooltip Works (Simple Logic)</h3>
+                    <p>We use three key components:</p>
+                    <ol>
+                        <li><strong>Container (.tooltip)</strong> - position: relative</li>
+                        <li><strong>Hidden Text (.tooltiptext)</strong> - position: absolute, visibility: hidden</li>
+                        <li><strong>Hover Trigger</strong> - .tooltip:hover .tooltiptext { visibility: visible; }</li>
+                    </ol>
+                </div>
+                <div class="code-block">
+<span class="comment">/* 1. Container */</span><br>
+<span class="selector">.tooltip</span> {<br>
+&nbsp;&nbsp;<span class="property">position</span>: <span class="value">relative</span>;<br>
+&nbsp;&nbsp;<span class="property">display</span>: <span class="value">inline-block</span>;<br>
+}<br><br>
+<span class="comment">/* 2. Hidden tooltip text */</span><br>
+<span class="selector">.tooltiptext</span> {<br>
+&nbsp;&nbsp;<span class="property">visibility</span>: <span class="value">hidden</span>;<br>
+&nbsp;&nbsp;<span class="property">position</span>: <span class="value">absolute</span>;<br>
+&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">0</span>;<br>
+&nbsp;&nbsp;<span class="property">transition</span>: <span class="value">opacity 0.3s</span>;<br>
+}<br><br>
+<span class="comment">/* 3. Show on hover */</span><br>
+<span class="selector">.tooltip:hover .tooltiptext</span> {<br>
+&nbsp;&nbsp;<span class="property">visibility</span>: <span class="value">visible</span>;<br>
+&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">1</span>;<br>
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Advanced Tooltip Positioning -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎯 Advanced Tooltip Positioning</h1>
+                <p class="slide-subtitle">Top, Bottom, Left, Right with arrows</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>📍 Position Options</h3>
+                    <p>Professional tooltips can appear in any direction with proper arrows.</p>
+                </div>
+                <div class="code-block">
+<span class="comment">/* TOP Tooltip */</span><br>
+<span class="selector">.tooltip.top .tooltiptext</span> {<br>
+&nbsp;&nbsp;<span class="property">bottom</span>: <span class="value">125%</span>;<br>
+&nbsp;&nbsp;<span class="property">left</span>: <span class="value">50%</span>;<br>
+&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateX(-50%)</span>;<br>
+}<br><br>
+<span class="selector">.tooltip.top .tooltiptext::after</span> {<br>
+&nbsp;&nbsp;<span class="property">content</span>: <span class="value">""</span>;<br>
+&nbsp;&nbsp;<span class="property">position</span>: <span class="value">absolute</span>;<br>
+&nbsp;&nbsp;<span class="property">top</span>: <span class="value">100%</span>;<br>
+&nbsp;&nbsp;<span class="property">left</span>: <span class="value">50%</span>;<br>
+&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateX(-50%)</span>;<br>
+&nbsp;&nbsp;<span class="property">border-width</span>: <span class="value">6px</span>;<br>
+&nbsp;&nbsp;<span class="property">border-style</span>: <span class="value">solid</span>;<br>
+&nbsp;&nbsp;<span class="property">border-color</span>: <span class="value">black transparent transparent transparent</span>;<br>
+}<br><br>
+<span class="comment">/* BOTTOM Tooltip */</span><br>
+<span class="selector">.tooltip.bottom .tooltiptext</span> {<br>
+&nbsp;&nbsp;<span class="property">top</span>: <span class="value">125%</span>;<br>
+&nbsp;&nbsp;<span class="property">left</span>: <span class="value">50%</span>;<br>
+&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateX(-50%)</span>;<br>
+}
+                </div>
+                <div style="display: flex; justify-content: space-around; margin: 30px 0;">
+                    <div class="tooltip top">
+                        Top Tooltip
+                        <span class="tooltiptext">This appears on top!</span>
+                    </div>
+                    <div class="tooltip bottom">
+                        Bottom Tooltip
+                        <span class="tooltiptext">This appears below!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Complete Tooltip Project -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">💎 Complete Tooltip Project</h1>
+                <p class="slide-subtitle">Professional tooltips with all positions and smooth animations</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🎨 Features Included</h3>
+                    <ul>
+                        <li>✅ All 4 positions (Top, Bottom, Left, Right)</li>
+                        <li>✅ Smooth fade-in/out animations</li>
+                        <li>✅ CSS arrows pointing to element</li>
+                        <li>✅ Modern styling with shadows</li>
+                        <li>✅ Responsive design</li>
+                        <li>✅ Google Fonts integration</li>
+                    </ul>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Complete Tooltip System */</span><br>
+<span class="selector">.tooltip</span> {<br>
+&nbsp;&nbsp;<span class="property">position</span>: <span class="value">relative</span>;<br>
+&nbsp;&nbsp;<span class="property">display</span>: <span class="value">inline-block</span>;<br>
+&nbsp;&nbsp;<span class="property">font-family</span>: <span class="value">'Poppins', sans-serif</span>;<br>
+&nbsp;&nbsp;<span class="property">cursor</span>: <span class="value">pointer</span>;<br>
+}<br><br>
+<span class="selector">.tooltiptext</span> {<br>
+&nbsp;&nbsp;<span class="property">visibility</span>: <span class="value">hidden</span>;<br>
+&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">0</span>;<br>
+&nbsp;&nbsp;<span class="property">width</span>: <span class="value">160px</span>;<br>
+&nbsp;&nbsp;<span class="property">background-color</span>: <span class="value">#333</span>;<br>
+&nbsp;&nbsp;<span class="property">color</span>: <span class="value">#fff</span>;<br>
+&nbsp;&nbsp;<span class="property">text-align</span>: <span class="value">center</span>;<br>
+&nbsp;&nbsp;<span class="property">padding</span>: <span class="value">8px</span>;<br>
+&nbsp;&nbsp;<span class="property">border-radius</span>: <span class="value">8px</span>;<br>
+&nbsp;&nbsp;<span class="property">position</span>: <span class="value">absolute</span>;<br>
+&nbsp;&nbsp;<span class="property">z-index</span>: <span class="value">1</span>;<br>
+&nbsp;&nbsp;<span class="property">transition</span>: <span class="value">opacity 0.4s ease</span>;<br>
+}<br><br>
+<span class="selector">.tooltip:hover .tooltiptext</span> {<br>
+&nbsp;&nbsp;<span class="property">visibility</span>: <span class="value">visible</span>;<br>
+&nbsp;&nbsp;<span class="property">opacity</span>: <span class="value">1</span>;<br>
+}
+                </div>
+                <div class="highlight-box">
+                    <p>🚀 <strong>Pro Tip:</strong> Add transform: translateY(-5px) to tooltip on hover for a subtle lift effect!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: What You Learned -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎓 What You Just Learned</h1>
+                <p class="slide-subtitle">Master key CSS concepts for professional web development</p>
+            </div>
+            <div class="slide-content">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>🎬 CSS Animations</h3>
+                        <ul>
+                            <li>@keyframes syntax</li>
+                            <li>Animation properties</li>
+                            <li>Timing functions</li>
+                            <li>Professional shorthand</li>
+                            <li>Real-world applications</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>💬 CSS Tooltips</h3>
+                        <ul>
+                            <li>position: relative/absolute</li>
+                            <li>visibility and opacity</li>
+                            <li>Smooth transitions</li>
+                            <li>::after pseudo-element</li>
+                            <li>Border arrow trick</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎨 Advanced Concepts</h3>
+                        <ul>
+                            <li>Staggered animations</li>
+                            <li>Transform centering</li>
+                            <li>Google Fonts CDN</li>
+                            <li>Performance optimization</li>
+                            <li>Best practices</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-section">
+                    <h3>🔥 Key Takeaways</h3>
+                    <ul>
+                        <li><strong>Animations</strong> create automatic, timeline-based effects</li>
+                        <li><strong>Tooltips</strong> enhance UX with contextual information</li>
+                        <li><strong>Positioning</strong> is crucial for overlay elements</li>
+                        <li><strong>Transitions</strong> make state changes smooth</li>
+                        <li><strong>Pseudo-elements</strong> create decorative elements like arrows</li>
+                    </ul>
+                </div>
+                <div class="highlight-box">
+                    <p>🎉 <strong>Congratulations!</strong> You've mastered CSS Animations and Tooltips. Keep building and creating amazing web experiences!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Best Practices & Next Steps -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🚀 Best Practices & Next Steps</h1>
+                <p class="slide-subtitle">Continue your journey to CSS mastery</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>✅ Animation Best Practices</h3>
+                    <ul>
+                        <li>Keep animations short (0.3-1s for UI)</li>
+                        <li>Use ease for natural movement</li>
+                        <li>Prefer transform/opacity for performance</li>
+                        <li>Respect prefers-reduced-motion</li>
+                        <li>Test on real devices</li>
+                    </ul>
+                </div>
+                <div class="text-section">
+                    <h3>💡 Tooltip Best Practices</h3>
+                    <ul>
+                        <li>Keep text concise and helpful</li>
+                        <li>Ensure good contrast</li>
+                        <li>Add slight delay to avoid accidental triggers</li>
+                        <li>Position intelligently (don't go off-screen)</li>
+                        <li>Consider touch devices</li>
+                    </ul>
+                </div>
+                <div class="text-section">
+                    <h3>🎯 What to Learn Next</h3>
+                    <ul>
+                        <li><strong>CSS Grid & Flexbox</strong> - Advanced layouts</li>
+                        <li><strong>JavaScript Interactions</strong> - Dynamic animations</li>
+                        <li><strong>SVG Animations</strong> - Vector graphics</li>
+                        <li><strong>Web Animations API</strong> - Programmatic control</li>
+                        <li><strong>Performance Optimization</strong> - 60fps techniques</li>
+                    </ul>
+                </div>
+                <div class="highlight-box">
+                    <p>🌟 <strong>Final Tip:</strong> The best way to master CSS is through practice. Build projects, experiment, and don't be afraid to try new things!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="topBtn" title="Go to Top">↑</button>
+        <button class="nav-btn" id="downBtn" title="Go to Bottom">↓</button>
+    </div>
+
+    <div class="footer">
+        CSS Animations & Tooltips Complete Tutorial | Master Dynamic Web Interactions and Professional UI Components
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.getElementById('topBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('downBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Progress bar functionality
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Add fade-in animation to slides when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(20px)';
+            slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(slide);
+        });
+
+        // Add interactive hover effects to demo boxes
+        document.querySelectorAll('.demo-box').forEach(box => {
+            if (!box.onmouseover && !box.onmouseout) {
+                box.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                box.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+        });
+
+        // Add click-to-copy functionality for code blocks
+        document.querySelectorAll('.code-block').forEach(block => {
+            block.style.cursor = 'pointer';
+            block.title = 'Click to copy';
+            block.addEventListener('click', function() {
+                const text = this.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalBg = this.style.backgroundColor;
+                    this.style.backgroundColor = '#10b981';
+                    setTimeout(() => {
+                        this.style.backgroundColor = originalBg;
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

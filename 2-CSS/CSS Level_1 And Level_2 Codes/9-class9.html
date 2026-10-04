@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 9</title>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+      /* Vertical Navbar */
+      /* ul {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        width: 190px;
+        background-color: #dddddd;
+        position: fixed;
+        top: 0px;
+        height: 100%;
+        overflow: auto;
+      }
+
+      li a {
+        display: block;
+        color: black;
+        padding: 8px 14px;
+        text-decoration: none;
+      }
+
+      li a:hover:not(.active) {
+        background-color: #555555;
+        color: white;
+      }
+      li a.active {
+        background-color: #04aa6d;
+        color: white;
+      } */
+
+      /* Horizontal NavBar */
+      /* h2,
+      p {
+        margin: 10px;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+        background-color: #333333;
+        display: flex;
+        justify-content: center;
+      }
+
+      ul li {
+        float: left; 
+      }
+
+      ul li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      ul li a:hover:not(.active) {
+        background-color: #111111;
+      }
+      ul li a.active {
+        background-color: #097cdb;
+      } */
+      /* 
+      .dropdown {
+        position: relative;
+      }
+
+      .dropbtn {
+        background-color: #4caf50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+      } */
+
+      /* attribute Selector */
+      /* a[target] {
+        background-color: aqua;
+      } */
+      /* a[target="_blank"] {
+        background-color: red;
+      } */
+
+      /* [title~="flower"] {
+        border: 5px solid green;
+      } */
+
+      /* body {
+        font-family: Arial;
+        margin: 30px;
+      }
+
+      h1 {
+        margin-bottom: 30px;
+      }
+
+      section {
+        margin-bottom: 50px;
+      }
+
+      [class^="top"] {
+        background: yellow;
+        padding: 10px;
+      }
+
+      [class$="test"] {
+        background: lightblue;
+        padding: 10px;
+      }
+
+      [class*="te"] {
+        border: 2px solid red;
+        padding: 10px;
+      }
+
+      input[type="text"] {
+        width: 200px;
+        padding: 6px;
+        margin-bottom: 10px;
+        background-color: pink;
+      }
+
+      input[type="button"] {
+        width: 120px;
+        padding: 6px;
+        background-color: lightgreen;
+        border: none;
+        cursor: pointer;
+      } */
+
+      a {
+        border: none;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        transition-duration: 0.8s;
+      }
+
+      .button {
+        background-color: white;
+        color: black;
+        border: 2px solid #04aa6d;
+      }
+
+      .button:hover {
+        background-color: #04aa6d;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <ul>
+      <li><a class="active" href="#home">Home</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#about">Explore</a></li>
+      <li><a href="#about">New Tech</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#about">Explore</a></li>
+      <li><a href="#about">New Tech</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#about">Explore</a></li>
+      <li><a href="#about">New Tech</a></li>
+    </ul>
+
+    <div style="margin-left: 180px; padding: 1px 16px; height: 100px">
+      <h2>Full-height Vertical Navbar</h2>
+      <h3>
+        Try to scroll this area, and see how the sidenav sticks to the page
+      </h3>
+      <p>
+        Notice that we have set overflow:auto to sidenav. This will add a
+        scrollbar when the sidenav is too long (for example if it has over 50
+        links inside of it).
+      </p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+      <p>Some text..</p>
+    </div> -->
+
+    <!-- <ul>
+      <li><a class="active" href="#home">Home</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#about">Explore</a></li>
+    </ul>
+
+    <h2>Horizontal Navbar</h2>
+    <p>Thsi is a sample Website</p> -->
+
+    <!-- <h2>Dropdown Box with Text</h2>
+    <p>Mouse over the text below to display the dropdown content.</p>
+
+    <div class="dropdown">
+      <button class="dropbtn">Dropdown Menu</button>
+      <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </div> -->
+
+    <!-- <a href="https://www.w3schools.com" target="_blank">W3schools.com</a>
+    <a href="https://www.w3schools.com/css/">CSS</a>
+    <a href="https://www.w3schools.com/html/" target="_parent">HTML</a> -->
+
+    <!-- <h2 title="flower">i am heaidng 2</h2> -->
+    <!-- <img
+      src="https://www.w3schools.com/css/klematis.jpg"
+      title="klematis flower"
+      width="150"
+      height="113"
+    />
+    <img
+      src="https://www.w3schools.com/css/img_flwr.gif"
+      title="flower"
+      width="224"
+      height="162"
+    />
+    <img
+      src="https://www.w3schools.com/css/img_tree.gif"
+      title="tree"
+      width="200"
+      height="358"
+    /> -->
+
+    <!-- <h1>Advanced CSS Attribute Selectors</h1>
+
+    <section>
+      <h2>[attribute^="value"] — Starts With</h2>
+
+      <div class="top-box">This class starts with "top"</div>
+
+      <div class="top-section">This also starts with "top"</div>
+
+      <div class="bottom-box">This does NOT start with "top"</div>
+    </section>
+
+    <hr />
+
+    <section>
+      <h2>[attribute$="value"] — Ends With</h2>
+
+      <div class="mytest">This class ends with "test"</div>
+
+      <div class="yourtest">This also ends with "test"</div>
+
+      <div class="testing">This does NOT end with "test"</div>
+    </section>
+
+    <hr />
+
+    <section>
+      <h2>[attribute*="value"] — Contains</h2>
+
+      <div class="teacher">Contains "te"</div>
+
+      <div class="note-box">Contains "te"</div>
+
+      <div class="random">Does NOT contain "te"</div>
+    </section>
+
+    <hr />
+
+    <section>
+      <h2>Styling Form Elements Using Attribute Selectors</h2>
+
+      <form>
+        <label>Text Input:</label><br />
+        <input type="text" placeholder="Styled text input" /><br />
+
+        <label>Button:</label><br />
+        <input type="button" value="Styled Button" />
+      </form>
+    </section> -->
+
+    <a class="button" href="./class9-form.html" target="_blank">Visit Form</a>
+  </body>
+</html>

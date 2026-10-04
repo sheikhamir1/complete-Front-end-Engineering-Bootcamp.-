@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 17</title>
+    <style>
+      /* @property Rules */
+      /* @property --mycolor {
+        syntax: "<color>";
+        inherits: true;
+        initial-value: lightgray;
+      } */
+
+      /* date types checking | defaut value | inheritance */
+      /* body {
+        background-color: var(--mycolor);
+      } */
+
+      /* @property --my-bg-color {
+        syntax: "<color>";
+        inherits: true;
+        initial-value: lightgray;
+      }
+
+      @property --my-txt-color {
+        syntax: "<color>";
+        inherits: true;
+        initial-value: darkblue;
+      }
+
+      div {
+        width: 300px;
+        height: 150px;
+        padding: 15px;
+        background-color: var(--my-bg-color);
+        color: var(--my-txt-color);
+      } */
+      /* @property --my-bg-color {
+        syntax: "<color>";
+        inherits: true;
+        initial-value: lightgray;
+      }
+
+      div {
+        width: 300px;
+        height: 150px;
+        padding: 15px;
+        background-color: var(--my-bg-color);
+      }
+
+      .fresh {
+        --my-bg-color: #ff6347;
+      }
+
+      .nature {
+        --my-bg-color: 3;
+      } */
+
+      /* @property --my-bg-color {
+        syntax: "<color>";
+        inherits: false;
+        initial-value: lightgray;
+      }
+
+      div {
+        width: 300px;
+        height: 150px;
+        padding: 15px;
+        background-color: var(--my-bg-color);
+      }
+
+      .fresh {
+        --my-bg-color: #ff6347;
+      } */
+
+      /* Animation @property */
+
+      /* @property --startColor {
+        syntax: "<color>";
+        initial-value: #eadedb;
+        inherits: false;
+      }
+
+      @property --endColor {
+        syntax: "<color>";
+        initial-value: #bc70a4;
+        inherits: false;
+      }
+
+      .ex1 {
+        background: linear-gradient(var(--startColor), var(--endColor));
+        animation: gradient 3s linear infinite;
+      }
+
+      @keyframes gradient {
+        0%,
+        100% {
+          --startColor: #eadedb;
+          --endColor: #bc70a4;
+        }
+        50% {
+          --startColor: #bc70a4;
+          --endColor: #bfd641;
+        }
+      }
+
+      #grad1 {
+        height: 200px;
+      } */
+
+      /* media Query */
+      /* @media [not] media-type and (media-feature: value) and (media-feature: value) {
+} */
+
+      /* body {
+        background-color: aqua;
+      }
+
+      @media screen and (min-width: 480px) and (max-width: 768px) {
+        body {
+          background-color: lightgreen;
+        }
+      } */
+
+      /* body {
+        background-color: olive;
+        color: white;
+      }
+
+    
+      @media screen and (min-width: 768px) {
+        body {
+          background-color: blue;
+          color: white;
+        }
+      }
+
+      
+      @media screen and (min-width: 992px) {
+        body {
+          background-color: tan;
+          color: black;
+        }
+      } */
+
+      /* * {
+        box-sizing: border-box;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .column {
+        flex: 25%;
+        padding: 20px;
+      }
+
+      @media screen and (max-width: 992px) {
+        .column {
+          flex: 50%;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        .container {
+          flex-direction: column;
+        }
+      } */
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      h2,
+      p {
+        margin: 10px;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: #333333;
+        display: flex;
+      }
+
+      ul li a {
+        display: block;
+        color: white;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      ul li a:hover {
+        background-color: #111111;
+      }
+
+      @media screen and (max-width: 600px) {
+        ul {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body style="zoom: 150%">
+    <!-- <h1>class 17</h1> -->
+    <!-- <div>
+      <h2>Lorem ipsum</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper
+        diam at erat pulvinar, at pulvinar felis blandit.
+      </p>
+    </div> -->
+    <!-- 
+    <div>Div 1</div>
+    <div class="fresh">Div 2</div>
+    <div class="nature">Div 3</div> -->
+
+    <!-- <div>DIV1</div>
+    <div class="fresh">
+      DIV2
+      <div class="inner">Inner DIV</div>
+    </div> -->
+
+    <!-- <div id="grad1" class="ex1"></div> -->
+    <!-- <div>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, ex numquam
+      quod odio voluptas deleniti voluptatum temporibus praesentium iusto
+      accusamus.
+    </div> -->
+
+    <!-- <h1>Resize the browser window to see the effect!</h1> -->
+
+    <!-- <h2>Responsive four-column layout</h2>
+    <p><strong>Resize the browser window to see the effect.</strong></p>
+    <p>
+      On screens that are 992px wide or less, the columns will resize from four
+      columns to two columns. On screens that are 600px wide or less, the
+      columns will stack on top of each other instead of next to eachother.
+    </p>
+
+    <div class="container">
+      <div class="column" style="background-color: #aaa">
+        <h2>Column 1</h2>
+        <p>Some text..</p>
+      </div>
+
+      <div class="column" style="background-color: #bbb">
+        <h2>Column 2</h2>
+        <p>Some text..</p>
+      </div>
+
+      <div class="column" style="background-color: #ccc">
+        <h2>Column 3</h2>
+        <p>Some text..</p>
+      </div>
+
+      <div class="column" style="background-color: #ddd">
+        <h2>Column 4</h2>
+        <p>Some text..</p>
+      </div>
+    </div> -->
+
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+
+    <h2>Responsive navigation menu</h2>
+  </body>
+</html>

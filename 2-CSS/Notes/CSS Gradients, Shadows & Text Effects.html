@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Gradients, Shadows & Text Effects Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .slide-title {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .slide-content {
+            margin-top: 30px;
+        }
+
+        .text-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .text-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-block .comment { color: #6272a4; }
+        .code-block .selector { color: #ff79c6; }
+        .code-block .property { color: #50fa7b; }
+        .code-block .value { color: #f1fa8c; }
+        .code-block .tag { color: #ff79c6; }
+        .code-block .attribute { color: #8be9fd; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .highlight-box p {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .gradient-demo {
+            height: 100px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .table-section {
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            font-size: 1.1em;
+            margin-top: 50px;
+        }
+
+        .example-output {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .example-box {
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .shadow-demo {
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .text-effect-demo {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="container">
+        <!-- Slide 1: Title -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🎨 CSS Gradients, Shadows & Text Effects</h1>
+                <p class="slide-subtitle">Master Advanced CSS Visual Techniques</p>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p>Learn to create stunning visual effects with pure CSS - no images needed!</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>🌈 Gradients</h3>
+                        <p>Create smooth color transitions for modern backgrounds</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🌑 Shadows</h3>
+                        <p>Add depth and dimension to your designs</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>✨ Text Effects</h3>
+                        <p>Control text overflow and create professional typography</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Introduction to CSS Gradients -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">What Is a CSS Gradient?</h1>
+                <p class="slide-subtitle">Smooth transitions between colors</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧠 Concept</h3>
+                    <p>A gradient is a smooth transition between two or more colors, generated automatically by CSS instead of using images.</p>
+                </div>
+                <div class="gradient-demo" style="background: linear-gradient(to right, #ff6b6b, #4ecdc4);"></div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>🌅 Real World Examples</h3>
+                        <p>Sky changing from orange to blue (sunset)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎨 Paint Blending</h3>
+                        <p>Red to yellow like paint mixing</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🌈 Rainbow</h3>
+                        <p>Multiple color transitions</p>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Instead of using an image */</span><br>
+<span class="property">background-image</span>: <span class="value">url("gradient.png")</span>;<br>
+<br>
+<span class="comment">/* Use CSS gradient */</span><br>
+<span class="property">background-image</span>: <span class="value">linear-gradient(red, yellow)</span>;
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Linear Gradients Basics -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔥 Linear Gradients</h1>
+                <p class="slide-subtitle">Color transitions in straight lines</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧱 Basic Syntax</h3>
+                    <p><code>background-image: linear-gradient(direction, color1, color2);</code></p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Top → Bottom (Default)</h3>
+                        <div class="gradient-demo" style="background: linear-gradient(to bottom, #ff6b6b, #ffd93d);"></div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Left → Right</h3>
+                        <div class="gradient-demo" style="background: linear-gradient(to right, #6bcf7f, #4a90e2);"></div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Diagonal</h3>
+                        <div class="gradient-demo" style="background: linear-gradient(to bottom right, #e056fd, #686de0);"></div>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Real World Example: Website Hero Section */</span><br>
+<span class="selector">.hero</span> {<br>
+&nbsp;&nbsp;<span class="property">height</span>: <span class="value">300px</span>;<br>
+&nbsp;&nbsp;<span class="property">background-image</span>: <span class="value">linear-gradient(to right, #4e73df, #1cc88a)</span>;<br>
+}<br>
+<span class="comment">/* Creates: Blue → Green horizontally */</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Linear Gradients Advanced -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Linear Gradients - Advanced</h1>
+                <p class="slide-subtitle">Angles and multiple colors</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🎛 Using Angles</h3>
+                    <p>Instead of direction keywords, use degrees for precise control</p>
+                </div>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Angle</th>
+                                <th>Meaning</th>
+                                <th>Visual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0deg</td>
+                                <td>To top</td>
+                                <td><div class="gradient-demo" style="height: 40px; background: linear-gradient(0deg, #ff6b6b, #ffd93d);"></div></td>
+                            </tr>
+                            <tr>
+                                <td>90deg</td>
+                                <td>To right</td>
+                                <td><div class="gradient-demo" style="height: 40px; background: linear-gradient(90deg, #ff6b6b, #ffd93d);"></div></td>
+                            </tr>
+                            <tr>
+                                <td>180deg</td>
+                                <td>To bottom</td>
+                                <td><div class="gradient-demo" style="height: 40px; background: linear-gradient(180deg, #ff6b6b, #ffd93d);"></div></td>
+                            </tr>
+                            <tr>
+                                <td>45deg</td>
+                                <td>Diagonal</td>
+                                <td><div class="gradient-demo" style="height: 40px; background: linear-gradient(45deg, #ff6b6b, #ffd93d);"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-section">
+                    <h3>🌈 Multiple Color Stops</h3>
+                    <p>Create complex color transitions</p>
+                </div>
+                <div class="gradient-demo" style="background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); height: 60px;"></div>
+                <div class="code-block">
+<span class="comment">/* Rainbow Strip */</span><br>
+<span class="property">background-image</span>: <span class="value">linear-gradient(</span><br>
+&nbsp;&nbsp;<span class="value">to right,</span><br>
+&nbsp;&nbsp;<span class="value">red, orange, yellow, green, blue, indigo, violet</span><br>
+<span class="value">)</span>;
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Transparency & Repeating Gradients -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🫥 Transparency & Repeating</h1>
+                <p class="slide-subtitle">Advanced gradient techniques</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>Transparency with rgba()</h3>
+                    <p>Create fade effects and overlays</p>
+                </div>
+                <div class="gradient-demo" style="background: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));"></div>
+                <div class="code-block">
+<span class="comment">/* Overlay Effect */</span><br>
+<span class="property">background-image</span>:<br>
+&nbsp;&nbsp;<span class="value">linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6))</span>,<br>
+&nbsp;&nbsp;<span class="value">url("photo.jpg")</span>;<br>
+<span class="comment">/* Darkens the image underneath */</span>
+                </div>
+                <div class="text-section">
+                    <h3>🔁 Repeating Linear Gradient</h3>
+                    <p>Create patterns with repeating gradients</p>
+                </div>
+                <div class="gradient-demo" style="background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);"></div>
+                <div class="code-block">
+<span class="comment">/* Warning Stripes */</span><br>
+<span class="property">background-image</span>: <span class="value">repeating-linear-gradient(</span><br>
+&nbsp;&nbsp;<span class="value">45deg,</span><br>
+&nbsp;&nbsp;<span class="value">yellow, yellow 10px,</span><br>
+&nbsp;&nbsp;<span class="value">black 10px, black 20px</span><br>
+<span class="value">)</span>;
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Radial Gradients -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🌍 Radial Gradients</h1>
+                <p class="slide-subtitle">Color spreading from center</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧠 Concept</h3>
+                    <p>Colors spread outward from a center point like light bulbs, sun, or spotlights</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>🔵 Circle Shape</h3>
+                        <div class="gradient-demo" style="background: radial-gradient(circle, white, black);"></div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⬜ Ellipse (Default)</h3>
+                        <div class="gradient-demo" style="background: radial-gradient(ellipse, #ff6b6b, #4ecdc4);"></div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📍 Positioned Center</h3>
+                        <div class="gradient-demo" style="background: radial-gradient(circle at 70% 60%, #ffd93d, #ff6b6b);"></div>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Button Glow Effect */</span><br>
+<span class="selector">button</span> {<br>
+&nbsp;&nbsp;<span class="property">background-image</span>: <span class="value">radial-gradient(circle at center, #00ffcc, #003333)</span>;<br>
+}<br>
+<span class="comment">/* Makes button look glowing */</span>
+                </div>
+                <div class="text-section">
+                    <h3>🔁 Repeating Radial Gradient</h3>
+                    <p>Create target patterns</p>
+                </div>
+                <div class="gradient-demo" style="background: repeating-radial-gradient(red, red 10px, white 10px, white 20px);"></div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Conic Gradients -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔄 Conic Gradients</h1>
+                <p class="slide-subtitle">Color rotating around center</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧠 Concept</h3>
+                    <p>Colors rotate around a center point like pizza slices, pie charts, or color wheels</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>🍕 Basic Conic</h3>
+                        <div class="gradient-demo" style="background: conic-gradient(red, yellow, green, blue, red);"></div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📊 Pie Chart</h3>
+                        <div class="gradient-demo" style="background: conic-gradient(red 0deg 90deg, yellow 90deg 180deg, green 180deg 270deg, blue 270deg 360deg);"></div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎨 From Angle</h3>
+                        <div class="gradient-demo" style="background: conic-gradient(from 90deg, red, yellow, green);"></div>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Pie Chart Example */</span><br>
+<span class="property">background-image</span>: <span class="value">conic-gradient(</span><br>
+&nbsp;&nbsp;<span class="value">red 0deg 90deg,</span><br>
+&nbsp;&nbsp;<span class="value">yellow 90deg 180deg,</span><br>
+&nbsp;&nbsp;<span class="value">green 180deg 270deg,</span><br>
+&nbsp;&nbsp;<span class="value">blue 270deg 360deg</span><br>
+<span class="value">)</span>;<br>
+<span class="property">border-radius</span>: <span class="value">50%</span>;
+                </div>
+                <div class="highlight-box">
+                    <p>Conic gradients are perfect for creating pie charts, color wheels, and loading animations!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Introduction to Shadows -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🌑 CSS Shadows</h1>
+                <p class="slide-subtitle">Creating depth and dimension</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧠 Why Shadows Matter</h3>
+                    <p>Shadows create visual hierarchy and make designs feel layered and realistic</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>📱 Mobile App Cards</h3>
+                        <p>Floating card effects</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🛒 E-commerce Products</h3>
+                        <p>Product depth and focus</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎮 Game UI Buttons</h3>
+                        <p>Interactive feedback</p>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <p>Without shadows → flat design. With shadows → professional, layered interface!</p>
+                </div>
+                <div class="text-section">
+                    <h3>Types of Shadows</h3>
+                    <ul>
+                        <li><strong>Text Shadow:</strong> Applied to text elements</li>
+                        <li><strong>Box Shadow:</strong> Applied to entire elements (div, card, button)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Text Shadows -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">📝 Text Shadows</h1>
+                <p class="slide-subtitle">Adding depth to text</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧱 Basic Syntax</h3>
+                    <p><code>text-shadow: horizontal vertical blur color;</code></p>
+                </div>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Value</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>horizontal</td>
+                                <td>Left/right movement</td>
+                            </tr>
+                            <tr>
+                                <td>vertical</td>
+                                <td>Up/down movement</td>
+                            </tr>
+                            <tr>
+                                <td>blur</td>
+                                <td>Softness (0 = hard, higher = softer)</td>
+                            </tr>
+                            <tr>
+                                <td>color</td>
+                                <td>Shadow color</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Basic Shadow</h3>
+                        <div class="shadow-demo" style="text-shadow: 2px 2px #333;">Basic Shadow</div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Blurred Shadow</h3>
+                        <div class="shadow-demo" style="text-shadow: 2px 2px 5px #333;">Blurred</div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Neon Glow</h3>
+                        <div class="shadow-demo" style="text-shadow: 0 0 10px #ff00ff; color: #ff00ff;">Neon</div>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Hero Section Text Over Image */</span><br>
+<span class="selector">.hero h1</span> {<br>
+&nbsp;&nbsp;<span class="property">color</span>: <span class="value">white</span>;<br>
+&nbsp;&nbsp;<span class="property">text-shadow</span>: <span class="value">2px 2px 8px black</span>;<br>
+}<br>
+<span class="comment">/* Neon Glow Effect */</span><br>
+<span class="selector">h1</span> {<br>
+&nbsp;&nbsp;<span class="property">text-shadow</span>: <span class="value">0 0 5px #ff0000</span>;<br>
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Box Shadows -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">📦 Box Shadows</h1>
+                <p class="slide-subtitle">The powerful shadow tool</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧱 Full Syntax</h3>
+                    <p><code>box-shadow: horizontal vertical blur spread color inset;</code></p>
+                </div>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>horizontal</td>
+                                <td>Left/right movement</td>
+                            </tr>
+                            <tr>
+                                <td>vertical</td>
+                                <td>Up/down movement</td>
+                            </tr>
+                            <tr>
+                                <td>blur</td>
+                                <td>Softness</td>
+                            </tr>
+                            <tr>
+                                <td>spread</td>
+                                <td>Size expansion</td>
+                            </tr>
+                            <tr>
+                                <td>color</td>
+                                <td>Shadow color</td>
+                            </tr>
+                            <tr>
+                                <td>inset</td>
+                                <td>Inner shadow (optional)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Basic Shadow</h3>
+                        <div class="shadow-demo" style="box-shadow: 10px 10px #ccc;">Basic</div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Soft Shadow</h3>
+                        <div class="shadow-demo" style="box-shadow: 10px 10px 20px rgba(0,0,0,0.3);">Soft</div>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Inset Shadow</h3>
+                        <div class="shadow-demo" style="box-shadow: inset 0 0 10px black;">Inset</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Real World Shadow Applications -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔥 Real World Shadow Applications</h1>
+                <p class="slide-subtitle">Professional shadow techniques</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🪟 Card UI (Very Important)</h3>
+                    <p>Multiple shadows for realistic depth</p>
+                </div>
+                <div class="code-block">
+<span class="selector">.card</span> {<br>
+&nbsp;&nbsp;<span class="property">box-shadow</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="value">0 4px 8px rgba(0,0,0,0.2),</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="value">0 6px 20px rgba(0,0,0,0.19)</span>;<br>
+}<br>
+<span class="comment">/* First shadow = small depth */</span><br>
+<span class="comment">/* Second shadow = bigger soft depth */</span>
+                </div>
+                <div class="text-section">
+                    <h3>🛒 Hover Lift Effect</h3>
+                    <p>Interactive feedback on hover</p>
+                </div>
+                <div class="code-block">
+<span class="selector">.card:hover</span> {<br>
+&nbsp;&nbsp;<span class="property">box-shadow</span>: <span class="value">0 10px 25px rgba(0,0,0,0.4)</span>;<br>
+&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateY(-5px)</span>;<br>
+}<br>
+<span class="comment">/* Card appears to lift */</span>
+                </div>
+                <div class="text-section">
+                    <h3>🎮 Pressed Button Effect</h3>
+                    <p>Physical button press simulation</p>
+                </div>
+                <div class="code-block">
+<span class="selector">button</span> { <span class="property">box-shadow</span>: <span class="value">0 5px #666</span>; }<br>
+<span class="selector">button:active</span> {<br>
+&nbsp;&nbsp;<span class="property">box-shadow</span>: <span class="value">0 2px #666</span>;<br>
+&nbsp;&nbsp;<span class="property">transform</span>: <span class="value">translateY(3px)</span>;<br>
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Text Effects Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">✨ CSS Text Effects</h1>
+                <p class="slide-subtitle">Controlling text behavior</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🧠 What Text Effects Control</h3>
+                    <ul>
+                        <li>What happens when text is too long</li>
+                        <li>How words break and wrap</li>
+                        <li>Text flow direction (horizontal/vertical)</li>
+                        <li>Layout stability and professional UI behavior</li>
+                    </ul>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>text-overflow</h3>
+                        <p>Controls overflow behavior (clip/ellipsis)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>word-wrap</h3>
+                        <p>Breaks long words to prevent overflow</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>word-break</h3>
+                        <p>Controls how words break (normal/break-all)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>writing-mode</h3>
+                        <p>Changes text direction (vertical/horizontal)</p>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <p>These properties are crucial for maintaining layout stability and creating professional UI!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Text Overflow & Word Wrap -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Text Overflow & Word Wrap</h1>
+                <p class="slide-subtitle">Handling long text content</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>1️⃣ text-overflow</h3>
+                    <p>Controls what happens when text is too long</p>
+                </div>
+                <div class="text-effect-demo">
+                    <p style="width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        Samsung Galaxy S24 Ultra 512GB Phantom Black Limited Edition
+                    </p>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">With ellipsis → Shows "..."</p>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Required properties */</span><br>
+<span class="selector">.product-title</span> {<br>
+&nbsp;&nbsp;<span class="property">width</span>: <span class="value">200px</span>;<br>
+&nbsp;&nbsp;<span class="property">white-space</span>: <span class="value">nowrap</span>;<br>
+&nbsp;&nbsp;<span class="property">overflow</span>: <span class="value">hidden</span>;<br>
+&nbsp;&nbsp;<span class="property">text-overflow</span>: <span class="value">ellipsis</span>;<br>
+}
+                </div>
+                <div class="text-section">
+                    <h3>2️⃣ word-wrap (overflow-wrap)</h3>
+                    <p>Breaks long words to prevent overflow</p>
+                </div>
+                <div class="text-effect-demo">
+                    <p style="word-wrap: break-word; width: 200px;">
+                        https://thisisaveryveryveryverylonglinkexample.com/test/test/test
+                    </p>
+                </div>
+                <div class="code-block">
+<span class="selector">.message</span> {<br>
+&nbsp;&nbsp;<span class="property">word-wrap</span>: <span class="value">break-word</span>;<br>
+}<br>
+<span class="comment">/* Modern: overflow-wrap: break-word; */</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Word Break & Writing Mode -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Word Break & Writing Mode</h1>
+                <p class="slide-subtitle">Advanced text control</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>🔤 word-break Values</h3>
+                </div>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Value</th>
+                                <th>Meaning</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>normal</td>
+                                <td>Default behavior</td>
+                                <td>Supercalifragilistic...</td>
+                            </tr>
+                            <tr>
+                                <td>break-all</td>
+                                <td>Break anywhere</td>
+                                <td>Super-cali-fragi...</td>
+                            </tr>
+                            <tr>
+                                <td>keep-all</td>
+                                <td>Don't break</td>
+                                <td>Supercalifragilistic...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-section">
+                    <h3>📐 writing-mode</h3>
+                    <p>Changes text direction - very powerful!</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Horizontal (Default)</h3>
+                        <p style="writing-mode: horizontal-tb;">Normal Text Flow</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Vertical Right-Left</h3>
+                        <p style="writing-mode: vertical-rl; height: 100px;">Vertical Text</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Vertical Left-Right</p>
+                        <p style="writing-mode: vertical-lr; height: 100px;">Vertical Text</p>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">/* Sidebar Label */</span><br>
+<span class="selector">.sidebar-label</span> {<br>
+&nbsp;&nbsp;<span class="property">writing-mode</span>: <span class="value">vertical-rl</span>;<br>
+}<br>
+<span class="comment">/* Japanese/Creative layouts */</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Best Practices & Conclusion -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🚀 Best Practices & Conclusion</h1>
+                <p class="slide-subtitle">Mastering CSS visual effects</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>✨ When to Use What</h3>
+                </div>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Technique</th>
+                                <th>Best For</th>
+                                <th>Real World Use</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Linear Gradients</td>
+                                <td>Hero sections, buttons</td>
+                                <td>Modern web backgrounds</td>
+                            </tr>
+                            <tr>
+                                <td>Radial Gradients</td>
+                                <td>Spotlights, glows</td>
+                                <td>Button effects, lights</td>
+                            </tr>
+                            <tr>
+                                <td>Conic Gradients</td>
+                                <td>Pie charts, loaders</td>
+                                <td>Data visualization</td>
+                            </tr>
+                            <tr>
+                                <td>Text Shadows</td>
+                                <td>Readability, effects</td>
+                                <td>Hero text, neon signs</td>
+                            </tr>
+                            <tr>
+                                <td>Box Shadows</td>
+                                <td>Depth, hierarchy</td>
+                                <td>Cards, modals, buttons</td>
+                            </tr>
+                            <tr>
+                                <td>Text Effects</td>
+                                <td>Layout stability</td>
+                                <td>Tables, product titles</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="highlight-box">
+                    <p><strong>Key Takeaway:</strong> These CSS techniques replace images, improve performance, and create stunning visual effects!</p>
+                </div>
+                <div class="text-section">
+                    <h3>🎯 Next Steps</h3>
+                    <ul>
+                        <li>Practice with real projects</li>
+                        <li>Combine techniques for unique effects</li>
+                        <li>Learn CSS animations and transitions</li>
+                        <li>Explore CSS filters and blend modes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="topBtn" title="Go to Top">↑</button>
+        <button class="nav-btn" id="downBtn" title="Go to Bottom">↓</button>
+    </div>
+
+    <div class="footer">
+        CSS Gradients, Shadows & Text Effects Tutorial | Master Advanced CSS Visual Techniques
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.getElementById('topBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('downBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Progress bar functionality
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Add fade-in animation to slides when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(20px)';
+            slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(slide);
+        });
+    </script>
+</body>
+</html>

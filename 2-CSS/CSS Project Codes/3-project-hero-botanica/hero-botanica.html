@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Botanica - organic Skincare</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body style="zoom: 100%">
+    <section class="hero-section">
+      <!-- Background -->
+      <div
+        class="blob"
+        style="
+          background: rgba(167, 243, 208, 0.3);
+          width: 500px;
+          height: 500px;
+          left: -5%;
+          top: -10%;
+          animation-delay: 0s;
+        "
+      ></div>
+      <div
+        class="blob"
+        style="
+          background: rgba(253, 230, 138, 0.2);
+          width: 400px;
+          height: 400px;
+          left: 60%;
+          top: 5%;
+          animation-delay: 3s;
+        "
+      ></div>
+      <div
+        class="blob"
+        style="
+          background: rgba(196, 181, 253, 0.15);
+          width: 350px;
+          height: 350px;
+          left: 20%;
+          top: 55%;
+          animation-delay: 6s;
+        "
+      ></div>
+      <div
+        class="blob"
+        style="
+          background: rgba(254, 202, 202, 0.15);
+          width: 300px;
+          height: 300px;
+          left: 70%;
+          top: 60%;
+          animation-delay: 9s;
+        "
+      ></div>
+      <div class="leaf-pattern"></div>
+
+      <!-- Navbar -->
+      <nav class="navbar container">
+        <a href="#" class="logo">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="color: var(--emerald-600)"
+          >
+            <path d="M11 20A7 7 0 0 1 4.05 13H11V20Z" />
+            <path d="M13 20A7 7 0 0 0 19.95 13H13V20Z" />
+            <path d="M11 4A7 7 0 0 0 4.05 11H11V4Z" />
+            <path d="M13 4A7 7 0 0 1 19.95 11H13V4Z" />
+          </svg>
+          Botanica
+        </a>
+        <div class="nav-links">
+          <a href="#">Products</a>
+          <a href="#">Ingredients</a>
+          <a href="#">About</a>
+          <a href="#">Journal</a>
+        </div>
+        <button class="btn-shop">Shop Now</button>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="container content-grid">
+        <!-- Left Content Start -->
+        <div class="left-content">
+          <div class="badge">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+              />
+            </svg>
+            New Spring Collection
+          </div>
+
+          <div class="title-wrapper">
+            <h1 class="title-line" style="animation-delay: 0.35s">
+              Nurture Your
+            </h1>
+          </div>
+          <div class="title-wrapper">
+            <h1
+              class="title-line italic-emerald"
+              style="animation-delay: 0.47s"
+            >
+              Natural
+            </h1>
+          </div>
+          <div class="title-wrapper">
+            <h1 class="title-line" style="animation-delay: 0.59s">Beauty</h1>
+          </div>
+
+          <p class="description">
+            Discover our handcrafted skincare collection made with ethically
+            sourced botanicals. Clean beauty that nourishes from nature's purest
+            ingredients.
+          </p>
+
+          <div class="cta-group">
+            <button class="btn-primary">
+              Explore Collection
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+            <button class="btn-secondary">Our Story</button>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 1.5rem;
+              opacity: 0;
+              animation: navSlideDown 0.8s 1.2s forwards;
+            "
+          >
+            <div style="text-align: center">
+              <div
+                style="
+                  background: var(--blue-50);
+                  color: var(--blue-500);
+                  padding: 0.625rem;
+                  border-radius: 9999px;
+                  margin-bottom: 0.25rem;
+                "
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />
+                </svg>
+              </div>
+              <span
+                style="
+                  font-size: 10px;
+                  font-weight: 500;
+                  color: rgba(6, 78, 59, 0.4);
+                "
+                >Hyaluronic</span
+              >
+            </div>
+            <div style="text-align: center">
+              <div
+                style="
+                  background: var(--emerald-50);
+                  color: var(--emerald-500);
+                  padding: 0.625rem;
+                  border-radius: 9999px;
+                  margin-bottom: 0.25rem;
+                "
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M11 20A7 7 0 0 1 4.05 13H11V20Z" />
+                </svg>
+              </div>
+              <span
+                style="
+                  font-size: 10px;
+                  font-weight: 500;
+                  color: rgba(6, 78, 59, 0.4);
+                "
+                >Green Tea</span
+              >
+            </div>
+            <div style="text-align: center">
+              <div
+                style="
+                  background: var(--amber-50);
+                  color: var(--amber-500);
+                  padding: 0.625rem;
+                  border-radius: 9999px;
+                  margin-bottom: 0.25rem;
+                "
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+              </div>
+              <span
+                style="
+                  font-size: 10px;
+                  font-weight: 500;
+                  color: rgba(6, 78, 59, 0.4);
+                "
+                >Vitamin C</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Content start -->
+        <div class="right-content">
+          <div class="floating-card floating-1">
+            <div
+              style="
+                background: var(--emerald-100);
+                padding: 0.5rem;
+                border-radius: 9999px;
+              "
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--emerald-600)"
+                stroke-width="2"
+              >
+                <path d="M11 20A7 7 0 0 1 4.05 13H11V20Z" />
+              </svg>
+            </div>
+            <div>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  font-weight: 600;
+                  color: var(--emerald-900);
+                "
+              >
+                100% Organic
+              </p>
+              <p style="font-size: 10px; color: var(--emerald-500)">
+                Certified Natural
+              </p>
+            </div>
+          </div>
+
+          <div class="floating-card floating-2">
+            <div
+              style="
+                background: var(--pink-100);
+                padding: 0.5rem;
+                border-radius: 9999px;
+              "
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="var(--pink-600)"
+              >
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  font-weight: 600;
+                  color: var(--emerald-900);
+                "
+              >
+                Cruelty Free
+              </p>
+              <p style="font-size: 10px; color: var(--emerald-500)">
+                Vegan Friendly
+              </p>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="image-box">
+              <span class="best-seller">Best Seller</span>
+              <span class="discount">-20%</span>
+              <svg
+                class="float-leaf"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              >
+                <path d="M11 20A7 7 0 0 1 4.05 13H11V20Z" />
+                <path d="M13 20A7 7 0 0 0 19.95 13H13V20Z" />
+              </svg>
+            </div>
+
+            <div style="margin-bottom: 0.75rem">
+              <p
+                style="
+                  font-size: 0.75rem;
+                  font-weight: 500;
+                  text-transform: uppercase;
+                  color: var(--emerald-500);
+                  letter-spacing: 0.05em;
+                  margin-bottom: 0.25rem;
+                "
+              >
+                Hydrating Serum
+              </p>
+              <h3
+                style="
+                  font-size: 1.125rem;
+                  font-weight: 700;
+                  color: var(--emerald-950);
+                "
+              >
+                Rose & Hyaluronic Elixir
+              </h3>
+            </div>
+
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+              "
+            >
+              <div style="color: var(--amber-400); display: flex; gap: 2px">
+                ★★★★★
+              </div>
+              <span style="font-size: 12px; color: rgba(6, 78, 59, 0.4)"
+                >(2,847 reviews)</span
+              >
+            </div>
+
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <div>
+                <span
+                  style="
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    color: var(--emerald-900);
+                  "
+                  >$42</span
+                >
+                <span
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--emerald-400);
+                    text-decoration: line-through;
+                    margin-left: 0.5rem;
+                  "
+                  >$52</span
+                >
+              </div>
+              <button
+                style="
+                  background: var(--emerald-700);
+                  color: white;
+                  border: none;
+                  padding: 0.625rem 1.25rem;
+                  border-radius: 9999px;
+                  font-size: 12px;
+                  font-weight: 600;
+                  cursor: pointer;
+                "
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+
+      <div class="bottom-strip">
+        <div class="container benefits-grid">
+          <div class="benefit-item">
+            <div
+              class="benefit-icon"
+              style="background: var(--emerald-100); color: var(--emerald-700)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M11 20A7 7 0 0 1 4.05 13H11V20Z" />
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <h4>100% Natural</h4>
+              <p>Pure organic ingredients</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div
+              class="benefit-icon"
+              style="background: var(--blue-100); color: var(--blue-700)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <h4>Clinically Tested</h4>
+              <p>Dermatologist approved</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div
+              class="benefit-icon"
+              style="background: var(--pink-100); color: var(--pink-700)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <h4>Cruelty Free</h4>
+              <p>Never tested on animals</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div
+              class="benefit-icon"
+              style="background: var(--amber-100); color: var(--amber-700)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M5 3v4M3 5h4M6 17v4M4 19h4m12-12v4m-2-2h4m-5 8v4m-2-2h4"
+                />
+              </svg>
+            </div>
+            <div class="benefit-text">
+              <h4>Eco Packaging</h4>
+              <p>Biodegradable materials</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

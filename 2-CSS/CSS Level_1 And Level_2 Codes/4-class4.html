@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 4</title>
+    <style>
+      /* Height And Width */
+      /* .div1 {
+              background-color: powderblue;
+              height: 100px;
+              width: 100%;
+              max-width: 500px;
+              border: 2px solid black;
+            } */
+      /* .div2 {
+              background-color: powderblue;
+              height: 100px;
+              border: 2px solid black;
+              max-width: 500px;
+            } */
+
+      /* Box Model */
+      /* div {
+              background-color: lightgray;
+              width: 320px;
+              height: 100px;
+              border: 5px solid green;
+              padding: 10px;
+              margin: 0px;
+              box-sizing: border-box;
+            } */
+
+      /* Outline */
+      /* div {
+              border: 2px solid black;
+              margin: auto;
+              padding: 20px;
+              text-align: center;
+              outline: green 10px solid;
+            } */
+
+      /* p {
+              padding: 5px;
+              outline-color: green;
+              outline: 5px;
+            }
+            p.dotted {
+              outline-style: dotted;
+            }
+            p.dashed {
+              outline-style: dashed;
+            }
+            p.solid {
+              outline-style: solid;
+            }
+            p.double {
+              outline-style: double;
+            }
+            p.groove {
+              outline-style: groove;
+            }
+            p.ridge {
+              outline-style: ridge;
+            }
+            p.inset {
+              outline-style: inset;
+            }
+            p.outset {
+              outline-style: outset;
+            } */
+      /* p {
+              padding: 5px;
+              outline-style: solid;
+              outline-color: green;
+            }
+
+            p.ex1 {
+              outline-width: thin;
+            }
+
+            p.ex2 {
+              outline-width: medium;
+            }
+
+            p.ex3 {
+              outline-width: thick;
+            }
+
+            p.ex4 {
+              outline-width: 8px;
+            } */
+      /* p {
+              border: 4px solid black;
+              padding: 5px;
+            }
+
+            p.ex1 {
+              outline-style: solid;
+              outline-color: red;
+            }
+
+            p.ex2 {
+              outline-style: dotted;
+              outline-color: blue;
+            }
+
+            p.ex3 {
+              outline-style: outset;
+              outline-color: green;
+            }
+
+            p.ex4 {
+              outline-style: solid;
+              outline-color: invert;
+            } */
+
+      /* p {
+              border: 1px solid black;
+              padding: 5px;
+            }
+
+            p.ex1 {
+              outline: dashed;
+              border-radius: 8px;
+            }
+
+            p.ex2 {
+              outline: dotted red;
+              border-radius: 5px;
+            }
+
+            p.ex3 {
+              outline: 7px solid yellow;
+              border-radius: 5px;
+            }
+
+            p.ex4 {
+              outline: thick ridge pink;
+              border-radius: 8px;
+            }
+
+            p.ex5 {
+              outline: thick solid green;
+              border-radius: 10px;
+            } */
+
+      /* p {
+              margin: 30px;
+              padding: 15px;
+              background: yellow;
+              border: 1px solid black;
+              outline: 3px solid red;
+              outline-offset: 15px;
+            } */
+      /* text formating  */
+
+      /* div {
+              border: 1px solid gray;
+              padding: 8px;
+            }
+
+            h1 {
+              text-align: center;
+              text-transform: uppercase;
+              color: #4caf50;
+            }
+
+            p {
+              text-indent: 50px;
+              text-align: justify;
+              letter-spacing: 3px;
+            }
+
+            a {
+              text-decoration: none;
+              color: #008cba;
+            } */
+
+      /* h1 {
+              text-align: center;
+            }
+            h2 {
+              text-align: right;
+            }
+            h3 {
+              text-align: left;
+            } */
+      /* div {
+              text-align: justify;
+              border: 1px solid red;
+              padding: 10px;
+              width: 400px;
+              height: 200px;
+            } */
+
+      /* p.a {
+              text-align-last: right;
+            }
+
+            p.b {
+              text-align-last: center;
+            }
+
+            p.c {
+              text-align-last: justify;
+            } */
+
+      /* img.b {
+        vertical-align: text-top;
+      }
+
+      img.c {
+        vertical-align: text-bottom;
+      }
+
+      img.d {
+        vertical-align: sub;
+      }
+
+      img.e {
+        vertical-align: super;
+      } */
+
+      /* p {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+      } */
+
+      /* Text Decoration */
+
+      /* h1 {
+        text-decoration: overline;
+      }
+
+      h2 {
+        text-decoration: line-through;
+      }
+
+      h3 {
+        text-decoration: underline;
+      }
+
+      p.ex {
+        text-decoration: overline underline line-through;
+      } */
+
+      /* h1 {
+        text-decoration-line: overline;
+        text-decoration-color: red;
+      }
+
+      h2 {
+        text-decoration-line: line-through;
+        text-decoration-color: blue;
+      }
+
+      h3 {
+        text-decoration-line: underline;
+        text-decoration-color: green;
+      }
+
+      p {
+        text-decoration-line: overline underline;
+        text-decoration-color: purple;
+      } */
+
+      /* h1 {
+        text-decoration: underline;
+      }
+
+      h2 {
+        text-decoration: underline red;
+      }
+
+      h3 {
+        text-decoration: underline red double;
+      }
+
+      p {
+        text-decoration: underline red double 5px;
+      } */
+
+      /* p.uppercase {
+        text-transform: uppercase;
+      }
+
+      p.lowercase {
+        text-transform: lowercase;
+      }
+
+      p.capitalize {
+        text-transform: capitalize;
+      } */
+
+      /* p {
+        text-indent: 50px;
+      } */
+      /* p {
+        letter-spacing: 5px;
+      } */
+      /* p {
+        letter-spacing: -2px;
+      } */
+
+      /* .one {
+        line-height: 1;
+      }
+
+      .two {
+        line-height: 2.8;
+      } */
+
+      /* .one {
+        word-spacing: 10px;
+      }
+      .two {
+        word-spacing: -2px;
+      } */
+
+      /* .one {
+        white-space: pre-warp;
+      } */
+
+      /* p {
+        text-shadow: 1px 1px 6px rgb(6, 168, 197);
+      } */
+
+      /* p {
+        color: rgb(241, 191, 26);
+        text-shadow: 2px 2px 4px #272708;
+      } */
+
+      /* p {
+        text-shadow: 0px 0px 3px #ff0000;
+      } */
+
+      p {
+        text-shadow:
+          0px 0px 3px #ff0000,
+          0px 0px 5px #0000ff,
+          0px 0px 2px #00ff00;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Height And Width -->
+    <!-- <div class="div1">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis,
+      repellat. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      Perferendis, repellat. Lorem ipsum dolor sit amet consectetur adipisicing
+      elit. Perferendis, repellat.
+    </div>
+    <div class="div2">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis,
+      repellat. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      Perferendis, repellat. Lorem ipsum dolor sit amet consectetur adipisicing
+      elit. Perferendis, repellat.
+    </div> -->
+
+    <!-- Box Model -->
+    <!-- 320px = content area
+          20px = padding right and lift
+          10px = border right and left
+          total width = 350px
+          
+          100px height of the content 
+          20px = padding top and bottom
+          10px = border top and bottom
+          tota; = 130px
+     -->
+
+    <!-- Outline -->
+    <!-- <div>
+      This text is the content of the box. We have added a 50px padding, 20px
+      margin and a 15px green border. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+      aute irure
+    </div> -->
+
+    <!-- <div>
+      <p class="dotted">A dotted outline</p>
+      <p class="dashed">A dashed outline</p>
+      <p class="solid">A solid outline</p>
+      <p class="double">A double outline</p>
+      <p class="groove">
+        A groove outline. The effect depends on the outline-color value.
+      </p>
+      <p class="ridge">
+        A ridge outline. The effect depends on the outline-color value.
+      </p>
+      <p class="inset">
+        An inset outline. The effect depends on the outline-color value.
+      </p>
+      <p class="outset">
+        An outset outline. The effect depends on the outline-color value.
+      </p>
+    </div> -->
+
+    <!-- <div>
+      <p class="ex1">A thin outline.</p>
+      <p class="ex2">A medium outline.</p>
+      <p class="ex3">A thick outline.</p>
+      <p class="ex4">A 8px thick outline.</p>
+    </div> -->
+
+    <!-- <div>
+      <p class="ex1">A solid red outline.</p>
+      <p class="ex2">A dotted blue outline.</p>
+      <p class="ex3">An outset green outline.</p>
+      <p class="ex4">A solid invert outline.</p>
+    </div> -->
+
+    <!-- <div>
+      <p class="ex1">A dashed outline.</p>
+      <p class="ex2">A dotted red outline.</p>
+      <p class="ex3">A 7px solid yellow outline.</p>
+      <p class="ex4">A thick ridge pink outline.</p>
+      <p class="ex5">A thick solid green outline.</p>
+    </div> -->
+
+    <!-- <p>
+      This paragraph has a black border and a red outline 15px outside the
+      border edge.
+    </p> -->
+
+    <!-- text formating -->
+    <!-- <div>
+      <h1>text formatting</h1>
+      <p>
+        This text is styled with some of the text formatting properties. The
+        heading uses the text-align, text-transform, and color properties. The
+        paragraph is indented, aligned, and the space between characters is
+        specified. The underline is removed from this colored
+        <a target="_blank" href="tryit.asp?filename=trycss_text"
+          >"Try it Yourself"</a
+        >
+        link.
+      </p>
+    </div> -->
+
+    <!-- <h1>heading 1</h1>
+    <h2>heading 2</h2>
+    <h3>heading 3</h3>
+    <div>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
+      error!
+    </div> -->
+
+    <!-- <h2>text-align-last: right:</h2>
+    <p class="a">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam
+      at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus
+      diam, consequat gravida libero rhoncus ut.
+    </p>
+
+    <h2>text-align-last: center:</h2>
+    <p class="b">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam
+      at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus
+      diam, consequat gravida libero rhoncus ut.
+    </p>
+
+    <h2>text-align-last: justify:</h2>
+    <p class="c">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam
+      at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus
+      diam, consequat gravida libero rhoncus ut.
+    </p> -->
+
+    <!-- <h2>vertical-align: baseline (default):</h2>
+    <p>
+      Align the orange square to baseline:
+      <img
+        class="a"
+        src="./android-brands-solid-full.svg"
+        width="9"
+        height="9"
+      />
+    </p>
+
+    <h2>vertical-align: text-top:</h2>
+    <p>
+      Align the orange square to text-top:
+      <img
+        class="b"
+        src="./android-brands-solid-full.svg"
+        width="9"
+        height="9"
+      />
+    </p>
+
+    <h2>vertical-align: text-bottom:</h2>
+    <p>
+      Align the orange square to text-bottom:
+      <img
+        class="c"
+        src="./android-brands-solid-full.svg"
+        width="9"
+        height="9"
+      />
+    </p>
+
+    <h2>vertical-align: sub:</h2>
+    <p>
+      Align the orange square to sub:
+      <img
+        class="d"
+        src="./android-brands-solid-full.svg"
+        width="9"
+        height="9"
+      />
+    </p>
+
+    <h2>vertical-align: sup:</h2>
+    <p>
+      Align the orange square to super:
+      <img
+        class="e"
+        src="./android-brands-solid-full.svg"
+        width="9"
+        height="9"
+      />
+    </p> -->
+
+    <!-- <p>i am p tag</p> -->
+
+    <!-- Text Decoration -->
+
+    <!-- <h1>Overline text decoration</h1>
+    <h2>Line-through text decoration</h2>
+    <h3>Underline text decoration</h3>
+    <p class="ex">Overline and underline text decoration.</p>
+
+    <p>
+      <strong>Note:</strong> It is not recommended to underline text that is not
+      a link, as this often confuses the reader.
+    </p> -->
+
+    <!-- <h1>Overline text decoration</h1>
+    <h2>Line-through text decoration</h2>
+    <h3>Underline text decoration</h3>
+    <p>Overline and underline text decoration.</p> -->
+
+    <!-- <h1>Heading 1</h1>
+    <h2>Heading 2</h2>
+    <h3>Heading 3</h3>
+    <p>A paragraph.</p> -->
+
+    <!-- <p class="uppercase">This text is transformed to uppercase.</p>
+    <p class="lowercase">This text is transformed to lowercase.</p>
+    <p class="capitalize">This text is capitalized.</p> -->
+
+    <!-- <p class="one">
+      In my younger and more vulnerable years my father gave me some advice that
+      I've been turning over in my mind ever since. 'Whenever you
+    </p>
+    <p class="two">
+      feel like criticizing anyone,' he told me, 'just remember that all the
+      people in this world haven't had the advantages that you've had.'
+    </p> -->
+
+    <p>i am heading 3</p>
+  </body>
+</html>

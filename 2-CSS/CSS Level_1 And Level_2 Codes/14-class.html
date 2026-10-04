@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 14</title>
+    <style>
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: translate(50px, 100px);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+      } */
+
+      /* .myh1 {
+        transform: rotate(45deg);
+      } */
+      /* .myh1 {
+        transform: rotate(-45deg);
+      } */
+
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: scale(0.5, 0.5);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: scaleX(5);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: scaleY(5);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: skewX(20deg);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: skewY(20deg);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: skew(20deg, 10deg);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: skew(20deg);
+      } */
+
+      /* matrix
+      scaleX, scaleY ,skewX, skewY, tranlsateX , translateY
+      
+      */
+
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: matrix(1, 0, 0.5, 1, 150, 0);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: translate(50px) rotate(45deg) scale(1.2);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: translateY(-10px) rotate(5deg) scale(1.05);
+        box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: rotate(45deg) translate(50px);
+        box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+      } */
+      /* .myh1 {
+        width: 150px;
+        height: 150px;
+        background-color: yellow;
+        border: 1px solid black;
+        transform: rotate(45deg);
+        transform-origin: 20% 40%;
+        box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+      } */
+
+      /* #div1 {
+        position: relative;
+        height: 200px;
+        width: 200px;
+        margin: 100px;
+        padding: 10px;
+        border: 1px solid black;
+      }
+
+      #div2 {
+        padding: 50px;
+        position: absolute;
+        border: 1px solid black;
+        background-color: red;
+        transform: rotateY(60deg);
+        transform-style: preserve-3d;
+      }
+
+      #div3 {
+        padding: 40px;
+        position: absolute;
+        border: 1px solid black;
+        background-color: yellow;
+        transform: rotateY(-90deg);
+      } */
+
+      /* #div1 {
+        position: relative;
+        height: 150px;
+        width: 150px;
+        margin-left: 60px;
+        border: 1px solid blue;
+        perspective: 100px;
+      }
+
+      #div2,
+      #div4 {
+        padding: 50px;
+        position: absolute;
+        border: 1px solid black;
+        background: rgba(100, 100, 100, 0.5);
+        transform-style: preserve-3d;
+        transform: rotateX(45deg);
+      }
+
+      #div3 {
+        position: relative;
+        height: 150px;
+        width: 150px;
+        margin-left: 60px;
+        border: 1px solid blue;
+        perspective: 75px;
+      } */
+
+      /* .ex1 {
+        perspective: 800px;
+      }
+
+      .ex2 {
+        perspective: 150px;
+      }
+
+      .cube {
+        font-size: 4em;
+        width: 2em;
+        margin: 1.5em auto;
+        transform-style: preserve-3d;
+        transform: rotateX(-45deg) rotateY(30deg);
+      }
+
+      .side {
+        position: absolute;
+        width: 2em;
+        height: 2em;
+        background: rgba(100, 100, 100, 0.5);
+        border: 1px solid red;
+        text-align: center;
+        line-height: 2em;
+      }
+
+      .front {
+        transform: translateZ(1em);
+      }
+      .top {
+        transform: rotateX(90deg) translateZ(1em);
+      }
+      .right {
+        transform: rotateY(90deg) translateZ(1em);
+      }
+      .left {
+        transform: rotateY(-90deg) translateZ(1em);
+      }
+      .bottom {
+        transform: rotateX(-90deg) translateZ(1em);
+      }
+      .back {
+        transform: rotateY(-180deg) translateZ(1em);
+      } */
+
+      /* .flip-container {
+        perspective: 1000px;
+        width: 300px;
+        height: 200px;
+      }
+
+      .flip-card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s;
+      }
+
+      .flip-card:hover {
+        transform: rotateY(180deg);
+      }
+
+      .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        border-radius: 10px;
+      }
+
+      .front {
+        background: #3498db;
+      }
+
+      .back {
+        background: #e74c3c;
+        transform: rotateY(180deg);
+      } */
+
+      /* .mydiv {
+        width: 100px;
+        height: 100px;
+        margin-left: 200px;
+        background-color: red;
+        transition:
+          width 2s,
+          height 4s;
+      }
+
+      .mydiv:hover {
+        width: 100px;
+        height: 300px;
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        transition:
+          width 2s,
+          height 4s,
+          background-color 3s;
+      }
+
+      div:hover {
+        width: 300px;
+        height: 300px;
+        background-color: orange;
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        transition-property: width, height;
+        transition-duration: 1s;
+        transition-delay: 0s;
+      }
+
+      div:hover {
+        width: 200px;
+        height: 200px;
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background: red;
+        transition: width 2s;
+      }
+
+      #div1 {
+        transition-timing-function: linear;
+      }
+      #div2 {
+        transition-timing-function: ease;
+      }
+      #div3 {
+        transition-timing-function: ease-in;
+      }
+      #div4 {
+        transition-timing-function: ease-out;
+      }
+      #div5 {
+        transition-timing-function: ease-in-out;
+      }
+
+      div:hover {
+        width: 300px;
+      } */
+
+      /* div {
+        width: 100px;
+        height: 50px;
+        background: red;
+        color: white;
+        font-weight: bold;
+        transition: width 2s;
+        transition: all 0.4s ease-in-out 0.1s;
+      }
+
+      #div1 {
+        transition-timing-function: cubic-bezier(0.94, 0.46, 0.1, 0.03);
+      }
+      #div2 {
+        transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+      #div3 {
+        transition-timing-function: cubic-bezier(0.42, 0, 1, 1);
+      }
+      #div4 {
+        transition-timing-function: cubic-bezier(0, 0, 0.58, 1);
+      }
+      #div5 {
+        transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+      }
+
+      div:hover {
+        width: 300px;
+      } */
+
+      /* body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f4f4f4;
+        gap: 40px;
+      }
+
+      .box {
+        width: 120px;
+        height: 120px;
+        background: #2196f3;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .bounce {
+        transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+
+      .bounce:hover {
+        transform: scale(0.5) rotate(360deg);
+      }
+
+      .elastic {
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .elastic:hover {
+        transform: scale(1.3) rotate(-75deg);
+      } */
+
+      /* .button {
+        color: black;
+        font-size: 30px;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      } */
+
+      /* div {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        transition:
+          width 2s,
+          height 2s,
+          background-color 2s,
+          transform 2s;
+      }
+
+      div:hover {
+        width: 300px;
+        height: 300px;
+        background-color: orange;
+        transform: rotate(360deg);
+      } */
+
+      /* button {
+        background-color: lightgray;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition:
+          background-color 1s ease-out,
+          transform 1s ease-out;
+      }
+
+      button:hover {
+        background-color: lightgreen;
+        transform: scale(1.2) rotate(90deg);
+      } */
+
+      /* .transition-demo {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #fa709a, #fee140);
+        margin: 20px auto;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .transition-demo:hover {
+        transform: scale(1.3) rotate(55deg);
+        background: linear-gradient(135deg, #30cfd0, #330867);
+        border-radius: 50%;
+      } */
+
+      body {
+        margin: 0;
+        padding: 40px;
+        background: #f4f4f4;
+        font-family: Arial, sans-serif;
+      }
+
+      /* Gallery Container */
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        perspective: 1000px;
+      }
+
+      /* Gallery Item */
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        transition:
+          transform 0.5s ease,
+          box-shadow 0.3s ease;
+        background: white;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .gallery-item:hover {
+        transform: rotateY(20deg) rotateX(-20deg) scale(1.05);
+        box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Optional overlay */
+      .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body style="zoom: 150%">
+    <!-- <h1 class="myh1">class 14</h1>
+    <div id="div1">
+      <div id="div2">
+        HELLO
+        <div id="div3">YELLOW</div>
+      </div>
+    </div> -->
+
+    <!-- <h2>perspective: 100px:</h2>
+    <div id="div1">
+      DIV1
+      <div id="div2">DIV2</div>
+    </div>
+
+    <h2>perspective: none:</h2>
+    <div id="div3">
+      DIV3
+      <div id="div4">DIV4</div>
+    </div> -->
+
+    <!-- <h1>The perspective Property</h1>
+
+    <h2>perspective: 800px:</h2>
+    <div class="ex1">
+      <div class="cube">
+        <div class="side front">1</div>
+        <div class="side back">6</div>
+        <div class="side right">4</div>
+        <div class="side left">3</div>
+        <div class="side top">5</div>
+        <div class="side bottom">2</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 300px">perspective: 150px:</h2>
+    <div class="ex2">
+      <div class="cube">
+        <div class="side front">1</div>
+        <div class="side back">6</div>
+        <div class="side right">4</div>
+        <div class="side left">3</div>
+        <div class="side top">5</div>
+        <div class="side bottom">2</div>
+      </div>
+    </div> -->
+
+    <!-- <div class="flip-container">
+      <div class="flip-card">
+        <div class="card-face front">Front Side</div>
+        <div class="card-face back">Back Side</div>
+      </div>
+    </div> -->
+
+    <!-- <div class="mydiv"></div> -->
+    <!-- <div></div> -->
+    <!-- <div></div> -->
+    <!-- <div id="div1">linear</div>
+    <br />
+    <div id="div2">ease</div>
+    <br />
+    <div id="div3">ease-in</div>
+    <br />
+    <div id="div4">ease-out</div>
+    <br />
+    <div id="div5">ease-in-out</div>
+    <br /> -->
+
+    <!-- <div id="div1">cubic-bezier(0,0,1,1)</div>
+    <br />
+    <div id="div2">cubic-bezier(0.25,0.1,0.25,1)</div>
+    <br />
+    <div id="div3">cubic-bezier(0.42,0,1,1)</div>
+    <br />
+    <div id="div4">cubic-bezier(0,0,0.58,1);</div>
+    <br />
+    <div id="div5">cubic-bezier(0.42,0,0.58,1)</div> -->
+    <!-- 
+    <div class="box bounce">Bounce</div>
+    <div class="box elastic">Elastic</div> -->
+
+    <!-- <a class="button" href="">Button</a> -->
+    <!-- <div style="text-align: center">div</div> -->
+    <!-- <button>click Me</button> -->
+    <!-- <div class="transition-demo"></div> -->
+
+    <h2>3D Hover Image Gallery</h2>
+
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="https://picsum.photos/400/300?random=1" alt="Image 1" />
+        <div class="overlay">Image One</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://picsum.photos/400/300?random=2" alt="Image 2" />
+        <div class="overlay">Image Two</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://picsum.photos/400/300?random=3" alt="Image 3" />
+        <div class="overlay">Image Three</div>
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://picsum.photos/400/300?random=4" alt="Image 4" />
+        <div class="overlay">Image Four</div>
+      </div>
+    </div>
+  </body>
+</html>

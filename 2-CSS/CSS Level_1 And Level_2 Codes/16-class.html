@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class 16</title>
+    <style>
+      /* img {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 1px solid rgb(0, 0, 0);
+        padding: 5px;
+      } */
+
+      /* body {
+        margin: 25px;
+      }
+
+      div.polaroid {
+        width: 80%;
+        background-color: white;
+        box-shadow:
+          0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        margin-bottom: 25px;
+      }
+
+      div.container {
+        text-align: center;
+        padding: 10px 20px;
+      } */
+
+      /* .container {
+        position: relative;
+        width: 50%;
+      }
+
+      .image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        transition: 0.5s ease;
+        background-color: #008cba;
+      }
+
+      .container:hover .overlay {
+        width: 100%;
+        height: 100%;
+      }
+
+      .text {
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+      } */
+
+      /* img {
+        filter: blur(2px);
+      } */
+      /* img {
+        filter: brightness(100%);
+      } */
+      /* img {
+        filter: contrast(90%);
+      } */
+      /* img {
+        filter: drop-shadow(8px 8px 10px gray);
+      } */
+      /* img {
+        filter: grayscale(70%);
+      } */
+      /* img {
+        filter: hue-rotate(-90deg);
+      } */
+      /* img {
+        filter: invert(70%);
+      } */
+      /* img {
+        filter: opacity(50%);
+      } */
+      /* img {
+        filter: saturate(20%);
+      } */
+      /* img {
+        filter: sepia(60%);
+      } */
+      /* img {
+        filter: sepia(60%);
+      } */
+
+      /* img {
+        clip-path: circle(50% at right);
+      } */
+      /* img {
+        clip-path: circle(50% at right);
+      } */
+
+      /* img {
+        float: right;
+        clip-path: circle(40%);
+        shape-outside: circle(45%);
+      } */
+
+      /* div {
+        border: 1px solid green;
+        padding: 10px;
+      } */
+
+      /* img {
+        clip-path: ellipse(50% 35%);
+      } */
+      /* img {
+        clip-path: ellipse(50% 35% at right);
+      } */
+      /* img {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      } */
+      /* img {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      } */
+      /* .mask1 {
+        -webkit-mask-image: url("./w3logo.png");
+        mask-repeat: no-repeat;
+        mask-image: url("./w3logo.png");
+        mask-position: bottom;
+      } */
+      /* .mask1 {
+            mask-image: linear-gradient(black, transparent);
+       } */
+
+      /* p {
+        font-size: 20px;
+        padding: 20px;
+        color: white;
+      }
+      .mask1 {
+        max-width: 600px;
+        height: 400px;
+        background: url("https://www.w3schools.com/css/img_5terre.jpg")
+          no-repeat;
+        -webkit-mask-image: linear-gradient(black, transparent);
+        mask-image: linear-gradient (black, transparent);
+      } */
+
+      /* .new {
+        column-count: 3;
+        column-gap: 20px;
+        column-rule-style: solid;
+        column-rule-width: 2px;
+        column-rule-color: rgb(6, 192, 238);
+      } */
+      /* .new {
+        column-count: 3;
+        column-gap: 20px;
+        column-rule: 1px solid red;
+      }
+      h2 {
+        column-span: all;
+        text-align: center;
+      } */
+      /* h2 {
+        column-span: all;
+        text-align: center;
+        } */
+      /* .new {
+        column-width: 200px;
+      } */
+      /* resize | outline-offset */
+      /* .new {
+        border: 1px solid red;
+        resize: horizontal;
+        overflow: auto;
+      } */
+      /* .new {
+        border: 1px solid red;
+        resize: vertical;
+        overflow: auto;
+      } */
+      /* .new {
+        border: 1px solid red;
+        resize: both;
+        overflow: auto;
+      } */
+      /* .new {
+        border: 1px solid red;
+        resize: none;
+        overflow: auto;
+      }
+      textarea {
+        resize: none;
+      } */
+
+      /* div.ex1 {
+        margin: 20px;
+        border: 2px solid black;
+        outline: 4px solid red;
+        outline-offset: 15px;
+      } */
+
+      /* Css var(--name, value) */
+
+      /* :root {
+        --primary-bg-color: #1e90ff;
+        --primary-color: #ffffff;
+      } */
+      /* :root {
+        --primary-bg-color: #8fbc8f;
+        --primary-color: #fffaf0;
+      }
+
+      body {
+        background-color: var(--primary-bg-color);
+      }
+      .container {
+        color: var(--primary-bg-color);
+        background-color: var(--primary-color);
+        padding: 15px;
+      }
+
+      .container h2 {
+        border-bottom: 2px solid var(--primary-bg-color);
+      }
+      .container .note {
+        --primary-bg-color: red;
+        border: 1px solid var(--primary-bg-color);
+        padding: 10px;
+        color: var(--primary-bg-color);
+      } */
+      /* :root {
+        --primary-bg-color: #8fbc8f;
+        --primary-color: #fffaf0;
+      }
+
+      body {
+        background-color: var(--primary-bg-color);
+      }
+      .container {
+        color: var(--primary-bg-color);
+        background-color: var(--primary-color);
+        padding: 15px;
+      }
+
+      .container h2 {
+        border-bottom: 2px solid var(--primary-bg-color);
+      }
+      .container .note {
+        --note-border-color: red;
+        border: 1px solid var(--note-border-color);
+        padding: 10px;
+        color: var(--primary-bg-color);
+      } */
+
+      :root {
+        --primary-bg-color: #1e90ff;
+        --primary-color: #ffffff;
+      }
+
+      body {
+        background-color: var(--primary-bg-color);
+      }
+
+      .container {
+        --fontsize: 20px;
+        color: var(--primary-bg-color);
+        background-color: var(--primary-color);
+        padding: 15px;
+        font-size: var(--fontsize);
+      }
+
+      .container h2 {
+        border-bottom: 2px solid var(--primary-bg-color);
+      }
+
+      @media screen and (min-width: 450px) {
+        .container {
+          --fontsize: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body style="zoom: 150%">
+    <!-- <h1>class 16</h1>
+    <img src="https://www.w3schools.com/css/paris.jpg" alt="" /> -->
+    <!-- <div class="polaroid">
+      <img
+        src="https://www.w3schools.com/css/img_5terre.jpg"
+        alt="5 Terre"
+        style="width: 100%"
+      />
+      <div class="container">
+        <p>Cinque Terre</p>
+      </div>
+    </div>
+
+    <div class="polaroid">
+      <img
+        src="https://www.w3schools.com/css/lights600x400.jpg"
+        alt="Norther Lights"
+        style="width: 100%"
+      />
+      <div class="container">
+        <p>Northern Lights</p>
+      </div>
+    </div> -->
+    <!-- <div class="container">
+      <img
+        src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
+        alt="Avatar"
+        class="image"
+      />
+      <div class="overlay">
+        <div class="text">Hello World</div>
+      </div>
+    </div> -->
+
+    <!-- <img
+      src="https://www.w3schools.com/css/pineapple.jpg"
+      alt=""
+      width="300px"
+      height="300px"
+    /> -->
+
+    <!-- <div>
+      <img
+        src="https://www.w3schools.com/css/pineapple.jpg"
+        alt="Pineapple"
+        width="300"
+        height="300"
+      />
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ac
+        laoreet quam, id aliquet nisl. Etiam id eros ligula. Aenean euismod,
+        enim sed mollis feugiat, magna massa cursus leo, ut maximus metus eros
+        non ante. Praesent eget tincidunt mauris, ut euismod ipsum. In hac
+        habitasse platea dictumst. In dapibus tortor magna, elementum elementum
+        neque sagittis id. Integer vestibulum semper dui, quis finibus libero
+        elementum nec. Fusce ultricies lectus a eros interdum, efficitur iaculis
+        nibh varius. Praesent sed ex bibendum, fermentum tortor nec, tincidunt
+        augue. Maecenas in lobortis ligula, at viverra velit. Donec facilisis
+        blandit purus sed efficitur. Duis est augue, bibendum quis bibendum sed,
+        feugiat vel eros. Quisque ut nisi sed erat malesuada euismod. Aliquam
+        feugiat erat eget sodales imperdiet. Ut vel tortor auctor, rutrum lectus
+        a, tempor nunc. Vivamus nec elit ornare, dictum urna sollicitudin,
+        ornare diam. Nullam dictum arcu vitae odio ultrices iaculis.
+      </p>
+    </div> -->
+
+    <!-- <p>Original image:</p>
+    <img
+      class="mask1"
+      src="https://thumbs.dreamstime.com/b/enchanted-forest-path-serene-green-nature-background-relaxation-eco-projects-vibrant-hues-soft-light-ideal-related-377056802.jpg"
+      alt="Cinque Terre"
+      width="600"
+      height="400"
+    /> -->
+    <!-- 
+    <div class="mask1">
+      <p>
+        Cinque Terre is a coastal area within Liguria, in the northwest of
+        Italy. It lies in the west of La Spezia Province, and comprises five
+        villages: Monterosso al Mare, Vernazza, Corniglia, Manarola, and
+        Riomaggiore.
+      </p>
+      <p>
+        Cinque Terre is a coastal area within Liguria, in the northwest of
+        Italy. It lies in the west of La Spezia Province, and comprises five
+        villages: Monterosso al Mare, Vernazza, Corniglia, Manarola, and
+        Riomaggiore.
+      </p>
+    </div> -->
+
+    <!-- <div class="new">
+      <h2>i am heading two</h2>
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis dolorem
+      quod velit facere? Voluptas incidunt nobis vero maxime nam eius
+      repellendus ullam minus magni, exercitationem, atque cupiditate eum
+      inventore odit. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+      Quis dolorem quod velit facere? Voluptas incidunt nobis vero maxime nam
+      eius repellendus ullam minus magni, exercitationem, atque cupiditate eum
+      inventore odit.
+    </div>
+
+    <textarea name="" id="">asasasasas</textarea> -->
+    <!-- <div class="ex1">
+      This div has a 4 pixels solid red outline 15 pixels outside the border
+      edge.
+    </div> -->
+
+    <div class="container">
+      <h2>Lorem Ipsum</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper
+        diam at erat pulvinar, at pulvinar felis blandit.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper
+        diam at erat pulvinar, at pulvinar felis blandit.
+      </p>
+      <p class="note">This is a note!</p>
+    </div>
+  </body>
+</html>
