@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rest Parameters & Spread Syntax - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .rest-spread {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 5px;
+      }
+
+      .tag-rest {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .tag-spread {
+        background-color: #e6f4ea;
+        color: #34a853;
+      }
+
+      .tag-old {
+        background-color: #fce4ec;
+        color: #e53935;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .dots-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: #1a73e8;
+        margin: 20px 0;
+        letter-spacing: 10px;
+        font-weight: bold;
+      }
+
+      .direction-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #5f6368;
+        margin: 10px 0;
+      }
+
+      .error-box {
+        background-color: #fce4ec;
+        border-left: 4px solid #e53935;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+        color: #c62828;
+      }
+
+      .success-box {
+        background-color: #e6f4ea;
+        border-left: 4px solid #34a853;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+        color: #1b5e20;
+      }
+
+      .pros-cons {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .pros-card,
+      .cons-card {
+        flex: 1;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .pros-card {
+        background-color: #e6f4ea;
+        border: 1px solid #34a853;
+      }
+
+      .cons-card {
+        background-color: #fce4ec;
+        border: 1px solid #e53935;
+      }
+
+      .pros-card h4 {
+        color: #34a853;
+        margin-bottom: 10px;
+      }
+      .cons-card h4 {
+        color: #e53935;
+        margin-bottom: 10px;
+      }
+      .pros-card li,
+      .cons-card li {
+        margin-bottom: 8px;
+        font-size: 1rem;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .pros-cons {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+        .dots-visual {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title Slide -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Rest Parameters & Spread Syntax</div>
+            <div class="hero-subtitle">
+              Master the three dots (...) in JavaScript — from gathering
+              arguments to expanding arrays.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                <strong>Rest (...):</strong> Like a restaurant waiter writing
+                down "Coke, Water, <em>and everything else</em>" into one big
+                note. It <strong>gathers</strong> items into a list.<br /><strong
+                  >Spread (...):</strong
+                >
+                Like dumping out a bag of groceries onto the counter — the
+                single bag <strong>expands</strong> into individual items.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-compress-arrows-alt"></i> Rest
+                Parameters</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-expand-arrows-alt"></i> Spread Syntax</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-copy"></i> Copying Data</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop"
+                alt="JavaScript Code"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 8</span>
+      </div>
+
+      <!-- SLIDE 2: The Problem -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Problem: Arbitrary Arguments</div>
+          <div class="slide-subtitle">
+            JavaScript functions can accept any number of arguments — but how do
+            we catch them all?
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-exclamation-circle"
+                style="margin-right: 8px; color: #e53935"
+              ></i
+              >The Issue
+            </h3>
+            <p>
+              Many built-in JS functions accept any number of arguments:
+              <code
+                style="
+                  background: #e8f0fe;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >Math.max(arg1, arg2, ..., argN)</code
+              >. But a regular function only uses what's defined:
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="color: #e53935; margin-right: 5px"
+                  ></i
+                  >Extra Arguments Are Lost
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sum</span>(a, b) {<br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> a + b;<br />
+                  }<br /><br />
+                  <span class="function-name">sum</span>(<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>,
+                  <span class="number">3</span>, <span class="number">4</span>,
+                  <span class="number">5</span>);<br />
+                  <span class="comment">// Only 1 + 2 = 3 ❌</span><br />
+                  <span class="comment">// 3, 4, 5 are ignored!</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="color: #34a853; margin-right: 5px"
+                  ></i
+                  >Solution: Rest Parameters
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sumAll</span>(<span
+                    class="rest-spread"
+                    >...args</span
+                  >) {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> sum =
+                  <span class="number">0</span>;<br />
+                  &nbsp;&nbsp;<span class="keyword">for</span> (<span
+                    class="keyword"
+                    >let</span
+                  >
+                  arg <span class="keyword">of</span> args) sum += arg;<br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> sum;<br />
+                  }<br /><br />
+                  <span class="function-name">sumAll</span>(<span class="number"
+                    >1</span
+                  >); <span class="comment">// 1</span><br />
+                  <span class="function-name">sumAll</span>(<span class="number"
+                    >1</span
+                  >,<span class="number">2</span>,<span class="number">3</span
+                  >); <span class="comment">// 6 ✅</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong
+              >The <code>...</code> (three dots) gather the remaining parameters
+              into a real Array.</strong
+            >
+            You can loop over it, use <code>.map()</code>,
+            <code>.reduce()</code>, and all other array methods.
+          </div>
+        </div>
+        <span class="slide-number">2 / 8</span>
+      </div>
+
+      <!-- SLIDE 3: Rest Parameters Deep Dive -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Rest Parameters Deep Dive</div>
+          <div class="slide-subtitle">
+            Gathering specific variables first, then the rest
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-compress-arrows-alt"
+                style="margin-right: 8px"
+              ></i
+              >Partial Gathering
+            </h3>
+            <p>
+              You don't have to gather <em>everything</em>. You can define the
+              first few parameters as normal variables, and gather only the
+              remaining ones:
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">showName</span>(firstName, lastName,
+            <span class="rest-spread">...titles</span>) {<br />
+            &nbsp;&nbsp;console.<span class="function-name">log</span>(firstName
+            + <span class="string">' '</span> + lastName);<br />
+            &nbsp;&nbsp;<span class="comment"
+              >// titles = ["Consul", "Imperator"]</span
+            ><br />
+            &nbsp;&nbsp;console.<span class="function-name">log</span
+            >(titles[<span class="number">0</span>]);
+            <span class="comment">// Consul</span><br />
+            &nbsp;&nbsp;console.<span class="function-name">log</span
+            >(titles.<span class="keyword">length</span>);
+            <span class="comment">// 2</span><br />
+            }<br /><br />
+            <span class="function-name">showName</span>(<span class="string"
+              >"Julius"</span
+            >, <span class="string">"Caesar"</span>,
+            <span class="string">"Consul"</span>,
+            <span class="string">"Imperator"</span>);
+          </div>
+
+          <div class="error-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i
+              >Important Rule:</strong
+            >
+            Rest parameters must be at the <strong>very end</strong>. The
+            following causes an error:
+            <div class="code-block" style="margin-top: 10px; margin-bottom: 0">
+              <span class="keyword">function</span>
+              <span class="function-name">f</span>(arg1,
+              <span class="rest-spread">...rest</span>, arg2) {
+              <span class="comment">// ❌ Error!</span><br />
+              &nbsp;&nbsp;<span class="comment"
+                >// arg2 after ...rest makes no sense</span
+              ><br />
+              &nbsp;&nbsp;<span class="comment"
+                >// ...rest already gathers EVERYTHING remaining</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>At a checkout counter:</strong> "I'll pay for the TV with
+              this gift card (firstName), that item with cash (lastName), and
+              put <em>everything else</em> on my credit card (...titles)." The
+              "rest" must be last because you're grouping all remaining items.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 8</span>
+      </div>
+
+      <!-- SLIDE 4: The "arguments" Variable -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Old Way: "arguments" Variable</div>
+          <div class="slide-subtitle">
+            Before rest parameters existed, this was the only option
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-history"
+                style="margin-right: 8px; color: #5f6368"
+              ></i
+              >What is <code>arguments</code>?
+            </h3>
+            <p>
+              Every regular function has a special
+              <code
+                style="
+                  background: #e8f0fe;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >arguments</code
+              >
+              object that holds all passed arguments. It works, but it has major
+              downsides.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">showName</span>() {<br />
+            &nbsp;&nbsp;console.<span class="function-name">log</span
+            >(arguments.<span class="keyword">length</span>);<br />
+            &nbsp;&nbsp;console.<span class="function-name">log</span
+            >(arguments[<span class="number">0</span>]);<br />
+            &nbsp;&nbsp;console.<span class="function-name">log</span
+            >(arguments[<span class="number">1</span>]);<br />
+            }<br /><br />
+            <span class="function-name">showName</span>(<span class="string"
+              >"Julius"</span
+            >, <span class="string">"Caesar"</span>);<br />
+            <span class="comment">// 2, "Julius", "Caesar"</span>
+          </div>
+
+          <div class="pros-cons">
+            <div class="cons-card">
+              <h4>
+                <i class="fas fa-thumbs-down" style="margin-right: 5px"></i
+                >Problems with <code>arguments</code>
+              </h4>
+              <ul>
+                <li>
+                  <strong>Not a real array</strong> — it's "array-like". No
+                  <code>.map()</code>, <code>.reduce()</code>, etc.
+                </li>
+                <li>
+                  <strong>Captures ALL arguments</strong> — can't partially
+                  capture like rest params.
+                </li>
+                <li>
+                  <strong>Arrow functions don't have it</strong> — accessing
+                  <code>arguments</code> in an arrow function grabs it from the
+                  outer normal function.
+                </li>
+              </ul>
+            </div>
+            <div class="pros-card">
+              <h4>
+                <i class="fas fa-thumbs-up" style="margin-right: 5px"></i>Why
+                Rest is Better
+              </h4>
+              <ul>
+                <li>
+                  <strong>Real Array</strong> — supports all array methods.
+                </li>
+                <li>
+                  <strong>Partial capture</strong> —
+                  <code>(a, b, ...rest)</code> works cleanly.
+                </li>
+                <li>
+                  <strong>Works everywhere</strong> — including arrow functions.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Best Practice:</strong> Use <code>...rest</code> parameters
+            in modern code. Only use <code>arguments</code> when reading old
+            codebases.
+          </div>
+        </div>
+        <span class="slide-number">4 / 8</span>
+      </div>
+
+      <!-- SLIDE 5: Spread Syntax -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Spread Syntax</div>
+          <div class="slide-subtitle">
+            The exact opposite of Rest — expanding an array into individual
+            items
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-expand-arrows-alt" style="margin-right: 8px"></i
+              >The Problem Spread Solves
+            </h3>
+            <p>
+              <code
+                style="
+                  background: #e8f0fe;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >Math.max()</code
+              >
+              expects individual numbers: <code>Math.max(3, 5, 1)</code>.
+              Passing an array directly fails!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="error-box" style="margin-top: 0">
+                <h4>
+                  <i class="fas fa-times-circle" style="margin-right: 5px"></i
+                  >Without Spread
+                </h4>
+                <div
+                  class="code-block"
+                  style="margin-top: 10px; margin-bottom: 0"
+                >
+                  <span class="keyword">let</span> arr = [<span class="number"
+                    >3</span
+                  >, <span class="number">5</span>,
+                  <span class="number">1</span>];<br /><br />
+                  Math.<span class="function-name">max</span>(arr);<br />
+                  <span class="comment">// NaN ❌</span><br />
+                  <span class="comment">// Expects numbers, got an array</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="success-box" style="margin-top: 0">
+                <h4>
+                  <i class="fas fa-check-circle" style="margin-right: 5px"></i
+                  >With Spread
+                </h4>
+                <div
+                  class="code-block"
+                  style="margin-top: 10px; margin-bottom: 0"
+                >
+                  <span class="keyword">let</span> arr = [<span class="number"
+                    >3</span
+                  >, <span class="number">5</span>,
+                  <span class="number">1</span>];<br /><br />
+                  Math.<span class="function-name">max</span>(<span
+                    class="rest-spread"
+                    >...arr</span
+                  >);<br />
+                  <span class="comment">// 5 ✅</span><br />
+                  <span class="comment">// Same as Math.max(3, 5, 1)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-section" style="margin-top: 20px">
+            <h3>
+              <i class="fas fa-magic" style="margin-right: 8px"></i>Spread is
+              Flexible
+            </h3>
+          </div>
+
+          <div class="code-block">
+            <span class="comment">// Multiple arrays</span><br />
+            <span class="keyword">let</span> arr1 = [<span class="number"
+              >1</span
+            >, <span class="number">-2</span>,
+            <span class="number">3</span>];<br />
+            <span class="keyword">let</span> arr2 = [<span class="number"
+              >8</span
+            >, <span class="number">3</span>,
+            <span class="number">-8</span>];<br /><br />
+            Math.<span class="function-name">max</span>(<span
+              class="rest-spread"
+              >...arr1</span
+            >, <span class="rest-spread">...arr2</span>);
+            <span class="comment">// 8</span><br /><br />
+            <span class="comment">// Mix with normal values</span><br />
+            Math.<span class="function-name">max</span>(<span class="number"
+              >1</span
+            >, <span class="rest-spread">...arr1</span>,
+            <span class="number">2</span>,
+            <span class="rest-spread">...arr2</span>,
+            <span class="number">25</span>); <span class="comment">// 25</span>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Opening a bag of candy:</strong> You can't give the whole
+              bag to someone who wants individual pieces.
+              <code>...arr</code> opens the bag and spreads the candies out
+              individually so they can be picked one by one.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 8</span>
+      </div>
+
+      <!-- SLIDE 6: Spread Use Cases -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Spread Use Cases</div>
+          <div class="slide-subtitle">
+            Merging arrays, converting strings, and more
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>
+                  <i class="fas fa-object-group" style="margin-right: 5px"></i
+                  >Merging Arrays
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> arr1 = [<span class="number"
+                    >3</span
+                  >, <span class="number">5</span>,
+                  <span class="number">1</span>];<br />
+                  <span class="keyword">let</span> arr2 = [<span class="number"
+                    >8</span
+                  >, <span class="number">9</span>,
+                  <span class="number">15</span>];<br /><br />
+                  <span class="keyword">let</span> merged = [<span
+                    class="number"
+                    >0</span
+                  >, <span class="rest-spread">...arr1</span>,
+                  <span class="number">2</span>,
+                  <span class="rest-spread">...arr2</span>];<br /><br />
+                  <span class="comment">// [0, 3, 5, 1, 2, 8, 9, 15]</span>
+                </div>
+              </div>
+              <div class="info-card" style="border-top: 4px solid #ff6f00">
+                <h4>
+                  <i class="fas fa-font" style="margin-right: 5px"></i>String to
+                  Array
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> str =
+                  <span class="string">"Hello"</span>;<br /><br />
+                  [...str];<br />
+                  <span class="comment">// ["H", "e", "l", "l", "o"]</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i class="fas fa-exchange-alt" style="margin-right: 5px"></i
+                  >Spread vs Array.from
+                </h4>
+                <p style="margin-bottom: 10px">
+                  Both convert iterables to arrays, but there's a key
+                  difference:
+                </p>
+                <table class="comparison-table" style="margin: 0">
+                  <tr>
+                    <th>Method</th>
+                    <th>Iterables</th>
+                    <th>Array-likes</th>
+                  </tr>
+                  <tr>
+                    <td><code>[...obj]</code></td>
+                    <td style="color: #34a853">✅ Yes</td>
+                    <td style="color: #e53935">❌ No</td>
+                  </tr>
+                  <tr>
+                    <td><code>Array.from()</code></td>
+                    <td style="color: #34a853">✅ Yes</td>
+                    <td style="color: #34a853">✅ Yes</td>
+                  </tr>
+                </table>
+                <div class="code-block" style="margin-top: 15px">
+                  <span class="comment">// Array-like (has .length)</span><br />
+                  <span class="keyword">let</span> arrayLike = {<br />
+                  &nbsp;&nbsp;<span class="number">0</span>:
+                  <span class="string">"a"</span>,
+                  <span class="number">1</span>:
+                  <span class="string">"b"</span>,<br />
+                  &nbsp;&nbsp;length: <span class="number">2</span><br />
+                  };<br /><br />
+                  Array.<span class="function-name">from</span>(arrayLike);
+                  <span class="comment">// ✅</span><br />
+                  [<span class="rest-spread">...arrayLike</span>];
+                  <span class="comment">// ❌ Error</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Rule of thumb:</strong> Use <code>[...obj]</code> when you
+            know it's an iterable (array, string, map, set). Use
+            <code>Array.from()</code> when dealing with array-like objects
+            (e.g., DOM collections).
+          </div>
+        </div>
+        <span class="slide-number">6 / 8</span>
+      </div>
+
+      <!-- SLIDE 7: Copying with Spread -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Copying Arrays & Objects</div>
+          <div class="slide-subtitle">
+            Using spread to create independent copies (shallow clones)
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>
+                  <i class="fas fa-clone" style="margin-right: 5px"></i>Copying
+                  an Array
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> arr = [<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>,
+                  <span class="number">3</span>];<br />
+                  <span class="keyword">let</span> arrCopy = [<span
+                    class="rest-spread"
+                    >...arr</span
+                  >];<br /><br />
+                  <span class="comment">// Same contents?</span><br />
+                  JSON.<span class="function-name">stringify</span>(arr) ===<br />
+                  &nbsp;&nbsp;JSON.<span class="function-name">stringify</span
+                  >(arrCopy); <span class="comment">// true</span><br /><br />
+                  <span class="comment">// Same reference?</span><br />
+                  arr === arrCopy; <span class="comment">// false ✅</span
+                  ><br /><br />
+                  arr.<span class="function-name">push</span>(<span
+                    class="number"
+                    >4</span
+                  >);<br />
+                  <span class="comment">// arr = [1,2,3,4]</span><br />
+                  <span class="comment">// arrCopy = [1,2,3] ← unchanged!</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #ff6f00">
+                <h4>
+                  <i class="fas fa-clone" style="margin-right: 5px"></i>Copying
+                  an Object
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> obj = { a:
+                  <span class="number">1</span>, b:
+                  <span class="number">2</span>, c:
+                  <span class="number">3</span> };<br />
+                  <span class="keyword">let</span> objCopy = {
+                  <span class="rest-spread">...obj</span> };<br /><br />
+                  <span class="comment">// Same contents?</span><br />
+                  JSON.<span class="function-name">stringify</span>(obj) ===<br />
+                  &nbsp;&nbsp;JSON.<span class="function-name">stringify</span
+                  >(objCopy); <span class="comment">// true</span><br /><br />
+                  <span class="comment">// Same reference?</span><br />
+                  obj === objCopy; <span class="comment">// false ✅</span
+                  ><br /><br />
+                  obj.d = <span class="number">4</span>;<br />
+                  <span class="comment">// obj = {a:1,b:2,c:3,d:4}</span><br />
+                  <span class="comment"
+                    >// objCopy = {a:1,b:2,c:3} ← safe!</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Photocopying a document:</strong> You and a friend each
+              have a copy. If your friend scribbles on theirs, your copy stays
+              clean. <code>arr === arrCopy</code> is false because they're two
+              separate pieces of paper, not the same one.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Shorter than <code>Object.assign({}, obj)</code>:</strong>
+            Spread syntax does the same thing with less code. That's why it's
+            the preferred way to create shallow copies of arrays and objects.
+          </div>
+        </div>
+        <span class="slide-number">7 / 8</span>
+      </div>
+
+      <!-- SLIDE 8: Rest vs Spread Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary: Rest vs Spread</div>
+          <div class="slide-subtitle">
+            Same syntax, opposite purposes — here's how to tell them apart
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-balance-scale" style="margin-right: 8px"></i>The
+              Key Difference
+            </h3>
+            <p>
+              Both use
+              <code
+                style="
+                  background: #e8f0fe;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                  font-weight: bold;
+                "
+                >...</code
+              >
+              but do completely opposite things. The difference is
+              <strong>where</strong> they appear:
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div
+                class="info-card"
+                style="border-left: 5px solid #1a73e8; background: #e8f0fe"
+              >
+                <h4 style="color: #1a73e8">
+                  <span class="tag tag-rest">REST</span> Gathers → Array
+                </h4>
+                <div class="direction-arrow">
+                  <i
+                    class="fas fa-compress-arrows-alt"
+                    style="color: #1a73e8"
+                  ></i>
+                  Items → One Group
+                </div>
+                <p style="margin-top: 10px">
+                  <strong>Appears in:</strong> Function definition (parameters)
+                </p>
+                <div class="code-block" style="margin-top: 10px">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sum</span>(<span
+                    class="rest-spread"
+                    >...args</span
+                  >) {<br />
+                  &nbsp;&nbsp;<span class="comment">// args = [1, 2, 3]</span
+                  ><br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> args.<span
+                    class="function-name"
+                    >reduce</span
+                  >(<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;(a,b) =&gt; a+b,
+                  <span class="number">0</span><br />
+                  &nbsp;&nbsp;);<br />
+                  }<br />
+                  <span class="function-name">sum</span>(<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>,
+                  <span class="number">3</span>);
+                  <span class="comment">// 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div
+                class="info-card"
+                style="border-left: 5px solid #34a853; background: #e6f4ea"
+              >
+                <h4 style="color: #34a853">
+                  <span class="tag tag-spread">SPREAD</span> Array → Items
+                </h4>
+                <div class="direction-arrow">
+                  <i
+                    class="fas fa-expand-arrows-alt"
+                    style="color: #34a853"
+                  ></i>
+                  One Group → Items
+                </div>
+                <p style="margin-top: 10px">
+                  <strong>Appears in:</strong> Function call or array literal
+                </p>
+                <div class="code-block" style="margin-top: 10px">
+                  <span class="keyword">let</span> arr = [<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>,
+                  <span class="number">3</span>];<br /><br />
+                  Math.<span class="function-name">max</span>(<span
+                    class="rest-spread"
+                    >...arr</span
+                  >);<br />
+                  <span class="comment">// Same as: max(1, 2, 3)</span><br />
+                  <span class="comment">// Returns 3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="info-card"
+            style="
+              margin-top: 20px;
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+            "
+          >
+            <h4 style="color: #1a73e8">
+              <i class="fas fa-graduation-cap" style="margin-right: 8px"></i>Key
+              Takeaways
+            </h4>
+            <div
+              style="
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-top: 10px;
+              "
+            >
+              <div style="flex: 1; min-width: 220px">
+                <ul style="padding-left: 20px">
+                  <li>
+                    <strong>Rest <code>...args</code></strong> — gathers
+                    remaining arguments into an array
+                  </li>
+                  <li>
+                    Must be the <strong>last parameter</strong> in function
+                    definition
+                  </li>
+                  <li>
+                    Creates a <strong>real array</strong> with all methods
+                  </li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 220px">
+                <ul style="padding-left: 20px">
+                  <li>
+                    <strong>Spread <code>...arr</code></strong> — expands an
+                    iterable into individual values
+                  </li>
+                  <li>
+                    Great for
+                    <strong>merging, copying, and passing</strong> arrays
+                  </li>
+                  <li>
+                    Works on <strong>any iterable</strong> (arrays, strings,
+                    sets)
+                  </li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 220px">
+                <ul style="padding-left: 20px">
+                  <li>
+                    <strong>Old <code>arguments</code></strong> — avoid in
+                    modern code
+                  </li>
+                  <li>Not a real array, no partial capture</li>
+                  <li>Arrow functions don't have it</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">8 / 8</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Rest Parameters & Spread Syntax — Presentation &copy; 2024 | Built with ❤️
+      for learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

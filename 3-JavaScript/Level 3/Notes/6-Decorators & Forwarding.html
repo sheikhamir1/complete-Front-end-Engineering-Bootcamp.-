@@ -1,0 +1,1409 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decorators & Forwarding - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Decorators & Forwarding</div>
+            <div class="hero-subtitle">
+              Wrapping functions with extra features and forwarding calls using
+              call/apply.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                A <strong>decorator</strong> is like putting a protective phone
+                case on your phone. The phone still works the same, but now it
+                has an extra feature (shock protection).
+                <strong>Call forwarding</strong> is like a receptionist
+                transferring a call to the right person, making sure the
+                caller's ID (context) is preserved.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-gift"></i> Decorators</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-phone"></i> func.call</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-layer-group"></i> func.apply</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=600&h=400&fit=crop"
+                alt="Code and Architecture concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 10</span>
+      </div>
+
+      <!-- SLIDE 2: What is a Decorator? -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">What is a Decorator?</div>
+          <div class="slide-subtitle">
+            A wrapper that alters or enhances a function's behavior without
+            changing its code
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-gift" style="margin-right: 8px"></i>Transparent
+              Caching
+            </h3>
+            <p>
+              Imagine a CPU-heavy function <code>slow(x)</code> that always
+              returns the same result for the same input. Instead of modifying
+              <code>slow()</code> to add caching, we create a
+              <strong>decorator</strong> that wraps it.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">cachingDecorator</span>(func) {<br />
+            &nbsp;&nbsp;<span class="keyword">let</span> cache =
+            <span class="keyword">new</span>
+            <span class="builtin">Map</span>();<br /><br />
+            &nbsp;&nbsp;<span class="keyword">return function</span>(x) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>
+            (cache.has(x)) {
+            <span class="comment">// If we've seen this input before</span
+            ><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword"
+              >return</span
+            >
+            cache.get(x); <span class="comment">// Return cached result</span
+            ><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> result =
+            <span class="function-name">func</span>(x);
+            <span class="comment">// Otherwise, call the original</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;cache.set(x, result);
+            <span class="comment">// And cache the result</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+            result;<br />
+            &nbsp;&nbsp;};<br />
+            }<br /><br />
+            slow = <span class="function-name">cachingDecorator</span>(slow);
+            <span class="comment">// Wrap it!</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-check-circle"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >Benefits of Separate Decorators
+            </h4>
+            <ul style="padding-left: 20px; line-height: 2">
+              <li>
+                <strong>Reusable:</strong> Apply
+                <code>cachingDecorator</code> to any function, not just
+                <code>slow</code>.
+              </li>
+              <li>
+                <strong>Clean code:</strong> The main function stays simple;
+                caching logic is separate.
+              </li>
+              <li>
+                <strong>Composable:</strong> Stack multiple decorators (e.g.,
+                caching + logging) if needed.
+              </li>
+            </ul>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Student's Notebook:</strong> A student solving math
+              problems. The first time they see a problem, they work it out from
+              scratch and write the answer in their notebook (cache). The next
+              time they see the same problem, they just look at the notebook
+              instead of doing the work again.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 10</span>
+      </div>
+
+      <!-- SLIDE 3: The Context Problem -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Context Problem</div>
+          <div class="slide-subtitle">
+            Why decorators break object methods — losing <code>this</code>
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-unlink" style="margin-right: 8px"></i>When
+              Decorators Fail
+            </h3>
+            <p>
+              Our <code>cachingDecorator</code> works for standalone functions,
+              but fails for object methods. Why? When the wrapper calls
+              <code>func(x)</code>, it loses the object context
+              (<code>this</code>).
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> worker = {<br />
+            &nbsp;&nbsp;<span class="function-name">someMethod</span>() {
+            <span class="keyword">return</span> <span class="number">1</span>;
+            },<br /><br />
+            &nbsp;&nbsp;<span class="function-name">slow</span>(x) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+              class="string"
+              >"Called with "</span
+            >
+            + x);<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> x
+            <span class="operator">*</span>
+            <span class="keyword">this</span>.someMethod();
+            <span class="comment">// (*) Needs 'this'</span><br />
+            &nbsp;&nbsp;}<br />
+            };<br /><br />
+            worker.slow =
+            <span class="function-name">cachingDecorator</span
+            >(worker.slow);<br /><br />
+            <span class="function-name">worker.slow</span>(<span class="number"
+              >2</span
+            >);
+            <span class="error"
+              >// Error: Cannot read property 'someMethod' of undefined</span
+            >
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-search"
+                style="margin-right: 5px; color: #e53935"
+              ></i
+              >What Went Wrong?
+            </h4>
+            <div class="flow-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                We call <code>worker.slow(2)</code>. The wrapper gets
+                <code>this = worker</code> and <code>x = 2</code>.
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                Inside the wrapper, it calls <code>func(x)</code>. This is like
+                doing <code>let func = worker.slow; func(2);</code>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                When <code>func</code> runs without an object,
+                <code>this</code> becomes <code>undefined</code> (in strict
+                mode).
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number" style="background: #e53935">!</div>
+              <div class="step-content">
+                <code>this.someMethod()</code> fails because
+                <code>this</code> is <code>undefined</code>.
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Car Engine:</strong> Imagine taking a car engine out of
+              the car. The engine might try to access the car's battery
+              (<code>this.someMethod()</code>), but since it's no longer inside
+              the car, it can't find it. We need a way to tell the engine "you
+              still belong to this car" when we run it.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 10</span>
+      </div>
+
+      <!-- SLIDE 4: func.call() -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title"><code>func.call()</code></div>
+          <div class="slide-subtitle">
+            Setting the context explicitly when calling a function
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-phone-volume" style="margin-right: 8px"></i>The
+              Syntax
+            </h3>
+            <p>
+              JavaScript provides a built-in method to call a function while
+              explicitly setting <code>this</code>.
+            </p>
+          </div>
+
+          <div class="code-block">
+            func.<span class="function-name">call</span>(context, arg1, arg2,
+            ...)
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>Simple Context Example</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sayHi</span>() {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                    class="keyword"
+                    >this</span
+                  >.name);<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> user = { name:
+                  <span class="string">"John"</span> };<br />
+                  <span class="keyword">let</span> admin = { name:
+                  <span class="string">"Admin"</span> };<br /><br />
+                  sayHi.<span class="function-name">call</span>(user);
+                  <span class="comment">// John</span><br />
+                  sayHi.<span class="function-name">call</span>(admin);
+                  <span class="comment">// Admin</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>With Arguments</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">say</span>(phrase) {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                    class="keyword"
+                    >this</span
+                  >.name + <span class="string">': '</span> + phrase);<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> user = { name:
+                  <span class="string">"John"</span> };<br /><br />
+                  say.<span class="function-name">call</span>(user,
+                  <span class="string">"Hello"</span>);<br />
+                  <span class="comment">// John: Hello</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-top: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-wrench"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >Fixing the Decorator
+            </h4>
+            <p>
+              Now we can fix <code>cachingDecorator</code> by using
+              <code>func.call(this, x)</code> to pass the correct context:
+            </p>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">cachingDecorator</span>(func) {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> cache =
+              <span class="keyword">new</span>
+              <span class="builtin">Map</span>();<br />
+              &nbsp;&nbsp;<span class="keyword">return function</span>(x) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>
+              (cache.has(x))
+              <span class="keyword">return</span> cache.get(x);<br /><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> result =
+              func.<span class="function-name">call</span>(<span class="keyword"
+                >this</span
+              >, x);
+              <span class="comment">// "this" is passed correctly now!</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;cache.set(x, result);<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+              result;<br />
+              &nbsp;&nbsp;};<br />
+              }
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">4 / 10</span>
+      </div>
+
+      <!-- SLIDE 5: Going Multi-Argument -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Going Multi-Argument</div>
+          <div class="slide-subtitle">
+            Handling multiple arguments with hashing and spread
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-stream" style="margin-right: 8px"></i>Two
+              Problems to Solve
+            </h3>
+            <p>
+              Our decorator only works for single-argument functions. To handle
+              multiple arguments like <code>worker.slow(min, max)</code>, we
+              need to fix caching and argument passing.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #7c3aed">
+                <h4>
+                  <i
+                    class="fas fa-key"
+                    style="margin-right: 5px; color: #7c3aed"
+                  ></i
+                  >Problem 1: Cache Key
+                </h4>
+                <p>
+                  <code>Map</code> only accepts one key. For
+                  <code>(3, 5)</code>, we need a single key like
+                  <code>"3,5"</code>.
+                </p>
+                <p>
+                  <strong>Solution:</strong> A <em>hash function</em> that
+                  combines arguments into one string.
+                </p>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">hash</span>(args) {<br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> args[<span
+                    class="number"
+                    >0</span
+                  >] + <span class="string">','</span> + args[<span
+                    class="number"
+                    >1</span
+                  >];<br />
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>
+                  <i
+                    class="fas fa-ellipsis-h"
+                    style="margin-right: 5px; color: #1a73e8"
+                  ></i
+                  >Problem 2: Passing All Args
+                </h4>
+                <p><code>func.call(this, x)</code> only passes one argument.</p>
+                <p>
+                  <strong>Solution:</strong> Use the special
+                  <code>arguments</code> object and spread syntax.
+                </p>
+                <div class="code-block">
+                  func.<span class="function-name">call</span>(<span
+                    class="keyword"
+                    >this</span
+                  >, ...arguments);<br />
+                  <span class="comment">// Passes ALL arguments along!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-check-double"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >The Universal Decorator
+            </h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">cachingDecorator</span>(func, hash)
+              {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> cache =
+              <span class="keyword">new</span>
+              <span class="builtin">Map</span>();<br />
+              &nbsp;&nbsp;<span class="keyword">return function</span>() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> key =
+              <span class="function-name">hash</span>(arguments);
+              <span class="comment">// (*) Create single key</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>
+              (cache.has(key))
+              <span class="keyword">return</span> cache.get(key);<br /><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> result =
+              func.<span class="function-name">call</span>(<span class="keyword"
+                >this</span
+              >, ...arguments);
+              <span class="comment">// (**) Forward all args</span><br /><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;cache.set(key, result);<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+              result;<br />
+              &nbsp;&nbsp;};<br />
+              }
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Locker Combination:</strong> You can't open a locker with
+              just one number when it requires two. The hash function is like
+              combining <code>(3, 5)</code> into a single combo code
+              <code>"3,5"</code> so the locker knows exactly which result to
+              give you.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 10</span>
+      </div>
+
+      <!-- SLIDE 6: func.apply() -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title"><code>func.apply()</code></div>
+          <div class="slide-subtitle">
+            An alternative to call that accepts an array-like object of
+            arguments
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-layer-group" style="margin-right: 8px"></i>The
+              Syntax
+            </h3>
+            <p>
+              Instead of spreading arguments with <code>call</code>, we can use
+              <code>apply</code>, which takes an array-like object as the second
+              parameter.
+            </p>
+          </div>
+
+          <div class="code-block">
+            func.<span class="function-name">apply</span>(context, args)
+          </div>
+
+          <div class="comparison-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Arguments Format</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>func.call</strong></td>
+                  <td>List of arguments</td>
+                  <td><code>func.call(ctx, arg1, arg2, ...)</code></td>
+                </tr>
+                <tr>
+                  <td><strong>func.apply</strong></td>
+                  <td>Array-like object</td>
+                  <td><code>func.apply(ctx, [arg1, arg2])</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Performance Tip:</strong> These two calls are almost
+            equivalent, but <code>func.apply(this, arguments)</code> is often
+            slightly faster than
+            <code>func.call(this, ...arguments)</code> because JavaScript
+            engines internally optimize <code>apply</code> better for array-like
+            objects.
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i class="fas fa-exchange-alt" style="margin-right: 5px"></i>Call
+              Forwarding
+            </h4>
+            <p>
+              Passing all arguments and the context to another function is
+              called <strong>call forwarding</strong>. The simplest, most
+              universal way to do it is with <code>apply</code>:
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> wrapper =
+              <span class="keyword">function</span>() {<br />
+              &nbsp;&nbsp;<span class="keyword">return</span> original.<span
+                class="function-name"
+                >apply</span
+              >(<span class="keyword">this</span>, arguments);<br />
+              };
+            </div>
+            <p>
+              This makes the wrapper indistinguishable from the original
+              function.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 10</span>
+      </div>
+
+      <!-- SLIDE 7: Method Borrowing -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Method Borrowing</div>
+          <div class="slide-subtitle">
+            Taking a method from one object and using it on another
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-hand-holding" style="margin-right: 8px"></i>The
+              Hash Function Problem
+            </h3>
+            <p>
+              We want to improve our <code>hash</code> function to join any
+              number of arguments. The natural solution is
+              <code>args.join()</code>, but there's a catch!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i
+                  >Doesn't Work
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">hash</span>() {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(
+                  arguments.<span class="function-name">join</span>() );<br />
+                  &nbsp;&nbsp;<span class="error"
+                    >// Error: arguments.join is not a function</span
+                  ><br />
+                  }<br /><br />
+                  <span class="function-name">hash</span>(<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>);
+                </div>
+                <p style="margin-top: 10px">
+                  <code>arguments</code> is array-like (has indices and length)
+                  but is <strong>not a real array</strong>, so it doesn't have
+                  array methods.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i
+                  >Method Borrowing
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">hash</span>() {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>( [].join.<span
+                    class="function-name"
+                    >call</span
+                  >(arguments) );<br />
+                  &nbsp;&nbsp;<span class="comment">// 1,2 ✅ Works!</span
+                  ><br />
+                  }<br /><br />
+                  <span class="function-name">hash</span>(<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>);
+                </div>
+                <p style="margin-top: 10px">
+                  We <em>borrow</em> the <code>.join()</code> method from a real
+                  array and use <code>call</code> to run it on
+                  <code>arguments</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-cogs"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Why Does This Work?
+            </h4>
+            <p>
+              Internally, the native <code>arr.join(glue)</code> algorithm is
+              very simple:
+            </p>
+            <ol style="padding-left: 20px; margin-top: 10px; line-height: 2">
+              <li>Take <code>this[0]</code></li>
+              <li>Add <code>glue</code> + <code>this[1]</code></li>
+              <li>
+                Add <code>glue</code> + <code>this[2]</code> ... until
+                <code>this.length</code>
+              </li>
+            </ol>
+            <p style="margin-top: 10px">
+              It only needs <code>this</code> to have indices and a
+              <code>.length</code> — which <code>arguments</code> has! Many
+              native array methods are intentionally written this way.
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Borrowing a Lawnmower:</strong> Your neighbor has a
+              lawnmower. Your yard doesn't own one, but your yard has grass
+              (indices) and a yard size (length). You borrow their mower and use
+              it on your yard. The mower doesn't care whose yard it is, as long
+              as there's grass to cut.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 10</span>
+      </div>
+
+      <!-- SLIDE 8: Decorators & Function Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Decorators & Function Properties</div>
+          <div class="slide-subtitle">
+            One important caveat when replacing functions with wrappers
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 8px; color: #e65100"
+              ></i
+              >The Lost Properties Problem
+            </h3>
+            <p>
+              If the original function had custom properties (like
+              <code>func.calledCount</code>), the decorated wrapper
+              <strong>will not have them</strong>. The wrapper is a brand new
+              function object.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">slow</span>(x) {<br />
+            &nbsp;&nbsp;<span class="keyword">return</span> x;<br />
+            }<br /><br />
+            slow.customProp =
+            <span class="string">"I am original"</span>;<br /><br />
+            slow =
+            <span class="function-name">cachingDecorator</span
+            >(slow);<br /><br />
+            <span class="builtin">alert</span>(slow.customProp);
+            <span class="comment">// undefined</span><br />
+            <span class="comment"
+              >// The wrapper doesn't have the original's properties!</span
+            >
+          </div>
+
+          <div class="warning-box">
+            <strong>Important:</strong> Some decorators may provide their own
+            properties (e.g., counting how many times the wrapper was called).
+            But if you rely on the original function's properties, a simple
+            wrapper will lose them.
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i class="fas fa-shield-alt" style="margin-right: 5px"></i>The
+              Solution: Proxy
+            </h4>
+            <p>
+              There exists a way to create decorators that keep access to
+              function properties, but it requires using a special
+              <code>Proxy</code> object to wrap the function instead of a simple
+              wrapper function. We'll cover this in a future chapter on Proxy
+              and Reflect.
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Moving to a New House:</strong> When you move, you take
+              your furniture (function logic) with you. But if you had sticky
+              notes on the fridge (custom properties), they might not make it to
+              the new fridge. A simple move loses them. A careful move (Proxy)
+              would copy every sticky note perfectly.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">8 / 10</span>
+      </div>
+
+      <!-- SLIDE 9: How this is Passed Along -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">
+            Deep Dive: How <code>this</code> is Passed Along
+          </div>
+          <div class="slide-subtitle">
+            Tracing the context through the decorator step by step
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-route" style="margin-right: 8px"></i>Step-by-Step
+              Trace
+            </h3>
+            <p>
+              Let's see exactly how <code>func.call(this, x)</code> preserves
+              the context when we call <code>worker.slow(2)</code>:
+            </p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <strong>We call <code>worker.slow(2)</code></strong>
+              <p>
+                After decoration, <code>worker.slow</code> is now the wrapper
+                function. Because it's called as <code>worker.slow</code>, the
+                wrapper receives <code>this = worker</code> and
+                <code>x = 2</code>.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <strong>Wrapper checks the cache</strong>
+              <p>
+                Assuming it's a new call, the cache is empty. It needs to call
+                the original function.
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <strong>Wrapper calls <code>func.call(this, x)</code></strong>
+              <p>
+                Here, <code>this</code> is <code>worker</code> and
+                <code>x</code> is <code>2</code>. So this becomes
+                <code>originalSlow.call(worker, 2)</code>. The original function
+                now correctly gets <code>this = worker</code>!
+              </p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number" style="background-color: #34a853">4</div>
+            <div class="step-content">
+              <strong>Original function runs</strong>
+              <p>
+                Inside the original, <code>this.someMethod()</code> works
+                because <code>this</code> points to <code>worker</code> as
+                intended. The result is cached and returned.
+              </p>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Key Insight:</strong> Without <code>.call()</code>, step 3
+            would be just <code>func(x)</code>. This is like calling
+            <code>originalSlow(2)</code> without any object, making
+            <code>this = undefined</code>. The
+            <code>.call(this, ...)</code> pattern is what "forwards" the context
+            properly.
+          </div>
+        </div>
+        <span class="slide-number">9 / 10</span>
+      </div>
+
+      <!-- SLIDE 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Decorators & Forwarding
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-gift" style="margin-right: 8px"></i
+                  >Decorators
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>A wrapper that alters behavior without changing code</li>
+                  <li>Reusable, keeps main code clean, composable</li>
+                  <li>Lose original function's custom properties</li>
+                  <li>
+                    Use <code>Proxy</code> to preserve properties (future topic)
+                  </li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-phone" style="margin-right: 8px"></i>call /
+                  apply
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>func.call(ctx, arg1, arg2...)</code>: list of args
+                  </li>
+                  <li><code>func.apply(ctx, args)</code>: array-like args</li>
+                  <li>Both set <code>this</code> explicitly</li>
+                  <li><code>apply</code> is often faster for forwarding</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Decorator</strong></td>
+                  <td>Wrapper that adds features</td>
+                  <td>Phone case / Student's notebook</td>
+                </tr>
+                <tr>
+                  <td><strong>func.call</strong></td>
+                  <td>Call with explicit context + arg list</td>
+                  <td>Transferring a call with caller ID</td>
+                </tr>
+                <tr>
+                  <td><strong>func.apply</strong></td>
+                  <td>Call with explicit context + arg array</td>
+                  <td>Handing waiter a written list</td>
+                </tr>
+                <tr>
+                  <td><strong>Call Forwarding</strong></td>
+                  <td>Passing all args + context to original</td>
+                  <td>Receptionist patching call through</td>
+                </tr>
+                <tr>
+                  <td><strong>Method Borrowing</strong></td>
+                  <td>Using another object's method via call</td>
+                  <td>Borrowing neighbor's lawnmower</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Universal
+              Call Forwarding Pattern:</strong
+            >
+            When writing decorators, the safest way to forward everything is:
+            <code>return original.apply(this, arguments);</code>
+          </div>
+        </div>
+        <span class="slide-number">10 / 10</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Decorators & Forwarding — Presentation &copy; 2024 | Built with ❤️ for
+      learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Flags & Descriptors - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Property Flags & Descriptors</div>
+            <div class="hero-subtitle">
+              Discovering the hidden control panel behind every object property
+              — writable, enumerable, and configurable.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                An object property is like a
+                <strong>document in a filing cabinet</strong>. Usually, you can
+                edit it, find it in the index, or throw it away. But with
+                property flags, you can make it
+                <strong>read-only</strong> (writable),
+                <strong>hidden from the index</strong> (enumerable), or
+                <strong>permanently locked in place</strong> (configurable).
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"><i class="fas fa-pen"></i> Writable</span>
+              <span class="hero-tag"
+                ><i class="fas fa-eye"></i> Enumerable</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-lock"></i> Configurable</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop"
+                alt="Data and Configuration concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 10</span>
+      </div>
+
+      <!-- SLIDE 2: Property Flags -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Three Property Flags</div>
+          <div class="slide-subtitle">
+            Every property has three hidden switches that control its behavior
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-sliders-h" style="margin-right: 8px"></i>Beyond
+              Key-Value
+            </h3>
+            <p>
+              Until now, a property was just a "key-value" pair. But an object
+              property actually has three special attributes (flags) that
+              control what you can do with it.
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i
+                class="fas fa-pen"
+                style="margin-right: 5px; color: #1a73e8"
+              ></i>
+              <code>writable</code>
+            </h4>
+            <p>
+              If <code>true</code>, the value can be changed. If
+              <code>false</code>, the property is <strong>read-only</strong>.
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-eye"
+                style="margin-right: 5px; color: #34a853"
+              ></i>
+              <code>enumerable</code>
+            </h4>
+            <p>
+              If <code>true</code>, the property shows up in loops like
+              <code>for..in</code> and <code>Object.keys()</code>. If
+              <code>false</code>, it's <strong>hidden</strong> from those loops.
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-lock"
+                style="margin-right: 5px; color: #e53935"
+              ></i>
+              <code>configurable</code>
+            </h4>
+            <p>
+              If <code>true</code>, the property can be deleted and its flags
+              can be modified. If <code>false</code>, it's a
+              <strong>one-way lock</strong> — you can't delete it or change its
+              flags.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Default Behavior:</strong> When you create a property the
+            "usual way" (e.g., <code>let user = { name: "John" }</code>), all
+            three flags are <code>true</code>. You only need to change them when
+            you want to restrict access.
+          </div>
+        </div>
+        <span class="slide-number">2 / 10</span>
+      </div>
+
+      <!-- SLIDE 3: Getting & Setting Descriptors -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Getting & Setting Descriptors</div>
+          <div class="slide-subtitle">
+            How to inspect and modify the hidden flags
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-search" style="margin-right: 8px"></i>Getting
+              Flags
+            </h3>
+            <p>
+              The method <code>Object.getOwnPropertyDescriptor</code> lets you
+              query the full information about a property.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user = { name:
+            <span class="string">"John"</span> };<br /><br />
+            <span class="keyword">let</span> descriptor =
+            <span class="builtin">Object</span>.<span class="function-name"
+              >getOwnPropertyDescriptor</span
+            >(user, <span class="string">'name'</span>);<br /><br />
+            <span class="builtin">alert</span>(<span class="builtin">JSON</span
+            >.<span class="function-name">stringify</span>(descriptor,
+            <span class="keyword">null</span>,
+            <span class="number">2</span>));<br />
+            <span class="comment"
+              >/* {<br />
+              &nbsp;&nbsp;"value": "John",<br />
+              &nbsp;&nbsp;"writable": true,<br />
+              &nbsp;&nbsp;"enumerable": true,<br />
+              &nbsp;&nbsp;"configurable": true<br />
+              } */</span
+            >
+          </div>
+
+          <div class="text-section" style="margin-top: 20px">
+            <h3>
+              <i class="fas fa-wrench" style="margin-right: 8px"></i>Setting
+              Flags
+            </h3>
+            <p>
+              The method <code>Object.defineProperty</code> lets you change the
+              flags (or create a new property with specific flags).
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="builtin">Object</span>.<span class="function-name"
+              >defineProperty</span
+            >(obj, propertyName, descriptor)
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Important Gotcha:</strong
+            >
+            If you use <code>defineProperty</code> to create a
+            <em>new</em> property and don't specify a flag, it defaults to
+            <code>false</code>! This is the opposite of normal property
+            creation.
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user = {};<br /><br />
+            <span class="builtin">Object</span>.<span class="function-name"
+              >defineProperty</span
+            >(user, <span class="string">"name"</span>, {<br />
+            &nbsp;&nbsp;value: <span class="string">"John"</span><br />
+            });<br /><br />
+            <span class="keyword">let</span> desc =
+            <span class="builtin">Object</span>.<span class="function-name"
+              >getOwnPropertyDescriptor</span
+            >(user, <span class="string">'name'</span>);<br />
+            <span class="comment"
+              >// writable: false, enumerable: false, configurable: false</span
+            >
+          </div>
+        </div>
+        <span class="slide-number">3 / 10</span>
+      </div>
+
+      <!-- SLIDE 4: Non-Writable -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Non-Writable</div>
+          <div class="slide-subtitle">Making a property read-only</div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-pen-slash" style="margin-right: 8px"></i>Setting
+              <code>writable: false</code>
+            </h3>
+            <p>
+              When <code>writable</code> is <code>false</code>, nobody can
+              change the value of the property — it becomes read-only.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user = { name:
+            <span class="string">"John"</span> };<br /><br />
+            <span class="builtin">Object</span>.<span class="function-name"
+              >defineProperty</span
+            >(user, <span class="string">"name"</span>, {<br />
+            &nbsp;&nbsp;writable: <span class="keyword">false</span><br />
+            });<br /><br />
+            user.name = <span class="string">"Pete"</span>;
+            <span class="error"
+              >// Error: Cannot assign to read only property 'name'</span
+            >
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i class="fas fa-info-circle" style="margin-right: 5px"></i>
+              Strict Mode:</strong
+            >
+            Errors only appear in strict mode. In non-strict mode, the
+            assignment simply fails silently — no error, but the value doesn't
+            change.
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>Creating from Scratch</h4>
+            <p>
+              If you create a new property with <code>defineProperty</code>, you
+              must explicitly set the flags you want to be <code>true</code>:
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> user = {};<br /><br />
+              <span class="builtin">Object</span>.<span class="function-name"
+                >defineProperty</span
+              >(user, <span class="string">"name"</span>, {<br />
+              &nbsp;&nbsp;value: <span class="string">"John"</span>,<br />
+              &nbsp;&nbsp;writable: <span class="keyword">false</span>,
+              <span class="comment">// Read-only</span><br />
+              &nbsp;&nbsp;enumerable: <span class="keyword">true</span>,
+              <span class="comment">// Must specify true!</span><br />
+              &nbsp;&nbsp;configurable: <span class="keyword">true</span>
+              <span class="comment">// Must specify true!</span><br />
+              });<br /><br />
+              user.name = <span class="string">"Pete"</span>;
+              <span class="error">// Error</span>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Museum Exhibit:</strong> A normal property is like a
+              whiteboard — anyone can erase and rewrite it. A
+              <code>writable: false</code> property is like a museum exhibit
+              plaque — you can read it, but you can't draw on it.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 10</span>
+      </div>
+
+      <!-- SLIDE 5: Non-Enumerable -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Non-Enumerable</div>
+          <div class="slide-subtitle">
+            Hiding properties from loops and key listings
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-eye-slash" style="margin-right: 8px"></i>Setting
+              <code>enumerable: false</code>
+            </h3>
+            <p>
+              When <code>enumerable</code> is <code>false</code>, the property
+              becomes invisible to <code>for..in</code> and
+              <code>Object.keys()</code>. It still exists and can be accessed
+              directly!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>Without the Flag (Default)</h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> user = {<br />
+                  &nbsp;&nbsp;name: <span class="string">"John"</span>,<br />
+                  &nbsp;&nbsp;<span class="function-name">toString</span>() {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                  <span class="keyword">this</span>.name;<br />
+                  &nbsp;&nbsp;}<br />
+                  };<br /><br />
+                  <span class="keyword">for</span> (<span class="keyword"
+                    >let</span
+                  >
+                  key <span class="keyword">in</span> user)
+                  <span class="builtin">alert</span>(key);<br />
+                  <span class="comment">// name, toString</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>With <code>enumerable: false</code></h4>
+                <div class="code-block">
+                  <span class="builtin">Object</span>.<span
+                    class="function-name"
+                    >defineProperty</span
+                  >(user, <span class="string">"toString"</span>, {<br />
+                  &nbsp;&nbsp;enumerable: <span class="keyword">false</span
+                  ><br />
+                  });<br /><br />
+                  <span class="keyword">for</span> (<span class="keyword"
+                    >let</span
+                  >
+                  key <span class="keyword">in</span> user)
+                  <span class="builtin">alert</span>(key);<br />
+                  <span class="comment">// name (toString hidden!)</span
+                  ><br /><br />
+                  <span class="builtin">Object</span>.<span
+                    class="function-name"
+                    >keys</span
+                  >(user); <span class="comment">// ["name"]</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Why does this matter?</strong> Built-in methods like
+            <code>toString</code> on normal objects are non-enumerable by
+            default. This ensures they don't clutter up your loops. If you add a
+            custom method, you probably want to make it non-enumerable too, so
+            it behaves like the built-in ones.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Staff-Only Door:</strong> A non-enumerable property is
+              like a door that doesn't appear on the visitor's map (the loop).
+              It still exists, and if you know the exact room number (property
+              name), you can walk right in and use it. It's just hidden from the
+              general tour.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 10</span>
+      </div>
+
+      <!-- SLIDE 6: Non-Configurable -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Non-Configurable</div>
+          <div class="slide-subtitle">
+            The one-way street of property attributes
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-lock" style="margin-right: 8px"></i>Setting
+              <code>configurable: false</code>
+            </h3>
+            <p>
+              This is the most restrictive flag. It prevents the property from
+              being deleted and prevents its flags from being changed. It's a
+              <strong>one-way road</strong> — once set, you can't go back!
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> descriptor =
+            <span class="builtin">Object</span>.<span class="function-name"
+              >getOwnPropertyDescriptor</span
+            >(<span class="builtin">Math</span>,
+            <span class="string">'PI'</span>);<br /><br />
+            <span class="comment"
+              >/* {<br />
+              &nbsp;&nbsp;value: 3.141592653589793,<br />
+              &nbsp;&nbsp;writable: false,<br />
+              &nbsp;&nbsp;enumerable: false,<br />
+              &nbsp;&nbsp;configurable: false<br />
+              } */</span
+            ><br /><br />
+            <span class="builtin">Math</span>.PI =
+            <span class="number">3</span>;
+            <span class="error">// Error (writable: false)</span><br />
+            <span class="keyword">delete</span>
+            <span class="builtin">Math</span>.PI;
+            <span class="error">// Error (configurable: false)</span><br />
+            <span class="builtin">Object</span>.<span class="function-name"
+              >defineProperty</span
+            >(<span class="builtin">Math</span>,
+            <span class="string">"PI"</span>, { writable:
+            <span class="keyword">true</span> });
+            <span class="error">// Error!</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-exclamation-circle"
+                style="margin-right: 5px; color: #e53935"
+              ></i>
+              The One Exception
+            </h4>
+            <p>
+              There is one minor exception: for a non-configurable property, you
+              <strong>can</strong> change <code>writable: true</code> to
+              <code>false</code> (adding another layer of protection). But you
+              cannot change <code>writable: false</code> to <code>true</code>.
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Super Glue:</strong> Setting
+              <code>configurable: false</code> is like super-gluing a vase to a
+              shelf. You can't remove it, you can't move it, and you can't
+              un-glue it. The only thing you're still allowed to do (if it
+              wasn't locked) is to put a glass cover over it (<code
+                >writable: true → false</code
+              >).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 10</span>
+      </div>
+
+      <!-- SLIDE 7: The "Forever Sealed" Constant -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The "Forever Sealed" Constant</div>
+          <div class="slide-subtitle">
+            Combining non-writable and non-configurable for ultimate protection
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-shield-alt" style="margin-right: 8px"></i>Maximum
+              Lockdown
+            </h3>
+            <p>
+              If you combine <code>writable: false</code> and
+              <code>configurable: false</code>, you create a "forever sealed"
+              constant — just like the built-in <code>Math.PI</code>.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user = { name:
+            <span class="string">"John"</span> };<br /><br />
+            <span class="builtin">Object</span>.<span class="function-name"
+              >defineProperty</span
+            >(user, <span class="string">"name"</span>, {<br />
+            &nbsp;&nbsp;writable: <span class="keyword">false</span>,<br />
+            &nbsp;&nbsp;configurable: <span class="keyword">false</span><br />
+            });<br /><br />
+            <span class="comment">// None of these will work:</span><br />
+            user.name = <span class="string">"Pete"</span>;
+            <span class="error">// Error (writable: false)</span><br />
+            <span class="keyword">delete</span> user.name;
+            <span class="error">// Error (configurable: false)</span><br />
+            <span class="builtin">Object</span>.<span class="function-name"
+              >defineProperty</span
+            >(user, <span class="string">"name"</span>, { value:
+            <span class="string">"Pete"</span> });
+            <span class="error">// Error</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-key"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >Configurable but Writable
+            </h4>
+            <p>
+              It's worth noting: if a property is non-configurable but still
+              writable, you <strong>can</strong> change its value. You just
+              can't delete it or change its flags.
+            </p>
+            <div class="code-block">
+              <span class="builtin">Object</span>.<span class="function-name"
+                >defineProperty</span
+              >(user, <span class="string">"name"</span>, {<br />
+              &nbsp;&nbsp;configurable: <span class="keyword">false</span><br />
+              });<br /><br />
+              user.name = <span class="string">"Pete"</span>;
+              <span class="comment">// Works fine! Value can change.</span
+              ><br />
+              <span class="keyword">delete</span> user.name;
+              <span class="error">// Error! Can't delete.</span>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 20px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th><code>writable: false</code></th>
+                  <th><code>configurable: false</code></th>
+                  <th>Both <code>false</code></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Change value</td>
+                  <td style="color: #e53935">❌ No</td>
+                  <td style="color: #34a853">✅ Yes</td>
+                  <td style="color: #e53935">❌ No</td>
+                </tr>
+                <tr>
+                  <td>Delete property</td>
+                  <td style="color: #34a853">✅ Yes</td>
+                  <td style="color: #e53935">❌ No</td>
+                  <td style="color: #e53935">❌ No</td>
+                </tr>
+                <tr>
+                  <td>Change flags</td>
+                  <td style="color: #34a853">✅ Yes</td>
+                  <td style="color: #e53935">❌ No</td>
+                  <td style="color: #e53935">❌ No</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <span class="slide-number">7 / 10</span>
+      </div>
+
+      <!-- SLIDE 8: Define Multiple & Smart Cloning -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Define Multiple & Smart Cloning</div>
+          <div class="slide-subtitle">
+            Working with many properties at once and cloning with flags intact
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i class="fas fa-list-ol" style="margin-right: 5px"></i
+              >Object.defineProperties
+            </h4>
+            <p>Define many properties at once:</p>
+            <div class="code-block">
+              <span class="builtin">Object</span>.<span class="function-name"
+                >defineProperties</span
+              >(user, {<br />
+              &nbsp;&nbsp;name: { value: <span class="string">"John"</span>,
+              writable: <span class="keyword">false</span> },<br />
+              &nbsp;&nbsp;surname: { value: <span class="string">"Smith"</span>,
+              writable: <span class="keyword">false</span> },<br />
+              &nbsp;&nbsp;<span class="comment">// ...</span><br />
+              });
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-clone"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >Object.getOwnPropertyDescriptors
+            </h4>
+            <p>
+              Get all descriptors at once. Together with
+              <code>defineProperties</code>, you can make a "flag-aware" clone:
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> clone =
+              <span class="builtin">Object</span>.<span class="function-name"
+                >defineProperties</span
+              >({}, <span class="builtin">Object</span>.<span
+                class="function-name"
+                >getOwnPropertyDescriptors</span
+              >(obj));
+            </div>
+          </div>
+
+          <div class="text-section" style="margin-top: 20px">
+            <h3>
+              <i class="fas fa-balance-scale" style="margin-right: 8px"></i>Why
+              is this better?
+            </h3>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>Old Way (for..in)</h4>
+                <div class="code-block">
+                  <span class="keyword">for</span> (<span class="keyword"
+                    >let</span
+                  >
+                  key <span class="keyword">in</span> user) {<br />
+                  &nbsp;&nbsp;clone[key] = user[key];<br />
+                  }
+                </div>
+                <p style="margin-top: 10px">
+                  ❌ Doesn't copy flags<br />❌ Ignores Symbol properties<br />❌
+                  Ignores non-enumerable properties
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>Smart Way (Descriptors)</h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> clone =
+                  <span class="builtin">Object</span>.<span
+                    class="function-name"
+                    >defineProperties</span
+                  >({},<br />
+                  &nbsp;&nbsp;<span class="builtin">Object</span>.<span
+                    class="function-name"
+                    >getOwnPropertyDescriptors</span
+                  >(obj)<br />
+                  );
+                </div>
+                <p style="margin-top: 10px">
+                  ✅ Copies all flags<br />✅ Includes Symbol properties<br />✅
+                  Includes non-enumerable properties
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">8 / 10</span>
+      </div>
+
+      <!-- SLIDE 9: Sealing Objects Globally -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Sealing Objects Globally</div>
+          <div class="slide-subtitle">
+            Locking down the entire object instead of individual properties
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-building-shield" style="margin-right: 8px"></i
+              >Three Levels of Lockdown
+            </h3>
+            <p>
+              Instead of setting flags on individual properties, you can apply
+              restrictions to the whole object at once.
+            </p>
+          </div>
+
+          <div class="comparison-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>What it does</th>
+                  <th>Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Object.preventExtensions(obj)</strong></td>
+                  <td>Forbids adding new properties</td>
+                  <td>Hotel at full capacity — no new guests</td>
+                </tr>
+                <tr>
+                  <td><strong>Object.seal(obj)</strong></td>
+                  <td>
+                    Forbids adding/removing. Sets
+                    <code>configurable: false</code> for all
+                  </td>
+                  <td>Sealed shipping box — can't add or remove items</td>
+                </tr>
+                <tr>
+                  <td><strong>Object.freeze(obj)</strong></td>
+                  <td>
+                    Forbids adding/removing/changing. Sets
+                    <code>configurable: false</code>,
+                    <code>writable: false</code> for all
+                  </td>
+                  <td>Frozen in ice — nothing changes at all</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-vial"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Test Methods
+            </h4>
+            <p>
+              Each lockdown method has a corresponding test to check the
+              object's state:
+            </p>
+            <ul style="padding-left: 20px; line-height: 2; margin-top: 10px">
+              <li>
+                <code>Object.isExtensible(obj)</code> → Returns
+                <code>false</code> if adding properties is forbidden
+              </li>
+              <li>
+                <code>Object.isSealed(obj)</code> → Returns <code>true</code> if
+                adding/removing is forbidden and all properties have
+                <code>configurable: false</code>
+              </li>
+              <li>
+                <code>Object.isFrozen(obj)</code> → Returns <code>true</code> if
+                adding/removing/changing is forbidden and all properties have
+                <code>configurable: false</code> and
+                <code>writable: false</code>
+              </li>
+            </ul>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Building Security:</strong>
+              <code>preventExtensions</code> locks the front door (no new
+              tenants). <code>seal</code> also locks the exit doors (no tenants
+              can leave). <code>freeze</code> locks all doors <em>and</em> glues
+              all furniture to the floor (nobody can change anything).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">9 / 10</span>
+      </div>
+
+      <!-- SLIDE 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Property Flags & Descriptors
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-flag" style="margin-right: 8px"></i>The Three
+                  Flags
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li><code>writable</code> – Can the value be changed?</li>
+                  <li><code>enumerable</code> – Is it visible in loops?</li>
+                  <li>
+                    <code>configurable</code> – Can it be deleted or have flags
+                    changed?
+                  </li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-tools" style="margin-right: 8px"></i>Key
+                  Methods
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>Object.getOwnPropertyDescriptor</code> – Get flags
+                  </li>
+                  <li>
+                    <code>Object.defineProperty</code> – Set flags (new props
+                    default to <code>false</code>!)
+                  </li>
+                  <li><code>Object.defineProperties</code> – Set multiple</li>
+                  <li>
+                    <code>Object.getOwnPropertyDescriptors</code> – Smart
+                    cloning
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Property Flags</strong></td>
+                  <td>Hidden switches controlling property behavior</td>
+                  <td>Security settings on a file</td>
+                </tr>
+                <tr>
+                  <td><strong>writable: false</strong></td>
+                  <td>Read-only value</td>
+                  <td>Museum exhibit plaque</td>
+                </tr>
+                <tr>
+                  <td><strong>enumerable: false</strong></td>
+                  <td>Hidden from loops</td>
+                  <td>Staff-only door off the map</td>
+                </tr>
+                <tr>
+                  <td><strong>configurable: false</strong></td>
+                  <td>Can't delete or change flags (one-way!)</td>
+                  <td>Super-glued vase on a shelf</td>
+                </tr>
+                <tr>
+                  <td><strong>Object.freeze</strong></td>
+                  <td>Nothing can change at all</td>
+                  <td>Frozen in ice</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Rule of
+              Thumb:</strong
+            >
+            Use property descriptors when you need to protect data (like
+            constants), hide internal properties from iteration, or create smart
+            clones that preserve all attributes. For full object lockdown, use
+            <code>freeze</code> or <code>seal</code>.
+          </div>
+        </div>
+        <span class="slide-number">10 / 10</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Property Flags & Descriptors — Presentation &copy; 2024 | Built with ❤️
+      for learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

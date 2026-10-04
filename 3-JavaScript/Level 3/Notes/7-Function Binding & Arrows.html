@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Function Binding & Arrow Functions - Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+.presentation-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.slide {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  margin-bottom: 30px;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide-header {
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e1e8ed;
+  padding-bottom: 15px;
+}
+
+.slide-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  color: #1a73e8;
+  margin-bottom: 10px;
+}
+
+.slide-subtitle {
+  font-size: 1.2rem;
+  color: #5f6368;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-section {
+  margin-bottom: 20px;
+}
+
+.text-section h3 {
+  font-family: 'Montserrat', sans-serif;
+  color: #1a73e8;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.text-section p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.image-container img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.two-column {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.column {
+  flex: 1;
+}
+
+.highlight-box {
+  background-color: #e8f0fe;
+  border-left: 4px solid #1a73e8;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.navigation {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-btn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.nav-btn:hover {
+  background-color: #0d47a1;
+  transform: scale(1.1);
+}
+
+.progress-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5px;
+  background-color: #1a73e8;
+  z-index: 101;
+  transition: width 0.3s ease;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #5f6368;
+  font-size: 0.9rem;
+}
+
+.info-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h4 {
+  color: #1a73e8;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.comparison-table th, .comparison-table td {
+  border: 1px solid #e1e8ed;
+  padding: 12px;
+  text-align: left;
+}
+
+.comparison-table th {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
+.comparison-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.code-block {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  line-height: 1.7;
+  position: relative;
+}
+
+.code-block .keyword { color: #cba6f7; }
+.code-block .function-name { color: #89b4fa; }
+.code-block .number { color: #fab387; }
+.code-block .string { color: #a6e3a1; }
+.code-block .comment { color: #6c7086; font-style: italic; }
+.code-block .operator { color: #89dceb; }
+.code-block .builtin { color: #f9e2af; }
+.code-block .error { color: #f38ba8; font-weight: bold; }
+
+.analogy-box {
+  background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  border-left: 4px solid #ff6f00;
+}
+
+.analogy-box .analogy-label {
+  font-weight: 700;
+  color: #ff6f00;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.analogy-box p {
+  margin-bottom: 0;
+  font-size: 1.05rem;
+}
+
+.warning-box {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff6f00;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.warning-box strong {
+  color: #e65100;
+}
+
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.step-number {
+  background-color: #1a73e8;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+  font-size: 0.95rem;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content p {
+  margin-bottom: 5px;
+}
+
+.slide:first-child {
+  min-height: 85vh;
+  background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+}
+
+.hero-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.2rem;
+  color: #1a73e8;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  color: #5f6368;
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+.hero-tags {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-tag {
+  background-color: #1a73e8;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.slide-number {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  color: #adb5bd;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .slide { padding: 20px; }
+  .slide-title { font-size: 1.8rem; }
+  .hero-title { font-size: 2.2rem; }
+  .two-column { flex-direction: column; }
+  .navigation { bottom: 20px; top: auto; flex-direction: row; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-indicator" id="progressBar"></div>
+
+<div class="navigation">
+  <button class="nav-btn" id="topBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <button class="nav-btn" id="downBtn" title="Go to bottom">
+    <i class="fas fa-arrow-down"></i>
+  </button>
+</div>
+
+<div class="presentation-container">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide">
+    <div class="slide-content" style="display: flex; flex-direction: row; align-items: center; gap: 40px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 300px;">
+        <div class="hero-title">Function Binding & Arrows</div>
+        <div class="hero-subtitle">Fixing lost context with bind(), creating partial functions, and understanding the true power of arrow functions.</div>
+        <div class="analogy-box">
+          <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+          <p><strong>Losing <code>this</code></strong> is like detaching a car engine — it no longer has access to the car's battery. <strong>bind()</strong> is like super-gluing the engine to the car so it always knows where it belongs. <strong>Arrow functions</strong> don't even have their own engine; they just look out the window to see which car they're sitting in.</p>
+        </div>
+        <div class="hero-tags">
+          <span class="hero-tag"><i class="fas fa-link"></i> .bind()</span>
+          <span class="hero-tag"><i class="fas fa-cut"></i> Partials</span>
+          <span class="hero-tag"><i class="fas fa-arrow-right"></i> Arrows</span>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 300px;">
+        <div class="image-container">
+          <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=600&h=400&fit=crop" alt="Code and Binding concept">
+        </div>
+      </div>
+    </div>
+    <span class="slide-number">1 / 10</span>
+  </div>
+
+  <!-- SLIDE 2: Losing "this" -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Losing <code>this</code></div>
+      <div class="slide-subtitle">Why object methods break when passed as callbacks</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-unlink" style="margin-right:8px;"></i>The Problem</h3>
+        <p>Once a method is passed somewhere separately from the object — like to <code>setTimeout</code> — <code>this</code> is lost.</p>
+      </div>
+
+      <div class="code-block">
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;firstName: <span class="string">"John"</span>,<br>
+&nbsp;&nbsp;<span class="function-name">sayHi</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span class="string">`Hello, ${this.firstName}!`</span>);<br>
+&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="function-name">setTimeout</span>(user.sayHi, <span class="number">1000</span>); <span class="error">// Hello, undefined!</span>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #e53935;">
+        <h4><i class="fas fa-search" style="margin-right:5px; color:#e53935;"></i>Why Does This Happen?</h4>
+        <div class="flow-step">
+          <div class="step-number">1</div>
+          <div class="step-content"><code>setTimeout</code> gets the function <code>user.sayHi</code> separately from the object.</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-number">2</div>
+          <div class="step-content">The last line is essentially like doing: <code>let f = user.sayHi; setTimeout(f, 1000);</code></div>
+        </div>
+        <div class="flow-step">
+          <div class="step-number">3</div>
+          <div class="step-content">When <code>setTimeout</code> calls <code>f()</code>, it runs without an object, so <code>this</code> becomes <code>undefined</code> (or <code>window</code> in non-strict mode).</div>
+        </div>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Detached Car Engine:</strong> A car engine (<code>sayHi</code>) needs the car's battery (<code>this.firstName</code>) to start. If you take the engine out of the car and put it in a separate workshop (<code>setTimeout</code>), it can't find the battery anymore.</p>
+      </div>
+    </div>
+    <span class="slide-number">2 / 10</span>
+  </div>
+
+  <!-- SLIDE 3: Solution 1 - Wrapper -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Solution 1: Wrapper Function</div>
+      <div class="slide-subtitle">The simplest fix — but it comes with a vulnerability</div>
+    </div>
+    <div class="slide-content">
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #34a853;">
+            <h4><i class="fas fa-check-circle" style="margin-right:5px; color:#34a853;"></i> The Fix</h4>
+            <p>Wrap the call in an arrow function. It receives <code>user</code> from the outer lexical environment.</p>
+            <div class="code-block">
+<span class="function-name">setTimeout</span>(() <span class="operator">=></span> <span class="function-name">user.sayHi</span>(), <span class="number">1000</span>);<br>
+<span class="comment">// Hello, John! ✅</span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #e53935;">
+            <h4><i class="fas fa-exclamation-triangle" style="margin-right:5px; color:#e53935;"></i> The Vulnerability</h4>
+            <p>What if <code>user</code> changes before the timeout fires? The wrapper reads the <em>current</em> value!</p>
+            <div class="code-block">
+<span class="function-name">setTimeout</span>(() <span class="operator">=></span> <span class="function-name">user.sayHi</span>(), <span class="number">1000</span>);<br><br>
+<span class="comment">// ... within 1 second ...</span><br>
+user = { sayHi() { <span class="builtin">alert</span>(<span class="string">"Another!"</span>); } };<br><br>
+<span class="comment">// Output: "Another!" 😱</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <strong>The Risk:</strong> With a wrapper, the function doesn't lock in the object. It looks up <code>user</code> at the time it actually runs, not when it was scheduled. If the variable changes, you get unexpected results.
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Looking at a Name Tag:</strong> The wrapper approach is like telling someone "Go look at the name tag on the desk." If someone swaps the name tag before they look, they read the wrong name. We need a way to permanently write the name down.</p>
+      </div>
+    </div>
+    <span class="slide-number">3 / 10</span>
+  </div>
+
+  <!-- SLIDE 4: Solution 2 - bind() -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Solution 2: <code>bind()</code></div>
+      <div class="slide-subtitle">The bulletproof way to permanently fix <code>this</code></div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-link" style="margin-right:8px;"></i>The Syntax</h3>
+        <p>Functions provide a built-in method <code>bind</code> that permanently fixes <code>this</code>.</p>
+      </div>
+
+      <div class="code-block">
+<span class="keyword">let</span> boundFunc = func.<span class="function-name">bind</span>(context);
+      </div>
+
+      <div class="info-card" style="border-top: 4px solid #34a853;">
+        <h4><i class="fas fa-shield-alt" style="margin-right:5px; color:#34a853;"></i> The Bulletproof Fix</h4>
+        <div class="code-block">
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;firstName: <span class="string">"John"</span>,<br>
+&nbsp;&nbsp;<span class="function-name">sayHi</span>() { <span class="builtin">alert</span>(<span class="string">`Hello, ${this.firstName}!`</span>); }<br>
+};<br><br>
+<span class="keyword">let</span> sayHi = user.sayHi.<span class="function-name">bind</span>(user); <span class="comment">// (*) Bind it!</span><br><br>
+<span class="function-name">setTimeout</span>(sayHi, <span class="number">1000</span>); <span class="comment">// Hello, John! ✅</span><br><br>
+<span class="comment">// Even if user changes, sayHi uses the pre-bound object</span><br>
+user = { sayHi() { <span class="builtin">alert</span>(<span class="string">"Another!"</span>); } };<br>
+<span class="comment">// sayHi still says "Hello, John!"</span>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <strong>How it works:</strong> <code>func.bind(context)</code> returns a special "exotic object" that is callable as a function and transparently passes the call to <code>func</code> with <code>this=context</code>. All arguments are passed "as is".
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Super Glue:</strong> If the wrapper approach is "go look at the name tag," <code>bind()</code> is like permanently engraving "John" onto the function. No matter what happens to the original <code>user</code> object later, the bound function always remembers its original context.</p>
+      </div>
+    </div>
+    <span class="slide-number">4 / 10</span>
+  </div>
+
+  <!-- SLIDE 5: Partial Functions -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Partial Functions</div>
+      <div class="slide-subtitle">Using <code>bind()</code> to pre-fill arguments, not just <code>this</code></div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-cut" style="margin-right:8px;"></i>The Full <code>bind</code> Syntax</h3>
+        <p>We can bind not only <code>this</code>, but also arguments. This creates a "partially applied" function — a new function with some parameters pre-set.</p>
+      </div>
+
+      <div class="code-block">
+<span class="keyword">let</span> bound = func.<span class="function-name">bind</span>(context, [arg1], [arg2], ...);
+      </div>
+
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card">
+            <h4>Example: <code>double</code></h4>
+            <div class="code-block">
+<span class="keyword">function</span> <span class="function-name">mul</span>(a, b) {<br>
+&nbsp;&nbsp;<span class="keyword">return</span> a <span class="operator">*</span> b;<br>
+}<br><br>
+<span class="keyword">let</span> double = mul.<span class="function-name">bind</span>(<span class="keyword">null</span>, <span class="number">2</span>);<br><br>
+<span class="builtin">alert</span>( <span class="function-name">double</span>(<span class="number">3</span>) ); <span class="comment">// = mul(2, 3) = 6</span><br>
+<span class="builtin">alert</span>( <span class="function-name">double</span>(<span class="number">4</span>) ); <span class="comment">// = mul(2, 4) = 8</span><br>
+<span class="builtin">alert</span>( <span class="function-name">double</span>(<span class="number">5</span>) ); <span class="comment">// = mul(2, 5) = 10</span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card">
+            <h4>Example: <code>triple</code></h4>
+            <div class="code-block">
+<span class="keyword">let</span> triple = mul.<span class="function-name">bind</span>(<span class="keyword">null</span>, <span class="number">3</span>);<br><br>
+<span class="builtin">alert</span>( <span class="function-name">triple</span>(<span class="number">3</span>) ); <span class="comment">// = mul(3, 3) = 9</span><br>
+<span class="builtin">alert</span>( <span class="function-name">triple</span>(<span class="number">4</span>) ); <span class="comment">// = mul(3, 4) = 12</span><br>
+<span class="builtin">alert</span>( <span class="function-name">triple</span>(< class="number">5</span>) ); <span class="comment">// = mul(3, 5) = 15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #7c3aed;">
+        <h4><i class="fas fa-paper-plane" style="margin-right:5px; color:#7c3aed;"></i>Practical Example</h4>
+        <p>Imagine a generic <code>send(from, to, text)</code> function. Inside a user object, we can create a partial variant that always sends from the current user:</p>
+        <div class="code-block">
+<span class="comment">// We want: sendTo(to, text) that always sends from current user</span><br>
+<span class="keyword">let</span> sendTo = send.<span class="function-name">bind</span>(<span class="keyword">null</span>, currentUser);
+        </div>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Pre-set Oven:</strong> A partial function is like an oven with the temperature already dialed in to 350°F. You still need to put the food in (the remaining argument), but the first step (setting the temperature) is already done for you.</p>
+      </div>
+    </div>
+    <span class="slide-number">5 / 10</span>
+  </div>
+
+  <!-- SLIDE 6: Going Partial Without Context -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Going Partial Without Context</div>
+      <div class="slide-subtitle">When you only want to bind arguments, not <code>this</code></div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-code-branch" style="margin-right:8px;"></i>The Problem with Native <code>bind</code></h3>
+        <p>The native <code>bind</code> requires a context as the first argument. If we only want to bind arguments for an object method, we can't just skip <code>this</code>. We need a custom helper.</p>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #1a73e8;">
+        <h4><i class="fas fa-tools" style="margin-right:5px;"></i>Custom <code>partial</code> Helper</h4>
+        <div class="code-block">
+<span class="keyword">function</span> <span class="function-name">partial</span>(func, ...argsBound) {<br>
+&nbsp;&nbsp;<span class="keyword">return function</span>(...args) { <span class="comment">// (*)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> func.<span class="function-name">call</span>(<span class="keyword">this</span>, ...argsBound, ...args);<br>
+&nbsp;&nbsp;}<br>
+}<br><br>
+<span class="comment">// Usage:</span><br>
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;firstName: <span class="string">"John"</span>,<br>
+&nbsp;&nbsp;<span class="function-name">say</span>(time, phrase) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span class="string">`[${time}] ${this.firstName}: ${phrase}!`</span>);<br>
+&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="comment">// Add a partial method with fixed time</span><br>
+user.sayNow = <span class="function-name">partial</span>(user.say, <span class="keyword">new</span> <span class="builtin">Date</span>().<span class="function-name">getHours</span>() + <span class="string">':'</span> + <span class="keyword">new</span> <span class="builtin">Date</span>().<span class="function-name">getMinutes</span>());<br><br>
+user.<span class="function-name">sayNow</span>(<span class="string">"Hello"</span>);<br>
+<span class="comment">// [10:00] John: Hello!</span>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <strong>How it works:</strong> The wrapper <code>(*)</code> gets the current <code>this</code> from the call (e.g., <code>user</code>), then calls <code>func</code> with that <code>this</code>, followed by the pre-bound args (<code>...argsBound</code>) and then the new args (<code>...args</code>).
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Pre-filled Form:</strong> It's like a partially filled-out form where the date is already stamped at the top. When you get the form, you fill in your name and details. The date was pre-filled (partial args), but the form still belongs to whoever is holding it (<code>this</code>).</p>
+      </div>
+    </div>
+    <span class="slide-number">6 / 10</span>
+  </div>
+
+  <!-- SLIDE 7: Arrow Functions Revisited - No "this" -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Arrow Functions: No <code>this</code></div>
+      <div class="slide-subtitle">Arrows don't have their own <code>this</code> — they borrow it from the outside</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-arrow-right" style="margin-right:8px;"></i>The Key Feature</h3>
+        <p>Arrow functions are not just shorthand. If <code>this</code> is accessed inside an arrow, it is taken from the outer lexical environment. This makes them perfect for callbacks inside object methods.</p>
+      </div>
+
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #34a853;">
+            <h4><i class="fas fa-check-circle" style="margin-right:5px; color:#34a853;"></i> Arrow Function (Works)</h4>
+            <div class="code-block">
+<span class="keyword">let</span> group = {<br>
+&nbsp;&nbsp;title: <span class="string">"Our Group"</span>,<br>
+&nbsp;&nbsp;students: [<span class="string">"John"</span>, <span class="string">"Pete"</span>],<br><br>
+&nbsp;&nbsp;<span class="function-name">showList</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.students.<span class="function-name">forEach</span>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;student <span class="operator">=></span> <span class="builtin">alert</span>(<span class="keyword">this</span>.title + <span class="string">': '</span> + student)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;);<br>
+&nbsp;&nbsp;}<br>
+};<br>
+group.<span class="function-name">showList</span>(); <span class="comment">// ✅</span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #e53935;">
+            <h4><i class="fas fa-times-circle" style="margin-right:5px; color:#e53935;"></i> Regular Function (Error)</h4>
+            <div class="code-block">
+<span class="keyword">let</span> group = {<br>
+&nbsp;&nbsp;title: <span class="string">"Our Group"</span>,<br>
+&nbsp;&nbsp;students: [<span class="string">"John"</span>, <span class="string">"Pete"</span>],<br><br>
+&nbsp;&nbsp;<span class="function-name">showList</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.students.<span class="function-name">forEach</span>(<span class="keyword">function</span>(student) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Error: this.title is undefined</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span class="keyword">this</span>.title + <span class="string">': '</span> + student);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+&nbsp;&nbsp;}<br>
+};
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Mirror vs. Window:</strong> A regular function has its own <code>this</code> — like a room with a mirror (you see yourself). An arrow function has no mirror, only a window — it looks outward into the next room to find <code>this</code>.</p>
+      </div>
+    </div>
+    <span class="slide-number">7 / 10</span>
+  </div>
+
+  <!-- SLIDE 8: Arrow vs bind & No arguments -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Arrow vs <code>bind</code> & No <code>arguments</code></div>
+      <div class="slide-subtitle">Understanding the subtle difference and why arrows have no arguments</div>
+    </div>
+    <div class="slide-content">
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #7c3aed;">
+            <h4><i class="fas fa-not-equal" style="margin-right:5px; color:#7c3aed;"></i> Arrow vs <code>.bind(this)</code></h4>
+            <ul style="padding-left:20px; line-height:2;">
+              <li><code>.bind(this)</code> creates a "bound version" with a fixed <code>this</code> value.</li>
+              <li><code>=></code> doesn't create any binding. The function simply <em>doesn't have</em> <code>this</code>. The lookup happens via the normal variable search in the outer lexical environment.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #1a73e8;">
+            <h4><i class="fas fa-ban" style="margin-right:5px;"></i> Arrows Have No <code>arguments</code></h4>
+            <p>Arrow functions don't have their own <code>arguments</code> object. This is great for decorators where we need to forward the outer function's <code>arguments</code>!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-left: 4px solid #34a853;">
+            <h4>With Arrow (Clean)</h4>
+            <div class="code-block">
+<span class="keyword">function</span> <span class="function-name">defer</span>(f, ms) {<br>
+&nbsp;&nbsp;<span class="keyword">return function</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name">setTimeout</span>(() <span class="operator">=></span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f.<span class="function-name">apply</span>(<span class="keyword">this</span>, arguments), ms);<br>
+&nbsp;&nbsp;};<br>
+}
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-left: 4px solid #e53935;">
+            <h4>Without Arrow (Messy)</h4>
+            <div class="code-block">
+<span class="keyword">function</span> <span class="function-name">defer</span>(f, ms) {<br>
+&nbsp;&nbsp;<span class="keyword">return function</span>(...args) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> ctx = <span class="keyword">this</span>; <span class="comment">// save context</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name">setTimeout</span>(<span class="keyword">function</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> f.<span class="function-name">apply</span>(ctx, args);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}, ms);<br>
+&nbsp;&nbsp;};<br>
+}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <strong>Why it works:</strong> The arrow function in <code>setTimeout</code> doesn't have its own <code>this</code> or <code>arguments</code>, so it uses the <code>this</code> and <code>arguments</code> from the enclosing wrapper function. No extra variables needed!
+      </div>
+    </div>
+    <span class="slide-number">8 / 10</span>
+  </div>
+
+  <!-- SLIDE 9: Arrow Limitations -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Arrow Function Limitations</div>
+      <div class="slide-subtitle">When NOT to use arrow functions</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-exclamation-circle" style="margin-right:8px; color:#e65100;"></i>Things Arrows Cannot Do</h3>
+        <p>Because arrow functions don't have their own context, they can't be used in situations that require <code>this</code> to be dynamically assigned.</p>
+      </div>
+
+      <div class="comparison-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Arrow Function</th>
+              <th>Regular Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Has own <code>this</code></strong></td>
+              <td style="color:#e53935;">❌ No (takes from outer)</td>
+              <td style="color:#34a853;">✅ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Has <code>arguments</code></strong></td>
+              <td style="color:#e53935;">❌ No</td>
+              <td style="color:#34a853;">✅ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Can be called with <code>new</code></strong></td>
+              <td style="color:#e53935;">❌ No (TypeError)</td>
+              <td style="color:#34a853;">✅ Yes (constructors)</td>
+            </tr>
+            <tr>
+              <td><strong>Has <code>super</code></strong></td>
+              <td style="color:#e53935;">❌ No (covered later)</td>
+              <td style="color:#34a853;">✅ Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #ff6f00;">
+        <h4><i class="fas fa-hand-paper" style="margin-right:5px; color:#e65100;"></i>Don't Use Arrows For:</h4>
+        <ul style="padding-left:20px; line-height:2;">
+          <li><strong>Object methods:</strong> <code>let obj = { sayHi: () => alert(this.name) }</code> — <code>this</code> will be <code>window</code> or <code>undefined</code>, not <code>obj</code>.</li>
+          <li><strong>Constructors:</strong> <code>new (() => {}) </code> — throws a TypeError.</li>
+          <li><strong>Event handlers that need <code>this</code>:</strong> <code>button.addEventListener('click', () => ...)</code> — if you need <code>this</code> to be the button element.</li>
+        </ul>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Single-Purpose Tool:</strong> Arrow functions are like a simple screwdriver — great for one job (callbacks), but you can't use them as a hammer (constructor) or a Swiss Army knife (methods that need their own <code>this</code>). For those, you need the full toolbox (regular functions).</p>
+      </div>
+    </div>
+    <span class="slide-number">9 / 10</span>
+  </div>
+
+  <!-- SLIDE 10: Summary -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Summary</div>
+      <div class="slide-subtitle">Everything you need to remember about Function Binding & Arrows</div>
+    </div>
+    <div class="slide-content">
+      <div class="info-card" style="background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%); padding: 25px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+          <div style="flex: 1; min-width: 280px;">
+            <h4 style="color:#1a73e8; font-size:1.3rem; margin-bottom:12px;">
+              <i class="fas fa-link" style="margin-right:8px;"></i>Function Binding
+            </h4>
+            <ul style="padding-left:20px; line-height:2;">
+              <li>Passing a method detached from its object loses <code>this</code></li>
+              <li>Wrapper fixes it, but vulnerable to variable changes</li>
+              <li><code>bind(context)</code> permanently fixes <code>this</code></li>
+              <li>Partial application: <code>bind(context, arg1, ...)</code> pre-fills arguments</li>
+              <li>Custom <code>partial()</code> helper binds args but keeps <code>this</code> dynamic</li>
+            </ul>
+          </div>
+          <div style="flex: 1; min-width: 280px;">
+            <h4 style="color:#1a73e8; font-size:1.3rem; margin-bottom:12px;">
+              <i class="fas fa-arrow-right" style="margin-right:8px;"></i>Arrow Functions
+            </h4>
+            <ul style="padding-left:20px; line-height:2;">
+              <li>Do not have their own <code>this</code> (borrow from outer)</li>
+              <li>Do not have <code>arguments</code> (great for forwarding)</li>
+              <li>Cannot be called with <code>new</code></li>
+              <li>Not for object methods or constructors</li>
+              <li>Perfect for callbacks inside methods</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-table" style="margin-top:25px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>One-Liner</th>
+              <th>Real-World Analogy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Losing <code>this</code></strong></td>
+              <td>Detaching a method from its object</td>
+              <td>Engine removed from car</td>
+            </tr>
+            <tr>
+              <td><strong>Wrapper Fix</strong></td>
+              <td>Calls method via variable lookup</td>
+              <td>Reading a changeable name tag</td>
+            </tr>
+            <tr>
+              <td><strong>bind()</strong></td>
+              <td>Permanently locks <code>this</code> + args</td>
+              <td>Super glue / Engraved name</td>
+            </tr>
+            <tr>
+              <td><strong>Partial Function</strong></td>
+              <td>Pre-fills some arguments</td>
+              <td>Pre-set oven temperature</td>
+            </tr>
+            <tr>
+              <td><strong>Arrow <code>this</code></strong></td>
+              <td>Looks up <code>this</code> from outer scope</td>
+              <td>Window (sees outer room)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="highlight-box" style="margin-top:20px;">
+        <strong><i class="fas fa-star" style="margin-right:5px;"></i> Rule of Thumb:</strong> Use <code>bind()</code> when you need a permanently bound function to pass around. Use arrow functions when you just need a quick callback that uses the current <code>this</code>. Don't use arrows for object methods or constructors!
+      </div>
+    </div>
+    <span class="slide-number">10 / 10</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  Function Binding & Arrow Functions — Presentation &copy; 2024 | Built with ❤️ for learning
+</div>
+
+<script>
+// Navigation functionality
+document.getElementById('topBtn').addEventListener('click', function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+document.getElementById('downBtn').addEventListener('click', function() {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth'
+  });
+});
+
+// Progress bar functionality
+window.addEventListener('scroll', function() {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// Add fade-in animation to slides when they come into view
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.1
+};
+
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.slide').forEach(slide => {
+  slide.style.opacity = '0';
+  slide.style.transform = 'translateY(20px)';
+  slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(slide);
+});
+</script>
+</body>
+</html>

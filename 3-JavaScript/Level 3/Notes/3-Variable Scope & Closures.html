@@ -1,0 +1,1605 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Variable Scope & Closures - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .scope-visual {
+        border: 3px solid #1a73e8;
+        border-radius: 12px;
+        padding: 15px;
+        margin: 15px 0;
+        position: relative;
+        background: rgba(232, 240, 254, 0.3);
+      }
+
+      .scope-visual.outer {
+        border-color: #34a853;
+        background: rgba(230, 244, 234, 0.3);
+      }
+
+      .scope-label {
+        position: absolute;
+        top: -12px;
+        left: 15px;
+        background: white;
+        padding: 0 8px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        color: #1a73e8;
+      }
+
+      .scope-visual.outer .scope-label {
+        color: #34a853;
+      }
+
+      .scope-visual .scope-visual {
+        margin-top: 15px;
+      }
+
+      .env-box {
+        border: 2px solid #1a73e8;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 8px 0;
+        background: white;
+      }
+
+      .env-box h5 {
+        color: #1a73e8;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .env-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px dashed #e1e8ed;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+      }
+
+      .env-row:last-child {
+        border-bottom: none;
+      }
+
+      .env-key {
+        color: #7c3aed;
+        font-weight: 500;
+      }
+      .env-val {
+        color: #34a853;
+      }
+      .env-ref {
+        color: #1a73e8;
+        font-style: italic;
+      }
+
+      .arrow-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 5px 0;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 5px;
+      }
+
+      .tag-let {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+      .tag-const {
+        background-color: #e6f4ea;
+        color: #34a853;
+      }
+      .tag-var {
+        background-color: #fff3e0;
+        color: #e65100;
+      }
+      .tag-hoisted {
+        background-color: #fce4ec;
+        color: #c62828;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Variable Scope & Closures</div>
+            <div class="hero-subtitle">
+              Understanding how JavaScript variables live, breathe, and remember
+              where they came from.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                Imagine a function is a person wearing a
+                <strong>backpack</strong>. Whatever variables existed around
+                them when they were born go into that backpack. No matter where
+                they travel, they always have access to those items.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"><i class="fas fa-cube"></i> Scope</span>
+              <span class="hero-tag"
+                ><i class="fas fa-layer-group"></i> Lexical Environment</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-backpack"></i> Closures</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop"
+                alt="Code and Scope concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 10</span>
+      </div>
+
+      <!-- SLIDE 2: Code Blocks & Scope -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Code Blocks & Scope</div>
+          <div class="slide-subtitle">
+            Variables declared inside <code>{...}</code> stay inside
+            <code>{...}</code>
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-lock" style="margin-right: 8px"></i>Block Scope
+            </h3>
+            <p>
+              When you declare a variable with
+              <span class="tag tag-let">let</span> or
+              <span class="tag tag-const">const</span> inside a block, it is
+              <strong>only visible inside that block</strong>. This lets you
+              isolate code without naming collisions.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="color: #34a853; margin-right: 5px"
+                  ></i>
+                  Works: Isolated Blocks
+                </h4>
+                <div class="code-block">
+                  { <span class="comment">// Block 1</span><br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> message =
+                  <span class="string">"Hello"</span>;<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(message);
+                  <span class="comment">// Hello</span><br />
+                  }<br /><br />
+                  { <span class="comment">// Block 2</span><br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> message =
+                  <span class="string">"Goodbye"</span>;<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(message);
+                  <span class="comment">// Goodbye</span><br />
+                  }
+                </div>
+                <p>Each block has its own <code>message</code>. No conflict!</p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="color: #e53935; margin-right: 5px"
+                  ></i>
+                  Error: No Block
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> message =
+                  <span class="string">"Hello"</span>;<br />
+                  <span class="builtin">alert</span>(message);<br /><br />
+                  <span class="keyword">let</span> message =
+                  <span class="string">"Goodbye"</span>;
+                  <span class="error">// Error!</span><br />
+                  <span class="comment">// Variable already declared</span>
+                </div>
+                <p>Without blocks, same-name variables collide.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h4>
+              <i class="fas fa-code" style="margin-right: 5px"></i> Also Applies
+              to Loops & Conditions
+            </h4>
+            <div class="code-block">
+              <span class="keyword">for</span> (<span class="keyword">let</span>
+              i = <span class="number">0</span>; i &lt;
+              <span class="number">3</span>; i++) {<br />
+              &nbsp;&nbsp;<span class="comment"
+                >// i is only visible inside this for loop</span
+              ><br />
+              &nbsp;&nbsp;<span class="builtin">alert</span>(i);
+              <span class="comment">// 0, 1, 2</span><br />
+              }<br /><br />
+              <span class="builtin">alert</span>(i);
+              <span class="error">// Error: i is not defined</span>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Hotel Rooms:</strong> Think of a code block like a hotel
+              room. Two different rooms can each have a "towel" — they don't
+              conflict. But you can't have two towels with the same name in the
+              <em>same</em> room.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 10</span>
+      </div>
+
+      <!-- SLIDE 3: Nested Functions -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Nested Functions</div>
+          <div class="slide-subtitle">
+            Functions created inside other functions — and the magic of
+            returning them
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-matryoshka-dolls" style="margin-right: 8px"></i
+              >What is a Nested Function?
+            </h3>
+            <p>
+              A function created inside another function. It can access the
+              outer function's variables. But the real magic? A nested function
+              can be <strong>returned</strong> and used elsewhere.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>Helper Function</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sayHiBye</span>(firstName,
+                  lastName) {<br /><br />
+                  &nbsp;&nbsp;<span class="comment"
+                    >// Helper nested function</span
+                  ><br />
+                  &nbsp;&nbsp;<span class="keyword">function</span>
+                  <span class="function-name">getFullName</span>() {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                  firstName + <span class="string">" "</span> + lastName;<br />
+                  &nbsp;&nbsp;}<br /><br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(
+                  <span class="string">"Hello, "</span> +
+                  <span class="function-name">getFullName</span>() );<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(
+                  <span class="string">"Bye, "</span> +
+                  <span class="function-name">getFullName</span>() );<br />
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>Returning a Function ⭐</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">makeCounter</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> count =
+                  <span class="number">0</span>;<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return function</span>()
+                  {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                  count++;<br />
+                  &nbsp;&nbsp;};<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> counter =
+                  <span class="function-name">makeCounter</span>();<br /><br />
+                  <span class="builtin">alert</span>(
+                  <span class="function-name">counter</span>() );
+                  <span class="comment">// 0</span><br />
+                  <span class="builtin">alert</span>(
+                  <span class="function-name">counter</span>() );
+                  <span class="comment">// 1</span><br />
+                  <span class="builtin">alert</span>(
+                  <span class="function-name">counter</span>() );
+                  <span class="comment">// 2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              The Big Question:</strong
+            >
+            After <code>makeCounter()</code> finishes, its local variables
+            should be gone. So how does <code>counter()</code> still know about
+            <code>count</code>? And if we create a second counter, are they
+            independent? Let's find out!
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>A factory machine:</strong> <code>makeCounter</code> is a
+              factory that produces counter gadgets. Each gadget has its own
+              internal counter dial. Even after the factory closes, each gadget
+              keeps ticking on its own.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 10</span>
+      </div>
+
+      <!-- SLIDE 4: Lexical Environment - Variables -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Lexical Environment: Variables</div>
+          <div class="slide-subtitle">
+            Under the hood — how JavaScript stores and finds variables
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-database" style="margin-right: 8px"></i>What is a
+              Lexical Environment?
+            </h3>
+            <p>
+              Every running function, code block, and the script itself has a
+              hidden object called a <strong>Lexical Environment</strong>. It
+              consists of two parts:
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>
+                  <i
+                    class="fas fa-box"
+                    style="margin-right: 5px; color: #7c3aed"
+                  ></i>
+                  1. Environment Record
+                </h4>
+                <p>
+                  An object that stores all <strong>local variables</strong> as
+                  its properties (plus <code>this</code> value, etc.).
+                </p>
+              </div>
+              <div class="info-card">
+                <h4>
+                  <i
+                    class="fas fa-link"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i>
+                  2. Outer Reference
+                </h4>
+                <p>
+                  A link to the <strong>outer</strong> Lexical Environment (the
+                  one surrounding this code).
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="env-box">
+                <h5>Global Lexical Environment</h5>
+                <div class="env-row">
+                  <span class="env-key">phrase</span>
+                  <span class="env-val">"Hello"</span>
+                </div>
+                <div class="env-row">
+                  <span class="env-key">user</span>
+                  <span class="env-val">"John"</span>
+                </div>
+                <div class="env-row">
+                  <span class="env-key">[[Outer]]</span>
+                  <span class="env-ref">null</span>
+                </div>
+              </div>
+              <p style="font-size: 0.9rem; color: #5f6368; margin-top: 5px">
+                The global environment has no outer reference → points to
+                <code>null</code>.
+              </p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h4>
+              <i
+                class="fas fa-hourglass-half"
+                style="margin-right: 5px; color: #e65100"
+              ></i>
+              Variable Lifecycle in 3 Stages
+            </h4>
+            <div class="flow-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <strong>Uninitialized:</strong> Engine knows the variable exists
+                (via <code>let</code>), but you <em>cannot</em> access it yet.
+                Accessing it throws an error.
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <strong>Declared (<code>undefined</code>):</strong> The
+                <code>let</code> line is reached. The variable now exists with
+                value <code>undefined</code> until assigned.
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <strong>Assigned:</strong> A value is given. The variable is
+                ready to use!
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>A filing cabinet:</strong> The Lexical Environment is a
+              filing cabinet. Each drawer (Environment Record) holds folders
+              (variables). If a folder isn't in this drawer, you check the
+              connected cabinet (outer reference) next door.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 10</span>
+      </div>
+
+      <!-- SLIDE 5: Function Declarations & Scope Chain -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Function Declarations & Scope Chain</div>
+          <div class="slide-subtitle">
+            How functions are initialized instantly, and how variable lookup
+            works
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-bolt"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i>
+                  Function Declarations are Instant
+                </h4>
+                <p>
+                  Unlike <code>let</code> variables, a
+                  <strong>Function Declaration</strong> is fully initialized the
+                  moment the Lexical Environment is created. That's why you can
+                  call it <em>before</em> its definition in the code!
+                </p>
+                <div class="code-block">
+                  <span class="comment">// This works!</span><br />
+                  <span class="builtin">alert</span>(
+                  <span class="function-name">say</span>(<span class="string"
+                    >"John"</span
+                  >) );<br /><br />
+                  <span class="keyword">function</span>
+                  <span class="function-name">say</span>(name) {<br />
+                  &nbsp;&nbsp;<span class="keyword">return</span>
+                  <span class="string">"Hello, "</span> + name;<br />
+                  }
+                </div>
+                <div class="warning-box" style="margin-top: 10px">
+                  <strong>Note:</strong> This only works for
+                  <em>Function Declarations</em>, not Function Expressions like
+                  <code>let say = function(name) {...}</code>.
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>
+                  <i class="fas fa-search" style="margin-right: 5px"></i> The
+                  Scope Chain Lookup
+                </h4>
+                <p>When code needs a variable, JavaScript searches in order:</p>
+                <div class="flow-step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    Current (inner) Lexical Environment
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">Outer Lexical Environment</div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    ...and further outward until found
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number" style="background: #e53935">!</div>
+                  <div class="step-content">
+                    If not found in global → <strong>Error</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="scope-visual outer">
+            <span class="scope-label">Global Environment</span>
+            <div class="env-row" style="padding: 5px 10px">
+              <span class="env-key">phrase</span>
+              <span class="env-val">"Hello"</span>
+            </div>
+            <div class="env-row" style="padding: 5px 10px">
+              <span class="env-key">say</span>
+              <span class="env-val">function</span>
+            </div>
+            <div class="scope-visual">
+              <span class="scope-label">say("John") Environment</span>
+              <div class="env-row" style="padding: 5px 10px">
+                <span class="env-key">name</span>
+                <span class="env-val">"John"</span>
+              </div>
+              <div class="env-row" style="padding: 5px 10px">
+                <span class="env-key">[[Outer]] →</span>
+                <span class="env-ref">Global</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Asking up the chain of command:</strong> You need a
+              document. You check your desk (inner scope). Not there? You ask
+              your manager (outer scope). Still not there? They ask the director
+              (global scope). If nobody has it — it doesn't exist!
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 10</span>
+      </div>
+
+      <!-- SLIDE 6: Returning a Function & [[Environment]] -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Returning a Function & [[Environment]]</div>
+          <div class="slide-subtitle">
+            How the makeCounter function actually works under the hood
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-fingerprint" style="margin-right: 8px"></i>The
+              Hidden [[Environment]] Property
+            </h3>
+            <p>
+              All functions remember the Lexical Environment in which they were
+              created. They carry a hidden
+              <strong>[[Environment]]</strong> property that stores a reference
+              to their birthplace. This reference is
+              <strong>set once and forever</strong> at creation time.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">makeCounter</span>() {<br />
+            &nbsp;&nbsp;<span class="keyword">let</span> count =
+            <span class="number">0</span>;<br /><br />
+            &nbsp;&nbsp;<span class="keyword">return function</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> count++;
+            <span class="comment">// Where does 'count' come from?</span><br />
+            &nbsp;&nbsp;};<br />
+            }<br /><br />
+            <span class="keyword">let</span> counter =
+            <span class="function-name">makeCounter</span>();
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #7c3aed">
+                <h4>Step 1: makeCounter() runs</h4>
+                <div class="env-box">
+                  <h5>makeCounter Environment</h5>
+                  <div class="env-row">
+                    <span class="env-key">count</span
+                    ><span class="env-val">0</span>
+                  </div>
+                </div>
+                <p style="margin-top: 8px">
+                  A new Lexical Environment is created with
+                  <code>count = 0</code>. The returned function's
+                  <code>[[Environment]]</code> points here.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>Step 2: counter() is called</h4>
+                <div class="env-box">
+                  <h5>counter() call Environment</h5>
+                  <div class="env-row">
+                    <span class="env-key">(empty)</span
+                    ><span class="env-val"></span>
+                  </div>
+                  <div class="env-row">
+                    <span class="env-key">[[Outer]] →</span
+                    ><span class="env-ref">makeCounter Env</span>
+                  </div>
+                </div>
+                <p style="margin-top: 8px">
+                  No local <code>count</code>? Follow outer reference → finds
+                  <code>count</code> in makeCounter's environment. Updates it
+                  there!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Key Insight:</strong> The variable is updated in the Lexical
+            Environment where it <em>lives</em>, not where it's accessed from.
+            Each call to <code>makeCounter()</code> creates a
+            <strong>new, independent</strong> Lexical Environment with its own
+            <code>count</code>.
+          </div>
+        </div>
+        <span class="slide-number">6 / 10</span>
+      </div>
+
+      <!-- SLIDE 7: What is a Closure? -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">What is a Closure?</div>
+          <div class="slide-subtitle">
+            The concept that makes JavaScript functions so powerful
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              border: 2px solid #1a73e8;
+            "
+          >
+            <h4
+              style="font-size: 1.5rem; text-align: center; margin-bottom: 15px"
+            >
+              <i
+                class="fas fa-star"
+                style="color: #f1c40f; margin-right: 8px"
+              ></i>
+              Closure Definition
+            </h4>
+            <p style="font-size: 1.15rem; text-align: center; line-height: 1.8">
+              A <strong>closure</strong> is a function that remembers its outer
+              variables and can access them.<br />
+              In JavaScript,
+              <strong>all functions are naturally closures</strong>.<br />
+              They automatically remember where they were created using the
+              hidden <code>[[Environment]]</code> property.
+            </p>
+          </div>
+
+          <div class="text-section" style="margin-top: 25px">
+            <h3>
+              <i class="fas fa-comments" style="margin-right: 8px"></i>Interview
+              Answer
+            </h3>
+            <p>If someone asks "What's a closure?", a great answer would be:</p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <strong>Define it:</strong> A function that remembers outer
+              variables from its birthplace.
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <strong>Key fact:</strong> In JS, all functions are closures by
+              default.
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <strong>Technical detail:</strong> They use the
+              <code>[[Environment]]</code> property to reference their Lexical
+              Environment.
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <strong>Practical effect:</strong> Even if the outer function has
+              finished running, the returned inner function still has access to
+              its variables.
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Your phone's contacts:</strong> You might move to a
+              different city (the function is called elsewhere), but you still
+              have the contacts from your hometown (the outer variables). The
+              contacts were saved when you got the phone (creation time), not
+              when you moved (call time).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 10</span>
+      </div>
+
+      <!-- SLIDE 8: Garbage Collection -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Garbage Collection & Closures</div>
+          <div class="slide-subtitle">
+            How Lexical Environments stay alive (and when they die)
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-trash-alt" style="margin-right: 8px"></i>The Rule
+              of Reachability
+            </h3>
+            <p>
+              Normally, when a function finishes, its Lexical Environment is
+              <strong>garbage collected</strong> (removed from memory) because
+              nothing references it anymore. But closures change this!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-heart"
+                    style="color: #34a853; margin-right: 5px"
+                  ></i>
+                  Kept Alive
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">f</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> value =
+                  <span class="number">123</span>;<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return function</span>()
+                  {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(value);<br />
+                  &nbsp;&nbsp;};<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> g =
+                  <span class="function-name">f</span>();<br />
+                  <span class="comment">// g.[[Environment]] references</span
+                  ><br />
+                  <span class="comment">// f's Lexical Environment</span><br />
+                  <span class="comment">// → value stays in memory!</span>
+                </div>
+                <p>
+                  As long as <code>g</code> exists, the environment (and
+                  <code>value</code>) is reachable and stays alive.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-heart-broken"
+                    style="color: #e53935; margin-right: 5px"
+                  ></i>
+                  Cleaned Up
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">f</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> value =
+                  <span class="number">123</span>;<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return function</span>()
+                  {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(value);<br />
+                  &nbsp;&nbsp;};<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> g =
+                  <span class="function-name">f</span>();<br />
+                  <span class="comment">// ... later ...</span><br />
+                  g = <span class="keyword">null</span>;
+                  <span class="comment">// Now cleaned up!</span>
+                </div>
+                <p>
+                  Once <code>g</code> is removed, nothing references the Lexical
+                  Environment. <code>value</code> is garbage collected.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h4>
+              <i
+                class="fas fa-copy"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Multiple Instances = Multiple Environments
+            </h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">f</span>() {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> value =
+              <span class="builtin">Math</span>.<span class="function-name"
+                >random</span
+              >();<br />
+              &nbsp;&nbsp;<span class="keyword">return function</span>() {
+              <span class="builtin">alert</span>(value); };<br />
+              }<br /><br />
+              <span class="comment"
+                >// 3 different functions, 3 different environments</span
+              ><br />
+              <span class="keyword">let</span> arr = [<span
+                class="function-name"
+                >f</span
+              >(), <span class="function-name">f</span>(),
+              <span class="function-name">f</span>()];
+            </div>
+            <p>
+              Each call to <code>f()</code> creates its own independent Lexical
+              Environment. All 3 stay in memory as long as the
+              <code>arr</code> array exists.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">8 / 10</span>
+      </div>
+
+      <!-- SLIDE 9: Real-Life Optimizations & Debugging -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Real-Life Optimizations & Debugging</div>
+          <div class="slide-subtitle">
+            A V8 engine quirk that might surprise you in Chrome DevTools
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-cogs" style="margin-right: 8px"></i>Engine
+              Optimizations
+            </h3>
+            <p>
+              In theory, while a function exists, <em>all</em> outer variables
+              are retained. In practice, engines like V8 (Chrome, Edge, Opera)
+              <strong>optimize memory</strong> by removing unused variables from
+              the Lexical Environment.
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #f1c40f">
+            <h4>
+              <i
+                class="fas fa-bug"
+                style="margin-right: 5px; color: #e65100"
+              ></i
+              >The Debugging Gotcha
+            </h4>
+            <p>
+              Try this in Chrome DevTools — the variable
+              <code>value</code> won't be available even though it theoretically
+              should be:
+            </p>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">f</span>() {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> value =
+              <span class="builtin">Math</span>.<span class="function-name"
+                >random</span
+              >();<br /><br />
+              &nbsp;&nbsp;<span class="keyword">function</span>
+              <span class="function-name">g</span>() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">debugger</span>;
+              <span class="comment">// In console: alert(value);</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"
+                >// Error: value is not defined!</span
+              ><br />
+              &nbsp;&nbsp;}<br /><br />
+              &nbsp;&nbsp;<span class="keyword">return</span> g;<br />
+              }<br /><br />
+              <span class="keyword">let</span> g =
+              <span class="function-name">f</span>();<br />
+              <span class="function-name">g</span>();
+            </div>
+            <p>
+              V8 saw that <code>g()</code> doesn't use <code>value</code> and
+              removed it to save memory. This can be confusing during debugging!
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i class="fas fa-ghost" style="margin-right: 5px"></i>The Phantom
+              Variable
+            </h4>
+            <p>
+              Even stranger — a same-named variable from an outer scope might
+              appear instead:
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> value =
+              <span class="string">"Surprise!"</span>;<br /><br />
+              <span class="keyword">function</span>
+              <span class="function-name">f</span>() {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> value =
+              <span class="string">"the closest value"</span>;<br /><br />
+              &nbsp;&nbsp;<span class="keyword">function</span>
+              <span class="function-name">g</span>() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">debugger</span>;
+              <span class="comment">// alert(value) → "Surprise!"</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"
+                >// The inner 'value' was optimized out,</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"
+                >// so it finds the outer one!</span
+              ><br />
+              &nbsp;&nbsp;}<br /><br />
+              &nbsp;&nbsp;<span class="keyword">return</span> g;<br />
+              }
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Good to know:</strong> This is not a debugger bug — it's a
+            V8 optimization feature. If you're debugging in Chrome/Edge/Opera
+            and a variable is missing or showing a wrong value, this might be
+            why.
+          </div>
+        </div>
+        <span class="slide-number">9 / 10</span>
+      </div>
+
+      <!-- SLIDE 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Scope & Closures
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-cube" style="margin-right: 8px"></i>Block
+                  Scope
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>let</code>/<code>const</code> inside
+                    <code>{...}</code> are block-scoped
+                  </li>
+                  <li>Variables only exist within their block</li>
+                  <li>For loops have their own scope per iteration</li>
+                </ul>
+              </div>
+
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-layer-group" style="margin-right: 8px"></i
+                  >Lexical Environment
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    Environment Record (local variables) + outer reference
+                  </li>
+                  <li>Variable lookup goes: inner → outer → global</li>
+                  <li>Function Declarations are initialized instantly</li>
+                </ul>
+              </div>
+
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-backpack" style="margin-right: 8px"></i
+                  >Closures
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>All JS functions are closures</li>
+                  <li>
+                    They remember their birthplace via
+                    <code>[[Environment]]</code>
+                  </li>
+                  <li>
+                    Outer variables stay alive as long as the function exists
+                  </li>
+                </ul>
+              </div>
+
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-recycle" style="margin-right: 8px"></i
+                  >Garbage Collection
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>Lexical Environments live while reachable</li>
+                  <li>Setting <code>func = null</code> allows cleanup</li>
+                  <li>
+                    V8 may optimize away unused variables (debugging gotcha)
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Scope</strong></td>
+                  <td>Where a variable can be seen and used</td>
+                  <td>Hotel room — items belong to that room</td>
+                </tr>
+                <tr>
+                  <td><strong>Lexical Environment</strong></td>
+                  <td>Hidden object storing variables + outer link</td>
+                  <td>Filing cabinet with connected drawers</td>
+                </tr>
+                <tr>
+                  <td><strong>Closure</strong></td>
+                  <td>Function + its birthplace environment</td>
+                  <td>Backpack you never take off</td>
+                </tr>
+                <tr>
+                  <td><strong>[[Environment]]</strong></td>
+                  <td>Hidden reference to creation environment</td>
+                  <td>Contacts saved when you got your phone</td>
+                </tr>
+                <tr>
+                  <td><strong>Garbage Collection</strong></td>
+                  <td>Remove unreachable environments from memory</td>
+                  <td>Throwing away keys to a locked room</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <span class="slide-number">10 / 10</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Variable Scope & Closures — Presentation &copy; 2024 | Built with ❤️ for
+      learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

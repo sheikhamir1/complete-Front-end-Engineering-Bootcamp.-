@@ -1,0 +1,1717 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recursion & Stack - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+
+      .code-block .number {
+        color: #fab387;
+      }
+
+      .code-block .string {
+        color: #a6e3a1;
+      }
+
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+
+      .code-block .operator {
+        color: #89dceb;
+      }
+
+      .code-label {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #6c7086;
+        padding: 2px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-family: "Roboto", sans-serif;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .stack-visual {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 4px;
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        min-height: 200px;
+      }
+
+      .stack-item {
+        background-color: #1a73e8;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        text-align: center;
+        width: 80%;
+        max-width: 350px;
+        animation: stackPush 0.4s ease;
+      }
+
+      .stack-item.active {
+        background-color: #0d47a1;
+        box-shadow: 0 0 10px rgba(26, 115, 232, 0.4);
+      }
+
+      .stack-item.resolved {
+        background-color: #34a853;
+      }
+
+      @keyframes stackPush {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .tree-visual {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .tree-node {
+        background-color: #e8f0fe;
+        border: 2px solid #1a73e8;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        margin: 4px;
+      }
+
+      .tree-node.leaf {
+        background-color: #e6f4ea;
+        border-color: #34a853;
+      }
+
+      .tree-children {
+        display: flex;
+        gap: 10px;
+        position: relative;
+        margin-top: 10px;
+      }
+
+      .tree-connector {
+        width: 2px;
+        height: 15px;
+        background-color: #1a73e8;
+        margin: 0 auto;
+      }
+
+      .linked-list-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0;
+        margin: 20px 0;
+      }
+
+      .list-node {
+        background-color: #e8f0fe;
+        border: 2px solid #1a73e8;
+        border-radius: 8px;
+        padding: 10px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 70px;
+      }
+
+      .list-node .node-value {
+        font-weight: bold;
+        color: #1a73e8;
+        font-size: 1.1rem;
+      }
+
+      .list-node .node-label {
+        font-size: 0.7rem;
+        color: #5f6368;
+      }
+
+      .list-arrow {
+        font-size: 1.5rem;
+        color: #1a73e8;
+        margin: 0 5px;
+      }
+
+      .list-node.null-node {
+        background-color: #fce4ec;
+        border-color: #e53935;
+        color: #e53935;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+
+      .key-term {
+        display: inline-block;
+        background-color: #e8f0fe;
+        color: #1a73e8;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 5px;
+      }
+
+      .tag-iterative {
+        background-color: #e6f4ea;
+        color: #34a853;
+      }
+
+      .tag-recursive {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .pros-cons {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .pros-card,
+      .cons-card {
+        flex: 1;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .pros-card {
+        background-color: #e6f4ea;
+        border: 1px solid #34a853;
+      }
+
+      .cons-card {
+        background-color: #fce4ec;
+        border: 1px solid #e53935;
+      }
+
+      .pros-card h4 {
+        color: #34a853;
+        margin-bottom: 10px;
+      }
+
+      .cons-card h4 {
+        color: #e53935;
+        margin-bottom: 10px;
+      }
+
+      .pros-card li,
+      .cons-card li {
+        margin-bottom: 8px;
+        font-size: 1rem;
+      }
+
+      .operation-demo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+        flex-wrap: wrap;
+      }
+
+      .op-before,
+      .op-after {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .op-label {
+        font-weight: bold;
+        color: #1a73e8;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+      }
+
+      .op-arrow {
+        font-size: 1.5rem;
+        color: #ff6f00;
+        font-weight: bold;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .hero-title {
+          font-size: 2.2rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .pros-cons {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+
+        .linked-list-visual {
+          gap: 0;
+        }
+
+        .list-node {
+          min-width: 55px;
+          padding: 8px 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title Slide -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Recursion & Stack</div>
+            <div class="hero-subtitle">
+              Understanding how functions call themselves, how the call stack
+              works, and why it all matters.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                Imagine you're looking for a file in nested folders. You open a
+                folder — if it has subfolders, you open each one (same task,
+                smaller scope). If it has the file, you're done. That's
+                recursion!
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-redo"></i> Recursion</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-layer-group"></i> Call Stack</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-link"></i> Linked Lists</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1515879218367-8466d910auj7?w=600&h=400&fit=crop"
+                alt="Recursion concept"
+                onerror="
+                  this.src =
+                    'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&h=400&fit=crop';
+                  this.alt = 'Programming concept';
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 10</span>
+      </div>
+
+      <!-- SLIDE 2: What is Recursion? -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">What is Recursion?</div>
+          <div class="slide-subtitle">
+            A function that calls itself to solve smaller versions of the same
+            problem
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-sync-alt" style="margin-right: 8px"></i>Core Idea
+            </h3>
+            <p>
+              Recursion is when a function solves a task by
+              <strong>calling itself</strong> with a simpler input. It keeps
+              breaking the problem down until it reaches a trivially simple case
+              it can answer immediately.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>
+                  <i
+                    class="fas fa-flag"
+                    style="margin-right: 8px; color: #34a853"
+                  ></i
+                  >Base Case
+                </h4>
+                <p>
+                  The condition where the function
+                  <strong>stops</strong> calling itself and returns a direct
+                  answer. Without it, recursion runs forever (stack overflow!).
+                </p>
+                <div class="code-block">
+                  <span class="comment">// The stopping point</span><br />
+                  <span class="keyword">if</span> (n ==
+                  <span class="number">1</span>) {<br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> x;
+                  <span class="comment">// Direct answer</span><br />
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>
+                  <i
+                    class="fas fa-arrow-right"
+                    style="margin-right: 8px; color: #1a73e8"
+                  ></i
+                  >Recursive Step
+                </h4>
+                <p>
+                  The part where the function <strong>calls itself</strong> with
+                  a smaller/simpler input, moving toward the base case.
+                </p>
+                <div class="code-block">
+                  <span class="comment">// Break problem down</span><br />
+                  <span class="keyword">else</span> {<br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> x
+                  <span class="operator">*</span>
+                  <span class="function-name">pow</span>(x, n -
+                  <span class="number">1</span>);<br />
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Matryoshka Dolls:</strong> You open a doll, and inside is
+              a smaller doll. You keep opening dolls (recursive step) until you
+              reach the tiniest one that can't be opened (base case). Each doll
+              is the "same kind" but simpler/smaller.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 10</span>
+      </div>
+
+      <!-- SLIDE 3: Two Ways of Thinking -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Two Ways of Thinking</div>
+          <div class="slide-subtitle">
+            Iterative vs Recursive — Same result, different mindset
+          </div>
+        </div>
+        <div class="slide-content">
+          <p style="font-size: 1.1rem; margin-bottom: 20px">
+            Let's write
+            <code
+              style="background: #e8f0fe; padding: 2px 6px; border-radius: 4px"
+              >pow(x, n)</code
+            >
+            — a function that raises
+            <code
+              style="background: #e8f0fe; padding: 2px 6px; border-radius: 4px"
+              >x</code
+            >
+            to the power
+            <code
+              style="background: #e8f0fe; padding: 2px 6px; border-radius: 4px"
+              >n</code
+            >. Example: pow(2, 4) = 2×2×2×2 = 16.
+          </p>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <span class="tag tag-iterative">ITERATIVE</span> Using a Loop
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">pow</span>(x, n) {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> result =
+                  <span class="number">1</span>;<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">for</span> (<span
+                    class="keyword"
+                    >let</span
+                  >
+                  i = <span class="number">0</span>; i &lt; n; i++) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;result
+                  <span class="operator">*=</span> x;<br />
+                  &nbsp;&nbsp;}<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> result;<br />
+                  }<br /><br />
+                  <span class="function-name">pow</span>(<span class="number"
+                    >2</span
+                  >, <span class="number">3</span>);
+                  <span class="comment">// 8</span>
+                </div>
+                <p style="margin-top: 10px">
+                  <i class="fas fa-check" style="color: #34a853"></i> Multiply
+                  <code>x</code> by itself <code>n</code> times using a loop.
+                  Straightforward and familiar.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>
+                  <span class="tag tag-recursive">RECURSIVE</span> Call Self
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">pow</span>(x, n) {<br />
+                  &nbsp;&nbsp;<span class="keyword">if</span> (n ==
+                  <span class="number">1</span>) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> x;
+                  <span class="comment">// base case</span><br />
+                  &nbsp;&nbsp;} <span class="keyword">else</span> {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> x
+                  <span class="operator">*</span>
+                  <span class="function-name">pow</span>(x, n-<span
+                    class="number"
+                    >1</span
+                  >);<br />
+                  &nbsp;&nbsp;}<br />
+                  }<br /><br />
+                  <span class="function-name">pow</span>(<span class="number"
+                    >2</span
+                  >, <span class="number">3</span>);
+                  <span class="comment">// 8</span>
+                </div>
+                <p style="margin-top: 10px">
+                  <i class="fas fa-check" style="color: #1a73e8"></i> x<sup
+                    >n</sup
+                  >
+                  = x × x<sup>n-1</sup>. Simplify until n=1, then return
+                  directly.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Key Insight:</strong> The recursive approach says: "I don't
+            need to calculate the whole thing. If someone gives me pow(2,3), I
+            just need 2 × pow(2,2). Let a smaller version of me handle the
+            rest!"
+          </div>
+        </div>
+        <span class="slide-number">3 / 10</span>
+      </div>
+
+      <!-- SLIDE 4: How Recursion Unfolds -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">How Recursion Unfolds</div>
+          <div class="slide-subtitle">Tracing pow(2, 4) step by step</div>
+        </div>
+        <div class="slide-content">
+          <p style="font-size: 1.1rem; margin-bottom: 15px">
+            Watch how
+            <code
+              style="background: #e8f0fe; padding: 2px 6px; border-radius: 4px"
+              >pow(2, 4)</code
+            >
+            breaks down and then builds back up:
+          </p>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-left: 4px solid #e53935">
+                <h4>
+                  <i class="fas fa-arrow-down" style="margin-right: 5px"></i>
+                  Winding Down (Breaking Apart)
+                </h4>
+                <div class="flow-step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <code>pow(2, 4)</code> → needs <code>2 × pow(2, 3)</code>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <code>pow(2, 3)</code> → needs <code>2 × pow(2, 2)</code>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <code>pow(2, 2)</code> → needs <code>2 × pow(2, 1)</code>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number" style="background-color: #34a853">
+                    4
+                  </div>
+                  <div class="step-content">
+                    <code>pow(2, 1)</code> →
+                    <strong style="color: #34a853">Base case! Returns 2</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-left: 4px solid #34a853">
+                <h4>
+                  <i class="fas fa-arrow-up" style="margin-right: 5px"></i>
+                  Unwinding (Building the Answer)
+                </h4>
+                <div class="flow-step">
+                  <div class="step-number" style="background-color: #34a853">
+                    4
+                  </div>
+                  <div class="step-content">
+                    <code>pow(2, 1)</code> = <strong>2</strong>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number" style="background-color: #34a853">
+                    3
+                  </div>
+                  <div class="step-content">
+                    <code>pow(2, 2)</code> = 2 × 2 = <strong>4</strong>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number" style="background-color: #34a853">
+                    2
+                  </div>
+                  <div class="step-content">
+                    <code>pow(2, 3)</code> = 2 × 4 = <strong>8</strong>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-number" style="background-color: #34a853">
+                    1
+                  </div>
+                  <div class="step-content">
+                    <code>pow(2, 4)</code> = 2 × 8 = <strong>16</strong> ✅
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Asking a boss for an answer:</strong> You ask your manager
+              a question. They don't know, so they ask their manager (recursive
+              call). This goes up the chain until someone knows the answer (base
+              case). Then the answer travels back down the chain to you.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Shorthand version:</strong>
+            <code>return (n == 1) ? x : (x * pow(x, n - 1));</code> — One line,
+            same logic!
+          </div>
+        </div>
+        <span class="slide-number">4 / 10</span>
+      </div>
+
+      <!-- SLIDE 5: The Call Stack -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Execution Context & Call Stack</div>
+          <div class="slide-subtitle">
+            How JavaScript keeps track of where it is in recursive calls
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-layer-group" style="margin-right: 8px"></i>What
+              is the Call Stack?
+            </h3>
+            <p>
+              Every function call creates an
+              <strong>execution context</strong> — a record of its variables and
+              where it paused. When a function makes a nested call, the current
+              context is <strong>pushed onto a stack</strong>, and the new call
+              runs. When it finishes, the previous context is
+              <strong>popped off</strong> and resumed.
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>A stack of plates:</strong> You add plates on top (push)
+              and remove from the top (pop). The last plate added is the first
+              one removed — that's <strong>LIFO</strong> (Last In, First Out).
+              Or think of a <strong>browser back button</strong> — each page you
+              visit gets pushed, and "back" pops the most recent one.
+            </p>
+          </div>
+
+          <p style="font-size: 1.1rem; margin-bottom: 15px">
+            Here's how the stack grows and shrinks during
+            <code
+              style="background: #e8f0fe; padding: 2px 6px; border-radius: 4px"
+              >pow(2, 3)</code
+            >:
+          </p>
+
+          <div class="two-column">
+            <div class="column">
+              <h4 style="color: #1a73e8; margin-bottom: 10px">
+                <i class="fas fa-arrow-down" style="margin-right: 5px"></i>
+                Stack Grows (Calls Made)
+              </h4>
+              <div class="stack-visual">
+                <div class="stack-item active">pow(2,1) — n=1 → base case!</div>
+                <div class="stack-item">pow(2,2) — waiting for pow(2,1)</div>
+                <div class="stack-item">pow(2,3) — waiting for pow(2,2)</div>
+              </div>
+            </div>
+            <div class="column">
+              <h4 style="color: #34a853; margin-bottom: 10px">
+                <i class="fas fa-arrow-up" style="margin-right: 5px"></i> Stack
+                Shrinks (Calls Return)
+              </h4>
+              <div class="stack-visual">
+                <div class="stack-item resolved">pow(2,1) → returns 2 ✓</div>
+                <div class="stack-item resolved">pow(2,2) → returns 4 ✓</div>
+                <div class="stack-item resolved">pow(2,3) → returns 8 ✓</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Recursion depth = max stack size.</strong> For pow(2,3), the
+            depth is 3. Each context uses memory, so deep recursion (e.g.,
+            n=100,000) can cause a <strong>stack overflow</strong>. JavaScript
+            engines typically allow ~10,000 nested calls.
+          </div>
+        </div>
+        <span class="slide-number">5 / 10</span>
+      </div>
+
+      <!-- SLIDE 6: Recursion vs Iteration -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Recursion vs Iteration</div>
+          <div class="slide-subtitle">
+            When to use which? Understanding the trade-offs
+          </div>
+        </div>
+        <div class="slide-content">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Aspect</th>
+                <th><span class="tag tag-iterative">Iteration</span></th>
+                <th><span class="tag tag-recursive">Recursion</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Memory</strong></td>
+                <td>
+                  Uses a single context — <strong>low, fixed memory</strong>
+                </td>
+                <td>
+                  One context per call — memory
+                  <strong>grows with depth</strong>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Speed</strong></td>
+                <td>Generally <strong>faster</strong> (no call overhead)</td>
+                <td>Slightly slower (function call overhead)</td>
+              </tr>
+              <tr>
+                <td><strong>Code Clarity</strong></td>
+                <td>Can be <strong>verbose</strong> for complex structures</td>
+                <td>Often <strong>shorter & cleaner</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Stack Overflow</strong></td>
+                <td><strong>No risk</strong></td>
+                <td>Risk if depth is <strong>too large</strong> (~10,000+)</td>
+              </tr>
+              <tr>
+                <td><strong>Best For</strong></td>
+                <td>Simple loops, known iterations</td>
+                <td>Trees, nested structures, divide & conquer</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pros-cons">
+            <div class="pros-card">
+              <h4>
+                <i class="fas fa-thumbs-up" style="margin-right: 5px"></i> Why
+                Use Recursion?
+              </h4>
+              <ul>
+                <li>Shorter, more readable code</li>
+                <li>Naturally fits tree/nested structures</li>
+                <li>Easy to reason about (base case + step)</li>
+                <li>Elegant divide-and-conquer solutions</li>
+              </ul>
+            </div>
+            <div class="cons-card">
+              <h4>
+                <i
+                  class="fas fa-exclamation-triangle"
+                  style="margin-right: 5px"
+                ></i>
+                Watch Out For
+              </h4>
+              <ul>
+                <li>Stack overflow on deep recursion</li>
+                <li>Slightly more memory usage</li>
+                <li>Can be harder to debug</li>
+                <li>Not always the fastest option</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Rule of thumb:</strong> Any recursion can be rewritten as a
+            loop, but sometimes the rewrite is complex and not worth it. Use
+            recursion when it makes your code clearer and the depth stays
+            manageable.
+          </div>
+        </div>
+        <span class="slide-number">6 / 10</span>
+      </div>
+
+      <!-- SLIDE 7: Recursive Traversals -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Recursive Traversals</div>
+          <div class="slide-subtitle">
+            Where recursion truly shines — navigating nested structures
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-sitemap" style="margin-right: 8px"></i>Company
+              Salary Example
+            </h3>
+            <p>
+              A company has departments. Each department may have employees
+              <strong>or</strong> sub-departments (which can have their own
+              sub-departments). How do we sum all salaries?
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="code-block">
+                <span class="keyword">function</span>
+                <span class="function-name">sumSalaries</span>(dept) {<br />
+                &nbsp;&nbsp;<span class="keyword">if</span> (<span
+                  class="function-name"
+                  >Array.isArray</span
+                >(dept)) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"
+                  >// Base: it's a list of people</span
+                ><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                dept.<span class="function-name">reduce</span>(<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(sum, p) =&gt; sum +
+                p.salary, <span class="number">0</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;);<br />
+                &nbsp;&nbsp;} <span class="keyword">else</span> {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"
+                  >// Recursive: it has sub-depts</span
+                ><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> sum =
+                <span class="number">0</span>;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> (<span
+                  class="keyword"
+                  >let</span
+                >
+                sub <span class="keyword">of</span><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name"
+                  >Object.values</span
+                >(dept)) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sum +=
+                <span class="function-name">sumSalaries</span>(sub);<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                sum;<br />
+                &nbsp;&nbsp;}<br />
+                }<br /><br />
+                <span class="function-name">sumSalaries</span>(company);
+                <span class="comment">// 7700</span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="tree-visual">
+                <div class="tree-node">🏢 Company</div>
+                <div class="tree-connector"></div>
+                <div class="tree-children">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                    "
+                  >
+                    <div class="tree-node">📊 Sales</div>
+                    <div class="tree-connector"></div>
+                    <div class="tree-children">
+                      <div class="tree-node leaf">👤 John: 1000</div>
+                      <div class="tree-node leaf">👤 Alice: 1600</div>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                    "
+                  >
+                    <div class="tree-node">💻 Development</div>
+                    <div class="tree-connector"></div>
+                    <div class="tree-children">
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          gap: 4px;
+                        "
+                      >
+                        <div class="tree-node">🌐 Sites</div>
+                        <div class="tree-node leaf">👤 Peter: 2000</div>
+                        <div class="tree-node leaf">👤 Alex: 1800</div>
+                      </div>
+                      <div
+                        style="
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          gap: 4px;
+                        "
+                      >
+                        <div class="tree-node">🔧 Internals</div>
+                        <div class="tree-node leaf">👤 Jack: 1300</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="highlight-box" style="margin-top: 15px">
+                <strong>Logic:</strong> If the input is an array → sum directly.
+                If it's an object → recurse into each sub-department. Works for
+                <em>any</em> nesting depth!
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Counting people in a building:</strong> If the room has
+              people, count them. If it has sub-rooms, go into each sub-room and
+              count (recursion). You don't need to know the building layout in
+              advance — the same logic works for any layout.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 10</span>
+      </div>
+
+      <!-- SLIDE 8: Recursive Data Structures -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Recursive Data Structures</div>
+          <div class="slide-subtitle">
+            Structures that are defined in terms of themselves
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-project-diagram" style="margin-right: 8px"></i
+              >What Makes a Structure Recursive?
+            </h3>
+            <p>
+              A <strong>recursive data structure</strong> is one that contains a
+              smaller version of itself. We've already seen this: a department
+              can contain sub-departments (same type!).
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>
+                  <i class="fas fa-code" style="margin-right: 5px"></i>HTML
+                  Document
+                </h4>
+                <p>An HTML tag can contain:</p>
+                <ul style="padding-left: 20px; margin-top: 8px">
+                  <li>Text</li>
+                  <li>Comments</li>
+                  <li>Other HTML tags (which can contain more tags...)</li>
+                </ul>
+                <div class="code-block" style="margin-top: 10px">
+                  <span class="comment">&lt;div&gt;</span><br />
+                  &nbsp;&nbsp;<span class="comment">&lt;p&gt;</span> Hello
+                  <span class="comment">&lt;/p&gt;</span><br />
+                  &nbsp;&nbsp;<span class="comment">&lt;div&gt;</span><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"
+                    >&lt;span&gt;</span
+                  >
+                  Nested! <span class="comment">&lt;/span&gt;</span><br />
+                  &nbsp;&nbsp;<span class="comment">&lt;/div&gt;</span><br />
+                  <span class="comment">&lt;/div&gt;</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>
+                  <i class="fas fa-building" style="margin-right: 5px"></i
+                  >Company Structure
+                </h4>
+                <p>A department is either:</p>
+                <ul style="padding-left: 20px; margin-top: 8px">
+                  <li>An array of employees (base)</li>
+                  <li>An object of sub-departments (recursive)</li>
+                </ul>
+                <div class="code-block" style="margin-top: 10px">
+                  dept = {<br />
+                  &nbsp;&nbsp;<span class="string">sales</span>: [<span
+                    class="comment"
+                    >// array</span
+                  ><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;{name, salary}<br />
+                  &nbsp;&nbsp;],<br />
+                  &nbsp;&nbsp;<span class="string">development</span>: {
+                  <span class="comment">// object</span><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;sites: [...],<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;internals: [...]<br />
+                  &nbsp;&nbsp;}<br />
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Pattern:</strong> A recursive structure is like a fractal —
+            zoom in on any part and you see the same pattern. This
+            self-similarity is exactly why recursive functions are the natural
+            tool for traversing them.
+          </div>
+        </div>
+        <span class="slide-number">8 / 10</span>
+      </div>
+
+      <!-- SLIDE 9: Linked List -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Linked List</div>
+          <div class="slide-subtitle">
+            A recursive data structure that's an alternative to arrays
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-link" style="margin-right: 8px"></i>Why Linked
+              Lists?
+            </h3>
+            <p>
+              Arrays are great, but
+              <strong>inserting/deleting at the beginning</strong> is slow — all
+              elements must shift. Linked lists solve this by chaining objects
+              with
+              <code
+                style="
+                  background: #e8f0fe;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >value</code
+              >
+              and
+              <code
+                style="
+                  background: #e8f0fe;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >next</code
+              >
+              pointers. No renumbering needed!
+            </p>
+          </div>
+
+          <div class="info-card">
+            <h4>Structure Visualization</h4>
+            <div class="linked-list-visual">
+              <div class="list-node">
+                <span class="node-label">value</span>
+                <span class="node-value">1</span>
+              </div>
+              <div class="list-arrow">→</div>
+              <div class="list-node">
+                <span class="node-label">value</span>
+                <span class="node-value">2</span>
+              </div>
+              <div class="list-arrow">→</div>
+              <div class="list-node">
+                <span class="node-label">value</span>
+                <span class="node-value">3</span>
+              </div>
+              <div class="list-arrow">→</div>
+              <div class="list-node">
+                <span class="node-label">value</span>
+                <span class="node-value">4</span>
+              </div>
+              <div class="list-arrow">→</div>
+              <div class="list-node null-node">null</div>
+            </div>
+            <div class="code-block" style="margin-top: 10px">
+              <span class="keyword">let</span> list = {<br />
+              &nbsp;&nbsp;value: <span class="number">1</span>,<br />
+              &nbsp;&nbsp;next: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;value:
+              <span class="number">2</span>,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;next: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:
+              <span class="number">3</span>,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value:
+              <span class="number">4</span>,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next:
+              <span class="keyword">null</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;}<br />
+              };
+              <span class="comment"
+                >// Each node = { value, next → node or null }</span
+              >
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>A scavenger hunt:</strong> Each clue gives you a location
+              and points to the next clue. To find the 3rd clue, you must start
+              from clue 1 and follow the chain. You can't skip ahead — but you
+              can easily insert a new clue between any two existing ones.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">9 / 10</span>
+      </div>
+
+      <!-- SLIDE 10: Linked List Operations & Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Linked List Operations & Summary</div>
+          <div class="slide-subtitle">
+            Fast insertions, slow access — and wrapping it all up
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-cogs" style="margin-right: 8px"></i>Key
+              Operations
+            </h3>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-plus-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i
+                  >Prepend (Add to Start)
+                </h4>
+                <div class="code-block">
+                  <span class="comment">// New node points to old list</span
+                  ><br />
+                  list = {<br />
+                  &nbsp;&nbsp;value: <span class="string">"new"</span>,<br />
+                  &nbsp;&nbsp;next: list
+                  <span class="comment">// → old head</span><br />
+                  };<br />
+                  <span class="comment">// Just update head! O(1)</span>
+                </div>
+              </div>
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-minus-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i
+                  >Remove from Middle
+                </h4>
+                <div class="code-block">
+                  <span class="comment">// Skip over the node to delete</span
+                  ><br />
+                  list.next = list.next.next;<br />
+                  <span class="comment"
+                    >// Node is unlinked & garbage collected</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Operation</th>
+                    <th>Array</th>
+                    <th>Linked List</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Access by index</td>
+                    <td style="color: #34a853; font-weight: bold">O(1) ⚡</td>
+                    <td style="color: #e53935">O(n)</td>
+                  </tr>
+                  <tr>
+                    <td>Insert at start</td>
+                    <td style="color: #e53935">O(n)</td>
+                    <td style="color: #34a853; font-weight: bold">O(1) ⚡</td>
+                  </tr>
+                  <tr>
+                    <td>Delete at start</td>
+                    <td style="color: #e53935">O(n)</td>
+                    <td style="color: #34a853; font-weight: bold">O(1) ⚡</td>
+                  </tr>
+                  <tr>
+                    <td>Insert at end</td>
+                    <td style="color: #34a853; font-weight: bold">O(1) ⚡</td>
+                    <td>O(n)*</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="font-size: 0.85rem; color: #5f6368; margin-top: 5px">
+                *O(1) with a tail pointer
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="highlight-box"
+            style="margin-top: 20px; margin-bottom: 25px"
+          >
+            <strong>Lists can be enhanced:</strong> Add a
+            <code>prev</code> pointer for backward navigation (doubly linked
+            list), add a <code>tail</code> reference for fast end-access. The
+            structure adapts to your needs.
+          </div>
+
+          <div class="text-section" style="margin-top: 10px">
+            <h3>
+              <i class="fas fa-graduation-cap" style="margin-right: 8px"></i>Key
+              Takeaways
+            </h3>
+          </div>
+
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 15px">
+              <div style="flex: 1; min-width: 250px">
+                <h4 style="color: #1a73e8">
+                  <i class="fas fa-redo" style="margin-right: 5px"></i>Recursion
+                </h4>
+                <ul style="padding-left: 20px">
+                  <li>A function calling itself with a simpler input</li>
+                  <li>Always needs a <strong>base case</strong> to stop</li>
+                  <li>Shorter, cleaner code for nested problems</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 250px">
+                <h4 style="color: #1a73e8">
+                  <i class="fas fa-layer-group" style="margin-right: 5px"></i
+                  >Call Stack
+                </h4>
+                <ul style="padding-left: 20px">
+                  <li>Tracks where each function paused</li>
+                  <li>LIFO — last called, first returned</li>
+                  <li>Deep recursion = more memory used</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 250px">
+                <h4 style="color: #1a73e8">
+                  <i class="fas fa-link" style="margin-right: 5px"></i>Linked
+                  Lists
+                </h4>
+                <ul style="padding-left: 20px">
+                  <li>Nodes chain via <code>next</code> pointers</li>
+                  <li>Fast insert/delete, slow random access</li>
+                  <li>A classic recursive data structure</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">10 / 10</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Recursion & Stack — Presentation &copy; 2024 | Built with ❤️ for learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F.prototype - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">F.prototype</div>
+            <div class="hero-subtitle">
+              How constructor functions set the prototype for all objects they
+              create.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                <code>F.prototype</code> is like a
+                <strong>cookie cutter template</strong>. The cutter itself isn't
+                a cookie — it's the shape that every new cookie will be stamped
+                from. The constructor function makes the cookie, and
+                <code>F.prototype</code> defines what that cookie inherits.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-industry"></i> Constructor</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-link"></i> .prototype</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-key"></i> .constructor</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop"
+                alt="Code and Templates concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 8</span>
+      </div>
+
+      <!-- SLIDE 2: The Big Idea -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Big Idea</div>
+          <div class="slide-subtitle">
+            How <code>F.prototype</code> connects constructors to inheritance
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-industry" style="margin-right: 8px"></i>The Rule
+            </h3>
+            <p>
+              When we create an object with <code>new F()</code>, the
+              <code>new</code> operator sets the new object's
+              <code>[[Prototype]]</code> to whatever is in
+              <code>F.prototype</code>.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = {<br />
+            &nbsp;&nbsp;eats: <span class="keyword">true</span><br />
+            };<br /><br />
+            <span class="keyword">function</span>
+            <span class="function-name">Rabbit</span>(name) {<br />
+            &nbsp;&nbsp;<span class="keyword">this</span>.name = name;<br />
+            }<br /><br />
+            Rabbit.prototype = animal;
+            <span class="comment"
+              >// "When new Rabbit is made, use animal as prototype"</span
+            ><br /><br />
+            <span class="keyword">let</span> rabbit =
+            <span class="keyword">new</span>
+            <span class="function-name">Rabbit</span>(<span class="string"
+              >"White Rabbit"</span
+            >);<br /><br />
+            <span class="builtin">alert</span>(rabbit.eats);
+            <span class="comment">// true (inherited from animal!)</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Translation:</strong>
+            <code>Rabbit.prototype = animal</code> means "Every new rabbit
+            created from this constructor will inherit from
+            <code>animal</code>." It's a one-time template assignment.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Factory Blueprint:</strong> A car factory
+              (<code>Rabbit</code>) has a blueprint
+              (<code>Rabbit.prototype</code>). Every car that rolls off the
+              assembly line (<code>new Rabbit()</code>) follows that blueprint.
+              If the blueprint says "all cars have airbags" (<code
+                >eats: true</code
+              >), every car gets airbags.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 8</span>
+      </div>
+
+      <!-- SLIDE 3: Don't Confuse the Two -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Don't Confuse the Two</div>
+          <div class="slide-subtitle">
+            <code>F.prototype</code> vs <code>[[Prototype]]</code> — they are
+            completely different things!
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-not-equal" style="margin-right: 8px"></i>Two
+              Completely Different Concepts
+            </h3>
+            <p>
+              This is one of the most common sources of confusion in JavaScript.
+              Let's clear it up once and for all.
+            </p>
+          </div>
+
+          <div class="comparison-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aspect</th>
+                  <th><code>F.prototype</code></th>
+                  <th><code>[[Prototype]]</code></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>What is it?</strong></td>
+                  <td>A regular property on a function</td>
+                  <td>A hidden internal property on objects</td>
+                </tr>
+                <tr>
+                  <td><strong>Where does it live?</strong></td>
+                  <td>
+                    On the constructor function (<code>Rabbit.prototype</code>)
+                  </td>
+                  <td>On every object (<code>rabbit.__proto__</code>)</td>
+                </tr>
+                <tr>
+                  <td><strong>What does it do?</strong></td>
+                  <td>Acts as a template for new objects</td>
+                  <td>Links an object to its prototype for property lookup</td>
+                </tr>
+                <tr>
+                  <td><strong>When is it used?</strong></td>
+                  <td>Only at <code>new F()</code> time</td>
+                  <td>Every time you read a property</td>
+                </tr>
+                <tr>
+                  <td><strong>Analogy</strong></td>
+                  <td>The cookie cutter shape</td>
+                  <td>The cookie's family recipe link</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Common Mistake:</strong
+            >
+            People often think <code>F.prototype</code> is the prototype of
+            <code>F</code>. It's not! It's the prototype of objects
+            <em>created by</em> <code>new F()</code>. On regular non-function
+            objects, a property named <code>prototype</code> is just a regular
+            property with no special meaning.
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user = {<br />
+            &nbsp;&nbsp;name: <span class="string">"John"</span>,<br />
+            &nbsp;&nbsp;prototype: <span class="string">"Bla-bla"</span>
+            <span class="comment"
+              >// No magic at all! Just a regular property.</span
+            ><br />
+            };
+          </div>
+        </div>
+        <span class="slide-number">3 / 8</span>
+      </div>
+
+      <!-- SLIDE 4: Only Used at new F() Time -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Only Used at <code>new F()</code> Time</div>
+          <div class="slide-subtitle">
+            Changing the prototype later doesn't affect existing objects
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-clock" style="margin-right: 8px"></i>The Snapshot
+              Effect
+            </h3>
+            <p>
+              <code>F.prototype</code> is only read when <code>new F()</code> is
+              called. The new object gets a <em>snapshot</em> of whatever
+              <code>F.prototype</code> points to at that moment. Changing
+              <code>F.prototype</code> afterwards only affects
+              <strong>future</strong> objects.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">Rabbit</span>(name) {<br />
+            &nbsp;&nbsp;<span class="keyword">this</span>.name = name;<br />
+            }<br /><br />
+            Rabbit.prototype = { eats: <span class="keyword">true</span> };
+            <span class="comment">// First template</span><br /><br />
+            <span class="keyword">let</span> rabbit1 =
+            <span class="keyword">new</span>
+            <span class="function-name">Rabbit</span>(<span class="string"
+              >"White"</span
+            >); <span class="comment">// Gets animal as prototype</span
+            ><br /><br />
+            Rabbit.prototype = { jumps: <span class="keyword">true</span> };
+            <span class="comment">// Changed template!</span><br /><br />
+            <span class="keyword">let</span> rabbit2 =
+            <span class="keyword">new</span>
+            <span class="function-name">Rabbit</span>(<span class="string"
+              >"Black"</span
+            >); <span class="comment">// Gets new prototype</span><br /><br />
+            <span class="builtin">alert</span>(rabbit1.eats);
+            <span class="comment">// true (old prototype)</span><br />
+            <span class="builtin">alert</span>(rabbit1.jumps);
+            <span class="comment">// undefined (old prototype)</span><br />
+            <span class="builtin">alert</span>(rabbit2.jumps);
+            <span class="comment">// true (new prototype)</span><br />
+            <span class="builtin">alert</span>(rabbit2.eats);
+            <span class="comment">// undefined (new prototype)</span>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>University Curriculum:</strong> If you enroll in 2023, you
+              follow the 2023 curriculum. If the university changes the
+              curriculum in 2024, new students follow the new one, but you still
+              follow the 2023 version. Your <code>[[Prototype]]</code> was
+              "photographed" at enrollment time.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 8</span>
+      </div>
+
+      <!-- SLIDE 5: Default F.prototype -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Default <code>F.prototype</code></div>
+          <div class="slide-subtitle">
+            Every function already has a prototype — with a
+            <code>constructor</code> inside
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-box-open" style="margin-right: 8px"></i>What's
+              There by Default?
+            </h3>
+            <p>
+              We don't need to set <code>F.prototype</code> manually. Every
+              function in JavaScript automatically gets a
+              <code>prototype</code> property — an object with a single property
+              called <code>constructor</code> that points back to the function
+              itself.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">Rabbit</span>() {}<br /><br />
+            <span class="comment">// Default behind the scenes:</span><br />
+            <span class="comment"
+              >// Rabbit.prototype = { constructor: Rabbit }</span
+            ><br /><br />
+            <span class="builtin">alert</span>(Rabbit.prototype.constructor ===
+            Rabbit); <span class="comment">// true</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-check-circle"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >Inherited by New Objects
+            </h4>
+            <p>
+              Because <code>constructor</code> lives on
+              <code>Rabbit.prototype</code>, it's inherited by every rabbit
+              created with <code>new Rabbit()</code>:
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> rabbit =
+              <span class="keyword">new</span>
+              <span class="function-name">Rabbit</span>();<br /><br />
+              <span class="builtin">alert</span>(rabbit.constructor === Rabbit);
+              <span class="comment">// true (from prototype)</span>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>"Made in" Label:</strong> Every product from a factory
+              comes with a "Made by Acme Corp" label (<code>constructor</code>).
+              The factory doesn't stamp each product individually — it's built
+              into the template. You can always trace back which factory made
+              the product.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 8</span>
+      </div>
+
+      <!-- SLIDE 6: Using the constructor Property -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">
+            Using the <code>constructor</code> Property
+          </div>
+          <div class="slide-subtitle">
+            Creating new objects of the same type without knowing the original
+            constructor
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-clone" style="margin-right: 8px"></i>Why Does
+              This Matter?
+            </h3>
+            <p>
+              If we have an object but don't know which constructor made it
+              (e.g., it came from a library), we can use
+              <code>constructor</code> to create another one of the same type.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">Rabbit</span>(name) {<br />
+            &nbsp;&nbsp;<span class="keyword">this</span>.name = name;<br />
+            }<br /><br />
+            <span class="keyword">let</span> rabbit =
+            <span class="keyword">new</span>
+            <span class="function-name">Rabbit</span>(<span class="string"
+              >"White Rabbit"</span
+            >);<br /><br />
+            <span class="comment"
+              >// We don't know Rabbit directly, but we have rabbit:</span
+            ><br />
+            <span class="keyword">let</span> rabbit2 =
+            <span class="keyword">new</span> rabbit.<span class="function-name"
+              >constructor</span
+            >(<span class="string">"Black Rabbit"</span>);<br /><br />
+            <span class="builtin">alert</span>(rabbit2.name);
+            <span class="comment">// Black Rabbit</span><br />
+            <span class="builtin">alert</span>(rabbit2 instanceof Rabbit);
+            <span class="comment">// true</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Practical Use:</strong> Imagine receiving an object from a
+            third-party library. You want to create another object of the same
+            type. Instead of digging through the library's documentation, just
+            use <code>new obj.constructor()</code>.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Returning to the Same Builder:</strong> You bought a house
+              from a builder but lost their contact info. However, the house has
+              a "Built by ABC Construction" plaque (<code>constructor</code>) on
+              it. You look up ABC Construction and hire them to build your next
+              house too.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 8</span>
+      </div>
+
+      <!-- SLIDE 7: Losing the Constructor -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Losing the Constructor</div>
+          <div class="slide-subtitle">
+            The danger of overwriting <code>F.prototype</code> entirely
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 8px; color: #e65100"
+              ></i
+              >The Problem
+            </h3>
+            <p>
+              JavaScript doesn't guarantee the <code>constructor</code> property
+              stays correct. If we replace the default <code>prototype</code> as
+              a whole, the <code>constructor</code> is lost!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i
+                  >Overwriting (Loses constructor)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">Rabbit</span>() {}<br /><br />
+                  Rabbit.prototype = {<br />
+                  &nbsp;&nbsp;jumps: <span class="keyword">true</span><br />
+                  };<br /><br />
+                  <span class="keyword">let</span> rabbit =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Rabbit</span>();<br /><br />
+                  <span class="builtin">alert</span>(rabbit.constructor ===
+                  Rabbit);<br />
+                  <span class="error">// false! Lost!</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i
+                  >Fix 1: Add Properties Instead
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">Rabbit</span>() {}<br /><br />
+                  <span class="comment">// Don't overwrite, just add:</span
+                  ><br />
+                  Rabbit.prototype.jumps =
+                  <span class="keyword">true</span>;<br /><br />
+                  <span class="keyword">let</span> rabbit =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Rabbit</span>();<br /><br />
+                  <span class="builtin">alert</span>(rabbit.constructor ===
+                  Rabbit);<br />
+                  <span class="comment">// true ✅ Preserved!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-wrench"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Fix 2: Recreate the Constructor Manually
+            </h4>
+            <p>
+              If you must overwrite, add the <code>constructor</code> back
+              yourself:
+            </p>
+            <div class="code-block">
+              Rabbit.prototype = {<br />
+              &nbsp;&nbsp;jumps: <span class="keyword">true</span>,<br />
+              &nbsp;&nbsp;constructor: Rabbit
+              <span class="comment">// Add it back!</span><br />
+              };<br /><br />
+              <span class="comment"
+                >// Now rabbit.constructor === Rabbit is true again ✅</span
+              >
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Remember:</strong
+            >
+            JavaScript itself does not ensure the right
+            <code>constructor</code> value. It exists in the default prototype,
+            but what happens with it later is totally on us.
+          </div>
+        </div>
+        <span class="slide-number">7 / 8</span>
+      </div>
+
+      <!-- SLIDE 8: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about F.prototype
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-industry" style="margin-right: 8px"></i>Key
+                  Rules
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>F.prototype</code> is a regular property on
+                    constructor functions
+                  </li>
+                  <li>
+                    It sets <code>[[Prototype]]</code> for objects created with
+                    <code>new F()</code>
+                  </li>
+                  <li>
+                    Only used at creation time — changes don't affect existing
+                    objects
+                  </li>
+                  <li>
+                    Must be an object or <code>null</code>; other values are
+                    ignored
+                  </li>
+                  <li>
+                    Only works with <code>new</code> — regular objects with
+                    <code>prototype</code> property have no magic
+                  </li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-key" style="margin-right: 8px"></i>The
+                  Constructor Property
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>Default <code>F.prototype = { constructor: F }</code></li>
+                  <li>Inherited by all objects made from <code>F</code></li>
+                  <li>Useful for creating new objects of the same type</li>
+                  <li>
+                    Overwriting <code>F.prototype</code> loses
+                    <code>constructor</code>
+                  </li>
+                  <li>
+                    Fix: add properties individually or recreate
+                    <code>constructor</code>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>F.prototype</strong></td>
+                  <td>Template for new objects' [[Prototype]]</td>
+                  <td>Cookie cutter / Factory blueprint</td>
+                </tr>
+                <tr>
+                  <td><strong>[[Prototype]]</strong></td>
+                  <td>Hidden link for property lookup</td>
+                  <td>Family recipe chain</td>
+                </tr>
+                <tr>
+                  <td><strong>Snapshot Effect</strong></td>
+                  <td>Changes to F.prototype don't affect existing objects</td>
+                  <td>University curriculum at enrollment</td>
+                </tr>
+                <tr>
+                  <td><strong>constructor property</strong></td>
+                  <td>Points back to the function that made the object</td>
+                  <td>"Made by" label / Builder plaque</td>
+                </tr>
+                <tr>
+                  <td><strong>Losing constructor</strong></td>
+                  <td>Overwriting prototype erases it</td>
+                  <td>Scraping the "Made by" sticker off</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Rule of
+              Thumb:</strong
+            >
+            Think of <code>F.prototype</code> as the
+            <em>factory's blueprint</em>, and <code>[[Prototype]]</code> as the
+            <em>product's family link</em>. They're different things! The
+            blueprint is set once at the factory; the family link lives on every
+            product forever.
+          </div>
+        </div>
+        <span class="slide-number">8 / 8</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      F.prototype — Presentation &copy; 2024 | Built with ❤️ for learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1475 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>new Function & Scheduling - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 5px;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .timeline-visual {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 15px 0;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .timeline-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .timeline-bar {
+        height: 20px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        font-size: 0.75rem;
+        color: white;
+        font-weight: 500;
+      }
+
+      .timeline-bar.exec {
+        background-color: #34a853;
+      }
+      .timeline-bar.delay {
+        background-color: #e1e8ed;
+        color: #5f6368;
+      }
+      .timeline-bar.gap {
+        background-color: #f38ba8;
+        color: white;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">new Function & Scheduling</div>
+            <div class="hero-subtitle">
+              Creating functions dynamically from strings, and scheduling your
+              code to run on a timer.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                <strong>new Function</strong> is like ordering a custom cake
+                from a text message — the baker creates it from the string you
+                send. <strong>Scheduling</strong> is like setting an alarm clock
+                — you tell the system "wake me up (run this code) in 5 seconds."
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-code"></i> new Function</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-clock"></i> setTimeout</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-redo"></i> setInterval</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?auto=format&fit=crop&q=80&w=1674&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Code and Clock concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 10</span>
+      </div>
+
+      <!-- SLIDE 2: The "new Function" Syntax -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>new Function</code> Syntax</div>
+          <div class="slide-subtitle">
+            Creating functions dynamically from strings at runtime
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-file-code" style="margin-right: 8px"></i>How It
+              Works
+            </h3>
+            <p>
+              There's one more way to create a function. It's rarely used, but
+              sometimes there's no alternative. The function is created
+              literally from a <strong>string</strong> passed at runtime.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> func =
+            <span class="keyword">new</span>
+            <span class="function-name">Function</span>([arg1, arg2, ...argN],
+            functionBody);
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>With Arguments</h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> sum =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Function</span>(<span
+                    class="string"
+                    >'a'</span
+                  >, <span class="string">'b'</span>,
+                  <span class="string">'return a + b'</span>);<br /><br />
+                  <span class="builtin">alert</span>(
+                  <span class="function-name">sum</span>(<span class="number"
+                    >1</span
+                  >, <span class="number">2</span>) );
+                  <span class="comment">// 3</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>Without Arguments</h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> sayHi =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Function</span>(<span
+                    class="string"
+                    >'alert("Hello")'</span
+                  >);<br /><br />
+                  <span class="function-name">sayHi</span>();
+                  <span class="comment">// Hello</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-history"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i>
+              Historical Syntax
+            </h4>
+            <p>
+              For historical reasons, arguments can also be given as a
+              comma-separated list. These three declarations mean the same:
+            </p>
+            <div class="code-block">
+              <span class="keyword">new</span>
+              <span class="function-name">Function</span>(<span class="string"
+                >'a'</span
+              >, <span class="string">'b'</span>,
+              <span class="string">'return a + b'</span>);
+              <span class="comment">// basic syntax</span><br />
+              <span class="keyword">new</span>
+              <span class="function-name">Function</span>(<span class="string"
+                >'a,b'</span
+              >, <span class="string">'return a + b'</span>);
+              <span class="comment">// comma-separated</span><br />
+              <span class="keyword">new</span>
+              <span class="function-name">Function</span>(<span class="string"
+                >'a , b'</span
+              >, <span class="string">'return a + b'</span>);
+              <span class="comment">// comma-separated with spaces</span>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Key Use Case:</strong> Receiving code from a server
+            dynamically. Example:
+            <code
+              >let str = ... receive code from server ...; let func = new
+              Function(str); func();</code
+            >
+          </div>
+        </div>
+        <span class="slide-number">2 / 10</span>
+      </div>
+
+      <!-- SLIDE 3: The Closure Quirk -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">
+            The Closure Quirk of <code>new Function</code>
+          </div>
+          <div class="slide-subtitle">
+            Why functions created this way can't see outer variables
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-eye-slash" style="margin-right: 8px"></i>Global
+              Scope Only
+            </h3>
+            <p>
+              Usually, a function remembers where it was born via
+              <code>[[Environment]]</code>. But <code>new Function</code> sets
+              its <code>[[Environment]]</code> to reference the
+              <strong>global</strong> Lexical Environment, not the current one.
+              So, it can't access outer variables!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i>
+                  new Function (Error)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">getFunc</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> value =
+                  <span class="string">"test"</span>;<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> func =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Function</span>(<span
+                    class="string"
+                    >'alert(value)'</span
+                  >);<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> func;<br />
+                  }<br /><br />
+                  <span class="function-name">getFunc</span>()();
+                  <span class="error">// Error: value is not defined</span>
+                </div>
+                <p>
+                  It looks in the global scope, not inside <code>getFunc</code>.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i>
+                  Regular Function (Works)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">getFunc</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> value =
+                  <span class="string">"test"</span>;<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> func =
+                  <span class="keyword">function</span>() {
+                  <span class="builtin">alert</span>(value); };<br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> func;<br />
+                  }<br /><br />
+                  <span class="function-name">getFunc</span>()();
+                  <span class="comment">// "test"</span>
+                </div>
+                <p>
+                  Remembers the Lexical Environment of <code>getFunc</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Remote Worker:</strong> A regular function is like an
+              employee who works in your office — they can see the whiteboards
+              on the walls (outer variables). An employee created via
+              <code>new Function</code> is like a remote contractor who only has
+              access to the public company website (global scope) and whatever
+              you explicitly send them in an email (arguments).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 10</span>
+      </div>
+
+      <!-- SLIDE 4: Why This Quirk Exists -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Why This Quirk Exists</div>
+          <div class="slide-subtitle">
+            The minifier problem and why this is actually a good thing
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-compress-alt" style="margin-right: 8px"></i>The
+              Minifier Problem
+            </h3>
+            <p>
+              Before JavaScript goes to production, it's compressed by a
+              <strong>minifier</strong> — a tool that removes spaces, comments,
+              and renames local variables to shorter names (e.g.,
+              <code>userName</code> → <code>a</code>).
+            </p>
+          </div>
+
+          <div class="flow-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <strong>You write:</strong> <code>let userName = "John";</code>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <strong>Minifier changes it to:</strong>
+              <code>let a = "John";</code> (safe, because it's local)
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <strong>Problem:</strong> If <code>new Function</code> could
+              access outer variables, the string
+              <code>'alert(userName)'</code> would break because
+              <code>userName</code> no longer exists — it's now <code>a</code>!
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Architectural Note:</strong
+            >
+            Even without minifiers, relying on outer variables from a
+            dynamically created string is error-prone and bad practice. Explicit
+            is always better!
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-check-double"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >The Solution: Pass as Arguments
+            </h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">getFunc</span>() {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> value =
+              <span class="string">"test"</span>;<br /><br />
+              &nbsp;&nbsp;<span class="comment"
+                >// Pass value explicitly as an argument</span
+              ><br />
+              &nbsp;&nbsp;<span class="keyword">let</span> func =
+              <span class="keyword">new</span>
+              <span class="function-name">Function</span>(<span class="string"
+                >'val'</span
+              >, <span class="string">'alert(val)'</span>);<br /><br />
+              &nbsp;&nbsp;<span class="keyword">return</span> ()
+              <span class="operator">=></span>
+              <span class="function-name">func</span>(value);
+              <span class="comment">// Pass it when calling</span><br />
+              }<br /><br />
+              <span class="function-name">getFunc</span>()();
+              <span class="comment">// "test" ✅ Works perfectly!</span>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Summary of <code>new Function</code>:</strong> Functions
+            created with <code>new Function</code> have
+            <code>[[Environment]]</code> referencing the global Lexical
+            Environment. They cannot use outer variables. This is actually
+            <em>good</em> — it prevents errors with minifiers and enforces
+            better architecture by forcing you to pass data explicitly via
+            arguments.
+          </div>
+        </div>
+        <span class="slide-number">4 / 10</span>
+      </div>
+
+      <!-- SLIDE 5: Scheduling: setTimeout -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Scheduling: <code>setTimeout</code></div>
+          <div class="slide-subtitle">
+            Running a function once after a delay
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-hourglass-start" style="margin-right: 8px"></i
+              >Basic Syntax
+            </h3>
+            <p>
+              <code>setTimeout</code> allows us to run a function
+              <strong>once</strong> after a specified interval of time.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> timerId =
+            <span class="function-name">setTimeout</span>(func|code, [delay],
+            [arg1], [arg2], ...)
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>Simple Example</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sayHi</span>() {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                    class="string"
+                    >'Hello'</span
+                  >);<br />
+                  }<br /><br />
+                  <span class="function-name">setTimeout</span>(sayHi,
+                  <span class="number">1000</span>);
+                  <span class="comment">// Runs after 1 second</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>With Arguments</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sayHi</span>(phrase, who) {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>( phrase +
+                  <span class="string">', '</span> + who );<br />
+                  }<br /><br />
+                  <span class="function-name">setTimeout</span>(sayHi,
+                  <span class="number">1000</span>,
+                  <span class="string">"Hello"</span>,
+                  <span class="string">"John"</span>);<br />
+                  <span class="comment">// Hello, John (after 1 sec)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Common Mistake:</strong
+            >
+            Novice developers sometimes add brackets <code>()</code> after the
+            function. This runs the function immediately and passes
+            <code>undefined</code> (or the return value) to setTimeout!
+            <div class="code-block" style="margin-top: 10px">
+              <span class="comment">// WRONG! Runs sayHi immediately:</span
+              ><br />
+              <span class="function-name">setTimeout</span>(<span
+                class="function-name"
+                >sayHi</span
+              >(), <span class="number">1000</span>);<br /><br />
+              <span class="comment"
+                >// CORRECT! Passes the function reference:</span
+              ><br />
+              <span class="function-name">setTimeout</span>(sayHi,
+              <span class="number">1000</span>);
+              <span class="comment">// or</span><br />
+              <span class="function-name">setTimeout</span>(()
+              <span class="operator">=></span>
+              <span class="function-name">sayHi</span>(),
+              <span class="number">1000</span>);
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Kitchen Timer:</strong> You put pasta in the water and set
+              a timer for 8 minutes. When 8 minutes pass, the timer rings (the
+              function runs). You only want it to ring once.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 10</span>
+      </div>
+
+      <!-- SLIDE 6: Canceling & setInterval -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">
+            Canceling Timers & <code>setInterval</code>
+          </div>
+          <div class="slide-subtitle">
+            Stopping a scheduled call and running code repeatedly
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-ban"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i>
+                  Canceling with <code>clearTimeout</code>
+                </h4>
+                <p>
+                  A call to <code>setTimeout</code> returns a "timer
+                  identifier". Use it to cancel!
+                </p>
+                <div class="code-block">
+                  <span class="keyword">let</span> timerId =
+                  <span class="function-name">setTimeout</span>(<br />
+                  &nbsp;&nbsp;() <span class="operator">=></span>
+                  <span class="builtin">alert</span>(<span class="string"
+                    >"never happens"</span
+                  >), <span class="number">1000</span><br />
+                  );<br /><br />
+                  <span class="function-name">clearTimeout</span
+                  >(timerId);<br />
+                  <span class="comment">// Canceled! Nothing happens.</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-redo"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i>
+                  <code>setInterval</code>
+                </h4>
+                <p>
+                  Same syntax as <code>setTimeout</code>, but runs the function
+                  <strong>repeatedly</strong> after the given interval.
+                </p>
+                <div class="code-block">
+                  <span class="comment">// Repeat every 2 seconds</span><br />
+                  <span class="keyword">let</span> timerId =
+                  <span class="function-name">setInterval</span>(<br />
+                  &nbsp;&nbsp;() <span class="operator">=></span>
+                  <span class="builtin">alert</span>(<span class="string"
+                    >'tick'</span
+                  >), <span class="number">2000</span><br />
+                  );<br /><br />
+                  <span class="comment">// Stop after 5 seconds</span><br />
+                  <span class="function-name">setTimeout</span>(()
+                  <span class="operator">=></span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">clearInterval</span
+                  >(timerId);<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                    class="string"
+                    >'stop'</span
+                  >);<br />
+                  }, <span class="number">5000</span>);
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i class="fas fa-clock" style="margin-right: 5px"></i>
+              Note:</strong
+            >
+            In most browsers, the internal timer continues "ticking" while
+            showing <code>alert</code>. If you don't dismiss the alert quickly,
+            the next interval will fire immediately after you close it.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Snooze Button:</strong> <code>setInterval</code> is like a
+              recurring alarm that goes off every 5 minutes until you explicitly
+              cancel it (<code>clearInterval</code>).
+              <code>clearTimeout</code> is like turning off the oven timer
+              before it goes off because you took the cake out early.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 10</span>
+      </div>
+
+      <!-- SLIDE 7: Nested setTimeout -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Nested <code>setTimeout</code></div>
+          <div class="slide-subtitle">
+            A more flexible alternative to setInterval
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-layer-group" style="margin-right: 8px"></i
+              >Self-Scheduling Functions
+            </h3>
+            <p>
+              Instead of <code>setInterval</code>, we can schedule the next call
+              <strong>at the end of the current one</strong>. This is more
+              flexible because we can change the delay dynamically!
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="comment"
+              >// Instead of: setInterval(() => alert('tick'), 2000);</span
+            ><br /><br />
+            <span class="keyword">let</span> timerId =
+            <span class="function-name">setTimeout</span>(<span class="keyword"
+              >function</span
+            >
+            <span class="function-name">tick</span>() {<br />
+            &nbsp;&nbsp;<span class="builtin">alert</span>(<span class="string"
+              >'tick'</span
+            >);<br />
+            &nbsp;&nbsp;timerId =
+            <span class="function-name">setTimeout</span>(tick,
+            <span class="number">2000</span>);
+            <span class="comment">// (*) Schedule next</span><br />
+            }, <span class="number">2000</span>);
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-chart-line"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Practical Example: Dynamic Delay
+            </h4>
+            <p>
+              If the server is overloaded, increase the polling interval (5s →
+              10s → 20s → 40s):
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> delay =
+              <span class="number">5000</span>;<br /><br />
+              <span class="keyword">let</span> timerId =
+              <span class="function-name">setTimeout</span>(<span
+                class="keyword"
+                >function</span
+              >
+              <span class="function-name">request</span>() {<br />
+              &nbsp;&nbsp;<span class="comment">// ...send request...</span
+              ><br /><br />
+              &nbsp;&nbsp;<span class="keyword">if</span> (request failed due to
+              server overload) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;delay <span class="operator">*=</span>
+              <span class="number">2</span>;
+              <span class="comment">// Increase interval!</span><br />
+              &nbsp;&nbsp;}<br /><br />
+              &nbsp;&nbsp;timerId =
+              <span class="function-name">setTimeout</span>(request, delay);<br />
+              }, delay);
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Doctor's Follow-up:</strong> With
+              <code>setInterval</code>, you book appointments every 2 weeks
+              forever, even if you're healthy. With nested
+              <code>setTimeout</code>, at each visit the doctor decides: "Come
+              back in 2 weeks" or "You need more recovery, come back in 4
+              weeks." The schedule adapts.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 10</span>
+      </div>
+
+      <!-- SLIDE 8: Timing Precision -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">
+            Timing Precision: setInterval vs Nested setTimeout
+          </div>
+          <div class="slide-subtitle">
+            Why nested setTimeout guarantees a minimum delay between executions
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-stopwatch" style="margin-right: 8px"></i>The
+              Execution Time Problem
+            </h3>
+            <p>
+              With <code>setInterval</code>, the real delay between calls is
+              <strong>shorter</strong> than what you set, because the time the
+              function takes to run "consumes" part of the interval.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>setInterval</h4>
+                <div class="timeline-visual">
+                  <div class="timeline-row">
+                    <div class="timeline-bar delay" style="width: 30%">
+                      10ms
+                    </div>
+                    <div class="timeline-bar exec" style="width: 40%">
+                      func() ~7ms
+                    </div>
+                    <div class="timeline-bar gap" style="width: 15%">
+                      3ms gap
+                    </div>
+                    <div class="timeline-bar exec" style="width: 40%">
+                      func() ~7ms
+                    </div>
+                  </div>
+                </div>
+                <p style="margin-top: 10px">
+                  The engine waits for func to complete, then checks if the time
+                  is up. If so, it runs <strong>immediately</strong>. In extreme
+                  cases, calls happen with <em>no pause at all</em>.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>Nested setTimeout</h4>
+                <div class="timeline-visual">
+                  <div class="timeline-row">
+                    <div class="timeline-bar delay" style="width: 30%">
+                      10ms
+                    </div>
+                    <div class="timeline-bar exec" style="width: 40%">
+                      func() ~7ms
+                    </div>
+                    <div class="timeline-bar delay" style="width: 30%">
+                      10ms
+                    </div>
+                    <div class="timeline-bar exec" style="width: 40%">
+                      func()
+                    </div>
+                  </div>
+                </div>
+                <p style="margin-top: 10px">
+                  A new call is planned at the
+                  <strong>end of the previous one</strong>. This ensures the
+                  delay is <em>between</em> executions, not from start to start.
+                  More precise!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <span class="comment"
+              >// setInterval: delay is from START to START</span
+            ><br />
+            <span class="keyword">let</span> i =
+            <span class="number">1</span>;<br />
+            <span class="function-name">setInterval</span>(<span class="keyword"
+              >function</span
+            >() { <span class="function-name">func</span>(i++); },
+            <span class="number">100</span>);<br /><br />
+            <span class="comment"
+              >// Nested setTimeout: delay is from END to START</span
+            ><br />
+            <span class="keyword">let</span> i =
+            <span class="number">1</span>;<br />
+            <span class="function-name">setTimeout</span>(<span class="keyword"
+              >function</span
+            >
+            <span class="function-name">run</span>() {<br />
+            &nbsp;&nbsp;<span class="function-name">func</span>(i++);<br />
+            &nbsp;&nbsp;<span class="function-name">setTimeout</span>(run,
+            <span class="number">100</span>);<br />
+            }, <span class="number">100</span>);
+          </div>
+        </div>
+        <span class="slide-number">8 / 10</span>
+      </div>
+
+      <!-- SLIDE 9: Garbage Collection & Zero Delay -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Garbage Collection & Zero Delay</div>
+          <div class="slide-subtitle">
+            Memory leaks with timers and the special
+            <code>setTimeout(func, 0)</code>
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-trash"
+                style="margin-right: 5px; color: #e53935"
+              ></i
+              >GC and Timers
+            </h4>
+            <p>
+              When a function is passed to <code>setInterval/setTimeout</code>,
+              an internal reference is created and saved in the scheduler. This
+              <strong>prevents the function from being garbage collected</strong
+              >, even if there are no other references to it.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// The function stays in memory until the scheduler calls
+                it</span
+              ><br />
+              <span class="function-name">setTimeout</span>(<span
+                class="keyword"
+                >function</span
+              >() {...}, <span class="number">100</span>);<br /><br />
+              <span class="comment"
+                >// For setInterval, it stays until clearInterval is
+                called!</span
+              ><br />
+              <span class="comment"
+                >// Side effect: outer variables also stay alive.</span
+              >
+            </div>
+            <div class="warning-box" style="margin-top: 10px">
+              <strong>Best Practice:</strong> When you don't need the scheduled
+              function anymore, cancel it with
+              <code>clearTimeout</code>/<code>clearInterval</code>, even if it's
+              very small. Otherwise, it might hold onto large outer variables in
+              memory!
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i class="fas fa-bolt" style="margin-right: 5px"></i>Zero Delay
+              setTimeout
+            </h4>
+            <p>
+              <code>setTimeout(func, 0)</code> (or just
+              <code>setTimeout(func)</code>) schedules the function to run "as
+              soon as possible", but
+              <strong>after the current script is complete</strong>.
+            </p>
+            <div class="code-block">
+              <span class="function-name">setTimeout</span>(()
+              <span class="operator">=></span>
+              <span class="builtin">alert</span>(<span class="string"
+                >"World"</span
+              >));<br /><br />
+              <span class="builtin">alert</span>(<span class="string"
+                >"Hello"</span
+              >);<br /><br />
+              <span class="comment">// Output: "Hello" first, then "World"</span
+              ><br />
+              <span class="comment"
+                >// The scheduler only "checks the calendar" after the current
+                script ends.</span
+              >
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i class="fas fa-info-circle" style="margin-right: 5px"></i>
+              Browser Limit:</strong
+            >
+            In the browser, after five nested timers, the interval is forced to
+            be at least <strong>4 milliseconds</strong>. So zero delay is not
+            actually zero in practice for deeply nested calls.
+          </div>
+        </div>
+        <span class="slide-number">9 / 10</span>
+      </div>
+
+      <!-- SLIDE 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about new Function & Scheduling
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-code" style="margin-right: 8px"></i>new
+                  Function
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>Creates a function from a string at runtime</li>
+                  <li>
+                    <code>[[Environment]]</code> references the
+                    <strong>global</strong> scope, not outer
+                  </li>
+                  <li>Cannot access outer variables (by design!)</li>
+                  <li>Pass data explicitly via arguments</li>
+                  <li>This prevents issues with minifiers</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-clock" style="margin-right: 8px"></i
+                  >Scheduling
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li><code>setTimeout</code>: Run once after delay</li>
+                  <li><code>setInterval</code>: Run repeatedly</li>
+                  <li>
+                    Use <code>clearTimeout</code>/<code>clearInterval</code> to
+                    cancel
+                  </li>
+                  <li>Don't add <code>()</code> when passing functions!</li>
+                  <li>
+                    Nested <code>setTimeout</code> is more flexible & precise
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>new Function</strong></td>
+                  <td>Creates a function from a string</td>
+                  <td>Custom cake from a text message</td>
+                </tr>
+                <tr>
+                  <td><strong>Global [[Environment]]</strong></td>
+                  <td>Only sees global scope, not outer</td>
+                  <td>Remote contractor (needs explicit info)</td>
+                </tr>
+                <tr>
+                  <td><strong>setTimeout</strong></td>
+                  <td>Run once after a delay</td>
+                  <td>Kitchen timer for pasta</td>
+                </tr>
+                <tr>
+                  <td><strong>setInterval</strong></td>
+                  <td>Run repeatedly on a fixed interval</td>
+                  <td>Recurring snooze alarm</td>
+                </tr>
+                <tr>
+                  <td><strong>Nested setTimeout</strong></td>
+                  <td>Self-scheduling with adaptable delay</td>
+                  <td>Doctor's adaptive follow-up schedule</td>
+                </tr>
+                <tr>
+                  <td><strong>Zero Delay</strong></td>
+                  <td>Run ASAP, but after current script</td>
+                  <td>"Do this next" sticky note</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i
+                class="fas fa-exclamation-circle"
+                style="margin-right: 5px"
+              ></i>
+              Final Note:</strong
+            >
+            All scheduling methods do not guarantee the exact delay. CPU
+            overload, background browser tabs, or battery saving mode can
+            increase the minimal timer resolution to 300ms or even 1000ms.
+          </div>
+        </div>
+        <span class="slide-number">10 / 10</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      new Function & Scheduling — Presentation &copy; 2024 | Built with ❤️ for
+      learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

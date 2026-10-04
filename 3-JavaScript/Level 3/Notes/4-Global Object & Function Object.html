@@ -1,0 +1,1418 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Object & Function Object - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 5px;
+      }
+
+      .tag-var {
+        background-color: #fff3e0;
+        color: #e65100;
+      }
+      .tag-let {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+      .tag-const {
+        background-color: #e6f4ea;
+        color: #34a853;
+      }
+      .tag-nfe {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Global Object & Function Object</div>
+            <div class="hero-subtitle">
+              Understanding the global environment and discovering that
+              functions are more than just code — they are objects.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                The <strong>Global Object</strong> is like a
+                <strong>Town Square</strong> — everyone can see it and access
+                what's there. A <strong>Function Object</strong> is like a
+                <strong>Swiss Army Knife</strong> — it does a main job
+                (cutting), but also holds extra tools (properties) inside the
+                handle.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-globe"></i> globalThis</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-box"></i> Function Properties</span
+              >
+              <span class="hero-tag"><i class="fas fa-tag"></i> NFE</span>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop"
+                alt="Global and Function Object concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 10</span>
+      </div>
+
+      <!-- SLIDE 2: The Global Object -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Global Object</div>
+          <div class="slide-subtitle">
+            The universal container that holds variables and functions available
+            anywhere
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-globe" style="margin-right: 8px"></i>What is it?
+            </h3>
+            <p>
+              The global object provides variables and functions available
+              <strong>anywhere</strong> in your code. It holds built-in language
+              features (like <code>Array</code>) and environment-specific values
+              (like <code>window.innerHeight</code>).
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-desktop"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i>
+                  In the Browser
+                </h4>
+                <p>The global object is called <code>window</code>.</p>
+                <div class="code-block">
+                  <span class="builtin">alert</span>(<span class="string"
+                    >"Hello"</span
+                  >);<br />
+                  <span class="comment">// is exactly the same as:</span><br />
+                  <span class="builtin">window</span>.<span
+                    class="function-name"
+                    >alert</span
+                  >(<span class="string">"Hello"</span>);
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #7c3aed">
+                <h4>
+                  <i
+                    class="fas fa-server"
+                    style="margin-right: 5px; color: #7c3aed"
+                  ></i>
+                  In Node.js
+                </h4>
+                <p>The global object is called <code>global</code>.</p>
+                <div class="code-block">
+                  <span class="comment">// In Node.js terminal:</span><br />
+                  <span class="builtin">global</span>.<span
+                    class="function-name"
+                    >setTimeout</span
+                  >(...);<br />
+                  <span class="comment">// same as just setTimeout(...)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i class="fas fa-handshake" style="margin-right: 5px"></i> The
+              Universal Name: <code>globalThis</code>
+            </h4>
+            <p>
+              Recently, JavaScript introduced <code>globalThis</code> — a
+              standardized name that works
+              <strong>across all environments</strong> (browsers, Node.js,
+              etc.). If your code might run outside a browser, prefer
+              <code>globalThis</code>.
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Town Square:</strong> The global object is like the town
+              square. A public bulletin board that everyone in the town (your
+              script) can see and access. Different towns might call it "Plaza"
+              (browser) or "Commons" (Node.js), but <code>globalThis</code> is
+              like a universal GPS coordinate that always points to it.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 10</span>
+      </div>
+
+      <!-- SLIDE 3: Variables on the Global Object -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Variables on the Global Object</div>
+          <div class="slide-subtitle">
+            Why var and let/const behave differently at the top level
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e65100">
+                <h4><span class="tag tag-var">var</span> Goes Global</h4>
+                <p>
+                  Variables declared with <code>var</code> (and Function
+                  Declarations) at the top level become properties of the global
+                  object.
+                </p>
+                <div class="code-block">
+                  <span class="keyword">var</span> gVar =
+                  <span class="number">5</span>;<br /><br />
+                  <span class="builtin">alert</span>(<span class="builtin"
+                    >window</span
+                  >.gVar); <span class="comment">// 5</span>
+                </div>
+                <div class="warning-box">
+                  <strong>Don't rely on this!</strong> This exists for old
+                  compatibility. Modern JavaScript modules don't do this.
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>
+                  <span class="tag tag-let">let</span> /
+                  <span class="tag tag-const">const</span> Stay Separate
+                </h4>
+                <p>
+                  Modern <code>let</code> and <code>const</code> do
+                  <strong>not</strong> become properties of the global object,
+                  even at the top level.
+                </p>
+                <div class="code-block">
+                  <span class="keyword">let</span> gLet =
+                  <span class="number">5</span>;<br /><br />
+                  <span class="builtin">alert</span>(<span class="builtin"
+                    >window</span
+                  >.gLet); <span class="comment">// undefined</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h4>
+              <i
+                class="fas fa-pencil-alt"
+                style="margin-right: 5px; color: #1a73e8"
+              ></i
+              >Explicitly Adding to the Global Object
+            </h4>
+            <p>
+              If a value truly needs to be global, write it directly as a
+              property:
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// Make current user info global for all scripts</span
+              ><br />
+              <span class="builtin">window</span>.currentUser = { name:
+              <span class="string">"John"</span> };<br /><br />
+              <span class="comment">// Access it anywhere</span><br />
+              <span class="builtin">alert</span>(currentUser.name);
+              <span class="comment">// John</span><br /><br />
+              <span class="comment"
+                >// Safe access if a local 'currentUser' variable exists</span
+              ><br />
+              <span class="builtin">alert</span>(<span class="builtin"
+                >window</span
+              >.currentUser.name); <span class="comment">// John</span>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Best Practice:</strong> Keep global variables to an absolute
+            minimum. The code design where a function gets "input" and produces
+            "outcome" is clearer, less prone to errors, and easier to test than
+            if it uses global variables.
+          </div>
+        </div>
+        <span class="slide-number">3 / 10</span>
+      </div>
+
+      <!-- SLIDE 4: Using for Polyfills -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Using the Global Object for Polyfills</div>
+          <div class="slide-subtitle">
+            How we check for and add missing modern features
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-puzzle-piece" style="margin-right: 8px"></i>What
+              is a Polyfill?
+            </h3>
+            <p>
+              A polyfill is a piece of code that implements a feature that your
+              browser/environment doesn't support natively. We use the global
+              object to <strong>check</strong> if a feature exists and
+              <strong>add</strong> it if it doesn't.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-search"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i>
+                  Step 1: Check if it exists
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">if</span> (!<span class="builtin"
+                    >window</span
+                  >.Promise) {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                    class="string"
+                    >"Your browser is really old!"</span
+                  >);<br />
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-plus-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i>
+                  Step 2: Add the Polyfill
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">if</span> (!<span class="builtin"
+                    >window</span
+                  >.Promise) {<br />
+                  &nbsp;&nbsp;<span class="builtin">window</span>.Promise =
+                  <span class="comment">/* custom implementation */</span
+                  >;<br />
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Hotel Room Amenities:</strong> You walk into a hotel room
+              and check if there's a hairdryer (<code
+                >if (!window.hairdryer)</code
+              >). If it's missing, you pull out your own travel hairdryer and
+              plug it in for anyone else in the room to use (<code
+                >window.hairdryer = myTravelDryer</code
+              >). Now the feature exists for everyone!
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 10</span>
+      </div>
+
+      <!-- SLIDE 5: Functions are Objects -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Functions are Objects</div>
+          <div class="slide-subtitle">
+            In JavaScript, functions are callable "action objects"
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-box-open" style="margin-right: 8px"></i>The Big
+              Idea
+            </h3>
+            <p>
+              Every value in JavaScript has a type. What type is a function?
+              It's an <strong>object</strong>. We can not only call them, but
+              also treat them like objects: add/remove properties, pass by
+              reference, and read built-in properties.
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #1a73e8">
+            <h4>
+              <i
+                class="fas fa-tag"
+                style="margin-right: 5px; color: #1a73e8"
+              ></i>
+              Built-in Property: <code>name</code>
+            </h4>
+            <p>
+              Functions know their own name. The JavaScript engine is smart — it
+              even figures out names for functions assigned to variables!
+            </p>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">sayHi</span>() {
+              <span class="builtin">alert</span>(<span class="string">"Hi"</span
+              >); }<br />
+              <span class="builtin">alert</span>(sayHi.name);
+              <span class="comment">// "sayHi"</span><br /><br />
+              <span class="keyword">let</span> sayHi =
+              <span class="keyword">function</span>() {
+              <span class="builtin">alert</span>(<span class="string">"Hi"</span
+              >); };<br />
+              <span class="builtin">alert</span>(sayHi.name);
+              <span class="comment">// "sayHi" (guessed from variable!)</span
+              ><br /><br />
+              <span class="keyword">let</span> user = {<br />
+              &nbsp;&nbsp;<span class="function-name">sayBye</span>() {}<br />
+              };<br />
+              <span class="builtin">alert</span>(user.sayBye.name);
+              <span class="comment">// "sayBye"</span>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Exception:</strong
+            >
+            If a function is created inside an array or a context where the
+            engine can't guess the name, it will be an empty string:
+            <code>let arr = [function() {}]; alert(arr[0].name); // ""</code>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Name Tags:</strong> Even if you hand someone a name tag
+              that says "John" (a variable), the person still knows their real
+              name. JavaScript functions always try to wear a name tag — either
+              the one they were born with, or one inferred from where they're
+              standing.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 10</span>
+      </div>
+
+      <!-- SLIDE 6: The "length" Property -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>length</code> Property</div>
+          <div class="slide-subtitle">
+            How a function knows how many arguments it expects
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-ruler" style="margin-right: 8px"></i>What does it
+              count?
+            </h3>
+            <p>
+              The <code>length</code> property returns the number of function
+              parameters. <strong>Rest parameters are not counted.</strong>
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">function</span>
+            <span class="function-name">f1</span>(a) {}<br />
+            <span class="keyword">function</span>
+            <span class="function-name">f2</span>(a, b) {}<br />
+            <span class="keyword">function</span>
+            <span class="function-name">many</span>(a, b, ...more) {}<br /><br />
+            <span class="builtin">alert</span>(f1.length);
+            <span class="comment">// 1</span><br />
+            <span class="builtin">alert</span>(f2.length);
+            <span class="comment">// 2</span><br />
+            <span class="builtin">alert</span>(many.length);
+            <span class="comment">// 2 (rest params not counted)</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-code-branch"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i>
+              Practical Use: Polymorphism
+            </h4>
+            <p>
+              We can treat handlers differently based on their
+              <code>length</code>. Zero-argument functions get special
+              treatment!
+            </p>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function-name">ask</span>(question, ...handlers) {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> isYes =
+              <span class="builtin">confirm</span>(question);<br /><br />
+              &nbsp;&nbsp;<span class="keyword">for</span>(<span class="keyword"
+                >let</span
+              >
+              handler <span class="keyword">of</span> handlers) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>
+              (handler.length == <span class="number">0</span>) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword"
+                >if</span
+              >
+              (isYes) <span class="function-name">handler</span>();
+              <span class="comment">// Only call if YES</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}
+              <span class="keyword">else</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name"
+                >handler</span
+              >(isYes); <span class="comment">// Always call with result</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;}<br />
+              }<br /><br />
+              <span class="function-name">ask</span>(<span class="string"
+                >"Question?"</span
+              >, () <span class="operator">=></span>
+              <span class="builtin">alert</span>(<span class="string"
+                >'You said yes'</span
+              >), result <span class="operator">=></span>
+              <span class="builtin">alert</span>(result));
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Plug Adapters:</strong> A 2-prong plug and a 3-prong plug
+              need different sockets. By checking <code>length</code> (the
+              number of prongs), the socket knows which type of connection to
+              offer. The 0-argument function is like a simple on/off switch; the
+              1-argument function is like a dial that needs input.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 10</span>
+      </div>
+
+      <!-- SLIDE 7: Custom Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Custom Properties</div>
+          <div class="slide-subtitle">
+            Adding your own data to function objects
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-plus-square" style="margin-right: 8px"></i
+              >Functions Can Carry Data
+            </h3>
+            <p>
+              Since functions are objects, we can add properties to them just
+              like any other object.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>Example: Call Counter</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sayHi</span>() {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                    class="string"
+                    >"Hi"</span
+                  >);<br />
+                  &nbsp;&nbsp;sayHi.counter++;
+                  <span class="comment">// count calls</span><br />
+                  }<br /><br />
+                  sayHi.counter = <span class="number">0</span>;
+                  <span class="comment">// initial value</span><br /><br />
+                  <span class="function-name">sayHi</span>();<br />
+                  <span class="function-name">sayHi</span>();<br /><br />
+                  <span class="builtin">alert</span>(<span class="string"
+                    >`Called ${sayHi.counter} times`</span
+                  >);<br />
+                  <span class="comment">// Called 2 times</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-exclamation-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i>
+                  Property ≠ Variable
+                </h4>
+                <p>
+                  A property like <code>sayHi.counter = 0</code> does
+                  <strong>NOT</strong> create a local variable inside the
+                  function.
+                </p>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">sayHi</span>() {<br />
+                  &nbsp;&nbsp;<span class="comment"
+                    >// sayHi.counter is NOT a variable</span
+                  ><br />
+                  &nbsp;&nbsp;<span class="comment"
+                    >// you can't just say 'counter' here</span
+                  ><br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> counter =
+                  <span class="number">5</span>;
+                  <span class="comment">// unrelated!</span><br />
+                  }
+                </div>
+                <p style="margin-top: 10px">
+                  Properties and variables live in
+                  <strong>parallel worlds</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Sticky Notes on a Box:</strong> A custom property is like
+              putting a sticky note on the outside of a box. Anyone can read or
+              write it. A local variable is like something locked inside the box
+              — only the code inside the function can touch it.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 10</span>
+      </div>
+
+      <!-- SLIDE 8: Properties vs Closures -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Properties vs Closures</div>
+          <div class="slide-subtitle">
+            Two ways to store state — which should you choose?
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-balance-scale" style="margin-right: 8px"></i
+              >Replacing Closures with Properties
+            </h3>
+            <p>
+              Previously, we used a closure to store <code>count</code>. We can
+              rewrite it using a function property instead.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #7c3aed">
+                <h4>Using a Closure (Hidden)</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">makeCounter</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">let</span> count =
+                  <span class="number">0</span>;
+                  <span class="comment">// in LE</span><br /><br />
+                  &nbsp;&nbsp;<span class="keyword">return function</span>()
+                  {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                  count++;<br />
+                  &nbsp;&nbsp;};<br />
+                  }
+                </div>
+                <p>
+                  <i class="fas fa-lock" style="color: #34a853"></i>
+                  <strong>Private:</strong> No one outside can read or change
+                  <code>count</code>.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>Using a Property (Exposed)</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">makeCounter</span>() {<br />
+                  &nbsp;&nbsp;<span class="keyword">function</span>
+                  <span class="function-name">counter</span>() {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+                  counter.count++;<br />
+                  &nbsp;&nbsp;};<br />
+                  &nbsp;&nbsp;counter.count = <span class="number">0</span>;
+                  <span class="comment">// on function</span><br />
+                  &nbsp;&nbsp;<span class="keyword">return</span> counter;<br />
+                  }
+                </div>
+                <p>
+                  <i class="fas fa-unlock" style="color: #e65100"></i>
+                  <strong>Public:</strong> Anyone can read or set
+                  <code>counter.count = 10</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h4>
+              <i
+                class="fas fa-exchange-alt"
+                style="margin-right: 5px; color: #1a73e8"
+              ></i>
+              The Exposed Property in Action
+            </h4>
+            <div class="code-block">
+              <span class="keyword">let</span> counter =
+              <span class="function-name">makeCounter</span>();<br /><br />
+              counter.count = <span class="number">10</span>;
+              <span class="comment">// We can set it externally!</span><br />
+              <span class="builtin">alert</span>(
+              <span class="function-name">counter</span>() );
+              <span class="comment">// 10</span><br />
+              <span class="builtin">alert</span>(
+              <span class="function-name">counter</span>() );
+              <span class="comment">// 11</span>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Which is better?</strong> It depends on your goals! Use a
+            <strong>closure</strong> if the data should be private and
+            protected. Use a <strong>function property</strong> if external code
+            should be allowed to read or modify it.
+          </div>
+        </div>
+        <span class="slide-number">8 / 10</span>
+      </div>
+
+      <!-- SLIDE 9: Named Function Expression (NFE) -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Named Function Expression (NFE)</div>
+          <div class="slide-subtitle">
+            Giving a function expression an internal name for reliable
+            self-reference
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-id-badge" style="margin-right: 8px"></i>What is
+              an NFE?
+            </h3>
+            <p>
+              A Named Function Expression is simply a Function Expression that
+              has a name added after the <code>function</code> keyword. It still
+              gets assigned to a variable, but now it has an
+              <strong>internal name</strong>.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="comment">// Regular Function Expression</span><br />
+            <span class="keyword">let</span> sayHi =
+            <span class="keyword">function</span>(who) { ... };<br /><br />
+            <span class="comment">// Named Function Expression</span><br />
+            <span class="keyword">let</span> sayHi =
+            <span class="keyword">function</span>
+            <span class="function-name">func</span>(who) { ... };
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i
+                  >Two Special Things About "func"
+                </h4>
+                <ol style="padding-left: 20px; line-height: 2">
+                  <li>
+                    It allows the function to
+                    <strong>reference itself internally</strong> (for
+                    recursion).
+                  </li>
+                  <li>
+                    It is <strong>NOT visible outside</strong> the function.
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i
+                  >The Problem It Solves
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> sayHi =
+                  <span class="keyword">function</span>(who) {<br />
+                  &nbsp;&nbsp;<span class="keyword">if</span> (who) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(<span class="string">`Hello, ${who}`</span>);<br />
+                  &nbsp;&nbsp;} <span class="keyword">else</span> {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name"
+                    >sayHi</span
+                  >(<span class="string">"Guest"</span>);
+                  <span class="comment">// Uses outer var</span><br />
+                  &nbsp;&nbsp;}<br />
+                  };<br /><br />
+                  <span class="keyword">let</span> welcome = sayHi;<br />
+                  sayHi = <span class="keyword">null</span>;<br />
+                  <span class="function-name">welcome</span>();
+                  <span class="error">// Error! sayHi is null</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Walkie-Talkie vs Phone Number:</strong> Calling
+              <code>sayHi("Guest")</code> is like looking up someone's phone
+              number in a book. If they change their number (<code
+                >sayHi = null</code
+              >), the book is outdated and the call fails. Using
+              <code>func("Guest")</code> is like using a direct walkie-talkie
+              frequency — it's an internal, reliable connection that never
+              changes, no matter what happens outside.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">9 / 10</span>
+      </div>
+
+      <!-- SLIDE 10: NFE Fix & Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">NFE Fix & Summary</div>
+          <div class="slide-subtitle">
+            How NFE makes self-reference reliable, plus wrapping it all up
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-wrench"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >The NFE Fix
+            </h4>
+            <div class="code-block">
+              <span class="keyword">let</span> sayHi =
+              <span class="keyword">function</span>
+              <span class="function-name">func</span>(who) {<br />
+              &nbsp;&nbsp;<span class="keyword">if</span> (who) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                class="string"
+                >`Hello, ${who}`</span
+              >);<br />
+              &nbsp;&nbsp;} <span class="keyword">else</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name">func</span
+              >(<span class="string">"Guest"</span>);
+              <span class="comment">// Uses internal name!</span><br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="keyword">let</span> welcome = sayHi;<br />
+              sayHi = <span class="keyword">null</span>;<br /><br />
+              <span class="function-name">welcome</span>();
+              <span class="comment">// Hello, Guest ✅ Works!</span><br />
+              <span class="function-name">func</span>();
+              <span class="error">// Error: func is not defined</span>
+              <span class="comment">// Not visible outside</span>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i class="fas fa-info-circle" style="margin-right: 5px"></i>
+              Note:</strong
+            >
+            The "internal name" feature is only available for Function
+            Expressions. Function Declarations don't have (or need) this syntax
+            because their name is already reliable within their scope.
+          </div>
+
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+              margin-top: 20px;
+            "
+          >
+            <h4
+              style="
+                color: #1a73e8;
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+                text-align: center;
+              "
+            >
+              <i class="fas fa-graduation-cap" style="margin-right: 8px"></i>
+              Key Takeaways
+            </h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 250px">
+                <h4 style="color: #1a73e8">
+                  <i class="fas fa-globe" style="margin-right: 5px"></i> Global
+                  Object
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    Universal container: <code>window</code>,
+                    <code>global</code>, or <code>globalThis</code>
+                  </li>
+                  <li>
+                    <code>var</code> creates global properties;
+                    <code>let/const</code> don't
+                  </li>
+                  <li>Use it to check/add polyfills</li>
+                  <li>Minimize global variables!</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 250px">
+                <h4 style="color: #1a73e8">
+                  <i class="fas fa-box" style="margin-right: 5px"></i> Function
+                  Object
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>Functions are callable objects</li>
+                  <li>
+                    <code>name</code>: the function's name (often guessed)
+                  </li>
+                  <li><code>length</code>: number of parameters (no rest)</li>
+                  <li>Can add custom properties (parallel to variables)</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 250px">
+                <h4 style="color: #1a73e8">
+                  <i class="fas fa-tag" style="margin-right: 5px"></i> NFE
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    Named Function Expression:
+                    <code>let f = function name() {}</code>
+                  </li>
+                  <li>Internal name is visible only inside</li>
+                  <li>Reliable self-reference (survives reassignment)</li>
+                  <li>Libraries use this pattern to organize helpers</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">10 / 10</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Global Object & Function Object — Presentation &copy; 2024 | Built with ❤️
+      for learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

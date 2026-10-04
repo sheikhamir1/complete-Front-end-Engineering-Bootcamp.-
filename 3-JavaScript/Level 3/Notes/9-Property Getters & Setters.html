@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Getters & Setters - Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+.presentation-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.slide {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  margin-bottom: 30px;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.slide-header {
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e1e8ed;
+  padding-bottom: 15px;
+}
+
+.slide-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  color: #1a73e8;
+  margin-bottom: 10px;
+}
+
+.slide-subtitle {
+  font-size: 1.2rem;
+  color: #5f6368;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-section {
+  margin-bottom: 20px;
+}
+
+.text-section h3 {
+  font-family: 'Montserrat', sans-serif;
+  color: #1a73e8;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.text-section p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.image-container img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.two-column {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.column {
+  flex: 1;
+}
+
+.highlight-box {
+  background-color: #e8f0fe;
+  border-left: 4px solid #1a73e8;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.navigation {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-btn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.nav-btn:hover {
+  background-color: #0d47a1;
+  transform: scale(1.1);
+}
+
+.progress-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5px;
+  background-color: #1a73e8;
+  z-index: 101;
+  transition: width 0.3s ease;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #5f6368;
+  font-size: 0.9rem;
+}
+
+.info-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h4 {
+  color: #1a73e8;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.comparison-table th, .comparison-table td {
+  border: 1px solid #e1e8ed;
+  padding: 12px;
+  text-align: left;
+}
+
+.comparison-table th {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}
+
+.comparison-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.code-block {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  overflow-x: auto;
+  line-height: 1.7;
+  position: relative;
+}
+
+.code-block .keyword { color: #cba6f7; }
+.code-block .function-name { color: #89b4fa; }
+.code-block .number { color: #fab387; }
+.code-block .string { color: #a6e3a1; }
+.code-block .comment { color: #6c7086; font-style: italic; }
+.code-block .operator { color: #89dceb; }
+.code-block .builtin { color: #f9e2af; }
+.code-block .error { color: #f38ba8; font-weight: bold; }
+
+.analogy-box {
+  background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  border-left: 4px solid #ff6f00;
+}
+
+.analogy-box .analogy-label {
+  font-weight: 700;
+  color: #ff6f00;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.analogy-box p {
+  margin-bottom: 0;
+  font-size: 1.05rem;
+}
+
+.warning-box {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff6f00;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.warning-box strong {
+  color: #e65100;
+}
+
+.slide:first-child {
+  min-height: 85vh;
+  background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+}
+
+.hero-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.2rem;
+  color: #1a73e8;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  color: #5f6368;
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+.hero-tags {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-tag {
+  background-color: #1a73e8;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.slide-number {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  color: #adb5bd;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .slide { padding: 20px; }
+  .slide-title { font-size: 1.8rem; }
+  .hero-title { font-size: 2.2rem; }
+  .two-column { flex-direction: column; }
+  .navigation { bottom: 20px; top: auto; flex-direction: row; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-indicator" id="progressBar"></div>
+
+<div class="navigation">
+  <button class="nav-btn" id="topBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <button class="nav-btn" id="downBtn" title="Go to bottom">
+    <i class="fas fa-arrow-down"></i>
+  </button>
+</div>
+
+<div class="presentation-container">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide">
+    <div class="slide-content" style="display: flex; flex-direction: row; align-items: center; gap: 40px; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 300px;">
+        <div class="hero-title">Property Getters & Setters</div>
+        <div class="hero-subtitle">Creating "virtual" properties that compute values on the fly and add smart control over reads and writes.</div>
+        <div class="analogy-box">
+          <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+          <p>A getter/setter is like a <strong>smart thermostat</strong>. You read the temperature (getter) and set a target (setter), but behind the scenes it's not just storing a number — it's running calculations, checking rules, and controlling the HVAC system. To you, it looks like a simple dial.</p>
+        </div>
+        <div class="hero-tags">
+          <span class="hero-tag"><i class="fas fa-book-open"></i> get</span>
+          <span class="hero-tag"><i class="fas fa-pen"></i> set</span>
+          <span class="hero-tag"><i class="fas fa-shield-alt"></i> Validation</span>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 300px;">
+        <div class="image-container">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop" alt="Code and Logic concept">
+        </div>
+      </div>
+    </div>
+    <span class="slide-number">1 / 9</span>
+  </div>
+
+  <!-- SLIDE 2: Two Kinds of Properties -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Two Kinds of Properties</div>
+      <div class="slide-subtitle">Data properties vs. Accessor properties</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-code-branch" style="margin-right:8px;"></i>What's the Difference?</h3>
+        <p>Until now, we've only used <strong>data properties</strong> — simple key-value pairs. But there's a second type: <strong>accessor properties</strong>. They look like regular properties from the outside, but are actually functions that run when you read or write.</p>
+      </div>
+
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #34a853;">
+            <h4><i class="fas fa-database" style="margin-right:5px; color:#34a853;"></i> Data Property</h4>
+            <p>Stores a value directly.</p>
+            <div class="code-block">
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;name: <span class="string">"John"</span> <span class="comment">// Data property</span><br>
+};<br><br>
+<span class="builtin">alert</span>(user.name); <span class="comment">// "John"</span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #1a73e8;">
+            <h4><i class="fas fa-cogs" style="margin-right:5px; color:#1a73e8;"></i> Accessor Property</h4>
+            <p>Runs a function when read or written.</p>
+            <div class="code-block">
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;<span class="keyword">get</span> <span class="function-name">fullName</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"John Smith"</span>;<br>
+&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="builtin">alert</span>(user.fullName); <span class="comment">// "John Smith"</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <strong>The Magic:</strong> From the outside, <code>user.fullName</code> looks like a normal property. You don't call it like <code>user.fullName()</code>. You just read it, and the getter function runs behind the scenes!
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Whiteboard vs. Receptionist:</strong> A data property is like a whiteboard — you look at it and see what's written. An accessor property is like asking a receptionist "What's John's full name?" — the receptionist does the work of combining the first and last name and gives you the answer.</p>
+      </div>
+    </div>
+    <span class="slide-number">2 / 9</span>
+  </div>
+
+  <!-- SLIDE 3: Getter & Setter Syntax -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Getter & Setter Syntax</div>
+      <div class="slide-subtitle">How to define accessor properties in an object literal</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-code" style="margin-right:8px;"></i>The Basic Structure</h3>
+        <p>Getters and setters are defined using the <code>get</code> and <code>set</code> keywords inside an object literal.</p>
+      </div>
+
+      <div class="code-block">
+<span class="keyword">let</span> obj = {<br>
+&nbsp;&nbsp;<span class="keyword">get</span> <span class="function-name">propName</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Runs when you READ obj.propName</span><br>
+&nbsp;&nbsp;},<br><br>
+&nbsp;&nbsp;<span class="keyword">set</span> <span class="function-name">propName</span>(value) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Runs when you WRITE obj.propName = value</span><br>
+&nbsp;&nbsp;}<br>
+};
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #34a853;">
+        <h4>Example: <code>fullName</code></h4>
+        <div class="code-block">
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;name: <span class="string">"John"</span>,<br>
+&nbsp;&nbsp;surname: <span class="string">"Smith"</span>,<br><br>
+&nbsp;&nbsp;<span class="keyword">get</span> <span class="function-name">fullName</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">`${this.name} ${this.surname}`</span>;<br>
+&nbsp;&nbsp;},<br><br>
+&nbsp;&nbsp;<span class="keyword">set</span> <span class="function-name">fullName</span>(value) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[<span class="keyword">this</span>.name, <span class="keyword">this</span>.surname] = value.<span class="function-name">split</span>(<span class="string">" "</span>);<br>
+&nbsp;&nbsp;}<br>
+};<br><br>
+<span class="builtin">alert</span>(user.fullName); <span class="comment">// John Smith (getter runs)</span><br><br>
+user.fullName = <span class="string">"Alice Cooper"</span>; <span class="comment">// (setter runs)</span><br>
+<span class="builtin">alert</span>(user.name); <span class="comment">// Alice</span><br>
+<span class="builtin">alert</span>(user.surname); <span class="comment">// Cooper</span>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <strong><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i> Read-Only:</strong> If you only define a <code>get</code> without a <code>set</code>, the property becomes read-only. Attempting to assign it will throw an error: <code>user.fullName = "Test"; // Error (property has only a getter)</code>
+      </div>
+    </div>
+    <span class="slide-number">3 / 9</span>
+  </div>
+
+  <!-- SLIDE 4: Accessor Descriptors -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Accessor Descriptors</div>
+      <div class="slide-subtitle">Using <code>Object.defineProperty</code> with getters and setters</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-file-code" style="margin-right:8px;"></i>Different Descriptors</h3>
+        <p>Accessor properties have different descriptor flags than data properties. There is no <code>value</code> or <code>writable</code>. Instead, there are <code>get</code> and <code>set</code> functions.</p>
+      </div>
+
+      <div class="comparison-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>Data Property</th>
+              <th>Accessor Property</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Value</strong></td>
+              <td><code>value</code></td>
+              <td>❌ (not allowed)</td>
+            </tr>
+            <tr>
+              <td><strong>Writability</strong></td>
+              <td><code>writable</code></td>
+              <td>❌ (not allowed)</td>
+            </tr>
+            <tr>
+              <td><strong>Getter</strong></td>
+              <td>❌ (not allowed)</td>
+              <td><code>get</code></td>
+            </tr>
+            <tr>
+              <td><strong>Setter</strong></td>
+              <td>❌ (not allowed)</td>
+              <td><code>set</code></td>
+            </tr>
+            <tr>
+              <td><strong>Visibility</strong></td>
+              <td><code>enumerable</code></td>
+              <td><code>enumerable</code></td>
+            </tr>
+            <tr>
+              <td><strong>Configurability</strong></td>
+              <td><code>configurable</code></td>
+              <td><code>configurable</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #1a73e8;">
+        <h4>Example with defineProperty</h4>
+        <div class="code-block">
+<span class="builtin">Object</span>.<span class="function-name">defineProperty</span>(user, <span class="string">'fullName'</span>, {<br>
+&nbsp;&nbsp;<span class="keyword">get</span>() { <span class="keyword">return</span> <span class="string">`${this.name} ${this.surname}`</span>; },<br>
+&nbsp;&nbsp;<span class="keyword">set</span>(value) { [<span class="keyword">this</span>.name, <span class="keyword">this</span>.surname] = value.<span class="function-name">split</span>(<span class="string">" "</span>); }<br>
+});
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <strong><i class="fas fa-ban" style="margin-right:5px;"></i> Cannot Mix!</strong> A property can be either an accessor (has <code>get</code>/<code>set</code>) OR a data property (has <code>value</code>), but never both. Supplying both <code>get</code> and <code>value</code> in the same descriptor throws an error!
+      </div>
+    </div>
+    <span class="slide-number">4 / 9</span>
+  </div>
+
+  <!-- SLIDE 5: Smarter Getters/Setters -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Smarter Getters/Setters</div>
+      <div class="slide-subtitle">Using accessors as wrappers to add validation and control</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-shield-alt" style="margin-right:8px;"></i>Adding Validation</h3>
+        <p>Getters and setters can act as "bouncers" for your data. They wrap the real value and check any incoming changes before allowing them through.</p>
+      </div>
+
+      <div class="code-block">
+<span class="keyword">let</span> user = {<br>
+&nbsp;&nbsp;<span class="keyword">get</span> <span class="function-name">name</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="keyword">this</span>._name;<br>
+&nbsp;&nbsp;},<br><br>
+&nbsp;&nbsp;<span class="keyword">set</span> <span class="function-name">name</span>(value) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (value.length &lt; <span class="number">4</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span class="string">"Name is too short, need at least 4 characters"</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>; <span class="comment">// Reject the change!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>._name = value;<br>
+&nbsp;&nbsp;}<br>
+};<br><br>
+user.name = <span class="string">"Pete"</span>; <span class="comment">// Stored successfully</span><br>
+<span class="builtin">alert</span>(user.name); <span class="comment">// Pete</span><br><br>
+user.name = <span class="string">""</span>; <span class="comment">// "Name is too short..." (rejected!)</span>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Club Bouncer:</strong> The setter is like a bouncer at a club door. You try to enter (assign a value), but the bouncer checks if you meet the rules (at least 4 characters). If you don't, you're turned away. If you do, you're let inside (stored in <code>_name</code>).</p>
+      </div>
+    </div>
+    <span class="slide-number">5 / 9</span>
+  </div>
+
+  <!-- SLIDE 6: The Underscore Convention -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">The Underscore Convention</div>
+      <div class="slide-subtitle">How to store the "real" value behind a getter/setter</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-user-secret" style="margin-right:8px;"></i>Why <code>_name</code>?</h3>
+        <p>In the previous example, we stored the value in <code>this._name</code>, not <code>this.name</code>. Why? Because if we used <code>this.name</code>, the setter would call itself endlessly!</p>
+      </div>
+
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #e53935;">
+            <h4><i class="fas fa-infinity" style="margin-right:5px; color:#e53935;"></i> Infinite Loop!</h4>
+            <div class="code-block">
+<span class="keyword">set</span> <span class="function-name">name</span>(value) {<br>
+&nbsp;&nbsp;<span class="keyword">this</span>.name = value; <span class="error">// Calls setter again!</span><br>
+&nbsp;&nbsp;<span class="comment">// → Stack Overflow!</span><br>
+}
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #34a853;">
+            <h4><i class="fas fa-check-circle" style="margin-right:5px; color:#34a853;"></i> Correct Way</h4>
+            <div class="code-block">
+<span class="keyword">set</span> <span class="function-name">name</span>(value) {<br>
+&nbsp;&nbsp;<span class="keyword">this</span>._name = value; <span class="comment">// Stores in _name</span><br>
+&nbsp;&nbsp;<span class="comment">// → No infinite loop</span><br>
+}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #7c3aed;">
+        <h4><i class="fas fa-handshake" style="margin-right:5px; color:#7c3aed;"></i>The Convention</h4>
+        <p>Properties starting with an underscore <code>_</code> are <strong>internal</strong> properties. It's a widely known convention among developers: <em>"Don't touch properties starting with <code>_</code> from outside the object."</em></p>
+        <ul style="padding-left:20px; margin-top:10px; line-height:2;">
+          <li>Technically, external code <em>can</em> access <code>user._name</code></li>
+          <li>But by convention, they shouldn't — it's the object's private business</li>
+          <li>Always use the getter/setter (<code>user.name</code>) instead</li>
+        </ul>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Employees Only Door:</strong> A door with an "Employees Only" sign. There's no physical lock stopping customers from walking in, but the sign tells them they shouldn't. The <code>_</code> prefix is that sign for other programmers.</p>
+      </div>
+    </div>
+    <span class="slide-number">6 / 9</span>
+  </div>
+
+  <!-- SLIDE 7: Using for Compatibility -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Using for Compatibility</div>
+      <div class="slide-subtitle">Refactoring internal data without breaking old code</div>
+    </div>
+    <div class="slide-content">
+      <div class="text-section">
+        <h3><i class="fas fa-history" style="margin-right:8px;"></i>The Problem</h3>
+        <p>Imagine we started with a simple <code>age</code> data property, but later realized <code>birthday</code> is more precise. How do we change the internal structure without breaking old code that uses <code>age</code>?</p>
+      </div>
+
+      <div class="two-column">
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #e53935;">
+            <h4>Old Code</h4>
+            <div class="code-block">
+<span class="keyword">function</span> <span class="function-name">User</span>(name, age) {<br>
+&nbsp;&nbsp;<span class="keyword">this</span>.name = name;<br>
+&nbsp;&nbsp;<span class="keyword">this</span>.age = age;<br>
+}<br><br>
+<span class="keyword">let</span> john = <span class="keyword">new</span> <span class="function-name">User</span>(<span class="string">"John"</span>, <span class="number">25</span>);<br>
+<span class="builtin">alert</span>(john.age); <span class="comment">// 25</span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="info-card" style="border-top: 4px solid #34a853;">
+            <h4>New Code (Compatible!)</h4>
+            <div class="code-block">
+<span class="keyword">function</span> <span class="function-name">User</span>(name, birthday) {<br>
+&nbsp;&nbsp;<span class="keyword">this</span>.name = name;<br>
+&nbsp;&nbsp;<span class="keyword">this</span>.birthday = birthday;<br><br>
+&nbsp;&nbsp;<span class="builtin">Object</span>.<span class="function-name">defineProperty</span>(<span class="keyword">this</span>, <span class="string">"age"</span>, {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">get</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span> year = <span class="keyword">new</span> <span class="builtin">Date</span>().<span class="function-name">getFullYear</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> year - <span class="keyword">this</span>.birthday.<span class="function-name">getFullYear</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;});<br>
+}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box">
+        <strong>Result:</strong> Old code using <code>john.age</code> still works perfectly! The getter computes the age dynamically from the birthday. No need to find and update every place that uses <code>.age</code>.
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label"><i class="fas fa-lightbulb"></i> Real-World Analogy</div>
+        <p><strong>Car Speedometer:</strong> Old cars used a physical cable from the wheel to the dashboard. New cars calculate speed from wheel sensors electronically. But the driver still just looks at the same "Speed" dial on the dashboard. The internal implementation changed, but the interface (getter) stayed the same.</p>
+      </div>
+    </div>
+    <span class="slide-number">7 / 9</span>
+  </div>
+
+  <!-- SLIDE 8: Data vs Accessor Comparison -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Data vs Accessor Comparison</div>
+      <div class="slide-subtitle">When to use which kind of property</div>
+    </div>
+    <div class="slide-content">
+      <div class="comparison-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Data Property</th>
+              <th>Accessor Property</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>What it stores</strong></td>
+              <td>A direct value</td>
+              <td>Functions (get/set)</td>
+            </tr>
+            <tr>
+              <td><strong>When to use</strong></td>
+              <td>Simple data that doesn't need validation or computation</td>
+              <td>Computed values, validation, compatibility wrappers</td>
+            </tr>
+            <tr>
+              <td><strong>Descriptor keys</strong></td>
+              <td><code>value</code>, <code>writable</code>, <code>enumerable</code>, <code>configurable</code></td>
+              <td><code>get</code>, <code>set</code>, <code>enumerable</code>, <code>configurable</code></td>
+            </tr>
+            <tr>
+              <td><strong>Can mix?</strong></td>
+              <td colspan="2" style="text-align:center; color:#e53935;">❌ No! A property is either data OR accessor, never both.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-card" style="border-left: 4px solid #34a853;">
+        <h4><i class="fas fa-check-circle" style="margin-right:5px; color:#34a853;"></i>When to Use Accessors</h4>
+        <ul style="padding-left:20px; line-height:2;">
+          <li><strong>Computed values:</strong> Like <code>fullName</code> from <code>name</code> + <code>surname</code></li>
+          <li><strong>Validation:</strong> Rejecting invalid values before they're stored</li>
+          <li><strong>Logging/Tracking:</strong> Noting when a property is read or changed</li>
+          <li><strong>Lazy calculation:</strong> Computing a value only when it's first needed</li>
+          <li><strong>Compatibility:</strong> Keeping old property names working after internal refactoring</li>
+        </ul>
+      </div>
+
+      <div class="warning-box">
+        <strong><i class="fas fa-exclamation-triangle" style="margin-right:5px;"></i> Don't Overuse:</strong> If a property is just storing a simple value with no logic needed, use a regular data property. Getters/setters add complexity — only use them when you actually need the control.
+      </div>
+    </div>
+    <span class="slide-number">8 / 9</span>
+  </div>
+
+  <!-- SLIDE 9: Summary -->
+  <div class="slide">
+    <div class="slide-header">
+      <div class="slide-title">Summary</div>
+      <div class="slide-subtitle">Everything you need to remember about Getters & Setters</div>
+    </div>
+    <div class="slide-content">
+      <div class="info-card" style="background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%); padding: 25px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+          <div style="flex: 1; min-width: 280px;">
+            <h4 style="color:#1a73e8; font-size:1.3rem; margin-bottom:12px;">
+              <i class="fas fa-book-open" style="margin-right:8px;"></i>Key Concepts
+            </h4>
+            <ul style="padding-left:20px; line-height:2;">
+              <li>Accessor properties look like data, but run functions</li>
+              <li><code>get</code> runs when you read the property</li>
+              <li><code>set</code> runs when you assign to the property</li>
+              <li>Only <code>get</code> = read-only property</li>
+              <li>Cannot mix <code>value</code> and <code>get</code> in descriptors</li>
+            </ul>
+          </div>
+          <div style="flex: 1; min-width: 280px;">
+            <h4 style="color:#1a73e8; font-size:1.3rem; margin-bottom:12px;">
+              <i class="fas fa-shield-alt" style="margin-right:8px;"></i>Best Practices
+            </h4>
+            <ul style="padding-left:20px; line-height:2;">
+              <li>Use <code>_</code> prefix for internal storage properties</li>
+              <li>Use setters for validation and logging</li>
+              <li>Use getters for computed/derived values</li>
+              <li>Use for backward compatibility when refactoring</li>
+              <li>Don't overuse — simple data doesn't need accessors</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-table" style="margin-top:25px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>One-Liner</th>
+              <th>Real-World Analogy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Accessor Property</strong></td>
+              <td>Looks like data, runs code</td>
+              <td>Smart thermostat</td>
+            </tr>
+            <tr>
+              <td><strong>Getter</strong></td>
+              <td>Function that runs on read</td>
+              <td>Asking a receptionist for info</td>
+            </tr>
+            <tr>
+              <td><strong>Setter</strong></td>
+              <td>Function that runs on write</td>
+              <td>Club bouncer checking ID</td>
+            </tr>
+            <tr>
+              <td><code><strong>_</code> prefix</strong></td>
+              <td>Internal property convention</td>
+              <td>"Employees Only" door sign</td>
+            </tr>
+            <tr>
+              <td><strong>Compatibility Getter</strong></td>
+              <td>Keep old interface, change internals</td>
+              <td>Digital speedometer replacing cable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="highlight-box" style="margin-top:20px;">
+        <strong><i class="fas fa-star" style="margin-right:5px;"></i> Rule of Thumb:</strong> Use data properties for simple values. Switch to accessor properties when you need computation, validation, or want to protect the internal structure from external code changes.
+      </div>
+    </div>
+    <span class="slide-number">9 / 9</span>
+  </div>
+
+</div>
+
+<div class="footer">
+  Property Getters & Setters — Presentation &copy; 2024 | Built with ❤️ for learning
+</div>
+
+<script>
+// Navigation functionality
+document.getElementById('topBtn').addEventListener('click', function() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+document.getElementById('downBtn').addEventListener('click', function() {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth'
+  });
+});
+
+// Progress bar functionality
+window.addEventListener('scroll', function() {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// Add fade-in animation to slides when they come into view
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.1
+};
+
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.slide').forEach(slide => {
+  slide.style.opacity = '0';
+  slide.style.transform = 'translateY(20px)';
+  slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(slide);
+});
+</script>
+</body>
+</html>

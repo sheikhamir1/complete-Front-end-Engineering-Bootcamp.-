@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prototype Methods & Pure Dictionaries - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Prototype Methods & Pure Dictionaries</div>
+            <div class="hero-subtitle">
+              The modern way to handle prototypes, and how to create objects
+              immune to <code>__proto__</code> bugs.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                Using <code>__proto__</code> is like controlling a machine with
+                old manual levers. The modern methods
+                (<code>Object.create</code>, <code>getPrototypeOf</code>) are
+                like a digital control panel — safer, standardized, and less
+                likely to break things.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-wrench"></i> Modern Methods</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-ban"></i> No __proto__</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-book"></i> Dictionaries</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop"
+                alt="Modern Code concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 8</span>
+      </div>
+
+      <!-- SLIDE 2: Modern Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Modern Methods</div>
+          <div class="slide-subtitle">
+            Replacing <code>__proto__</code> with safer, standardized functions
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-exchange-alt" style="margin-right: 8px"></i>Why
+              Change?
+            </h3>
+            <p>
+              <code>__proto__</code> is outdated and deprecated for
+              getting/setting. It's only still allowed inside object literals
+              <code>{ __proto__: ... }</code>. For everything else, use the
+              modern API.
+            </p>
+          </div>
+
+          <div class="comparison-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Old Way (Deprecated)</th>
+                  <th>Modern Way</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Read Prototype</strong></td>
+                  <td><code>obj.__proto__</code></td>
+                  <td><code>Object.getPrototypeOf(obj)</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Set Prototype</strong></td>
+                  <td><code>obj.__proto__ = ...</code></td>
+                  <td><code>Object.setPrototypeOf(obj, proto)</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Create Object</strong></td>
+                  <td><code>{ __proto__: ... }</code></td>
+                  <td><code>Object.create(proto)</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = { eats:
+            <span class="keyword">true</span> };<br /><br />
+            <span class="comment">// Create: same as { __proto__: animal }</span
+            ><br />
+            <span class="keyword">let</span> rabbit =
+            <span class="builtin">Object</span>.<span class="function-name"
+              >create</span
+            >(animal);<br /><br />
+            <span class="builtin">alert</span>(rabbit.eats);
+            <span class="comment">// true</span><br /><br />
+            <span class="comment">// Read</span><br />
+            <span class="builtin">alert</span>(<span class="builtin"
+              >Object</span
+            >.<span class="function-name">getPrototypeOf</span>(rabbit) ===
+            animal); <span class="comment">// true</span><br /><br />
+            <span class="comment">// Change (not recommended on the fly!)</span
+            ><br />
+            <span class="builtin">Object</span>.<span class="function-name"
+              >setPrototypeOf</span
+            >(rabbit, {});
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Performance Warning:</strong
+            >
+            Changing <code>[[Prototype]]</code> on an existing object with
+            <code>Object.setPrototypeOf</code> is very slow. It breaks
+            JavaScript engine optimizations. Only set prototypes at creation
+            time!
+          </div>
+        </div>
+        <span class="slide-number">2 / 8</span>
+      </div>
+
+      <!-- SLIDE 3: Object.create Power -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title"><code>Object.create()</code> Power</div>
+          <div class="slide-subtitle">
+            Creating objects with prototypes and property descriptors in one
+            step
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-magic" style="margin-right: 8px"></i>The Optional
+              Second Argument
+            </h3>
+            <p>
+              <code>Object.create</code> accepts an optional second argument:
+              property descriptors. This lets you define properties with
+              specific flags right from the start.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = { eats:
+            <span class="keyword">true</span> };<br /><br />
+            <span class="keyword">let</span> rabbit =
+            <span class="builtin">Object</span>.<span class="function-name"
+              >create</span
+            >(animal, {<br />
+            &nbsp;&nbsp;jumps: {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;value:
+            <span class="keyword">true</span>,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;enumerable:
+            <span class="keyword">true</span>,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;writable:
+            <span class="keyword">true</span>,<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;configurable:
+            <span class="keyword">true</span><br />
+            &nbsp;&nbsp;}<br />
+            });<br /><br />
+            <span class="builtin">alert</span>(rabbit.jumps);
+            <span class="comment">// true</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-clone"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >The Ultimate Clone
+            </h4>
+            <p>
+              We can use <code>Object.create</code> to make a truly exact copy
+              of an object — including all property flags and the correct
+              prototype.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> clone =
+              <span class="builtin">Object</span>.<span class="function-name"
+                >create</span
+              >(<br />
+              &nbsp;&nbsp;<span class="builtin">Object</span>.<span
+                class="function-name"
+                >getPrototypeOf</span
+              >(obj), <span class="comment">// Same prototype</span><br />
+              &nbsp;&nbsp;<span class="builtin">Object</span>.<span
+                class="function-name"
+                >getOwnPropertyDescriptors</span
+              >(obj) <span class="comment">// All properties + flags</span
+              ><br />
+              );
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Custom Home Building:</strong>
+              <code>Object.create</code> is like ordering a custom-built house.
+              You choose the foundation (<code>proto</code>) AND you can specify
+              the fixtures and locks (<code>descriptors</code>) all at once
+              before moving in.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 8</span>
+      </div>
+
+      <!-- SLIDE 4: The __proto__ Problem -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>__proto__</code> Problem</div>
+          <div class="slide-subtitle">
+            Why storing user-provided keys in objects can break
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3><i class="fas fa-bug" style="margin-right: 8px"></i>The Bug</h3>
+            <p>
+              Objects are often used as key/value dictionaries. But if a user
+              types <code>__proto__</code> as a key, the assignment is silently
+              ignored!
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> obj = {};<br /><br />
+            <span class="keyword">let</span> key =
+            <span class="builtin">prompt</span>(<span class="string"
+              >"What's the key?"</span
+            >, <span class="string">"__proto__"</span>);<br />
+            obj[key] = <span class="string">"some value"</span>;<br /><br />
+            <span class="builtin">alert</span>(obj[key]);
+            <span class="error">// [object Object], NOT "some value"!</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-search"
+                style="margin-right: 5px; color: #e53935"
+              ></i
+              >Why Does This Happen?
+            </h4>
+            <p>
+              <code>__proto__</code> isn't a regular property — it's an
+              <strong>accessor</strong> on <code>Object.prototype</code>. When
+              you write <code>obj.__proto__ = "some value"</code>, you're
+              calling a setter that expects an object or <code>null</code>. A
+              string is ignored.
+            </p>
+            <p style="margin-top: 10px">
+              This can be a <strong>security vulnerability</strong> on servers
+              if user input changes the prototype!
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>VIP Entrance:</strong> Imagine a building where the door
+              labeled "VIP" is actually a special control panel, not a normal
+              room. If a guest says "Put my coat in the VIP room", the system
+              tries to execute a command instead of storing the coat. The key
+              name triggers special behavior.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 8</span>
+      </div>
+
+      <!-- SLIDE 5: The Map Solution -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Solution 1: Use <code>Map</code></div>
+          <div class="slide-subtitle">
+            The safest way to store arbitrary key/value pairs
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-map" style="margin-right: 8px"></i>No Prototype
+              Problems
+            </h3>
+            <p>
+              Maps are designed specifically for key/value storage. They don't
+              inherit from <code>Object.prototype</code>, so
+              <code>__proto__</code> is treated like any other key.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> map =
+            <span class="keyword">new</span>
+            <span class="builtin">Map</span>();<br /><br />
+            <span class="keyword">let</span> key =
+            <span class="builtin">prompt</span>(<span class="string"
+              >"What's the key?"</span
+            >, <span class="string">"__proto__"</span>);<br />
+            map.<span class="function-name">set</span>(key,
+            <span class="string">"some value"</span>);<br /><br />
+            <span class="builtin">alert</span>(map.<span class="function-name"
+              >get</span
+            >(key));
+            <span class="comment">// "some value" ✅ Works perfectly!</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Best Practice:</strong> If your primary use case is storing
+            and retrieving key/value pairs (especially with user-provided keys),
+            always prefer <code>Map</code> over plain objects. It's safer and
+            provides better methods like <code>.size</code>,
+            <code>.has()</code>, and <code>.forEach()</code>.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Storage Lockers:</strong> A <code>Map</code> is like a
+              bank of safe deposit boxes. Every key opens a box, and the label
+              "VIP" is just another label on a box — it has no special powers
+              over the vault.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 8</span>
+      </div>
+
+      <!-- SLIDE 6: Pure Dictionary Objects -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Solution 2: "Very Plain" Objects</div>
+          <div class="slide-subtitle">
+            Creating objects with absolutely no prototype
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-broom" style="margin-right: 8px"></i
+              >Object.create(null)
+            </h3>
+            <p>
+              If you prefer the object syntax over <code>Map</code>, you can
+              create a "pure dictionary" — an object with
+              <code>[[Prototype]]</code> set to <code>null</code>. It has no
+              inherited methods and no <code>__proto__</code> accessor.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> obj =
+            <span class="builtin">Object</span>.<span class="function-name"
+              >create</span
+            >(<span class="keyword">null</span>);<br />
+            <span class="comment">// Or: obj = { __proto__: null }</span
+            ><br /><br />
+            <span class="keyword">let</span> key =
+            <span class="builtin">prompt</span>(<span class="string"
+              >"What's the key?"</span
+            >, <span class="string">"__proto__"</span>);<br />
+            obj[key] = <span class="string">"some value"</span>;<br /><br />
+            <span class="builtin">alert</span>(obj[key]);
+            <span class="comment">// "some value" ✅ Works!</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-check-circle"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >Why It Works
+            </h4>
+            <p>
+              Without a prototype, there's no inherited
+              <code>__proto__</code> getter/setter. Now
+              <code>__proto__</code> is treated as a regular data property!
+            </p>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #5f6368">
+            <h4>
+              <i class="fas fa-info-circle" style="margin-right: 5px"></i>Side
+              Effect: No Built-in Methods
+            </h4>
+            <div class="code-block">
+              <span class="keyword">let</span> obj =
+              <span class="builtin">Object</span>.<span class="function-name"
+                >create</span
+              >(<span class="keyword">null</span>);<br /><br />
+              <span class="builtin">alert</span>(obj);
+              <span class="error">// Error! No toString method</span
+              ><br /><br />
+              <span class="comment"
+                >// But Object.keys still works (it's not on the
+                prototype):</span
+              ><br />
+              <span class="builtin">alert</span>(<span class="builtin"
+                >Object</span
+              >.<span class="function-name">keys</span>(obj));
+              <span class="comment">// [] ✅</span>
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">6 / 8</span>
+      </div>
+
+      <!-- SLIDE 7: Comparison -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Dictionary Solutions Compared</div>
+          <div class="slide-subtitle">Which approach should you choose?</div>
+        </div>
+        <div class="slide-content">
+          <div class="comparison-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Plain Object <code>{}</code></th>
+                  <th>Pure Dict <code>Object.create(null)</code></th>
+                  <th><code>Map</code></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>__proto__ bug</strong></td>
+                  <td style="color: #e53935">❌ Yes</td>
+                  <td style="color: #34a853">✅ No</td>
+                  <td style="color: #34a853">✅ No</td>
+                </tr>
+                <tr>
+                  <td><strong>Built-in methods</strong></td>
+                  <td style="color: #34a853">✅ Yes (toString)</td>
+                  <td style="color: #e53935">❌ None</td>
+                  <td style="color: #34a853">✅ Yes (.size, .has)</td>
+                </tr>
+                <tr>
+                  <td><strong>String keys only</strong></td>
+                  <td style="color: #e53935">❌ Yes</td>
+                  <td style="color: #e53935">❌ Yes</td>
+                  <td style="color: #34a853">✅ Any type</td>
+                </tr>
+                <tr>
+                  <td><strong>Iteration</strong></td>
+                  <td><code>for..in</code>, <code>Object.keys</code></td>
+                  <td><code>for..in</code>, <code>Object.keys</code></td>
+                  <td><code>.forEach</code>, <code>for..of</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Syntax</strong></td>
+                  <td>Simple <code>obj.key</code></td>
+                  <td>Simple <code>obj.key</code></td>
+                  <td><code>map.get/set</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Decision Guide:</strong> If you need maximum safety and
+            features (like non-string keys), use <strong>Map</strong>. If you
+            just want simple object syntax without the
+            <code>__proto__</code> risk, use
+            <strong>Object.create(null)</strong>. Avoid plain
+            <code>{}</code> for untrusted user keys.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Choosing a Notebook:</strong> Plain object = a notebook
+              with pre-printed forms (might conflict with your data). Pure
+              dictionary = a completely blank notebook. Map = a filing cabinet
+              with custom folders and labels.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 8</span>
+      </div>
+
+      <!-- SLIDE 8: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Prototype Methods & Pure
+            Dictionaries
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-wrench" style="margin-right: 8px"></i>Modern
+                  Methods
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>Object.create(proto, descriptors)</code> — create with
+                    prototype + flags
+                  </li>
+                  <li>
+                    <code>Object.getPrototypeOf(obj)</code> — read prototype
+                  </li>
+                  <li>
+                    <code>Object.setPrototypeOf(obj, proto)</code> — change
+                    prototype (slow!)
+                  </li>
+                  <li>Use <code>{ __proto__: ... }</code> only in literals</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-shield-alt" style="margin-right: 8px"></i
+                  >Safe Dictionaries
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    Plain objects risk <code>__proto__</code> bugs with user
+                    keys
+                  </li>
+                  <li>
+                    <code>Map</code> is the safest for arbitrary key/value pairs
+                  </li>
+                  <li>
+                    <code>Object.create(null)</code> creates "pure" dictionaries
+                  </li>
+                  <li>
+                    Pure dictionaries lack <code>toString</code> but work with
+                    <code>Object.keys</code>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Modern Methods</strong></td>
+                  <td>Standard API for prototype operations</td>
+                  <td>Digital control panel</td>
+                </tr>
+                <tr>
+                  <td><strong>Object.create</strong></td>
+                  <td>Create with prototype + property flags</td>
+                  <td>Custom home building</td>
+                </tr>
+                <tr>
+                  <td><strong>setPrototypeOf</strong></td>
+                  <td>Change prototype on existing object</td>
+                  <td>Changing a building's foundation</td>
+                </tr>
+                <tr>
+                  <td><strong>__proto__ Bug</strong></td>
+                  <td>Special key breaks key/value storage</td>
+                  <td>VIP entrance that's actually a control panel</td>
+                </tr>
+                <tr>
+                  <td><strong>Object.create(null)</strong></td>
+                  <td>A truly empty object with no inherited traits</td>
+                  <td>Completely blank notebook</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Rule of
+              Thumb:</strong
+            >
+            Use <code>Object.create</code> for building objects with specific
+            prototypes and descriptors. For storing user-provided keys, use
+            <code>Map</code> or <code>Object.create(null)</code>. Never change
+            prototypes on existing objects if speed matters.
+          </div>
+        </div>
+        <span class="slide-number">8 / 8</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Prototype Methods & Pure Dictionaries — Presentation &copy; 2024 | Built
+      with ❤️ for learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

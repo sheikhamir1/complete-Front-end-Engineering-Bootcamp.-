@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prototypal Inheritance - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+        position: relative;
+      }
+
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box strong {
+        color: #e65100;
+      }
+
+      .flow-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .step-number {
+        background-color: #1a73e8;
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        font-size: 0.95rem;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content p {
+        margin-bottom: 5px;
+      }
+
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Prototypal Inheritance</div>
+            <div class="hero-subtitle">
+              How objects borrow features from other objects, sharing methods
+              without duplicating code.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                Prototypal inheritance is like <strong>family traits</strong>.
+                You have your own unique qualities (own properties), but you
+                also inherit traits from your parents (prototype). If someone
+                asks you a skill you don't have, you check if your parents have
+                it.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-link"></i> [[Prototype]]</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-search"></i> Lookup Chain</span
+              >
+              <span class="hero-tag"><i class="fas fa-user-tag"></i> this</span>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop"
+                alt="Inheritance and Connections concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 8</span>
+      </div>
+
+      <!-- SLIDE 2: [[Prototype]] -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>[[Prototype]]</code> Link</div>
+          <div class="slide-subtitle">
+            The hidden property that connects objects together
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-link" style="margin-right: 8px"></i>What is it?
+            </h3>
+            <p>
+              Every JavaScript object has a special hidden property called
+              <code>[[Prototype]]</code>. It's either <code>null</code> or
+              references another object. When you try to read a property that's
+              missing, JavaScript automatically looks for it in the prototype.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = {<br />
+            &nbsp;&nbsp;eats: <span class="keyword">true</span><br />
+            };<br /><br />
+            <span class="keyword">let</span> rabbit = {<br />
+            &nbsp;&nbsp;jumps: <span class="keyword">true</span>,<br />
+            &nbsp;&nbsp;__proto__: animal
+            <span class="comment">// Sets rabbit.[[Prototype]] = animal</span
+            ><br />
+            };<br /><br />
+            <span class="builtin">alert</span>(rabbit.jumps);
+            <span class="comment">// true (own property)</span><br />
+            <span class="builtin">alert</span>(rabbit.eats);
+            <span class="comment">// true (inherited from animal!)</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-info-circle"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i>
+              <code>__proto__</code> vs <code>[[Prototype]]</code>
+            </h4>
+            <p>
+              <code>__proto__</code> is a historical getter/setter for the
+              internal <code>[[Prototype]]</code>. Modern code prefers
+              <code>Object.getPrototypeOf()</code> /
+              <code>Object.setPrototypeOf()</code>, but
+              <code>__proto__</code> is more intuitive for learning.
+            </p>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Asking Parents:</strong> If you have your own car (own
+              property), you use it. If you don't, you ask your parents if they
+              have one you can borrow (prototype lookup).
+              <code>rabbit</code> doesn't have <code>eats</code>, so it checks
+              <code>animal</code>.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 8</span>
+      </div>
+
+      <!-- SLIDE 3: The Prototype Chain -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Prototype Chain</div>
+          <div class="slide-subtitle">
+            Multi-level inheritance and its limitations
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-sitemap" style="margin-right: 8px"></i>Chain
+              Reactions
+            </h3>
+            <p>
+              If a property isn't found on the object, JavaScript checks its
+              prototype, and then the prototype's prototype, until it reaches
+              <code>null</code>.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = { eats:
+            <span class="keyword">true</span>,
+            <span class="function-name">walk</span>() {
+            <span class="builtin">alert</span>(<span class="string"
+              >"Animal walk"</span
+            >); } };<br /><br />
+            <span class="keyword">let</span> rabbit = { jumps:
+            <span class="keyword">true</span>, __proto__: animal };<br /><br />
+            <span class="keyword">let</span> longEar = { earLength:
+            <span class="number">10</span>, __proto__: rabbit };<br /><br />
+            <span class="function-name">longEar</span>.walk();
+            <span class="comment">// "Animal walk" (found in animal)</span
+            ><br />
+            <span class="builtin">alert</span>(longEar.jumps);
+            <span class="comment">// true (found in rabbit)</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px; color: #e53935"
+              ></i
+              >Limitations
+            </h4>
+            <ul style="padding-left: 20px; line-height: 2">
+              <li>
+                <strong>No circles:</strong> JavaScript will throw an error if
+                you try to assign <code>__proto__</code> in a loop.
+              </li>
+              <li>
+                <strong>Only one parent:</strong> An object can only have one
+                <code>[[Prototype]]</code>. No multiple inheritance.
+              </li>
+              <li>
+                <strong>Object or null only:</strong> The value of
+                <code>__proto__</code> can only be an object or
+                <code>null</code>. Other types are ignored.
+              </li>
+            </ul>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Family Tree:</strong> If you don't know a recipe, you ask
+              your mom. If she doesn't know, she asks her mom (your
+              grandmother). The search goes up the family tree until someone
+              knows or the tree ends.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 8</span>
+      </div>
+
+      <!-- SLIDE 4: Writing Doesn't Use Prototype -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Writing Doesn't Use Prototype</div>
+          <div class="slide-subtitle">
+            Reads go up the chain, writes stay local
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-pen" style="margin-right: 8px"></i>The Write Rule
+            </h3>
+            <p>
+              Prototypes are only used for <strong>reading</strong> properties.
+              Write and delete operations work directly on the object itself.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = {<br />
+            &nbsp;&nbsp;eats: <span class="keyword">true</span>,<br />
+            &nbsp;&nbsp;<span class="function-name">walk</span>() {
+            <span class="comment">/* Animal walk */</span> }<br />
+            };<br /><br />
+            <span class="keyword">let</span> rabbit = { __proto__: animal };<br /><br />
+            <span class="comment"
+              >// This adds rabbit's OWN walk method, doesn't change
+              animal</span
+            ><br />
+            rabbit.walk = <span class="keyword">function</span>() {<br />
+            &nbsp;&nbsp;<span class="builtin">alert</span>(<span class="string"
+              >"Rabbit! Bounce-bounce!"</span
+            >);<br />
+            };<br /><br />
+            rabbit.walk();
+            <span class="comment"
+              >// "Rabbit! Bounce-bounce!" (found locally)</span
+            >
+          </div>
+
+          <div class="highlight-box">
+            <strong>Why?</strong> Imagine if writing
+            <code>rabbit.eats = false</code> changed <code>animal.eats</code>!
+            All animals would suddenly stop eating. Write operations must only
+            affect the current object, never the prototype.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Family Cookbook:</strong> Reading a recipe from the family
+              cookbook (prototype) is fine. But if you want to modify a recipe,
+              you write it in your <em>own</em> personal notebook (own
+              property). You don't scribble in the family book!
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 8</span>
+      </div>
+
+      <!-- SLIDE 5: The Accessor Exception -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Accessor Exception</div>
+          <div class="slide-subtitle">
+            Setters are triggered even when writing to an inherited property
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-exchange-alt" style="margin-right: 8px"></i>Why
+              Setters Work
+            </h3>
+            <p>
+              We said writes don't use the prototype. But there's an exception:
+              <strong>accessor properties</strong>. If a property has a setter
+              in the prototype, assigning to it calls that setter function.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user = {<br />
+            &nbsp;&nbsp;name: <span class="string">"John"</span>, surname:
+            <span class="string">"Smith"</span>,<br />
+            &nbsp;&nbsp;<span class="keyword">set</span>
+            <span class="function-name">fullName</span>(value) { [<span
+              class="keyword"
+              >this</span
+            >.name, <span class="keyword">this</span>.surname] = value.<span
+              class="function-name"
+              >split</span
+            >(<span class="string">" "</span>); },<br />
+            &nbsp;&nbsp;<span class="keyword">get</span>
+            <span class="function-name">fullName</span>() {
+            <span class="keyword">return</span>
+            <span class="string">`${this.name} ${this.surname}`</span>; }<br />
+            };<br /><br />
+            <span class="keyword">let</span> admin = { __proto__: user, isAdmin:
+            <span class="keyword">true</span> };<br /><br />
+            <span class="builtin">alert</span>(admin.fullName);
+            <span class="comment">// John Smith (getter from user)</span
+            ><br /><br />
+            <span class="comment"
+              >// Calls the setter! But what does 'this' refer to?</span
+            ><br />
+            admin.fullName =
+            <span class="string">"Alice Cooper"</span>;<br /><br />
+            <span class="builtin">alert</span>(admin.fullName);
+            <span class="comment">// Alice Cooper (admin modified)</span><br />
+            <span class="builtin">alert</span>(user.fullName);
+            <span class="comment">// John Smith (user protected!)</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>The Magic:</strong> The setter is called, but it writes to
+            <code>this.name</code> and <code>this.surname</code>. Because
+            <code>this</code> is <code>admin</code> (not <code>user</code>), the
+            properties are created on <code>admin</code>. The prototype
+            <code>user</code> stays untouched!
+          </div>
+        </div>
+        <span class="slide-number">5 / 8</span>
+      </div>
+
+      <!-- SLIDE 6: The Value of "this" -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Value of <code>this</code></div>
+          <div class="slide-subtitle">Shared methods, independent state</div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-user-tag" style="margin-right: 8px"></i>No Matter
+              Where Found
+            </h3>
+            <p>
+              No matter where a method is found — in the object or its prototype
+              — <code>this</code> is always the object before the dot. This
+              ensures inherited methods modify the correct object's state.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = {<br />
+            &nbsp;&nbsp;<span class="function-name">walk</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (!<span
+              class="keyword"
+              >this</span
+            >.isSleeping) <span class="builtin">alert</span>(<span
+              class="string"
+              >`I walk`</span
+            >);<br />
+            &nbsp;&nbsp;},<br />
+            &nbsp;&nbsp;<span class="function-name">sleep</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.isSleeping
+            = <span class="keyword">true</span>;<br />
+            &nbsp;&nbsp;}<br />
+            };<br /><br />
+            <span class="keyword">let</span> rabbit = { name:
+            <span class="string">"White Rabbit"</span>, __proto__: animal };<br /><br />
+            <span class="comment"
+              >// modifies rabbit.isSleeping, NOT animal.isSleeping</span
+            ><br />
+            rabbit.sleep();<br /><br />
+            <span class="builtin">alert</span>(rabbit.isSleeping);
+            <span class="comment">// true</span><br />
+            <span class="builtin">alert</span>(animal.isSleeping);
+            <span class="comment">// undefined</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Shared Methods, Separate State:</strong> Multiple objects
+            can inherit the same methods (saving memory), but when those methods
+            write data using <code>this</code>, the data is stored on the
+            individual object. No cross-contamination!
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Communal Kitchen:</strong> You and your roommates share a
+              kitchen (the methods). But when you cook a meal (set a property),
+              you put it in your own fridge (<code>this</code> = you). You don't
+              put your food in someone else's fridge.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 8</span>
+      </div>
+
+      <!-- SLIDE 7: for...in Loop -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>for...in</code> Loop</div>
+          <div class="slide-subtitle">
+            How iteration handles inherited properties
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-redo" style="margin-right: 8px"></i>Inherited
+              Properties Show Up
+            </h3>
+            <p>
+              The <code>for..in</code> loop iterates over both own and inherited
+              properties. Other methods like <code>Object.keys</code> and
+              <code>Object.values</code> ignore inherited properties.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4><code>for..in</code> (includes inherited)</h4>
+                <div class="code-block">
+                  <span class="keyword">for</span>(<span class="keyword"
+                    >let</span
+                  >
+                  prop <span class="keyword">in</span> rabbit) {<br />
+                  &nbsp;&nbsp;<span class="builtin">alert</span>(prop);
+                  <span class="comment">// jumps, eats</span><br />
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4><code>Object.keys</code> (own only)</h4>
+                <div class="code-block">
+                  <span class="builtin">alert</span>(<span class="builtin"
+                    >Object</span
+                  >.<span class="function-name">keys</span>(rabbit));<br />
+                  <span class="comment">// ["jumps"] (no eats!)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-filter"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Filtering with <code>hasOwnProperty</code>
+            </h4>
+            <div class="code-block">
+              <span class="keyword">for</span>(<span class="keyword">let</span>
+              prop <span class="keyword">in</span> rabbit) {<br />
+              &nbsp;&nbsp;<span class="keyword">let</span> isOwn = rabbit.<span
+                class="function-name"
+                >hasOwnProperty</span
+              >(prop);<br /><br />
+              &nbsp;&nbsp;<span class="keyword">if</span> (isOwn) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                class="string"
+                >`Our: ${prop}`</span
+              >); <span class="comment">// Our: jumps</span><br />
+              &nbsp;&nbsp;} <span class="keyword">else</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                class="string"
+                >`Inherited: ${prop}`</span
+              >); <span class="comment">// Inherited: eats</span><br />
+              &nbsp;&nbsp;}<br />
+              }
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i class="fas fa-question-circle" style="margin-right: 5px"></i>
+              Where does <code>hasOwnProperty</code> come from?</strong
+            >
+            It's inherited from <code>Object.prototype.hasOwnProperty</code>.
+            But why doesn't it show up in <code>for..in</code>? Because it has
+            <code>enumerable: false</code>! All
+            <code>Object.prototype</code> properties are non-enumerable, so
+            <code>for..in</code> skips them.
+          </div>
+        </div>
+        <span class="slide-number">7 / 8</span>
+      </div>
+
+      <!-- SLIDE 8: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Prototypal Inheritance
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-link" style="margin-right: 8px"></i>Core
+                  Rules
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    Objects have a hidden <code>[[Prototype]]</code> property
+                  </li>
+                  <li>
+                    Use <code>__proto__</code> to set it (or
+                    <code>Object.setPrototypeOf</code>)
+                  </li>
+                  <li>Reads traverse the prototype chain</li>
+                  <li>Writes act directly on the object (except setters)</li>
+                  <li><code>this</code> is always the object before the dot</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-search" style="margin-right: 8px"></i
+                  >Iteration
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li><code>for..in</code> includes inherited properties</li>
+                  <li><code>Object.keys/values</code> ignore inherited</li>
+                  <li>Use <code>hasOwnProperty</code> to filter</li>
+                  <li>
+                    <code>Object.prototype</code> properties are non-enumerable
+                  </li>
+                  <li>Chain limit: no circles, single parent only</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>[[Prototype]]</strong></td>
+                  <td>Hidden link to another object</td>
+                  <td>Asking parents for things</td>
+                </tr>
+                <tr>
+                  <td><strong>Prototype Chain</strong></td>
+                  <td>Multi-level lookup</td>
+                  <td>Family tree search</td>
+                </tr>
+                <tr>
+                  <td><strong>Write Rule</strong></td>
+                  <td>Writes stay local, don't affect prototype</td>
+                  <td>Personal notebook vs. family book</td>
+                </tr>
+                <tr>
+                  <td><strong>Accessor Exception</strong></td>
+                  <td>Setters trigger on inherited properties</td>
+                  <td>Shared voicemail (records to your tape)</td>
+                </tr>
+                <tr>
+                  <td><strong>this Value</strong></td>
+                  <td>Always the object before the dot</td>
+                  <td>Communal kitchen, own fridge</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Rule of
+              Thumb:</strong
+            >
+            Prototypal inheritance allows objects to share methods (saving
+            memory) while keeping their own independent state. Methods are
+            shared, data is not.
+          </div>
+        </div>
+        <span class="slide-number">8 / 8</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Prototypal Inheritance — Presentation &copy; 2024 | Built with ❤️ for
+      learning
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>
