@@ -1,0 +1,1935 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Iterables, Map, and Set - Complete Guide</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-example {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        font-family: "Source Code Pro", monospace;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .code-number {
+        color: #098658;
+      }
+
+      .code-function {
+        color: #795e26;
+      }
+
+      .warning-box {
+        background-color: #fef7e0;
+        border-left: 4px solid #f9ab00;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .error-box {
+        background-color: #fce8e6;
+        border-left: 4px solid #d93025;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .success-box {
+        background-color: #e6f4ea;
+        border-left: 4px solid #34a853;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .method-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .method-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .method-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .method-category {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .method-category h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #e1e8ed;
+        padding-bottom: 5px;
+      }
+
+      .method-category ul {
+        padding-left: 20px;
+      }
+
+      .method-category li {
+        margin-bottom: 5px;
+      }
+
+      .iteration-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .iteration-step {
+        text-align: center;
+        flex: 1;
+        padding: 10px;
+        background-color: #e8f0fe;
+        border-radius: 8px;
+        margin: 0 5px;
+      }
+
+      .iteration-arrow {
+        font-size: 1.5rem;
+        color: #1a73e8;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+
+        .method-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .iteration-flow {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">↑</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">↓</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Iterables Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Iterables</h1>
+          <p class="slide-subtitle">
+            Objects that can be used in for..of loops
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="./4.png" alt="JavaScript Iterables" />
+          </div>
+          <div class="text-section">
+            <p>
+              Iterable objects are a generalization of arrays. That's a concept
+              that allows us to make any object useable in a for..of loop.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Of course, Arrays are iterable. But there are many other built-in
+              objects, that are iterable as well. For instance, strings are also
+              iterable.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If an object isn't technically an array, but represents a
+              collection (list, set) of something, then for..of is a great
+              syntax to loop over it, so let's see how to make it work.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Symbol.iterator</h3>
+            <p>
+              We can easily grasp the concept of iterables by making one of our
+              own.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, we have an object that is not an array, but looks
+              suitable for for..of.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Like a range object that represents an interval of numbers:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> range = {<br />
+              &nbsp;&nbsp;from: <span class="code-number">1</span>,<br />
+              &nbsp;&nbsp;to: <span class="code-number">5</span><br />
+              };<br /><br />
+              <span class="code-comment">// We want the for..of to work:</span
+              ><br />
+              <span class="code-comment"
+                >// for(let num of range) ... num=1,2,3,4,5</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Creating an Iterable -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Creating an Iterable</h1>
+          <p class="slide-subtitle">Implementing Symbol.iterator</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              To make the range object iterable (and thus let for..of work) we
+              need to add a method to the object named Symbol.iterator (a
+              special built-in symbol just for that).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <ol class="list-section">
+              <li>
+                When for..of starts, it calls that method once (or errors if not
+                found). The method must return an iterator – an object with the
+                method next.
+              </li>
+              <li>Onward, for..of works only with that returned object.</li>
+              <li>
+                When for..of wants the next value, it calls next() on that
+                object.
+              </li>
+              <li>
+                The result of next() must have the form {done: Boolean, value:
+                any}, where done=true means that the loop is finished, otherwise
+                value is the next value.
+              </li>
+            </ol>
+          </div>
+
+          <div class="text-section">
+            <p>Here's the full implementation for range with remarks:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> range = {<br />
+              &nbsp;&nbsp;from: <span class="code-number">1</span>,<br />
+              &nbsp;&nbsp;to: <span class="code-number">5</span><br />
+              };<br /><br />
+              <span class="code-comment"
+                >// 1. call to for..of initially calls this</span
+              ><br />
+              range[Symbol.iterator] =
+              <span class="code-keyword">function</span>() {<br /><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// ...it returns the iterator object:</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// 2. Onward, for..of works only with the iterator object
+                below, asking it for next values</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;current:
+              <span class="code-keyword">this</span>.from,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;last:
+              <span class="code-keyword">this</span>.to,<br /><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"
+                >// 3. next() is called on each iteration by the for..of
+                loop</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;next() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"
+                >// 4. it should return the value as an object {done:.., value
+                :...}</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword"
+                >if</span
+              >
+              (<span class="code-keyword">this</span>.current <=
+              <span class="code-keyword">this</span>.last) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                class="code-keyword"
+                >return</span
+              >
+              { done: <span class="code-keyword">false</span>, value:
+              <span class="code-keyword">this</span>.current++ };<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+              <span class="code-keyword">else</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                class="code-keyword"
+                >return</span
+              >
+              { done: <span class="code-keyword">true</span> };<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;};<br />
+              };<br /><br />
+              <span class="code-comment">// now it works!</span><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              num <span class="code-keyword">of</span> range) {<br />
+              &nbsp;&nbsp;alert(num);
+              <span class="code-comment">// 1, then 2, 3, 4, 5</span><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Please note the core feature of iterables: separation of concerns.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The range itself does not have the next() method. Instead, another
+              object, a so-called "iterator" is created by the call to
+              range[Symbol.iterator](), and its next() generates values for the
+              iteration. So, the iterator object is separate from the object it
+              iterates over.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Technically, we may merge them and use range itself as the
+              iterator to make the code simpler.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Like this:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> range = {<br />
+              &nbsp;&nbsp;from: <span class="code-number">1</span>,<br />
+              &nbsp;&nbsp;to: <span class="code-number">5</span>,<br /><br />
+              &nbsp;&nbsp;[Symbol.iterator]() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span
+              >.current = <span class="code-keyword">this</span>.from;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">this</span>;<br />
+              &nbsp;&nbsp;},<br /><br />
+              &nbsp;&nbsp;next() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span>
+              (<span class="code-keyword">this</span>.current <=
+              <span class="code-keyword">this</span>.to) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword"
+                >return</span
+              >
+              { done: <span class="code-keyword">false</span>, value:
+              <span class="code-keyword">this</span>.current++ };<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}
+              <span class="code-keyword">else</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword"
+                >return</span
+              >
+              { done: <span class="code-keyword">true</span> };<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              num <span class="code-keyword">of</span> range) {<br />
+              &nbsp;&nbsp;alert(num);
+              <span class="code-comment">// 1, then 2, 3, 4, 5</span><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Now range[Symbol.iterator]() returns the range object itself: it
+              has the necessary next() method and remembers the current
+              iteration progress in this.current. Shorter? Yes. And sometimes
+              that's fine too.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The downside is that now it's impossible to have two for..of loops
+              running over the object simultaneously: they'll share the
+              iteration state, because there's only one iterator – the object
+              itself. But two parallel for-ofs is a rare thing, even in async
+              scenarios.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Infinite Iterables and String Iteration -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Infinite Iterables and String Iteration</h1>
+          <p class="slide-subtitle">Endless sequences and built-in iterables</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Infinite iterators</h3>
+            <p>
+              Infinite iterators are also possible. For instance, the range
+              becomes infinite for range.to = Infinity. Or we can make an
+              iterable object that generates an infinite sequence of
+              pseudorandom numbers. Also can be useful.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There are no limitations on next, it can return more and more
+              values, that's normal.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Of course, the for..of loop over such an iterable would be
+              endless. But we can always stop it using break.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>String is iterable</h3>
+            <p>Arrays and strings are most widely used built-in iterables.</p>
+          </div>
+
+          <div class="text-section">
+            <p>For a string, for..of loops over its characters:</p>
+            <div class="code-example">
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              char <span class="code-keyword">of</span>
+              <span class="code-string">"test"</span>) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// triggers 4 times: once for each character</span
+              ><br />
+              &nbsp;&nbsp;alert(char);
+              <span class="code-comment">// t, then e, then s, then t</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>And it works correctly with surrogate pairs!</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string">'𝒳😂'</span>;<br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              char <span class="code-keyword">of</span> str) {<br />
+              &nbsp;&nbsp;alert(char);
+              <span class="code-comment">// 𝒳, and then 😂</span><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Calling an iterator explicitly</h3>
+            <p>
+              For deeper understanding, let's see how to use an iterator
+              explicitly.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              We'll iterate over a string in exactly the same way as for..of,
+              but with direct calls. This code creates a string iterator and
+              gets values from it "manually":
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string">"Hello"</span>;<br /><br />
+              <span class="code-comment">// does the same as</span><br />
+              <span class="code-comment"
+                >// for (let char of str) alert(char);</span
+              ><br /><br />
+              <span class="code-keyword">let</span> iterator =
+              str[Symbol.iterator]();<br /><br />
+              <span class="code-keyword">while</span> (<span
+                class="code-keyword"
+                >true</span
+              >) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">let</span> result =
+              iterator.next();<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (result.done)
+              <span class="code-keyword">break</span>;<br />
+              &nbsp;&nbsp;alert(result.value);
+              <span class="code-comment">// outputs characters one by one</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That is rarely needed, but gives us more control over the process
+              than for..of. For instance, we can split the iteration process:
+              iterate a bit, then stop, do something else, and then resume
+              later.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Iterables and Array-likes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Iterables and Array-likes</h1>
+          <p class="slide-subtitle">Understanding the difference</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Two official terms look similar, but are very different. Please
+              make sure you understand them well to avoid the confusion.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <ul class="list-section">
+              <li>
+                <strong>Iterables</strong> are objects that implement the
+                Symbol.iterator method, as described above.
+              </li>
+              <li>
+                <strong>Array-likes</strong> are objects that have indexes and
+                length, so they look like arrays.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              When we use JavaScript for practical tasks in a browser or any
+              other environment, we may meet objects that are iterables or
+              array-likes, or both.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, strings are both iterable (for..of works on them)
+              and array-like (they have numeric indexes and length).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              But an iterable may not be array-like. And vice versa an
+              array-like may not be iterable.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For example, the range in the example above is iterable, but not
+              array-like, because it does not have indexed properties and
+              length.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>And here's the object that is array-like, but not iterable:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arrayLike = {
+              <span class="code-comment"
+                >// has indexes and length => array-like</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-number">0</span>:
+              <span class="code-string">"Hello"</span>,<br />
+              &nbsp;&nbsp;<span class="code-number">1</span>:
+              <span class="code-string">"World"</span>,<br />
+              &nbsp;&nbsp;length: <span class="code-number">2</span><br />
+              };<br /><br />
+              <span class="code-comment">// Error (no Symbol.iterator)</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              item <span class="code-keyword">of</span> arrayLike) {}
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Both iterables and array-likes are usually not arrays, they don't
+              have push, pop etc. That's rather inconvenient if we have such an
+              object and want to work with it as with an array. E.g. we would
+              like to work with range using array methods. How to achieve that?
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Array.from</h3>
+            <p>
+              There's a universal method Array.from that takes an iterable or
+              array-like value and makes a "real" Array from it. Then we can
+              call array methods on it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arrayLike = {<br />
+              &nbsp;&nbsp;<span class="code-number">0</span>:
+              <span class="code-string">"Hello"</span>,<br />
+              &nbsp;&nbsp;<span class="code-number">1</span>:
+              <span class="code-string">"World"</span>,<br />
+              &nbsp;&nbsp;length: <span class="code-number">2</span><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> arr = Array.from(arrayLike);
+              <span class="code-comment">// (*)</span><br />
+              alert(arr.pop());
+              <span class="code-comment">// World (method works)</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Array.from at the line (*) takes the object, examines it for being
+              an iterable or array-like, then makes a new array and copies all
+              items to it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The same happens for an iterable:</p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// assuming that range is taken from the example above</span
+              ><br />
+              <span class="code-keyword">let</span> arr = Array.from(range);<br />
+              alert(arr);
+              <span class="code-comment"
+                >// 1,2,3,4,5 (array toString conversion works)</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The full syntax for Array.from also allows us to provide an
+              optional "mapping" function:
+            </p>
+            <div class="code-example">Array.from(obj[, mapFn, thisArg])</div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The optional second argument mapFn can be a function that will be
+              applied to each element before adding it to the array, and thisArg
+              allows us to set this for it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// assuming that range is taken from the example above</span
+              ><br /><br />
+              <span class="code-comment">// square each number</span><br />
+              <span class="code-keyword">let</span> arr = Array.from(range, num
+              => num * num);<br /><br />
+              alert(arr); <span class="code-comment">// 1,4,9,16,25</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Here we use Array.from to turn a string into an array of
+              characters:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string">'𝒳😂'</span>;<br /><br />
+              <span class="code-comment"
+                >// splits str into array of characters</span
+              ><br />
+              <span class="code-keyword">let</span> chars = Array.from(str);<br /><br />
+              alert(chars[<span class="code-number">0</span>]);
+              <span class="code-comment">// 𝒳</span><br />
+              alert(chars[<span class="code-number">1</span>]);
+              <span class="code-comment">// 😂</span><br />
+              alert(chars.length); <span class="code-comment">// 2</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Unlike str.split, it relies on the iterable nature of the string
+              and so, just like for..of, correctly works with surrogate pairs.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Technically here it does the same as:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string">'𝒳😂'</span>;<br /><br />
+              <span class="code-keyword">let</span> chars = [];
+              <span class="code-comment"
+                >// Array.from internally does the same loop</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              char <span class="code-keyword">of</span> str) {<br />
+              &nbsp;&nbsp;chars.push(char);<br />
+              }<br /><br />
+              alert(chars);
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Array.from is a powerful method for converting both iterables and
+              array-like objects into actual arrays, making them compatible with
+              all array methods.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Map Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Map</h1>
+          <p class="slide-subtitle">Collection of keyed data items</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Till now, we've learned about the following complex data
+              structures:
+            </p>
+            <ul class="list-section">
+              <li>Objects are used for storing keyed collections.</li>
+              <li>Arrays are used for storing ordered collections.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              But that's not enough for real life. That's why Map and Set also
+              exist.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Map is a collection of keyed data items, just like an Object. But
+              the main difference is that Map allows keys of any type.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Methods and properties are:</h3>
+            <ul class="list-section">
+              <li>new Map() – creates the map.</li>
+              <li>map.set(key, value) – stores the value by the key.</li>
+              <li>
+                map.get(key) – returns the value by the key, undefined if key
+                doesn't exist in map.
+              </li>
+              <li>
+                map.has(key) – returns true if the key exists, false otherwise.
+              </li>
+              <li>
+                map.delete(key) – removes the element (the key/value pair) by
+                the key.
+              </li>
+              <li>map.clear() – removes everything from the map.</li>
+              <li>map.size – returns the current element count.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> map =
+              <span class="code-keyword">new</span> Map();<br /><br />
+              map.set(<span class="code-string">'1'</span>,
+              <span class="code-string">'str1'</span>);
+              <span class="code-comment">// a string key</span><br />
+              map.set(<span class="code-number">1</span>,
+              <span class="code-string">'num1'</span>);
+              <span class="code-comment">// a numeric key</span><br />
+              map.set(<span class="code-keyword">true</span>,
+              <span class="code-string">'bool1'</span>);
+              <span class="code-comment">// a boolean key</span><br /><br />
+              <span class="code-comment"
+                >// remember the regular Object? it would convert keys to
+                string</span
+              ><br />
+              <span class="code-comment"
+                >// Map keeps the type, so these two are different:</span
+              ><br />
+              alert(map.get(<span class="code-number">1</span>));
+              <span class="code-comment">// 'num1'</span><br />
+              alert(map.get(<span class="code-string">'1'</span>));
+              <span class="code-comment">// 'str1'</span><br /><br />
+              alert(map.size); <span class="code-comment">// 3</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As we can see, unlike objects, keys are not converted to strings.
+              Any type of key is possible.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>map[key] isn't the right way to use a Map</h3>
+            <p>
+              Although map[key] also works, e.g. we can set map[key] = 2, this
+              is treating map as a plain JavaScript object, so it implies all
+              corresponding limitations (only string/symbol keys and so on).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>So we should use map methods: set, get and so on.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>Map can also use objects as keys</h3>
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> john = { name:
+              <span class="code-string">"John"</span> };<br /><br />
+              <span class="code-comment"
+                >// for every user, let's store their visits count</span
+              ><br />
+              <span class="code-keyword">let</span> visitsCountMap =
+              <span class="code-keyword">new</span> Map();<br /><br />
+              <span class="code-comment">// john is the key for the map</span
+              ><br />
+              visitsCountMap.set(john,
+              <span class="code-number">123</span>);<br /><br />
+              alert(visitsCountMap.get(john));
+              <span class="code-comment">// 123</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Using objects as keys is one of the most notable and important Map
+              features. The same does not count for Object. String as a key in
+              Object is fine, but we can't use another Object as a key in
+              Object.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Let's try:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> john = { name:
+              <span class="code-string">"John"</span> };<br />
+              <span class="code-keyword">let</span> ben = { name:
+              <span class="code-string">"Ben"</span> };<br /><br />
+              <span class="code-keyword">let</span> visitsCountObj = {};
+              <span class="code-comment">// try to use an object</span
+              ><br /><br />
+              visitsCountObj[ben] = <span class="code-number">234</span>;
+              <span class="code-comment"
+                >// try to use ben object as the key</span
+              ><br />
+              visitsCountObj[john] = <span class="code-number">123</span>;
+              <span class="code-comment"
+                >// try to use john object as the key, ben object will get
+                replaced</span
+              ><br /><br />
+              <span class="code-comment">// That's what got written!</span
+              ><br />
+              alert(visitsCountObj[<span class="code-string"
+                >"[object Object]"</span
+              >]); <span class="code-comment">// 123</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As visitsCountObj is an object, it converts all Object keys, such
+              as john and ben above, to same string "[object Object]".
+              Definitely not what we want.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Map Key Comparison and Iteration -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Map Key Comparison and Iteration</h1>
+          <p class="slide-subtitle">
+            How keys are compared and how to iterate over maps
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>How Map compares keys</h3>
+            <p>
+              To test keys for equivalence, Map uses the algorithm
+              SameValueZero. It is roughly the same as strict equality ===, but
+              the difference is that NaN is considered equal to NaN. So NaN can
+              be used as a key as well.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>This algorithm can't be changed or customized.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>Chaining</h3>
+            <p>
+              Every map.set call returns the map itself, so we can "chain" the
+              calls:
+            </p>
+            <div class="code-example">
+              map.set(<span class="code-string">'1'</span>,
+              <span class="code-string">'str1'</span>)<br />
+              &nbsp;&nbsp;.set(<span class="code-number">1</span>,
+              <span class="code-string">'num1'</span>)<br />
+              &nbsp;&nbsp;.set(<span class="code-keyword">true</span>,
+              <span class="code-string">'bool1'</span>);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Iteration over Map</h3>
+            <p>For looping over a map, there are 3 methods:</p>
+            <ul class="list-section">
+              <li>map.keys() – returns an iterable for keys,</li>
+              <li>map.values() – returns an iterable for values,</li>
+              <li>
+                map.entries() – returns an iterable for entries [key, value],
+                it's used by default in for..of.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> recipeMap =
+              <span class="code-keyword">new</span> Map([<br />
+              &nbsp;&nbsp;[<span class="code-string">'cucumber'</span>,
+              <span class="code-number">500</span>],<br />
+              &nbsp;&nbsp;[<span class="code-string">'tomatoes'</span>,
+              <span class="code-number">350</span>],<br />
+              &nbsp;&nbsp;[<span class="code-string">'onion'</span>,
+              <span class="code-number">50</span>]<br />
+              ]);<br /><br />
+              <span class="code-comment">// iterate over keys (vegetables)</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              vegetable <span class="code-keyword">of</span> recipeMap.keys())
+              {<br />
+              &nbsp;&nbsp;alert(vegetable);
+              <span class="code-comment">// cucumber, tomatoes, onion</span
+              ><br />
+              }<br /><br />
+              <span class="code-comment">// iterate over values (amounts)</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              amount <span class="code-keyword">of</span> recipeMap.values())
+              {<br />
+              &nbsp;&nbsp;alert(amount);
+              <span class="code-comment">// 500, 350, 50</span><br />
+              }<br /><br />
+              <span class="code-comment"
+                >// iterate over [key, value] entries</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              entry <span class="code-keyword">of</span> recipeMap) {
+              <span class="code-comment"
+                >// the same as of recipeMap.entries()</span
+              ><br />
+              &nbsp;&nbsp;alert(entry);
+              <span class="code-comment">// cucumber,500 (and so on)</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>The insertion order is used</h3>
+            <p>
+              The iteration goes in the same order as the values were inserted.
+              Map preserves this order, unlike a regular Object.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Besides that, Map has a built-in forEach method, similar to Array:
+            </p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// runs the function for each (key, value) pair</span
+              ><br />
+              recipeMap.forEach((value, key, map) => {<br />
+              &nbsp;&nbsp;alert(`${key}: ${value}`);
+              <span class="code-comment">// cucumber: 500 etc</span><br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Object.entries: Map from Object</h3>
+            <p>
+              When a Map is created, we can pass an array (or another iterable)
+              with key/value pairs for initialization, like this:
+            </p>
+            <div class="code-example">
+              <span class="code-comment">// array of [key, value] pairs</span
+              ><br />
+              <span class="code-keyword">let</span> map =
+              <span class="code-keyword">new</span> Map([<br />
+              &nbsp;&nbsp;[<span class="code-string">'1'</span>,
+              <span class="code-string">'str1'</span>],<br />
+              &nbsp;&nbsp;[<span class="code-number">1</span>,
+              <span class="code-string">'num1'</span>],<br />
+              &nbsp;&nbsp;[<span class="code-keyword">true</span>,
+              <span class="code-string">'bool1'</span>]<br />
+              ]);<br /><br />
+              alert(map.get(<span class="code-string">'1'</span>));
+              <span class="code-comment">// str1</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If we have a plain object, and we'd like to create a Map from it,
+              then we can use built-in method Object.entries(obj) that returns
+              an array of key/value pairs for an object exactly in that format.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>So we can create a map from an object like this:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> obj = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: <span class="code-number">30</span><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> map =
+              <span class="code-keyword">new</span>
+              Map(Object.entries(obj));<br /><br />
+              alert(map.get(<span class="code-string">'name'</span>));
+              <span class="code-comment">// John</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Here, Object.entries returns the array of key/value pairs: [
+              ["name","John"], ["age", 30] ]. That's what Map needs.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Object.fromEntries and Set Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object.fromEntries and Set Introduction</h1>
+          <p class="slide-subtitle">
+            Converting back and forth between objects and collections
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Object.fromEntries: Object from Map</h3>
+            <p>
+              We've just seen how to create Map from a plain object with
+              Object.entries(obj).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There's Object.fromEntries method that does the reverse: given an
+              array of [key, value] pairs, it creates an object from them:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> prices =
+              Object.fromEntries([<br />
+              &nbsp;&nbsp;[<span class="code-string">'banana'</span>,
+              <span class="code-number">1</span>],<br />
+              &nbsp;&nbsp;[<span class="code-string">'orange'</span>,
+              <span class="code-number">2</span>],<br />
+              &nbsp;&nbsp;[<span class="code-string">'meat'</span>,
+              <span class="code-number">4</span>]<br />
+              ]);<br /><br />
+              <span class="code-comment"
+                >// now prices = { banana: 1, orange: 2, meat: 4 }</span
+              ><br /><br />
+              alert(prices.orange); <span class="code-comment">// 2</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>We can use Object.fromEntries to get a plain object from Map.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              E.g. we store the data in a Map, but we need to pass it to a
+              3rd-party code that expects a plain object.
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> map =
+              <span class="code-keyword">new</span> Map();<br />
+              map.set(<span class="code-string">'banana'</span>,
+              <span class="code-number">1</span>);<br />
+              map.set(<span class="code-string">'orange'</span>,
+              <span class="code-number">2</span>);<br />
+              map.set(<span class="code-string">'meat'</span>,
+              <span class="code-number">4</span>);<br /><br />
+              <span class="code-keyword">let</span> obj =
+              Object.fromEntries(map.entries());
+              <span class="code-comment">// make a plain object (*)</span
+              ><br /><br />
+              <span class="code-comment">// done!</span><br />
+              <span class="code-comment"
+                >// obj = { banana: 1, orange: 2, meat: 4 }</span
+              ><br /><br />
+              alert(obj.orange); <span class="code-comment">// 2</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              A call to map.entries() returns an iterable of key/value pairs,
+              exactly in the right format for Object.fromEntries.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>We could also make line (*) shorter:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> obj =
+              Object.fromEntries(map);
+              <span class="code-comment">// omit .entries()</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's the same, because Object.fromEntries expects an iterable
+              object as the argument. Not necessarily an array. And the standard
+              iteration for map returns same key/value pairs as map.entries().
+              So we get a plain object with same key/values as the map.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Set</h3>
+            <p>
+              A Set is a special type collection – "set of values" (without
+              keys), where each value may occur only once.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Its main methods are:</p>
+            <ul class="list-section">
+              <li>
+                new Set([iterable]) – creates the set, and if an iterable object
+                is provided (usually an array), copies values from it into the
+                set.
+              </li>
+              <li>set.add(value) – adds a value, returns the set itself.</li>
+              <li>
+                set.delete(value) – removes the value, returns true if value
+                existed at the moment of the call, otherwise false.
+              </li>
+              <li>
+                set.has(value) – returns true if the value exists in the set,
+                otherwise false.
+              </li>
+              <li>set.clear() – removes everything from the set.</li>
+              <li>set.size – is the elements count.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The main feature is that repeated calls of set.add(value) with the
+              same value don't do anything. That's the reason why each value
+              appears in a Set only once.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For example, we have visitors coming, and we'd like to remember
+              everyone. But repeated visits should not lead to duplicates. A
+              visitor must be "counted" only once.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Set is just the right thing for that:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> set =
+              <span class="code-keyword">new</span> Set();<br /><br />
+              <span class="code-keyword">let</span> john = { name:
+              <span class="code-string">"John"</span> };<br />
+              <span class="code-keyword">let</span> pete = { name:
+              <span class="code-string">"Pete"</span> };<br />
+              <span class="code-keyword">let</span> mary = { name:
+              <span class="code-string">"Mary"</span> };<br /><br />
+              <span class="code-comment"
+                >// visits, some users come multiple times</span
+              ><br />
+              set.add(john);<br />
+              set.add(pete);<br />
+              set.add(mary);<br />
+              set.add(john);<br />
+              set.add(mary);<br /><br />
+              <span class="code-comment">// set keeps only unique values</span
+              ><br />
+              alert(set.size); <span class="code-comment">// 3</span
+              ><br /><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              user <span class="code-keyword">of</span> set) {<br />
+              &nbsp;&nbsp;alert(user.name);
+              <span class="code-comment">// John (then Pete and Mary)</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The alternative to Set could be an array of users, and the code to
+              check for duplicates on every insertion using arr.find. But the
+              performance would be much worse, because this method walks through
+              the whole array checking every element. Set is much better
+              optimized internally for uniqueness checks.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Set Iteration -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Set Iteration</h1>
+          <p class="slide-subtitle">Looping over sets and converting sets</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Iteration over Set</h3>
+            <p>We can loop over a set either with for..of or using forEach:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> set =
+              <span class="code-keyword">new</span> Set([<span
+                class="code-string"
+                >"oranges"</span
+              >, <span class="code-string">"apples"</span>,
+              <span class="code-string">"bananas"</span>]);<br /><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              value <span class="code-keyword">of</span> set) alert(value);<br /><br />
+              <span class="code-comment">// the same with forEach:</span><br />
+              set.forEach((value, valueAgain, set) => {<br />
+              &nbsp;&nbsp;alert(value);<br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Note the funny thing. The callback function passed in forEach has
+              3 arguments: a value, then the same value valueAgain, and then the
+              target object. Indeed, the same value appears in the arguments
+              twice.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's for compatibility with Map where the callback passed
+              forEach has three arguments. Looks a bit strange, for sure. But
+              this may help to replace Map with Set in certain cases with ease,
+              and vice versa.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Set methods</h3>
+            <p>The same methods Map has for iterators are also supported:</p>
+            <ul class="list-section">
+              <li>set.keys() – returns an iterable object for values,</li>
+              <li>
+                set.values() – same as set.keys(), for compatibility with Map,
+              </li>
+              <li>
+                set.entries() – returns an iterable object for entries [value,
+                value], exists for compatibility with Map.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <h3>Converting between Set and Array</h3>
+            <p>We can easily convert between Set and Array:</p>
+          </div>
+
+          <div class="text-section">
+            <p>From Array to Set:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">5</span>];<br /><br />
+              <span class="code-keyword">let</span> set =
+              <span class="code-keyword">new</span> Set(arr);<br /><br />
+              alert(set);
+              <span class="code-comment">// Set(5) {1, 2, 3, 4, 5}</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>From Set to Array:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> set =
+              <span class="code-keyword">new</span> Set([<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">5</span>]);<br /><br />
+              <span class="code-keyword">let</span> arr = Array.from(set);<br /><br />
+              alert(arr); <span class="code-comment">// [1, 2, 3, 4, 5]</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Practical use cases for Set</h3>
+          </div>
+
+          <div class="text-section">
+            <p><strong>Removing duplicates from an array:</strong></p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> numbers = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">2</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">1</span>,
+              <span class="code-number">5</span>];<br /><br />
+              <span class="code-comment"
+                >// Create a Set to remove duplicates</span
+              ><br />
+              <span class="code-keyword">let</span> uniqueNumbers =
+              <span class="code-keyword">new</span> Set(numbers);<br /><br />
+              <span class="code-comment"
+                >// Convert back to array if needed</span
+              ><br />
+              <span class="code-keyword">let</span> uniqueArray =
+              Array.from(uniqueNumbers);<br /><br />
+              alert(uniqueArray);
+              <span class="code-comment">// [1, 2, 3, 4, 5]</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              <strong>Checking if an array contains only unique values:</strong>
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">hasUniqueValues</span>(arr) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> arr.length
+              === <span class="code-keyword">new</span> Set(arr).size;<br />
+              }<br /><br />
+              alert(hasUniqueValues([<span class="code-number">1</span>,
+              <span class="code-number">2</span>,
+              <span class="code-number">3</span>]));
+              <span class="code-comment">// true</span><br />
+              alert(hasUniqueValues([<span class="code-number">1</span>,
+              <span class="code-number">2</span>,
+              <span class="code-number">1</span>]));
+              <span class="code-comment">// false</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              <strong>Set operations (union, intersection, difference):</strong>
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">union</span>(setA, setB) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">new</span> Set([...setA, ...setB]);<br />
+              }<br /><br />
+              <span class="code-keyword">function</span>
+              <span class="code-function">intersection</span>(setA, setB) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">new</span> Set([...setA].filter(x =>
+              setB.has(x)));<br />
+              }<br /><br />
+              <span class="code-keyword">function</span>
+              <span class="code-function">difference</span>(setA, setB) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">new</span> Set([...setA].filter(x =>
+              !setB.has(x)));<br />
+              }<br /><br />
+              <span class="code-keyword">let</span> setA =
+              <span class="code-keyword">new</span> Set([<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>]);<br />
+              <span class="code-keyword">let</span> setB =
+              <span class="code-keyword">new</span> Set([<span
+                class="code-number"
+                >3</span
+              >, <span class="code-number">4</span>,
+              <span class="code-number">5</span>,
+              <span class="code-number">6</span>]);<br /><br />
+              alert(union(setA, setB));
+              <span class="code-comment">// Set(6) {1, 2, 3, 4, 5, 6}</span
+              ><br />
+              alert(intersection(setA, setB));
+              <span class="code-comment">// Set(2) {3, 4}</span><br />
+              alert(difference(setA, setB));
+              <span class="code-comment">// Set(2) {1, 2}</span>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Set is a powerful collection for managing unique values and
+              performing operations like union, intersection, and difference
+              efficiently.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Summary</h1>
+          <p class="slide-subtitle">
+            Complete overview of iterables, Map, and Set
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>Iterable objects</h4>
+            <ul class="list-section">
+              <li>Objects that can be used in for..of are called iterable.</li>
+              <li>
+                Technically, iterables must implement the method named
+                Symbol.iterator.
+              </li>
+              <li>
+                The result of obj[Symbol.iterator]() is called an iterator. It
+                handles further iteration process.
+              </li>
+              <li>
+                An iterator must have the method named next() that returns an
+                object {done: Boolean, value: any}, here done:true denotes the
+                end of the iteration process, otherwise the value is the next
+                value.
+              </li>
+              <li>
+                The Symbol.iterator method is called automatically by for..of,
+                but we also can do it directly.
+              </li>
+              <li>
+                Built-in iterables like strings or arrays, also implement
+                Symbol.iterator.
+              </li>
+              <li>String iterator knows about surrogate pairs.</li>
+            </ul>
+
+            <h4>Array-like objects</h4>
+            <ul class="list-section">
+              <li>
+                Objects that have indexed properties and length are called
+                array-like.
+              </li>
+              <li>
+                Such objects may also have other properties and methods, but
+                lack the built-in methods of arrays.
+              </li>
+            </ul>
+
+            <h4>Array.from</h4>
+            <ul class="list-section">
+              <li>
+                Array.from(obj[, mapFn, thisArg]) makes a real Array from an
+                iterable or array-like obj, and we can then use array methods on
+                it.
+              </li>
+              <li>
+                The optional arguments mapFn and thisArg allow us to apply a
+                function to each item.
+              </li>
+            </ul>
+          </div>
+
+          <div class="method-grid">
+            <div class="method-category">
+              <h4>Map – is a collection of keyed values.</h4>
+              <ul class="list-section">
+                <li>
+                  new Map([iterable]) – creates the map, with optional iterable
+                  (e.g. array) of [key,value] pairs for initialization.
+                </li>
+                <li>
+                  map.set(key, value) – stores the value by the key, returns the
+                  map itself.
+                </li>
+                <li>
+                  map.get(key) – returns the value by the key, undefined if key
+                  doesn't exist in map.
+                </li>
+                <li>
+                  map.has(key) – returns true if the key exists, false
+                  otherwise.
+                </li>
+                <li>
+                  map.delete(key) – removes the element by the key, returns true
+                  if key existed at the moment of the call, otherwise false.
+                </li>
+                <li>map.clear() – removes everything from the map.</li>
+                <li>map.size – returns the current element count.</li>
+              </ul>
+              <p><strong>The differences from a regular Object:</strong></p>
+              <ul class="list-section">
+                <li>Any keys, objects can be keys.</li>
+                <li>Additional convenient methods, the size property.</li>
+              </ul>
+            </div>
+
+            <div class="method-category">
+              <h4>Set – is a collection of unique values.</h4>
+              <ul class="list-section">
+                <li>
+                  new Set([iterable]) – creates the set, with optional iterable
+                  (e.g. array) of values for initialization.
+                </li>
+                <li>
+                  set.add(value) – adds a value (does nothing if value exists),
+                  returns the set itself.
+                </li>
+                <li>
+                  set.delete(value) – removes the value, returns true if value
+                  existed at the moment of the call, otherwise false.
+                </li>
+                <li>
+                  set.has(value) – returns true if the value exists in the set,
+                  otherwise false.
+                </li>
+                <li>set.clear() – removes everything from the set.</li>
+                <li>set.size – is the elements count.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Iteration over Map and Set is always in the insertion order, so we
+              can't say that these collections are unordered, but we can't
+              reorder elements or directly get an element by its number.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Converting between collections:</h3>
+            <ul class="list-section">
+              <li>
+                Object.entries(obj) → Map: Creates a Map from a plain object.
+              </li>
+              <li>
+                Object.fromEntries(map) → Object: Creates a plain object from a
+                Map.
+              </li>
+              <li>
+                Array.from(iterable) → Array: Creates an array from any
+                iterable.
+              </li>
+              <li>
+                new Set(array) → Set: Creates a Set from an array, removing
+                duplicates.
+              </li>
+              <li>Array.from(set) → Array: Creates an array from a Set.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <h3>Practical use cases:</h3>
+            <ul class="list-section">
+              <li>
+                <strong>Map:</strong> Caching, metadata storage, dictionary
+                implementations.
+              </li>
+              <li>
+                <strong>Set:</strong> Removing duplicates from arrays, checking
+                for unique values, implementing mathematical set operations.
+              </li>
+            </ul>
+          </div>
+
+          <div class="success-box">
+            <p>
+              Congratulations! You've completed the comprehensive guide to
+              JavaScript Iterables, Map, and Set. Keep practicing and exploring
+              these concepts to become a JavaScript expert!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      JavaScript Iterables, Map, and Set - Complete Guide
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

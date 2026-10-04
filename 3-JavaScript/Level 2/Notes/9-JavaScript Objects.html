@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      JavaScript Objects: Properties, Methods, and Memory Management
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", arial, sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .object-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .object-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .object-info {
+        flex: 1;
+      }
+
+      .object-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .key-term {
+        background-color: #e8f0fe;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+
+      .key-term h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      .step-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #1a73e8;
+      }
+
+      .step-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .code-example {
+        background-color: #f1f3f4;
+        border-radius: 4px;
+        padding: 15px;
+        font-family: monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+      }
+
+      .memory-diagram {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .memory-box {
+        width: 80%;
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 10px 0;
+        text-align: center;
+      }
+
+      .reference-arrow {
+        color: #1a73e8;
+        font-size: 2rem;
+        margin: 0 10px;
+      }
+
+      .object-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .object-box {
+        width: 120px;
+        height: 60px;
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 0 10px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .reference-line {
+        position: absolute;
+        height: 2px;
+        background-color: #1a73e8;
+        width: 100px;
+      }
+
+      .garbage-collection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .gc-step {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 10px 0;
+        width: 80%;
+        text-align: center;
+      }
+
+      .gc-step.marked {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+      }
+
+      .gc-step.unmarked {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">↑</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">↓</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title and Object Basics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">JavaScript Objects</h1>
+          <h2 class="slide-subtitle">
+            Properties, Methods, and Memory Management
+          </h2>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://picsum.photos/seed/javascript-objects-properties-methods/800/400.jpg"
+              alt="JavaScript Objects"
+            />
+          </div>
+          <div class="text-section">
+            <h3>Object Basics</h3>
+            <p>
+              Objects are used to store keyed collections of various data and
+              more complex entities. In JavaScript, objects penetrate almost
+              every aspect of the language.
+            </p>
+
+            <div class="info-card">
+              <h4>Key Concepts</h4>
+              <ul>
+                <li>Objects store properties (key-value pairs)</li>
+                <li>
+                  Properties can be accessed using dot notation or square
+                  brackets
+                </li>
+                <li>
+                  Objects are assigned and copied by reference, not by value
+                </li>
+                <li>
+                  Objects can contain primitive values, other objects, or
+                  functions
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Object Creation and Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object Creation and Properties</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Objects can be created using two syntaxes:</p>
+
+            <div class="code-example">
+              <pre>
+let user = new Object(); // "object constructor" syntax
+let user = {};  // "object literal" syntax</pre
+              >
+            </div>
+
+            <div class="info-card">
+              <h4>Property Access</h4>
+              <p>Properties can be accessed using:</p>
+              <ul>
+                <li>Dot notation: <code>user.name</code></li>
+                <li>Square brackets: <code>user["name"]</code></li>
+              </ul>
+            </div>
+
+            <div class="object-visual">
+              <div class="object-box">
+                <div class="reference-line"></div>
+                <div class="object-box">
+                  <p>user object</p>
+                </div>
+                <div class="reference-line"></div>
+                <div class="object-box">
+                  <p>user reference</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Computed Properties and Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Computed Properties and Methods</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Computed properties allow property names to be determined at
+              runtime:
+            </p>
+
+            <div class="code-example">
+              <pre>
+let fruit = prompt("Which fruit to buy?", "apple");
+
+let bag = {
+  [fruit]: 5 // the name of the property is taken from the variable fruit
+};
+
+alert( bag.apple ); // 5 if fruit="apple"</pre
+              >
+            </div>
+
+            <div class="info-card">
+              <h4>Property Shorthand</h4>
+              <p>
+                When property names match variable names, you can use shorthand:
+              </p>
+              <div class="code-example">
+                <pre>
+function makeUser(name, age) {
+  return {
+    name, // same as name:name
+    age, // same as age:age
+    // ...
+  };
+}</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Property Names and Limitations -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Property Names and Limitations</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Property names have certain limitations:</p>
+
+            <div class="info-card">
+              <h4>Key Points</h4>
+              <ul>
+                <li>Property keys must be strings or symbols</li>
+                <li>
+                  Special property <code>__proto__</code> has unique behavior
+                </li>
+                <li>Reserved words can be used as property names</li>
+                <li>Non-integer property names are listed in creation order</li>
+              </ul>
+            </div>
+
+            <div class="highlight-box">
+              <p>
+                Integer properties (like "49") are sorted before non-integer
+                properties in for..in loops.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: The "in" Operator and for..in Loop -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">The "in" Operator and for..in Loop</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>The "in" operator checks if a property exists in an object:</p>
+
+            <div class="code-example">
+              <pre>
+let user = { name: "John", age: 30 };
+
+alert( "age" in user ); // true
+alert( "blabla" in user ); // false</pre
+              >
+            </div>
+
+            <div class="info-card">
+              <h4>for..in Loop</h4>
+              <p>To iterate over all keys of an object:</p>
+              <div class="code-example">
+                <pre>
+let user = {
+  name: "John",
+  age: 30,
+  isAdmin: true
+};
+
+for (let key in user) {
+  // keys
+  alert( key);  // name, age, isAdmin
+  // values for the keys
+  alert( user[key] ); // John, 30, true
+}</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Object References and Copying -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object References and Copying</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Objects are stored and copied "by reference", not by value:</p>
+
+            <div class="object-visual">
+              <div class="object-box">
+                <p>user object</p>
+              </div>
+              <div class="reference-line"></div>
+              <div class="object-box">
+                <p>user reference</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h4>Reference Equality</h4>
+              <p>
+                Two variables are equal only if they reference the same object:
+              </p>
+              <div class="code-example">
+                <pre>
+let a = {};
+let b = a; // copy the reference
+
+alert( a === b ); // true
+alert( a === b ); // true</pre
+                >
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <p>
+                Const objects can still have their properties modified, even
+                though the object reference itself is constant.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Object Cloning and Merging -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object Cloning and Merging</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>There are several ways to clone objects:</p>
+
+            <div class="info-card">
+              <h4>Object.assign()</h4>
+              <p>
+                Copies all enumerable properties from source objects to a target
+                object:
+              </p>
+              <div class="code-example">
+                <pre>
+let user = { name: "John", age: 30 };
+
+let clone = Object.assign({}, user);
+
+alert(clone.name); // John
+alert(clone.age); // 30</pre
+                >
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h4>Spread Syntax (ES6+)</h4>
+              <p>Creates a new object with properties from the original:</p>
+              <div class="code-example">
+                <pre>
+let user = { name: "John", age: 30 };
+
+let clone = {...user}; // same as Object.assign({}, user)</pre
+                >
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h4>structuredClone()</h4>
+              <p>
+                Creates a deep copy of an object, including nested properties:
+              </p>
+              <div class="code-example">
+                <pre>
+let user = {
+  name: "John",
+  sizes: {
+    height: 182,
+    width: 50
+  }
+};
+
+let clone = structuredClone(user);
+
+// user and clone are now completely separate objects
+clone.sizes.width = 60;
+alert(user.sizes.width); // 50 (unchanged)
+alert(clone.sizes.width); // 60</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Garbage Collection -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Garbage Collection</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              JavaScript automatically manages memory through garbage
+              collection:
+            </p>
+
+            <div class="info-card">
+              <h4>Reachability</h4>
+              <p>
+                An object is reachable if it can be accessed from a root (like a
+                global variable or the current function).
+              </p>
+            </div>
+
+            <div class="memory-diagram">
+              <div class="memory-box">
+                <p>Roots</p>
+                <div class="reference-arrow">→</div>
+                <div class="memory-box">
+                  <p>Objects</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h4>Garbage Collection Process</h4>
+              <ul>
+                <li>
+                  Mark phase: The garbage collector identifies all reachable
+                  objects starting from the roots.
+                </li>
+                <li>
+                  Sweep phase: It removes all objects that are not marked as
+                  reachable.
+                </li>
+                <li>
+                  Optimizations: Engines use various strategies like
+                  generational, incremental, and idle-time collection.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Let Us Sum Up -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Let Us Sum Up</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Objects are the cornerstone of JavaScript's data structure system,
+              providing a flexible way to organize and manage complex data.
+            </p>
+
+            <div class="info-card">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Objects store key-value pairs of various data types</li>
+                <li>
+                  Properties can be accessed using dot notation or square
+                  brackets
+                </li>
+                <li>Objects are passed by reference, not by value</li>
+                <li>Objects can have computed properties and methods</li>
+                <li>
+                  Memory management is handled automatically through garbage
+                  collection
+                </li>
+              </ul>
+            </div>
+
+            <div class="highlight-box">
+              <p>
+                Understanding objects is fundamental to JavaScript programming
+                and provides the foundation for more complex data structures and
+                design patterns.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Key Words -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Key Words</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <div class="key-term">
+              <h4>Object</h4>
+              <p>
+                A collection of key-value pairs that allows for structured data
+                organization and complex entity representation.
+              </p>
+            </div>
+
+            <div class="key-term">
+              <h4>Property</h4>
+              <p>
+                A key in an object that maps to a value, which can be any
+                JavaScript data type.
+              </p>
+            </div>
+
+            <div class="key-term">
+              <h4>Method</h4>
+              <p>
+                A function that is a property of an object, which can access and
+                manipulate the object's data.
+              </p>
+            </div>
+
+            <div class="key-term">
+              <h4>Reference</h4>
+              <p>
+                The memory address where an object is stored, allowing multiple
+                variables to point to the same object.
+              </p>
+            </div>
+
+            <div class="key-term">
+              <h4>Garbage Collection</h4>
+              <p>
+                The automatic process of freeing up memory that is no longer
+                reachable, performed by the JavaScript engine.
+              </p>
+            </div>
+
+            <div class="key-term">
+              <h4>Deep Cloning</h4>
+              <p>
+                Creating a new object with the same properties as an existing
+                object, including all nested properties.
+              </p>
+            </div>
+
+            <div class="key-term">
+              <h4>Shallow Cloning</h4>
+              <p>
+                Creating a new object that copies the top-level properties of an
+                existing object, but nested objects are still shared by
+                reference.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Review Questions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Review Questions</h1>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <div class="qa-pair">
+              <div class="question">
+                1. What is the difference between primitive types and objects in
+                JavaScript?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                2. How do you access object properties using dot notation versus
+                square brackets?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                3. What is the difference between shallow copying and deep
+                cloning of objects?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                4. How does JavaScript's garbage collection work?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                5. What are computed properties and how do they differ from
+                regular properties?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                6. Why can const objects still have their properties modified?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                7. What is the purpose of the special __proto__ property?
+              </div>
+            </div>
+
+            <div class="qa-pair">
+              <div class="question">
+                8. How do you iterate over object properties using the for..in
+                loop?
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>JavaScript Objects: Properties, Methods, and Memory Management</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

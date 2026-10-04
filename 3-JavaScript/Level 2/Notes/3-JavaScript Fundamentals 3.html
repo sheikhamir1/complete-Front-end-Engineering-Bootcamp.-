@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Loops, Switch, and Functions</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background-color: white;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f7df1e;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #323330;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f7df1e;
+        padding-bottom: 10px;
+      }
+
+      h2 {
+        color: #323330;
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      h3 {
+        color: #323330;
+        font-size: 1.5em;
+        margin: 20px 0 10px;
+      }
+
+      code {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      ul,
+      ol {
+        margin: 15px 0;
+        padding-left: 30px;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      .warning {
+        background-color: #ffe0e0;
+        border-left: 4px solid #ff0000;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .tip {
+        background-color: #e0ffe0;
+        border-left: 4px solid #00ff00;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .nav {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .nav a {
+        display: block;
+        padding: 5px;
+        color: #323330;
+        text-decoration: none;
+        margin: 5px 0;
+      }
+
+      .nav a:hover {
+        color: #f7df1e;
+      }
+
+      @media (max-width: 768px) {
+        .two-column {
+          flex-direction: column;
+        }
+
+        .nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <div class="nav">
+      <a href="#slide1">1</a>
+      <a href="#slide2">2</a>
+      <a href="#slide3">3</a>
+      <a href="#slide4">4</a>
+      <a href="#slide5">5</a>
+      <a href="#slide6">6</a>
+      <a href="#slide7">7</a>
+      <a href="#slide8">8</a>
+      <a href="#slide9">9</a>
+      <a href="#slide10">10</a>
+      <a href="#slide11">11</a>
+      <a href="#slide12">12</a>
+      <a href="#slide13">13</a>
+      <a href="#slide14">14</a>
+      <a href="#slide15">15</a>
+      <a href="#slide16">16</a>
+      <a href="#slide17">17</a>
+      <a href="#slide18">18</a>
+      <a href="#slide19">19</a>
+      <a href="#slide20">20</a>
+      <a href="#slide21">21</a>
+      <a href="#slide22">22</a>
+      <a href="#slide23">23</a>
+      <a href="#slide24">24</a>
+      <a href="#slide25">25</a>
+      <a href="#slide26">26</a>
+      <a href="#slide27">27</a>
+      <a href="#slide28">28</a>
+      <a href="#slide29">29</a>
+      <a href="#slide30">30</a>
+      <a href="#slide31">31</a>
+      <a href="#slide32">32</a>
+      <a href="#slide33">33</a>
+      <a href="#slide34">34</a>
+      <a href="#slide35">35</a>
+      <a href="#slide36">36</a>
+    </div>
+
+    <!-- Slide 1: Why Loops? -->
+    <div class="slide" id="slide1">
+      <div class="container">
+        <h1>Why Loops?</h1>
+        <p>Loops let us repeat code:</p>
+
+        <ul>
+          <li>Process list items</li>
+          <li>Count numbers</li>
+          <li>Run logic until a condition changes</li>
+        </ul>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+// Instead of writing this:
+alert(1);
+alert(2);
+alert(3);
+
+// We can use a loop:
+for (let i = 1; i <= 3; i++) {
+  alert(i);
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: while loop -->
+    <div class="slide" id="slide2">
+      <div class="container">
+        <h1>while loop</h1>
+        <p>Runs while the condition is truthy.</p>
+
+        <pre>
+while (condition) {
+  // loop body
+}</pre
+        >
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+let i = 0;
+
+while (i < 3) {
+  alert(i); // 0, 1, 2
+  i++;
+}</pre
+          >
+        </div>
+
+        <div class="tip">Each run = one iteration</div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Condition as a Value -->
+    <div class="slide" id="slide3">
+      <div class="container">
+        <h1>Condition as a Value</h1>
+        <p>Any value can be a condition (converted to boolean):</p>
+
+        <pre>
+let i = 3;
+while (i) {   // stops when i becomes 0
+  alert(i);
+  i--;
+}</pre
+        >
+
+        <div class="box">
+          <h3>Single-line body</h3>
+          <p>Curly braces are optional for one statement:</p>
+          <pre>while (i) alert(i--);</pre>
+        </div>
+
+        <div class="tip">
+          0, null, undefined, "", NaN are falsy - all other values are truthy
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: do...while loop -->
+    <div class="slide" id="slide4">
+      <div class="container">
+        <h1>do…while loop</h1>
+        <p>Runs the body at least once, then checks the condition.</p>
+
+        <pre>
+do {
+  // loop body
+} while (condition);</pre
+        >
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+let i = 0;
+
+do {
+  alert(i);
+  i++;
+} while (i < 3);</pre
+          >
+        </div>
+
+        <div class="tip">Use only when at least one execution is required.</div>
+      </div>
+    </div>
+
+    <!-- Slide 5: for loop -->
+    <div class="slide" id="slide5">
+      <div class="container">
+        <h1>for loop (most common)</h1>
+        <p>Best when the number of iterations is known.</p>
+
+        <pre>
+for (begin; condition; step) {
+  // loop body
+}</pre
+        >
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+for (let i = 0; i < 3; i++) {
+  alert(i); // 0, 1, 2
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: How for loop works -->
+    <div class="slide" id="slide6">
+      <div class="container">
+        <h1>How for loop works</h1>
+
+        <ul>
+          <li><strong>begin</strong> → runs once</li>
+          <li><strong>condition</strong> → checked before each iteration</li>
+          <li><strong>body</strong> → executed if condition is true</li>
+          <li><strong>step</strong> → runs after each iteration</li>
+        </ul>
+
+        <div class="box">
+          <h3>Visual representation:</h3>
+          <pre>
+for (let i = 0; i < 3; i++) {
+  alert(i);
+}
+
+// Step by step:
+// 1. let i = 0  (begin)
+// 2. i < 3 ?    (condition, true)
+// 3. alert(i)   (body, shows 0)
+// 4. i++        (step, i becomes 1)
+// 5. i < 3 ?    (condition, true)
+// 6. alert(i)   (body, shows 1)
+// ... and so on</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Inline Variable Scope -->
+    <div class="slide" id="slide7">
+      <div class="container">
+        <h1>Inline Variable Scope</h1>
+
+        <div class="box">
+          <h3>Block-scoped variable:</h3>
+          <pre>
+for (let i = 0; i < 3; i++) {
+  alert(i);
+}
+alert(i); // ❌ error (i is block-scoped)</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Using an existing variable:</h3>
+          <pre>
+let i;
+
+for (i = 0; i < 3; i++) {
+  alert(i);
+}
+alert(i); // 3</pre
+          >
+        </div>
+
+        <div class="tip">
+          Block-scoped variables are generally safer and prevent bugs.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Skipping Parts of for -->
+    <div class="slide" id="slide8">
+      <div class="container">
+        <h1>Skipping Parts of for</h1>
+        <p>All parts are optional (but semicolons stay).</p>
+
+        <div class="box">
+          <h3>No begin:</h3>
+          <pre>
+let i = 0;
+for (; i < 3; i++) alert(i);</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>No step:</h3>
+          <pre>
+let i = 0;
+for (; i < 3;) alert(i++);</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Infinite loop:</h3>
+          <pre>
+for (;;) {
+  // runs forever
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: break and continue -->
+    <div class="slide" id="slide9">
+      <div class="container">
+        <h1>break and continue</h1>
+
+        <div class="box">
+          <h3>break</h3>
+          <p>Stops the loop immediately.</p>
+          <pre>
+while (true) {
+  let value = +prompt("Enter a number", "");
+
+  if (!value) break;
+
+  sum += value;
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>continue</h3>
+          <p>Skips the current iteration, moves to the next one.</p>
+          <pre>
+for (let i = 0; i < 10; i++) {
+  if (i % 2 === 0) continue;
+  alert(i); // 1, 3, 5, 7, 9
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Labels and When to Use What -->
+    <div class="slide" id="slide10">
+      <div class="container">
+        <h1>Labels and When to Use What</h1>
+
+        <div class="box">
+          <h3>Labels (advanced but important)</h3>
+          <p>Used to exit multiple nested loops.</p>
+          <pre>
+outer: for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    if (!prompt(`(${i},${j})`)) break outer;
+  }
+}
+alert("Done!");</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>When to use what?</h3>
+          <ul>
+            <li><strong>while</strong> - Unknown number of iterations</li>
+            <li><strong>do…while</strong> - Must run at least once</li>
+            <li><strong>for</strong> - Counter-based loops</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: What is switch? -->
+    <div class="slide" id="slide11">
+      <div class="container">
+        <h1>What is switch?</h1>
+        <p>switch is an alternative to multiple if…else if checks.</p>
+
+        <p>
+          It compares one value against many possible values in a readable way.
+        </p>
+
+        <p>Think of it as: "If the value is this → do that"</p>
+
+        <div class="box">
+          <h3>Example scenario:</h3>
+          <pre>
+// Instead of multiple if statements:
+if (x === 1) {
+  // do something
+} else if (x === 2) {
+  // do something else
+} else if (x === 3) {
+  // do another thing
+}
+
+// We can use switch:
+switch (x) {
+  case 1:
+    // do something
+    break;
+  case 2:
+    // do something else
+    break;
+  case 3:
+    // do another thing
+    break;
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Basic Syntax -->
+    <div class="slide" id="slide12">
+      <div class="container">
+        <h1>Basic Syntax</h1>
+
+        <pre>
+switch (x) {
+  case value1:
+    // code
+    break;
+
+  case value2:
+    // code
+    break;
+
+  default:
+    // code
+}</pre
+        >
+
+        <div class="box">
+          <h3>How it works:</h3>
+          <ul>
+            <li>x is compared using strict equality (===)</li>
+            <li>First matching case runs</li>
+            <li>Execution continues until break or end of switch</li>
+            <li>If nothing matches → default runs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Simple Example -->
+    <div class="slide" id="slide13">
+      <div class="container">
+        <h1>Simple Example</h1>
+
+        <pre>
+let a = 2 + 2;
+
+switch (a) {
+  case 3:
+    alert("Too small");
+    break;
+
+  case 4:
+    alert("Exactly!");
+    break;
+
+  case 5:
+    alert("Too big");
+    break;
+
+  default:
+    alert("I don't know such values");
+}</pre
+        >
+
+        <div class="box">
+          <h3>What happens:</h3>
+          <ul>
+            <li>a is compared with 3 ❌</li>
+            <li>Compared with 4 ✅</li>
+            <li>Code runs until break</li>
+            <li>Switch stops</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Why break is Important -->
+    <div class="slide" id="slide14">
+      <div class="container">
+        <h1>Why break is Important</h1>
+        <p>Without break, execution falls through to the next cases.</p>
+
+        <div class="box">
+          <h3>Example without break:</h3>
+          <pre>
+let a = 2 + 2;
+
+switch (a) {
+  case 3:
+    alert("Too small");
+  case 4:
+    alert("Exactly!");
+  case 5:
+    alert("Too big");
+  default:
+    alert("I don't know such values");
+}</pre
+          >
+
+          <p><strong>Output:</strong></p>
+          <pre>
+Exactly!
+Too big!
+I don't know such values</pre
+          >
+        </div>
+
+        <div class="tip">
+          This behavior is sometimes useful—but often a bug.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Any Expression is Allowed -->
+    <div class="slide" id="slide15">
+      <div class="container">
+        <h1>Any Expression is Allowed</h1>
+        <p>Both switch and case can use expressions, not just values.</p>
+
+        <pre>
+let a = "1";
+let b = 0;
+
+switch (+a) {
+  case b + 1:
+    alert("This runs");
+    break;
+
+  default:
+    alert("This doesn't");
+}</pre
+        >
+
+        <div class="box">
+          <h3>How it works:</h3>
+          <ul>
+            <li>+a converts "1" → 1</li>
+            <li>b + 1 is also 1</li>
+            <li>Strict match → runs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Grouping Multiple Cases -->
+    <div class="slide" id="slide16">
+      <div class="container">
+        <h1>Grouping Multiple Cases</h1>
+        <p>Multiple cases can share the same code.</p>
+
+        <pre>
+let a = 3;
+
+switch (a) {
+  case 4:
+    alert("Right!");
+    break;
+
+  case 3:
+  case 5:
+    alert("Wrong!");
+    alert("Why don't you take a math class?");
+    break;
+
+  default:
+    alert("Strange result");
+}</pre
+        >
+
+        <div class="tip">
+          No break after case 3 → Execution "falls through" into case 5 → Shared
+          logic runs once
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: switch Uses Strict Equality -->
+    <div class="slide" id="slide17">
+      <div class="container">
+        <h1>switch Uses Strict Equality (===)</h1>
+        <p>Type matters.</p>
+
+        <pre>
+let arg = prompt("Enter a value?");
+
+switch (arg) {
+  case '0':
+  case '1':
+    alert("One or zero");
+    break;
+
+  case '2':
+    alert("Two");
+    break;
+
+  case 3:
+    alert("Never runs!");
+    break;
+
+  default:
+    alert("Unknown value");
+}</pre
+        >
+
+        <div class="warning">
+          <strong>Why case 3 never runs:</strong>
+          <ul>
+            <li>prompt() returns a string</li>
+            <li>"3" !== 3</li>
+            <li>Strict comparison fails</li>
+          </ul>
+
+          <p><strong>Fix by converting input:</strong></p>
+          <pre>switch (+arg) { ... }</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 18: When to Use switch -->
+    <div class="slide" id="slide18">
+      <div class="container">
+        <h1>When to Use switch</h1>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>Use switch when:</h3>
+              <ul>
+                <li>Comparing one value</li>
+                <li>Against many fixed options</li>
+                <li>Logic is simple and flat</li>
+              </ul>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Avoid switch when:</h3>
+              <ul>
+                <li>Conditions are complex</li>
+                <li>Ranges are involved (>, <)</li>
+                <li>Boolean logic is needed</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Key takeaways:</h3>
+          <ul>
+            <li>switch replaces many if…else if</li>
+            <li>Uses strict equality (===)</li>
+            <li>break prevents fall-through</li>
+            <li>Missing break → code continues</li>
+            <li>Multiple cases can share one block</li>
+            <li>Always watch types when matching</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: What is a Function? -->
+    <div class="slide" id="slide19">
+      <div class="container">
+        <h1>What is a Function?</h1>
+        <p>
+          A function is a reusable block of code designed to perform one task.
+        </p>
+
+        <div class="box">
+          <h3>Why functions exist:</h3>
+          <ul>
+            <li>Avoid repeating code</li>
+            <li>Make programs easier to read</li>
+            <li>Change logic in one place</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Built-in examples:</h3>
+          <pre>
+alert()
+prompt()
+confirm()</pre
+          >
+        </div>
+
+        <p>We can also create our own functions.</p>
+      </div>
+    </div>
+
+    <!-- Slide 20: Function Declaration -->
+    <div class="slide" id="slide20">
+      <div class="container">
+        <h1>Function Declaration</h1>
+        <p>The basic syntax:</p>
+
+        <pre>
+function showMessage() {
+  alert("Hello everyone!");
+}</pre
+        >
+
+        <div class="box">
+          <h3>Structure:</h3>
+          <pre>
+function name(parameter1, parameter2, ...) {
+  // function body
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Calling a function:</h3>
+          <pre>
+showMessage();
+showMessage();</pre
+          >
+          <p>Each call runs the function body again.</p>
+        </div>
+
+        <div class="tip">Main purpose: reuse code instead of copying it.</div>
+      </div>
+    </div>
+
+    <!-- Slide 21: Local Variables -->
+    <div class="slide" id="slide21">
+      <div class="container">
+        <h1>Local Variables</h1>
+        <p>Variables declared inside a function exist only there.</p>
+
+        <pre>
+function showMessage() {
+  let message = "Hello!";
+  alert(message);
+}
+
+showMessage();
+alert(message); // ❌ Error</pre
+        >
+
+        <div class="box">
+          <h3>Example with multiple local variables:</h3>
+          <pre>
+function calculateSum() {
+  let a = 5;
+  let b = 10;
+  let result = a + b;
+  return result;
+}
+
+// a, b, and result don't exist here</pre
+          >
+        </div>
+
+        <div class="tip">
+          Local variables are invisible outside the function.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22: Outer Variables -->
+    <div class="slide" id="slide22">
+      <div class="container">
+        <h1>Outer Variables</h1>
+        <p>Functions can access variables outside them.</p>
+
+        <div class="box">
+          <h3>Reading outer variables:</h3>
+          <pre>
+let userName = "John";
+
+function showMessage() {
+  alert("Hello " + userName);
+}
+
+showMessage(); // Hello John</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Modifying outer variables:</h3>
+          <pre>
+let userName = "John";
+
+function showMessage() {
+  userName = "Bob";
+}
+
+showMessage();
+alert(userName); // Bob</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 23: Variable Shadowing -->
+    <div class="slide" id="slide23">
+      <div class="container">
+        <h1>Variable Shadowing</h1>
+        <p>
+          If a function declares a variable with the same name, it hides the
+          outer one.
+        </p>
+
+        <pre>
+let userName = "John";
+
+function showMessage() {
+  let userName = "Bob";
+  alert(userName); // Bob
+}
+
+showMessage();
+alert(userName); // John</pre
+        >
+
+        <div class="box">
+          <h3>Visual explanation:</h3>
+          <pre>
+let value = "outer";
+
+function check() {
+  let value = "inner"; // shadows the outer value
+  alert(value); // "inner"
+}
+
+alert(value); // "outer"</pre
+          >
+        </div>
+
+        <div class="tip">Local variables always win.</div>
+      </div>
+    </div>
+
+    <!-- Slide 24: Global Variables -->
+    <div class="slide" id="slide24">
+      <div class="container">
+        <h1>Global Variables</h1>
+        <p>Variables declared outside all functions are global.</p>
+
+        <ul>
+          <li>Accessible everywhere</li>
+          <li>Can be shadowed by locals</li>
+          <li>Should be used sparingly</li>
+        </ul>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+let globalVar = "I'm global";
+
+function showGlobal() {
+  alert(globalVar); // Can access global
+}
+
+showGlobal(); // "I'm global"</pre
+          >
+        </div>
+
+        <div class="tip">
+          <strong>Modern best practice:</strong> Use local variables +
+          parameters, not globals.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 25: Parameters and Arguments -->
+    <div class="slide" id="slide25">
+      <div class="container">
+        <h1>Parameters and Arguments</h1>
+        <p>Functions can receive data.</p>
+
+        <pre>
+function showMessage(from, text) {
+  alert(from + ": " + text);
+}
+
+showMessage("Ann", "Hello!");</pre
+        >
+
+        <div class="box">
+          <h3>Terminology:</h3>
+          <ul>
+            <li>
+              <strong>Parameter</strong> → variable in function definition
+            </li>
+            <li><strong>Argument</strong> → value passed during the call</li>
+          </ul>
+
+          <pre>
+showMessage("Ann", "Hello");
+// "Ann" and "Hello" are arguments</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 26: Parameters are Copied -->
+    <div class="slide" id="slide26">
+      <div class="container">
+        <h1>Parameters are Copied</h1>
+        <p>Functions receive copies, not originals (for primitives).</p>
+
+        <pre>
+function showMessage(from) {
+  from = "*" + from + "*";
+  alert(from);
+}
+
+let name = "Ann";
+showMessage(name);
+
+alert(name); // Ann (unchanged)</pre
+        >
+
+        <div class="box">
+          <h3>What happens:</h3>
+          <ul>
+            <li>name is passed to the function</li>
+            <li>A copy of name is created as the parameter "from"</li>
+            <li>The function modifies the copy, not the original</li>
+            <li>Original name remains unchanged</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 27: Default Parameter Values -->
+    <div class="slide" id="slide27">
+      <div class="container">
+        <h1>Default Parameter Values</h1>
+        <p>If an argument is missing → value becomes undefined.</p>
+
+        <pre>
+function showMessage(from, text = "no text given") {
+  alert(from + ": " + text);
+}
+
+showMessage("Ann"); // Ann: no text given</pre
+        >
+
+        <div class="box">
+          <h3>Defaults also apply when argument is undefined:</h3>
+          <pre>showMessage("Ann", undefined); // Ann: no text given</pre>
+        </div>
+
+        <div class="box">
+          <h3>Default values are evaluated at call time:</h3>
+          <pre>
+function showMessage(text = anotherFunction()) {
+  // anotherFunction runs only if text is missing
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 28: Old Ways to Set Defaults -->
+    <div class="slide" id="slide28">
+      <div class="container">
+        <h1>Old Ways to Set Defaults</h1>
+
+        <div class="box">
+          <h3>Using undefined:</h3>
+          <pre>
+if (text === undefined) {
+  text = "no text given";
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Using || (problematic for falsy values):</h3>
+          <pre>text = text || "no text given";</pre>
+          <p>
+            This is problematic because 0, "", false, etc. are valid values that
+            would be replaced.
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>Modern default handling: ??</h3>
+          <p>Best when 0, "", or false are valid values.</p>
+          <pre>
+function showCount(count) {
+  alert(count ?? "unknown");
+}
+
+showCount(0);    // 0
+showCount(null); // unknown
+showCount();     // unknown</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 29: Returning Values -->
+    <div class="slide" id="slide29">
+      <div class="container">
+        <h1>Returning Values</h1>
+        <p>Functions can return results.</p>
+
+        <pre>
+function sum(a, b) {
+  return a + b;
+}
+
+let result = sum(1, 2); // 3</pre
+        >
+
+        <div class="box">
+          <h3>return stops execution:</h3>
+          <pre>
+function checkAge(age) {
+  if (age >= 18) return true;
+  return confirm("Permission?");
+}</pre
+          >
+        </div>
+
+        <div class="tip">
+          A function can only return one value, but it can be an object or array
+          containing multiple values.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 30: return Without a Value -->
+    <div class="slide" id="slide30">
+      <div class="container">
+        <h1>return Without a Value</h1>
+        <p>Returns undefined.</p>
+
+        <pre>
+function doNothing() {}
+doNothing(); // undefined</pre
+        >
+
+        <p>Same as:</p>
+
+        <pre>
+function doNothing() {
+  return;
+}</pre
+        >
+
+        <div class="box">
+          <h3>Example with early exit:</h3>
+          <pre>
+checkAge(age) {
+  if (age < 0) return; // exit early
+  if (age < 18) return false;
+  return true;
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 31: Never Split return and Value -->
+    <div class="slide" id="slide31">
+      <div class="container">
+        <h1>Never Split return and Value</h1>
+
+        <div class="box">
+          <h3>❌ Wrong:</h3>
+          <pre>
+return
+  a + b;</pre
+          >
+          <p>
+            JavaScript automatically inserts a semicolon after return, so this
+            returns undefined!
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>✅ Correct:</h3>
+          <pre>
+return (
+  a + b
+);</pre
+          >
+          <p>Parentheses prevent automatic semicolon insertion.</p>
+        </div>
+
+        <div class="warning">
+          This is a common source of bugs in JavaScript!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 32: Naming Functions -->
+    <div class="slide" id="slide32">
+      <div class="container">
+        <h1>Naming Functions</h1>
+        <p>Functions represent actions, so names should be verbs.</p>
+
+        <div class="box">
+          <h3>Common prefixes:</h3>
+          <ul>
+            <li><strong>get…</strong> → returns a value</li>
+            <li><strong>calc…</strong> → calculates</li>
+            <li><strong>create…</strong> → creates something</li>
+            <li><strong>check…</strong> → returns true/false</li>
+            <li><strong>show…</strong> → displays something</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Examples:</h3>
+          <pre>
+getAge()
+calcSum()
+checkPermission()</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 33: One Function = One Action -->
+    <div class="slide" id="slide33">
+      <div class="container">
+        <h1>One Function = One Action</h1>
+
+        <div class="box">
+          <h3>Bad design:</h3>
+          <pre>
+getAge() → also shows alert ❌
+checkPermission() → displays messages ❌</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Good design:</h3>
+          <ul>
+            <li>One responsibility</li>
+            <li>Predictable behavior</li>
+          </ul>
+
+          <pre>
+function getAge(user) {
+  return user.age; // just returns the age
+}
+
+function showAge(age) {
+  alert(`You are ${age} years old`); // just displays
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 34: Functions as Self-Documenting Code -->
+    <div class="slide" id="slide34">
+      <div class="container">
+        <h1>Functions as Self-Documenting Code</h1>
+
+        <div class="box">
+          <h3>Hard to read:</h3>
+          <pre>
+nextPrime:
+for (...) {
+  ...
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Clear and readable:</h3>
+          <pre>if (!isPrime(i)) continue;</pre>
+        </div>
+
+        <div class="tip">Function names act like comments.</div>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+// Instead of this:
+if (user.age >= 18 && user.hasPermission) {
+  // allow access
+}
+
+// Use this:
+if (isAdult(user) && hasAccess(user)) {
+  // allow access
+}</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 35: Why Small Functions are Better -->
+    <div class="slide" id="slide35">
+      <div class="container">
+        <h1>Why Small Functions are Better</h1>
+
+        <ul>
+          <li>Easier to test</li>
+          <li>Easier to debug</li>
+          <li>Easier to understand</li>
+          <li>Easier to reuse</li>
+        </ul>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+// Instead of one big function:
+function processUser(user) {
+  // 50 lines of code
+}
+
+// Break it into smaller functions:
+function processUser(user) {
+  validateUser(user);
+  transformUserData(user);
+  saveUser(user);
+  notifyUser(user);
+}</pre
+          >
+        </div>
+
+        <div class="tip">Even single-use functions improve readability.</div>
+      </div>
+    </div>
+
+    <!-- Slide 36: Final Summary -->
+    <div class="slide" id="slide36">
+      <div class="container">
+        <h1>Final Summary</h1>
+
+        <div class="box">
+          <h3>Functions are reusable building blocks</h3>
+          <ul>
+            <li>Parameters are local copies</li>
+            <li>Local variables are isolated</li>
+            <li>Functions may return values (or undefined)</li>
+            <li>Prefer parameters + return over globals</li>
+            <li>Clear names + single responsibility = clean code</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Key concepts from all sections:</h3>
+          <ul>
+            <li><strong>Loops:</strong> repeat code efficiently</li>
+            <li>
+              <strong>Switch:</strong> compare one value against many options
+            </li>
+            <li><strong>Functions:</strong> reusable blocks of code</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Mastering these fundamentals is essential for JavaScript development!
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple scroll behavior
+      document.querySelectorAll(".nav a").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Coding Styles and Comments</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background-color: white;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f7df1e;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #323330;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f7df1e;
+        padding-bottom: 10px;
+      }
+
+      h2 {
+        color: #323330;
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      h3 {
+        color: #323330;
+        font-size: 1.5em;
+        margin: 20px 0 10px;
+      }
+
+      code {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      ul,
+      ol {
+        margin: 15px 0;
+        padding-left: 30px;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      .warning {
+        background-color: #ffe0e0;
+        border-left: 4px solid #ff0000;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .tip {
+        background-color: #e0ffe0;
+        border-left: 4px solid #00ff00;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .nav {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .nav a {
+        display: block;
+        padding: 5px;
+        color: #323330;
+        text-decoration: none;
+        margin: 5px 0;
+      }
+
+      .nav a:hover {
+        color: #f7df1e;
+      }
+
+      .emoji {
+        font-size: 1.2em;
+        margin-right: 5px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .rating {
+        color: #f7df1e;
+      }
+
+      @media (max-width: 768px) {
+        .two-column {
+          flex-direction: column;
+        }
+
+        .nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <div class="nav">
+      <a href="#slide1">1</a>
+      <a href="#slide2">2</a>
+      <a href="#slide3">3</a>
+      <a href="#slide4">4</a>
+      <a href="#slide5">5</a>
+      <a href="#slide6">6</a>
+      <a href="#slide7">7</a>
+      <a href="#slide8">8</a>
+      <a href="#slide9">9</a>
+      <a href="#slide10">10</a>
+      <a href="#slide11">11</a>
+      <a href="#slide12">12</a>
+      <a href="#slide13">13</a>
+      <a href="#slide14">14</a>
+      <a href="#slide15">15</a>
+      <a href="#slide16">16</a>
+      <a href="#slide17">17</a>
+      <a href="#slide18">18</a>
+      <a href="#slide19">19</a>
+      <a href="#slide20">20</a>
+      <a href="#slide21">21</a>
+      <a href="#slide22">22</a>
+      <a href="#slide23">23</a>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide" id="slide1">
+      <div class="container">
+        <h1>JavaScript Coding Styles and Comments</h1>
+        <p style="font-size: 1.3em; margin-bottom: 30px">
+          Exploring different approaches to writing code and documenting it
+        </p>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>Coding Styles</h3>
+              <p>Different ways to implement the same functionality</p>
+              <ul>
+                <li>Clean / Readable</li>
+                <li>Ninja</li>
+                <li>Competitive Programming</li>
+                <li>Defensive</li>
+                <li>And more...</li>
+              </ul>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Comments</h3>
+              <p>Best practices for documenting code</p>
+              <ul>
+                <li>Good vs Bad comments</li>
+                <li>When to use comments</li>
+                <li>When to avoid them</li>
+                <li>Self-documenting code</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Task Used for All Examples -->
+    <div class="slide" id="slide2">
+      <div class="container">
+        <h1>Task Used for All Examples</h1>
+
+        <div class="box" style="text-align: center; padding: 30px">
+          <h2>👉 Find the maximum of two numbers</h2>
+        </div>
+
+        <div class="box">
+          <h3>Why this task?</h3>
+          <ul>
+            <li>Simple enough to understand quickly</li>
+            <li>Complex enough to show different approaches</li>
+            <li>Can be implemented in many styles</li>
+            <li>Allows us to focus on the style, not the logic</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          We'll implement this same task in 9 different coding styles to compare
+          approaches.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Clean/Readable Style -->
+    <div class="slide" id="slide3">
+      <div class="container">
+        <h1>1️⃣ Clean / Readable Style (Best practice)</h1>
+
+        <div class="box">
+          <pre>
+function max(a, b) {
+  if (a > b) {
+    return a;
+  }
+  return b;
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Clear, straightforward logic</li>
+            <li>Descriptive function name</li>
+            <li>Proper indentation</li>
+            <li>Easy to understand at a glance</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          This is the recommended approach for most production code. It
+          prioritizes clarity over cleverness.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Ninja Style -->
+    <div class="slide" id="slide4">
+      <div class="container">
+        <h1>2️⃣ Ninja Style 🥷</h1>
+
+        <div class="box">
+          <h3>Short, clever, slightly tricky</h3>
+          <pre>const max = (a, b) => a > b ? a : b;</pre>
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Uses arrow function syntax</li>
+            <li>One-liner with ternary operator</li>
+            <li>Very concise</li>
+            <li>Requires understanding of ES6+ features</li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          While elegant, this style can be harder for beginners to understand
+          and may not be suitable for all codebases.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Competitive Programming Style -->
+    <div class="slide" id="slide5">
+      <div class="container">
+        <h1>3️⃣ Competitive Programming Style</h1>
+
+        <div class="box">
+          <h3>Fast to write, short names</h3>
+          <pre>const mx = (a, b) => a > b ? a : b;</pre>
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Abbreviated function name (mx instead of max)</li>
+            <li>Optimized for typing speed</li>
+            <li>Common in coding competitions</li>
+            <li>Values brevity over readability</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          This style is useful in time-limited environments but should be
+          avoided in production code where maintainability is important.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Defensive Programming Style -->
+    <div class="slide" id="slide6">
+      <div class="container">
+        <h1>4️⃣ Defensive Programming Style</h1>
+
+        <div class="box">
+          <h3>Extra safety checks</h3>
+          <pre>
+function max(a, b) {
+  if (typeof a !== "number" || typeof b !== "number") {
+    throw new Error("Invalid input");
+  }
+  return a > b ? a : b;
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Input validation</li>
+            <li>Error handling</li>
+            <li>Protects against misuse</li>
+            <li>More verbose but safer</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Essential for libraries and public APIs where you can't control how
+          your functions will be used.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Procedural Style -->
+    <div class="slide" id="slide7">
+      <div class="container">
+        <h1>5️⃣ Procedural Style</h1>
+
+        <div class="box">
+          <h3>Step-by-step logic</h3>
+          <pre>
+function max(a, b) {
+  let result;
+
+  if (a > b) {
+    result = a;
+  } else {
+    result = b;
+  }
+
+  return result;
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Explicit variable declaration</li>
+            <li>Step-by-step approach</li>
+            <li>More verbose than necessary</li>
+            <li>Clear control flow</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          This style can be useful for teaching programming concepts but is
+          often unnecessarily verbose in production code.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Modular Style -->
+    <div class="slide" id="slide8">
+      <div class="container">
+        <h1>6️⃣ Modular Style</h1>
+
+        <div class="box">
+          <h3>Code split into reusable parts</h3>
+          <pre>
+// math.js
+export function max(a, b) {
+  return a > b ? a : b;
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Organized in modules</li>
+            <li>Uses ES6 import/export</li>
+            <li>Promotes code reuse</li>
+            <li>Better for larger projects</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Modular programming is essential for maintaining large codebases and
+          enables better code organization.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Functional Style -->
+    <div class="slide" id="slide9">
+      <div class="container">
+        <h1>7️⃣ Functional Style</h1>
+
+        <div class="box">
+          <h3>Pure function, no side effects</h3>
+          <pre>const max = (a, b) => Math.max(a, b);</pre>
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Leverages built-in functions</li>
+            <li>Declarative approach</li>
+            <li>Composable</li>
+            <li>No side effects</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Functional programming emphasizes immutability and pure functions,
+          making code more predictable and easier to test.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Object-Oriented Style -->
+    <div class="slide" id="slide10">
+      <div class="container">
+        <h1>8️⃣ Object-Oriented Style (OOP)</h1>
+
+        <div class="box">
+          <h3>Using a class</h3>
+          <pre>
+class MathUtil {
+  max(a, b) {
+    return a > b ? a : b;
+  }
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Encapsulates functionality in classes</li>
+            <li>Groups related functions</li>
+            <li>Can have state and methods</li>
+            <li>Supports inheritance</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          OOP is useful for modeling real-world entities and organizing complex
+          systems with many interacting parts.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Low-Level/Performance-Oriented Style -->
+    <div class="slide" id="slide11">
+      <div class="container">
+        <h1>9️⃣ Low-Level / Performance-Oriented Style</h1>
+
+        <div class="box">
+          <h3>Explicit, minimal overhead</h3>
+          <pre>
+function max(a, b) {
+  return a > b;
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Focuses on performance</li>
+            <li>May sacrifice correctness for speed</li>
+            <li>Low-level operations</li>
+            <li>Often optimized for specific cases</li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          ⚠️ Returns true or false, not the number (shows how low-level logic
+          may leak abstraction)
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Obfuscated Style -->
+    <div class="slide" id="slide12">
+      <div class="container">
+        <h1>🔟 Obfuscated Style 😈</h1>
+
+        <div class="box">
+          <h3>Hard to read (don't do this in real life)</h3>
+          <pre>const _=($,$$)=>$>$$?$:$$;</pre>
+        </div>
+
+        <div class="box">
+          <h3>Characteristics:</h3>
+          <ul>
+            <li>Intentionally confusing</li>
+            <li>Uses single-character variable names</li>
+            <li>Removes all whitespace</li>
+            <li>Makes code nearly impossible to understand</li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          This style is sometimes used for code golfing or obfuscation, but
+          should never be used in production code!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Summary Table -->
+    <div class="slide" id="slide13">
+      <div class="container">
+        <h1>Summary Table</h1>
+
+        <table>
+          <tr>
+            <th>Style</th>
+            <th>Readability</th>
+            <th>Real-world use</th>
+          </tr>
+          <tr>
+            <td>Clean</td>
+            <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Ninja</td>
+            <td><span class="rating">⭐⭐</span></td>
+            <td><span class="rating">⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Competitive</td>
+            <td><span class="rating">⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Defensive</td>
+            <td><span class="rating">⭐⭐⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Procedural</td>
+            <td><span class="rating">⭐⭐⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Modular</td>
+            <td><span class="rating">⭐⭐⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Functional</td>
+            <td><span class="rating">⭐⭐⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>OOP</td>
+            <td><span class="rating">⭐⭐⭐</span></td>
+            <td><span class="rating">⭐⭐⭐⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Low-level</td>
+            <td><span class="rating">⭐⭐</span></td>
+            <td><span class="rating">⭐⭐</span></td>
+          </tr>
+          <tr>
+            <td>Obfuscated</td>
+            <td><span class="rating">⭐</span></td>
+            <td>❌</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide 14: Final Advice -->
+    <div class="slide" id="slide14">
+      <div class="container">
+        <h1>Final Advice</h1>
+
+        <div class="box">
+          <h3>👉 Learn all styles</h3>
+          <p>
+            Understanding different approaches makes you a more versatile
+            developer and helps you read code written by others.
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>👉 Use Clean + Modular by default</h3>
+          <p>
+            For most production code, prioritize readability and maintainability
+            over cleverness or brevity.
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>👉 Use Ninja style only when teaching tricks or having fun</h3>
+          <p>
+            While elegant, concise code can be impressive, it's not always the
+            best choice for team projects.
+          </p>
+        </div>
+
+        <div class="tip">
+          The best style often depends on the context: project requirements,
+          team preferences, and the problem being solved.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Introduction to Comments -->
+    <div class="slide" id="slide15">
+      <div class="container">
+        <h1>Comments</h1>
+
+        <p>
+          As we know from the chapter Code structure, comments can be
+          single-line: starting with // and multiline: /* ... */.
+        </p>
+
+        <p>We normally use them to describe how and why the code works.</p>
+
+        <p>
+          At first sight, commenting might be obvious, but novices in
+          programming often use them wrongly.
+        </p>
+
+        <div class="box">
+          <h3>Types of comments:</h3>
+          <ul>
+            <li>
+              <strong>Single-line:</strong> <code>// This is a comment</code>
+            </li>
+            <li>
+              <strong>Multi-line:</strong>
+              <code>/* This is a multi-line comment */</code>
+            </li>
+            <li><strong>Documentation:</strong> Special formats like JSDoc</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Good comments can make code much easier to understand, but bad
+          comments can be worse than no comments at all.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Bad Comments -->
+    <div class="slide" id="slide16">
+      <div class="container">
+        <h1>Bad Comments</h1>
+
+        <p>
+          Novices tend to use comments to explain "what is going on in the
+          code". Like this:
+        </p>
+
+        <div class="box">
+          <pre>
+// This code will do this thing (...) and that thing (...)
+// ...and who knows what else...
+very;
+complex;
+code;</pre
+          >
+        </div>
+
+        <div class="warning">
+          In good code, the amount of such "explanatory" comments should be
+          minimal. Seriously, the code should be easy to understand without
+          them.
+        </div>
+
+        <div class="box">
+          <h3>Great rule:</h3>
+          <p>
+            "If the code is so unclear that it requires a comment, then maybe it
+            should be rewritten instead."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Recipe: Factor Out Functions -->
+    <div class="slide" id="slide17">
+      <div class="container">
+        <h1>Recipe: Factor Out Functions</h1>
+
+        <p>
+          Sometimes it's beneficial to replace a code piece with a function,
+          like here:
+        </p>
+
+        <div class="box">
+          <h3>Before:</h3>
+          <pre>
+function showPrimes(n) {
+  nextPrime:
+  for (let i = 2; i < n; i++) {
+
+    // check if i is a prime number
+    for (let j = 2; j < i; j++) {
+      if (i % j == 0) continue nextPrime;
+    }
+
+    alert(i);
+  }
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>After:</h3>
+          <pre>
+function showPrimes(n) {
+  for (let i = 2; i < n; i++) {
+    if (!isPrime(i)) continue;
+    alert(i);
+  }
+}
+
+function isPrime(n) {
+  for (let i = 2; i < n; i++) {
+    if (n % i == 0) return false;
+  }
+  return true;
+}</pre
+          >
+        </div>
+
+        <div class="tip">
+          Now we can understand the code easily. The function itself becomes the
+          comment. Such code is called self-descriptive.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 18: Recipe: Create Functions -->
+    <div class="slide" id="slide18">
+      <div class="container">
+        <h1>Recipe: Create Functions</h1>
+
+        <p>And if we have a long "code sheet" like this:</p>
+
+        <div class="box">
+          <h3>Before:</h3>
+          <pre>
+// here we add whiskey
+for(let i = 0; i < 10; i++) {
+  let drop = getWhiskey();
+  smell(drop);
+  add(drop, glass);
+}
+
+// here we add juice
+for(let t = 0; t < 3; t++) {
+  let tomato = getTomato();
+  examine(tomato);
+  let juice = press(tomato);
+  add(juice, glass);
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>After:</h3>
+          <pre>
+addWhiskey(glass);
+addJuice(glass);
+
+function addWhiskey(container) {
+  for(let i = 0; i < 10; i++) {
+    let drop = getWhiskey();
+    //...
+  }
+}
+
+function addJuice(container) {
+  for(let t = 0; t < 3; t++) {
+    let tomato = getTomato();
+    //...
+  }
+}</pre
+          >
+        </div>
+
+        <div class="tip">
+          Once again, functions themselves tell what's going on. There's nothing
+          to comment. And also the code structure is better when split.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: Good Comments - Architecture -->
+    <div class="slide" id="slide19">
+      <div class="container">
+        <h1>Good Comments - Architecture</h1>
+
+        <p>
+          So, explanatory comments are usually bad. Which comments are good?
+        </p>
+
+        <div class="box">
+          <h3>Describe the architecture</h3>
+          <p>
+            Provide a high-level overview of components, how they interact,
+            what's the control flow in various situations… In short – the bird's
+            eye view of the code.
+          </p>
+        </div>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+/**
+ * This module handles user authentication.
+ * 
+ * Flow:
+ * 1. User submits login form
+ * 2. Credentials are validated against the database
+ * 3. If valid, a JWT token is generated and stored
+ * 4. User is redirected to dashboard
+ * 
+ * Components:
+ * - LoginForm: Handles UI and form submission
+ * - AuthService: Manages authentication logic
+ * - TokenManager: Handles JWT token operations
+ */</pre
+          >
+        </div>
+
+        <div class="tip">
+          There's a special language UML to build high-level architecture
+          diagrams explaining the code. Definitely worth studying.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 20: Good Comments - Function Documentation -->
+    <div class="slide" id="slide20">
+      <div class="container">
+        <h1>Good Comments - Function Documentation</h1>
+
+        <p>
+          Document function parameters and usage. There's a special syntax JSDoc
+          to document a function: usage, parameters, returned value.
+        </p>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+/**
+ * Returns x raised to the n-th power.
+ *
+ * @param {number} x The number to raise.
+ * @param {number} n The power, must be a natural number.
+ * @return {number} x raised to the n-th power.
+ */
+function pow(x, n) {
+  ...
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Benefits:</h3>
+          <ul>
+            <li>Helps understand the purpose of the function</li>
+            <li>Shows how to use it correctly</li>
+            <li>Many editors can provide autocomplete</li>
+            <li>Tools can generate HTML documentation</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Many editors like WebStorm can understand JSDoc comments and use them
+          to provide autocomplete and some automatic code-checking.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 21: Good Comments - Why Solved This Way -->
+    <div class="slide" id="slide21">
+      <div class="container">
+        <h1>Good Comments - Why Solved This Way?</h1>
+
+        <p>
+          What's written is important. But what's not written may be even more
+          important to understand what's going on. Why is the task solved
+          exactly this way? The code gives no answer.
+        </p>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+// Using a simple for-loop instead of Array.map()
+// because it's 3x faster for large arrays
+// and this is a performance-critical section
+for (let i = 0; i < items.length; i++) {
+  processItem(items[i]);
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Why this matters:</h3>
+          <ul>
+            <li>Prevents "optimizations" that break the code</li>
+            <li>Documents design decisions</li>
+            <li>Explains non-obvious approaches</li>
+            <li>Saves time for future maintainers</li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          Without such comments, you might think "How stupid I was then" and
+          rewrite working code, only to discover why it was done that way.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22: Good Comments - Subtle Features -->
+    <div class="slide" id="slide22">
+      <div class="container">
+        <h1>Good Comments - Subtle Features</h1>
+
+        <p>
+          If the code has anything subtle and counter-intuitive, it's definitely
+          worth commenting.
+        </p>
+
+        <div class="box">
+          <h3>Example:</h3>
+          <pre>
+// Using parseInt instead of Math.floor for negative numbers
+// because parseInt(-1.5) returns -1 while Math.floor(-1.5) returns -2
+// and we need the behavior of truncating toward zero
+let intValue = parseInt(floatValue);</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Other examples of subtle features worth commenting:</h3>
+          <ul>
+            <li>Browser-specific workarounds</li>
+            <li>Non-obvious algorithm optimizations</li>
+            <li>Reasons for seemingly redundant code</li>
+            <li>Dependencies between distant parts of code</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          These comments are especially valuable because they explain the "why"
+          behind code that might otherwise appear incorrect or inefficient.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 23: Summary on Comments -->
+    <div class="slide" id="slide23">
+      <div class="container">
+        <h1>Summary on Comments</h1>
+
+        <p>
+          An important sign of a good developer is comments: their presence and
+          even their absence.
+        </p>
+
+        <p>
+          Good comments allow us to maintain the code well, come back to it
+          after a delay and use it more effectively.
+        </p>
+
+        <div class="box">
+          <h3>Comment this:</h3>
+          <ul>
+            <li><strong>Overall architecture</strong>, high-level view</li>
+            <li><strong>Function usage</strong></li>
+            <li>
+              <strong>Important solutions</strong>, especially when not
+              immediately obvious
+            </li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Avoid comments:</h3>
+          <ul>
+            <li>That tell "how code works" and "what it does"</li>
+            <li>
+              Put them in only if it's impossible to make the code so simple and
+              self-descriptive that it doesn't require them
+            </li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Comments are also used for auto-documenting tools like JSDoc3: they
+          read them and generate HTML-docs (or docs in another format).
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple scroll behavior
+      document.querySelectorAll(".nav a").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>

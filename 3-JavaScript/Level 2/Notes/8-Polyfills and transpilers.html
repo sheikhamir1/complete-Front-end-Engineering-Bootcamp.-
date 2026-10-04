@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Transpilers and Polyfills</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background-color: white;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #3498db;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #2c3e50;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+      }
+
+      h2 {
+        color: #2c3e50;
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      h3 {
+        color: #2c3e50;
+        font-size: 1.5em;
+        margin: 20px 0 10px;
+      }
+
+      code {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      ul,
+      ol {
+        margin: 15px 0;
+        padding-left: 30px;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      .warning {
+        background-color: #ffe0e0;
+        border-left: 4px solid #ff0000;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .tip {
+        background-color: #e0ffe0;
+        border-left: 4px solid #00ff00;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .nav {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .nav a {
+        display: block;
+        padding: 5px;
+        color: #3498db;
+        text-decoration: none;
+        margin: 5px 0;
+      }
+
+      .nav a:hover {
+        color: #2980b9;
+        background-color: #f0f0f0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      @media (max-width: 768px) {
+        .two-column {
+          flex-direction: column;
+        }
+
+        .nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <div class="nav">
+      <a href="#slide1">1</a>
+      <a href="#slide2">2</a>
+      <a href="#slide3">3</a>
+      <a href="#slide4">4</a>
+      <a href="#slide5">5</a>
+      <a href="#slide6">6</a>
+      <a href="#slide7">7</a>
+    </div>
+
+    <!-- Slide 1: Problem -->
+    <div class="slide" id="slide1">
+      <div class="container">
+        <h1>Problem: Modern JavaScript may not work everywhere</h1>
+
+        <p>JavaScript keeps evolving. New features are added frequently:</p>
+
+        <div class="box">
+          <h3>New syntax examples:</h3>
+          <ul>
+            <li>Nullish coalescing operator (??)</li>
+            <li>Optional chaining (?.)</li>
+            <li>Arrow functions (=>)</li>
+            <li>Destructuring assignment</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>New functions examples:</h3>
+          <ul>
+            <li>Math.trunc()</li>
+            <li>Array.prototype.includes()</li>
+            <li>String.prototype.padStart()</li>
+            <li>Promise.allSettled()</li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          Older browsers or environments might not understand these new
+          features. If you write modern code, it might break in older
+          environments.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Example of the Problem -->
+    <div class="slide" id="slide2">
+      <div class="container">
+        <h1>Example of the Problem</h1>
+
+        <p>If you write:</p>
+
+        <pre>let height = height ?? 100;</pre>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>Modern browsers:</h3>
+              <p>Understand ?? → works fine</p>
+              <pre>
+let height = height ?? 100;
+// height = 100 if height is null or undefined</pre
+              >
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Old browsers:</h3>
+              <p>Don't understand ?? → code breaks</p>
+              <pre>
+let height = height ?? 100;
+// SyntaxError: Unexpected token ??</pre
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          So we need a way to make modern code compatible with older browsers.
+          That's where transpilers and polyfills come in.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Transpilers -->
+    <div class="slide" id="slide3">
+      <div class="container">
+        <h1>Transpilers: translate modern syntax to older syntax</h1>
+
+        <p>
+          A transpiler reads your modern code and rewrites it into equivalent
+          old-style code that all browsers understand.
+        </p>
+
+        <div class="box">
+          <h3>Example: Nullish coalescing operator (??)</h3>
+
+          <h4>Modern code:</h4>
+          <pre>let height = height ?? 100;</pre>
+
+          <h4>Transpiler output for older engines:</h4>
+          <pre>
+let height = (height !== undefined && height !== null) ? height : 100;</pre
+          >
+
+          <p>
+            ✅ Behavior is the same<br />
+            ✅ Works in older browsers
+          </p>
+        </div>
+
+        <div class="tip">
+          Tools: Babel is the most popular JavaScript transpiler. In projects
+          with build systems like Webpack, Babel can automatically transpile
+          code whenever you save changes.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Transpiler Demo -->
+    <div class="slide" id="slide4">
+      <div class="container">
+        <h1>Step-by-step demo for transpiler</h1>
+
+        <div class="box">
+          <h3>Step 1: Write modern code using ??</h3>
+          <pre>
+let height = undefined;
+height = height ?? 100;
+console.log(height); // 100</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Step 2: Use Babel online (https://babeljs.io/repl)</h3>
+          <ul>
+            <li>Paste the code</li>
+            <li>Click "Transform"</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Step 3: You'll see the transpiled output</h3>
+          <pre>
+"use strict";
+
+var height = void 0;
+height = height !== null && height !== void 0 ? height : 100;
+console.log(height);</pre
+          >
+
+          <p>Copy this transformed code → now it works in older browsers.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Polyfills -->
+    <div class="slide" id="slide5">
+      <div class="container">
+        <h1>Polyfills: add missing functions</h1>
+
+        <p>
+          Sometimes the syntax exists, but the browser doesn't have certain
+          functions.
+        </p>
+
+        <div class="box">
+          <h3>Example: Math.trunc()</h3>
+
+          <h4>Modern browsers:</h4>
+          <pre>
+console.log(Math.trunc(1.23)); // 1
+console.log(Math.trunc(-1.23)); // -1</pre
+          >
+
+          <h4>Old browsers:</h4>
+          <pre>
+console.log(Math.trunc(1.23)); // TypeError: Math.trunc is not a function</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Solution: Polyfill</h3>
+          <p>A script that defines the missing function if it doesn't exist:</p>
+          <pre>
+if (!Math.trunc) {
+  Math.trunc = function(number) {
+    return number < 0 ? Math.ceil(number) : Math.floor(number);
+  };
+}</pre
+          >
+
+          <p>
+            ✅ Adds Math.trunc for browsers that don't support it<br />
+            ✅ Works without breaking modern browsers
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Polyfill Demo -->
+    <div class="slide" id="slide6">
+      <div class="container">
+        <h1>Step-by-step demo for polyfill</h1>
+
+        <div class="box">
+          <h3>Step 1: Old browser environment</h3>
+          <p>Math.trunc is missing</p>
+        </div>
+
+        <div class="box">
+          <h3>Step 2: Add polyfill</h3>
+          <pre>
+if (!Math.trunc) {
+  Math.trunc = function(number) {
+    return number < 0 ? Math.ceil(number) : Math.floor(number);
+  };
+}</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Step 3: Use Math.trunc normally</h3>
+          <pre>
+console.log(Math.trunc(3.7));  // 3
+console.log(Math.trunc(-3.7)); // -3</pre
+          >
+
+          <p>Works everywhere!</p>
+        </div>
+
+        <div class="tip">
+          Polyfills check if a feature exists before defining it, so they don't
+          interfere with modern browsers that already have the feature.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: When to Use What -->
+    <div class="slide" id="slide7">
+      <div class="container">
+        <h1>When to use what</h1>
+
+        <table>
+          <tr>
+            <th>Feature type</th>
+            <th>Solution</th>
+            <th>Example</th>
+          </tr>
+          <tr>
+            <td>New syntax</td>
+            <td>Transpiler</td>
+            <td>??, arrow functions, let/const</td>
+          </tr>
+          <tr>
+            <td>New functions</td>
+            <td>Polyfill</td>
+            <td>Math.trunc(), Array.prototype.includes</td>
+          </tr>
+        </table>
+
+        <div class="box">
+          <h3>Summary in plain words</h3>
+          <ul>
+            <li>
+              <strong>Transpilers</strong> → rewrite modern code into old-style
+              code so browsers understand new syntax
+            </li>
+            <li>
+              <strong>Polyfills</strong> → add missing functions so new
+              functionality works in old browsers
+            </li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Together, they let you use modern JS features safely without worrying
+          about browser compatibility.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Practical Example -->
+    <div class="slide" id="slide8">
+      <div class="container">
+        <h1>Practical example combining both</h1>
+
+        <div class="box">
+          <h3>Modern code using new syntax and function:</h3>
+          <pre>
+let height = undefined;
+height = height ?? 100; // new syntax
+console.log(Math.trunc(5.7)); // new function</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>After processing:</h3>
+          <pre>
+// Transpiler converts ??
+var height = undefined;
+height = height !== null && height !== undefined ? height : 100;
+
+// Polyfill provides Math.trunc if missing
+if (!Math.trunc) {
+  Math.trunc = function(number) {
+    return number < 0 ? Math.ceil(number) : Math.floor(number);
+  };
+}
+
+console.log(Math.trunc(5.7));</pre
+          >
+        </div>
+
+        <div class="tip">
+          After processing, it works on old browsers too! This combination
+          allows developers to write modern, clean code while maintaining
+          compatibility with older environments.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple scroll behavior
+      document.querySelectorAll(".nav a").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>

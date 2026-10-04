@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Methods and toJSON</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">JSON Methods, toJSON</h1>
+          <p class="slide-subtitle">Converting objects to strings and back</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="./8.png" alt="JSON data visualization" />
+          </div>
+          <div class="text-section">
+            <p>
+              Let's say we have a complex object, and we'd like to convert it
+              into a string, to send it over a network, or just to output it for
+              logging purposes.
+            </p>
+            <p>
+              Naturally, such a string should include all important properties.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Luckily, there's no need to write the code to handle all this. The
+              task has been solved already with JSON methods.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: JSON.stringify -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">JSON.stringify</h1>
+          <p class="slide-subtitle">Converting objects into JSON</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The JSON (JavaScript Object Notation) is a general format to
+              represent values and objects. It is described as in RFC 4627
+              standard. Initially it was made for JavaScript, but many other
+              languages have libraries to handle it as well.
+            </p>
+            <p>JavaScript provides methods:</p>
+            <ul>
+              <li>JSON.stringify to convert objects into JSON.</li>
+              <li>JSON.parse to convert JSON back into an object.</li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> student = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">'John'</span>,<br />
+              &nbsp;&nbsp;age: 30,<br />
+              &nbsp;&nbsp;isAdmin:
+              <span class="code-keyword">false</span>,<br />
+              &nbsp;&nbsp;courses: [<span class="code-string">'html'</span>,
+              <span class="code-string">'css'</span>,
+              <span class="code-string">'js'</span>],<br />
+              &nbsp;&nbsp;spouse: <span class="code-keyword">null</span><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> json =
+              JSON.stringify(student);<br /><br />
+              alert(<span class="code-keyword">typeof</span> json);
+              <span class="code-comment">// we've got a string!</span><br />
+              alert(json);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: JSON Data Types -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">JSON Data Types</h1>
+          <p class="slide-subtitle">
+            What JSON supports and how it differs from JavaScript
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>JSON supports following data types:</p>
+            <ul>
+              <li>Objects { ... }</li>
+              <li>Arrays [ ... ]</li>
+              <li>
+                Primitives:
+                <ul>
+                  <li>strings</li>
+                  <li>numbers</li>
+                  <li>boolean values true/false</li>
+                  <li>null</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Important Differences</h3>
+            <p>
+              A JSON-encoded object has several important differences from the
+              object literal:
+            </p>
+            <ul>
+              <li>
+                Strings use double quotes. No single quotes or backticks in
+                JSON. So 'John' becomes "John".
+              </li>
+              <li>
+                Object property names are double-quoted also. That's obligatory.
+                So age:30 becomes "age":30.
+              </li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Examples</h3>
+            <div class="code-block">
+              <span class="code-comment"
+                >// a number in JSON is just a number</span
+              ><br />
+              alert(JSON.stringify(1)) <span class="code-comment">// 1</span
+              ><br /><br />
+              <span class="code-comment"
+                >// a string in JSON is still a string, but double-quoted</span
+              ><br />
+              alert(JSON.stringify(<span class="code-string">'test'</span>))
+              <span class="code-comment">// "test"</span><br /><br />
+              alert(JSON.stringify(<span class="code-keyword">true</span>));
+              <span class="code-comment">// true</span><br /><br />
+              alert(JSON.stringify([1, 2, 3]));
+              <span class="code-comment">// [1,2,3]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: What's Excluded from JSON -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">What's Excluded from JSON</h1>
+          <p class="slide-subtitle">Properties that JSON.stringify skips</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              JSON is data-only language-independent specification, so some
+              JavaScript-specific object properties are skipped by
+              JSON.stringify.
+            </p>
+            <p>Namely:</p>
+            <ul>
+              <li>Function properties (methods).</li>
+              <li>Symbolic keys and values.</li>
+              <li>Properties that store undefined.</li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;sayHi() { <span class="code-comment">// ignored</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-string"
+                >"Hello"</span
+              >);<br />
+              &nbsp;&nbsp;},<br />
+              &nbsp;&nbsp;[Symbol(<span class="code-string">"id"</span>)]: 123,
+              <span class="code-comment">// ignored</span><br />
+              &nbsp;&nbsp;something: <span class="code-keyword">undefined</span>
+              <span class="code-comment">// ignored</span><br />
+              };<br /><br />
+              alert(JSON.stringify(user));
+              <span class="code-comment">// {} (empty object)</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Usually that's fine. If that's not what we want, then soon we'll
+              see how to customize the process.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Nested Objects and Circular References -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Nested Objects and Circular References</h1>
+          <p class="slide-subtitle">How JSON handles complex structures</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Nested Objects</h3>
+            <p>
+              The great thing is that nested objects are supported and converted
+              automatically.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> meetup = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"Conference"</span>,<br />
+              &nbsp;&nbsp;room: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;number: 23,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;participants: [<span class="code-string"
+                >"john"</span
+              >, <span class="code-string">"ann"</span>]<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              alert(JSON.stringify(meetup));
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Circular References</h3>
+            <p>
+              The important limitation: there must be no circular references.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> room = {<br />
+              &nbsp;&nbsp;number: 23<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> meetup = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"Conference"</span>,<br />
+              &nbsp;&nbsp;participants: [<span class="code-string">"john"</span
+              >, <span class="code-string">"ann"</span>]<br />
+              };<br /><br />
+              meetup.place = room;
+              <span class="code-comment">// meetup references room</span><br />
+              room.occupiedBy = meetup;
+              <span class="code-comment">// room references meetup</span
+              ><br /><br />
+              JSON.stringify(meetup);
+              <span class="code-comment"
+                >// Error: Converting circular structure to JSON</span
+              >
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Here, the conversion fails, because of circular reference:
+              room.occupiedBy references meetup, and meetup.place references
+              room.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Excluding and Transforming with Replacer -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Excluding and Transforming: Replacer</h1>
+          <p class="slide-subtitle">Fine-tuning the JSON conversion process</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>The full syntax of JSON.stringify is:</p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> json =
+              JSON.stringify(value[, replacer, space])
+            </div>
+            <ul>
+              <li>value - A value to encode.</li>
+              <li>
+                replacer - Array of properties to encode or a mapping function
+                function(key, value).
+              </li>
+              <li>space - Amount of space to use for formatting</li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Using an Array as Replacer</h3>
+            <p>
+              If we pass an array of properties to it, only these properties
+              will be encoded.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> room = {<br />
+              &nbsp;&nbsp;number: 23<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> meetup = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"Conference"</span>,<br />
+              &nbsp;&nbsp;participants: [{name:
+              <span class="code-string">"John"</span>}, {name:
+              <span class="code-string">"Alice"</span>}],<br />
+              &nbsp;&nbsp;place: room
+              <span class="code-comment">// meetup references room</span><br />
+              };<br /><br />
+              room.occupiedBy = meetup;
+              <span class="code-comment">// room references meetup</span
+              ><br /><br />
+              alert(JSON.stringify(meetup, [<span class="code-string"
+                >'title'</span
+              >, <span class="code-string">'participants'</span>,
+              <span class="code-string">'place'</span>,
+              <span class="code-string">'name'</span>,
+              <span class="code-string">'number'</span>]));<br />
+              <span class="code-comment"
+                >// Now everything except occupiedBy is serialized</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Using a Function as Replacer -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Using a Function as Replacer</h1>
+          <p class="slide-subtitle">
+            More flexible transformation with a function
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Fortunately, we can use a function instead of an array as the
+              replacer.
+            </p>
+            <p>
+              The function will be called for every (key, value) pair and should
+              return the "replaced" value, which will be used instead of the
+              original one. Or undefined if the value is to be skipped.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> room = {<br />
+              &nbsp;&nbsp;number: 23<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> meetup = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"Conference"</span>,<br />
+              &nbsp;&nbsp;participants: [{name:
+              <span class="code-string">"John"</span>}, {name:
+              <span class="code-string">"Alice"</span>}],<br />
+              &nbsp;&nbsp;place: room
+              <span class="code-comment">// meetup references room</span><br />
+              };<br /><br />
+              room.occupiedBy = meetup;
+              <span class="code-comment">// room references meetup</span
+              ><br /><br />
+              alert(JSON.stringify(meetup,
+              <span class="code-keyword">function</span> replacer(key, value)
+              {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> (key ==
+              <span class="code-string">'occupiedBy'</span>) ?
+              <span class="code-keyword">undefined</span> : value;<br />
+              }));
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Please note that replacer function gets every key/value pair
+              including nested objects and array items. It is applied
+              recursively. The value of this inside replacer is the object that
+              contains the current property.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Formatting with Space -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Formatting: Space</h1>
+          <p class="slide-subtitle">Making JSON more readable</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The third argument of JSON.stringify(value, replacer, space) is
+              the number of spaces to use for pretty formatting.
+            </p>
+            <p>
+              Previously, all stringified objects had no indents and extra
+              spaces. That's fine if we want to send an object over a network.
+              The space argument is used exclusively for a nice output.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: 25,<br />
+              &nbsp;&nbsp;roles: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;isAdmin:
+              <span class="code-keyword">false</span>,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;isEditor:
+              <span class="code-keyword">true</span><br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              alert(JSON.stringify(user, <span class="code-keyword">null</span>,
+              2));<br />
+              <span class="code-comment">/* two-space indents:</span><br />
+              <span class="code-comment">{</span><br />
+              <span class="code-comment"> "name": "John",</span><br />
+              <span class="code-comment"> "age": 25,</span><br />
+              <span class="code-comment"> "roles": {</span><br />
+              <span class="code-comment"> "isAdmin": false,</span><br />
+              <span class="code-comment"> "isEditor": true</span><br />
+              <span class="code-comment"> }</span><br />
+              <span class="code-comment">}</span><br />
+              <span class="code-comment">*/</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The third argument can also be a string. In this case, the string
+              is used for indentation instead of a number of spaces. The space
+              parameter is used solely for logging and nice-output purposes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Custom toJSON -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Custom "toJSON"</h1>
+          <p class="slide-subtitle">
+            Customizing JSON conversion for specific objects
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Like toString for string conversion, an object may provide method
+              toJSON for to-JSON conversion. JSON.stringify automatically calls
+              it if available.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Built-in toJSON Example</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> room = {<br />
+              &nbsp;&nbsp;number: 23<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> meetup = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"Conference"</span>,<br />
+              &nbsp;&nbsp;date:
+              <span class="code-keyword">new</span> Date(Date.UTC(2017, 0,
+              1)),<br />
+              &nbsp;&nbsp;room<br />
+              };<br /><br />
+              alert(JSON.stringify(meetup));<br />
+              <span class="code-comment">/*</span><br />
+              <span class="code-comment"> {</span><br />
+              <span class="code-comment"> "title":"Conference",</span><br />
+              <span class="code-comment">
+                "date":"2017-01-01T00:00:00.000Z", // (1)</span
+              ><br />
+              <span class="code-comment"> "room": {"number":23} // (2)</span
+              ><br />
+              <span class="code-comment"> }</span><br />
+              <span class="code-comment">*/</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Custom toJSON Implementation</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> room = {<br />
+              &nbsp;&nbsp;number: 23,<br />
+              &nbsp;&nbsp;toJSON() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">this</span>.number;<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> meetup = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"Conference"</span>,<br />
+              &nbsp;&nbsp;room<br />
+              };<br /><br />
+              alert(JSON.stringify(room));
+              <span class="code-comment">// 23</span><br /><br />
+              alert(JSON.stringify(meetup));<br />
+              <span class="code-comment">/*</span><br />
+              <span class="code-comment"> {</span><br />
+              <span class="code-comment"> "title":"Conference",</span><br />
+              <span class="code-comment"> "room": 23</span><br />
+              <span class="code-comment"> }</span><br />
+              <span class="code-comment">*/</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: JSON.parse -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">JSON.parse</h1>
+          <p class="slide-subtitle">
+            Converting JSON back to JavaScript objects
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              To decode a JSON-string, we need another method named JSON.parse.
+            </p>
+            <p>The syntax:</p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> value = JSON.parse(str[,
+              reviver]);<br /><br />
+              <span class="code-comment">// str - JSON-string to parse.</span
+              ><br />
+              <span class="code-comment"
+                >// reviver - Optional function(key,value) that will be called
+                for each (key, value) pair and can transform the value.</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Examples</h3>
+            <div class="code-block">
+              <span class="code-comment">// stringified array</span><br />
+              <span class="code-keyword">let</span> numbers =
+              <span class="code-string">"[0, 1, 2, 3]"</span>;<br /><br />
+              numbers = JSON.parse(numbers);<br /><br />
+              alert(numbers[1]); <span class="code-comment">// 1</span>
+            </div>
+            <div class="code-block">
+              <span class="code-comment">// nested objects</span><br />
+              <span class="code-keyword">let</span> userData =
+              <span class="code-string"
+                >'{ "name": "John", "age": 35, "isAdmin": false, "friends":
+                [0,1,2,3] }'</span
+              >;<br /><br />
+              <span class="code-keyword">let</span> user =
+              JSON.parse(userData);<br /><br />
+              alert(user.friends[1]); <span class="code-comment">// 1</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The JSON may be as complex as necessary, objects and arrays can
+              include other objects and arrays. But they must obey the same JSON
+              format.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Common JSON Mistakes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Common JSON Mistakes</h1>
+          <p class="slide-subtitle">What to avoid when working with JSON</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Here are typical mistakes in hand-written JSON (sometimes we have
+              to write it for debugging purposes):
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> json = `<span
+                class="code-string"
+                >{</span
+              ><br />
+              <span class="code-string">
+                name: "John", // mistake: property name without quotes</span
+              ><br />
+              <span class="code-string">
+                "surname": 'Smith', // mistake: single quotes in value (must be
+                double)</span
+              ><br />
+              <span class="code-string">
+                'isAdmin': false // mistake: single quotes in key (must be
+                double)</span
+              ><br />
+              <span class="code-string">
+                "birthday": new Date(2000, 2, 3), // mistake: no "new" is
+                allowed, only bare values</span
+              ><br />
+              <span class="code-string">
+                "friends": [0,1,2,3] // here all fine</span
+              ><br />
+              <span class="code-string">}</span>`;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Important JSON Rules</h3>
+            <ul>
+              <li>Property names must be double-quoted</li>
+              <li>String values must use double quotes, not single quotes</li>
+              <li>No functions, undefined, or symbols are allowed</li>
+              <li>No comments are allowed in JSON</li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              There's another format named JSON5, which allows unquoted keys,
+              comments etc. But this is a standalone library, not in the
+              specification of the language.
+            </p>
+            <p>
+              The regular JSON is that strict not because its developers are
+              lazy, but to allow easy, reliable and very fast implementations of
+              the parsing algorithm.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Using Reviver -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Using Reviver</h1>
+          <p class="slide-subtitle">Transforming values during JSON parsing</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Imagine, we got a stringified meetup object from the server. It
+              looks like this:
+            </p>
+            <div class="code-block">
+              <span class="code-comment"
+                >// title: (meetup title), date: (meetup date)</span
+              ><br />
+              <span class="code-keyword">let</span> str =
+              <span class="code-string"
+                >'{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}'</span
+              >;
+            </div>
+            <p>
+              Now we need to deserialize it, to turn back into JavaScript
+              object.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>The Problem</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string"
+                >'{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}'</span
+              >;<br /><br />
+              <span class="code-keyword">let</span> meetup = JSON.parse(str);<br /><br />
+              alert(meetup.date.getDate());
+              <span class="code-comment">// Error!</span>
+            </div>
+            <p>
+              The value of meetup.date is a string, not a Date object. How could
+              JSON.parse know that it should transform that string into a Date?
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>The Solution</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string"
+                >'{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}'</span
+              >;<br /><br />
+              <span class="code-keyword">let</span> meetup = JSON.parse(str,
+              <span class="code-keyword">function</span>(key, value) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (key ==
+              <span class="code-string">'date'</span>)
+              <span class="code-keyword">return new</span> Date(value);<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> value;<br />
+              });<br /><br />
+              alert(meetup.date.getDate());
+              <span class="code-comment">// now works!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 13: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Summary</h1>
+          <p class="slide-subtitle">Key takeaways about JSON methods</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <ul>
+              <li>
+                JSON is a data format that has its own independent standard and
+                libraries for most programming languages.
+              </li>
+              <li>
+                JSON supports plain objects, arrays, strings, numbers, booleans,
+                and null.
+              </li>
+              <li>
+                JavaScript provides methods JSON.stringify to serialize into
+                JSON and JSON.parse to read from JSON.
+              </li>
+              <li>
+                Both methods support transformer functions for smart
+                reading/writing.
+              </li>
+              <li>
+                If an object has toJSON, then it is called by JSON.stringify.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              JSON is a powerful and widely-used format for data exchange
+              between different systems and languages. Understanding how to
+              properly use JSON.stringify and JSON.parse is essential for modern
+              web development.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Remember</h3>
+            <p>
+              JSON is a strict format - no comments, no functions, no undefined,
+              no single quotes, and all property names must be in double quotes.
+              This strictness ensures reliable parsing across different
+              programming languages and environments.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>JSON Methods and toJSON Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

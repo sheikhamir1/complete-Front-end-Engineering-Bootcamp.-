@@ -1,0 +1,1160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Date and Time</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Date and Time</h1>
+          <p class="slide-subtitle">
+            Working with dates and times in JavaScript
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="./7.png" alt="Calendar and clock" />
+          </div>
+          <div class="text-section">
+            <p>
+              Let's meet a new built-in object: <strong>Date</strong>. It stores
+              the date, time and provides methods for date/time management.
+            </p>
+            <p>
+              For instance, we can use it to store creation/modification times,
+              to measure time, or just to print out the current date.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The Date object is a powerful tool for handling all time-related
+              operations in JavaScript, from simple date display to complex time
+              calculations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Creating Date Objects -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Creating Date Objects</h1>
+          <p class="slide-subtitle">Different ways to create Date objects</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>new Date()</h3>
+            <p>
+              Without arguments – create a Date object for the current date and
+              time:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> now =
+              <span class="code-keyword">new</span> Date();<br />
+              alert(now);
+              <span class="code-comment">// shows current date/time</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>new Date(milliseconds)</h3>
+            <p>
+              Create a Date object with the time equal to number of milliseconds
+              (1/1000 of a second) passed after the Jan 1st of 1970 UTC+0.
+            </p>
+            <div class="code-block">
+              <span class="code-comment">// 0 means 01.01.1970 UTC+0</span
+              ><br />
+              <span class="code-keyword">let</span> Jan01_1970 =
+              <span class="code-keyword">new</span> Date(0);<br />
+              alert(Jan01_1970);<br /><br />
+              <span class="code-comment"
+                >// now add 24 hours, get 02.01.1970 UTC+0</span
+              ><br />
+              <span class="code-keyword">let</span> Jan02_1970 =
+              <span class="code-keyword">new</span> Date(24 * 3600 * 1000);<br />
+              alert(Jan02_1970);
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Timestamp</h4>
+            <p>
+              An integer number representing the number of milliseconds that has
+              passed since the beginning of 1970 is called a timestamp. It's a
+              lightweight numeric representation of a date.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: More Date Creation Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">More Date Creation Methods</h1>
+          <p class="slide-subtitle">
+            Creating dates from strings and components
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>new Date(datestring)</h3>
+            <p>
+              If there is a single argument, and it's a string, then it is
+              parsed automatically:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date(<span
+                class="code-string"
+                >"2017-01-26"</span
+              >);<br />
+              alert(date);<br />
+              <span class="code-comment"
+                >// The time is not set, so it's assumed to be midnight GMT
+                and</span
+              ><br />
+              <span class="code-comment"
+                >// is adjusted according to the timezone the code is run
+                in</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>new Date(year, month, date, hours, minutes, seconds, ms)</h3>
+            <p>
+              Create the date with the given components in the local time zone.
+              Only the first two arguments are obligatory.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">new</span> Date(2011, 0, 1, 0, 0, 0,
+              0); <span class="code-comment">// 1 Jan 2011, 00:00:00</span
+              ><br />
+              <span class="code-keyword">new</span> Date(2011, 0, 1);
+              <span class="code-comment"
+                >// the same, hours etc are 0 by default</span
+              >
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The year should have 4 digits. The month count starts with 0
+              (Jan), up to 11 (Dec). The date parameter is the day of month, if
+              absent then 1 is assumed.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Accessing Date Components -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Accessing Date Components</h1>
+          <p class="slide-subtitle">
+            Methods to access the year, month and other components
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              There are methods to access the year, month and so on from the
+              Date object:
+            </p>
+            <div class="two-column">
+              <div class="column">
+                <div class="info-card">
+                  <h4>getFullYear()</h4>
+                  <p>Get the year (4 digits)</p>
+                </div>
+                <div class="info-card">
+                  <h4>getMonth()</h4>
+                  <p>Get the month, from 0 to 11</p>
+                </div>
+                <div class="info-card">
+                  <h4>getDate()</h4>
+                  <p>Get the day of month, from 1 to 31</p>
+                </div>
+              </div>
+              <div class="column">
+                <div class="info-card">
+                  <h4>
+                    getHours(), getMinutes(), getSeconds(), getMilliseconds()
+                  </h4>
+                  <p>Get the corresponding time components</p>
+                </div>
+                <div class="info-card">
+                  <h4>getDay()</h4>
+                  <p>Get the day of week, from 0 (Sunday) to 6 (Saturday)</p>
+                </div>
+                <div class="info-card">
+                  <h4>getTime()</h4>
+                  <p>Returns the timestamp for the date</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>UTC Variants</h3>
+            <p>
+              All the methods above return the components relative to the local
+              time zone. There are also their UTC-counterparts, that return day,
+              month, year and so on for the time zone UTC+0: getUTCFullYear(),
+              getUTCMonth(), getUTCDay(). Just insert the "UTC" right after
+              "get".
+            </p>
+            <div class="code-block">
+              <span class="code-comment">// current date</span><br />
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date();<br /><br />
+              <span class="code-comment"
+                >// the hour in your current time zone</span
+              ><br />
+              alert(date.getHours());<br /><br />
+              <span class="code-comment">// the hour in UTC+0 time zone</span
+              ><br />
+              alert(date.getUTCHours());
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Setting Date Components -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Setting Date Components</h1>
+          <p class="slide-subtitle">Methods to set date/time components</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>The following methods allow to set date/time components:</p>
+            <div class="code-block">
+              setFullYear(year, [month], [date])<br />
+              setMonth(month, [date])<br />
+              setDate(date)<br />
+              setHours(hour, [min], [sec], [ms])<br />
+              setMinutes(min, [sec], [ms])<br />
+              setSeconds(sec, [ms])<br />
+              setMilliseconds(ms)<br />
+              setTime(milliseconds)
+              <span class="code-comment"
+                >// sets the whole date by milliseconds</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              Every one of them except setTime() has a UTC-variant, for
+              instance: setUTCHours().
+            </p>
+            <p>
+              Some methods can set multiple components at once, for example
+              setHours. The components that are not mentioned are not modified.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> today =
+              <span class="code-keyword">new</span> Date();<br /><br />
+              today.setHours(0);<br />
+              alert(today);
+              <span class="code-comment"
+                >// still today, but the hour is changed to 0</span
+              ><br /><br />
+              today.setHours(0, 0, 0, 0);<br />
+              alert(today);
+              <span class="code-comment"
+                >// still today, now 00:00:00 sharp.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Autocorrection -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Autocorrection</h1>
+          <p class="slide-subtitle">A handy feature of Date objects</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The autocorrection is a very handy feature of Date objects. We can
+              set out-of-range values, and it will auto-adjust itself.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date(2013, 0, 32);
+              <span class="code-comment">// 32 Jan 2013 ?!?</span><br />
+              alert(date);
+              <span class="code-comment">// ...is 1st Feb 2013!</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Useful for Date Calculations</h3>
+            <p>
+              Out-of-range date components are distributed automatically. This
+              is often used to get the date after the given period of time.
+            </p>
+            <div class="code-block">
+              <span class="code-comment"
+                >// Let's say we need to increase the date "28 Feb 2016" by 2
+                days</span
+              ><br />
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date(2016, 1, 28);<br />
+              date.setDate(date.getDate() + 2);<br /><br />
+              alert(date); <span class="code-comment">// 1 Mar 2016</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Negative Values</h3>
+            <p>We can also set zero or even negative values:</p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date(2016, 0, 2);
+              <span class="code-comment">// 2 Jan 2016</span><br /><br />
+              date.setDate(1);
+              <span class="code-comment">// set day 1 of month</span><br />
+              alert(date);<br /><br />
+              date.setDate(0);
+              <span class="code-comment"
+                >// min day is 1, so the last day of the previous month is
+                assumed</span
+              ><br />
+              alert(date); <span class="code-comment">// 31 Dec 2015</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Date to Number and Date Diff -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Date to Number, Date Diff</h1>
+          <p class="slide-subtitle">
+            Converting dates to numbers and calculating differences
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Date to Number Conversion</h3>
+            <p>
+              When a Date object is converted to number, it becomes the
+              timestamp same as date.getTime():
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date();<br />
+              alert(+date);
+              <span class="code-comment"
+                >// the number of milliseconds, same as date.getTime()</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Date Differences</h3>
+            <p>
+              The important side effect: dates can be subtracted, the result is
+              their difference in ms.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> start =
+              <span class="code-keyword">new</span> Date();
+              <span class="code-comment">// start measuring time</span
+              ><br /><br />
+              <span class="code-comment">// do the job</span><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              i = 0; i < 100000; i++) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">let</span> doSomething = i
+              * i * i;<br />
+              }<br /><br />
+              <span class="code-keyword">let</span> end =
+              <span class="code-keyword">new</span> Date();
+              <span class="code-comment">// end measuring time</span
+              ><br /><br />
+              alert(`The loop took ${end - start} ms`);
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              This technique is useful for measuring the time it takes for code
+              to execute, which can help with performance optimization.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Date.now() -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Date.now()</h1>
+          <p class="slide-subtitle">
+            Getting the current timestamp efficiently
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If we only want to measure time, we don't need the Date object.
+            </p>
+            <p>
+              There's a special method Date.now() that returns the current
+              timestamp.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> start = Date.now();
+              <span class="code-comment"
+                >// milliseconds count from 1 Jan 1970</span
+              ><br /><br />
+              <span class="code-comment">// do the job</span><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              i = 0; i < 100000; i++) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">let</span> doSomething = i
+              * i * i;<br />
+              }<br /><br />
+              <span class="code-keyword">let</span> end = Date.now();
+              <span class="code-comment">// done</span><br /><br />
+              alert(`The loop took ${end - start} ms`);
+              <span class="code-comment">// subtract numbers, not dates</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Benefits of Date.now()</h3>
+            <ul>
+              <li>
+                It is semantically equivalent to new Date().getTime(), but it
+                doesn't create an intermediate Date object.
+              </li>
+              <li>
+                It's faster and doesn't put pressure on garbage collection.
+              </li>
+              <li>
+                It is used mostly for convenience or when performance matters,
+                like in games in JavaScript or other specialized applications.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              For most time measurement needs, Date.now() is the preferred
+              method due to its efficiency and simplicity.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Benchmarking -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Benchmarking</h1>
+          <p class="slide-subtitle">Measuring performance reliably</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If we want a reliable benchmark of CPU-hungry function, we should
+              be careful.
+            </p>
+            <p>
+              For instance, let's measure two functions that calculate the
+              difference between two dates: which one is faster?
+            </p>
+            <div class="code-block">
+              <span class="code-comment"
+                >// we have date1 and date2, which function faster returns their
+                difference in ms?</span
+              ><br />
+              <span class="code-keyword">function</span> diffSubtract(date1,
+              date2) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> date2 -
+              date1;<br />
+              }<br /><br />
+              <span class="code-comment">// or</span><br />
+              <span class="code-keyword">function</span> diffGetTime(date1,
+              date2) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span>
+              date2.getTime() - date1.getTime();<br />
+              }
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Reliable Benchmarking</h3>
+            <p>
+              For more reliable benchmarking, the whole pack of benchmarks
+              should be rerun multiple times.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> time1 = 0;<br />
+              <span class="code-keyword">let</span> time2 = 0;<br /><br />
+              <span class="code-comment"
+                >// run bench(diffSubtract) and bench(diffGetTime) each 10 times
+                alternating</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              i = 0; i < 10; i++) {<br />
+              &nbsp;&nbsp;time1 += bench(diffSubtract);<br />
+              &nbsp;&nbsp;time2 += bench(diffGetTime);<br />
+              }<br /><br />
+              alert(<span class="code-string"
+                >'Total time for diffSubtract: '</span
+              >
+              + time1);<br />
+              alert(<span class="code-string"
+                >'Total time for diffGetTime: '</span
+              >
+              + time2);
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Modern JavaScript engines start applying advanced optimizations
+              only to "hot code" that executes many times. So, we may want to
+              add a heat-up run before the actual benchmarking.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Date.parse from String -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Date.parse from String</h1>
+          <p class="slide-subtitle">Parsing dates from strings</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>The method Date.parse(str) can read a date from a string.</p>
+            <p>The string format should be: YYYY-MM-DDTHH:mm:ss.sssZ, where:</p>
+            <ul>
+              <li>YYYY-MM-DD – is the date: year-month-day.</li>
+              <li>The character "T" is used as the delimiter.</li>
+              <li>
+                HH:mm:ss.sss – is the time: hours, minutes, seconds and
+                milliseconds.
+              </li>
+              <li>
+                The optional 'Z' part denotes the time zone in the format
+                +-hh:mm. A single letter Z would mean UTC+0.
+              </li>
+            </ul>
+            <p>
+              Shorter variants are also possible, like YYYY-MM-DD or YYYY-MM or
+              even YYYY.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> ms = Date.parse(<span
+                class="code-string"
+                >'2012-01-26T13:51:50.417-07:00'</span
+              >);<br /><br />
+              alert(ms);
+              <span class="code-comment">// 1327611110417 (timestamp)</span
+              ><br /><br />
+              <span class="code-comment"
+                >// We can instantly create a new Date object from the
+                timestamp:</span
+              ><br />
+              <span class="code-keyword">let</span> date =
+              <span class="code-keyword">new</span> Date(Date.parse(<span
+                class="code-string"
+                >'2012-01-26T13:51:50.417-07:00'</span
+              >));<br /><br />
+              alert(date);
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The call to Date.parse(str) parses the string in the given format
+              and returns the timestamp. If the format is invalid, it returns
+              NaN.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Summary</h1>
+          <p class="slide-subtitle">
+            Key takeaways about Date and Time in JavaScript
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Important Points to Remember</h3>
+            <ul>
+              <li>
+                Date and time in JavaScript are represented with the Date
+                object. We can't create "only date" or "only time": Date objects
+                always carry both.
+              </li>
+              <li>
+                Months are counted from zero (yes, January is a zero month).
+              </li>
+              <li>
+                Days of week in getDay() are also counted from zero (that's
+                Sunday).
+              </li>
+              <li>
+                Date auto-corrects itself when out-of-range components are set.
+                Good for adding/subtracting days/months/hours.
+              </li>
+              <li>
+                Dates can be subtracted, giving their difference in
+                milliseconds. That's because a Date becomes the timestamp when
+                converted to a number.
+              </li>
+              <li>Use Date.now() to get the current timestamp fast.</li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Precision</h3>
+            <p>
+              Note that unlike many other systems, timestamps in JavaScript are
+              in milliseconds, not in seconds.
+            </p>
+            <p>
+              Sometimes we need more precise time measurements. JavaScript
+              itself does not have a way to measure time in microseconds (1
+              millionth of a second), but most environments provide it.
+            </p>
+            <div class="code-block">
+              <span class="code-comment"
+                >// Browser has performance.now() for more precision</span
+              ><br />
+              alert(`Loading started ${performance.now()}ms ago`);<br />
+              <span class="code-comment"
+                >// Something like: "Loading started 34731.26000000001ms
+                ago"</span
+              ><br />
+              <span class="code-comment"
+                >// .26 is microseconds (260 microseconds)</span
+              >
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Node.js has microtime module and other ways. Technically, almost
+              any device and environment allows to get more precision, it's just
+              not in Date.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>JavaScript Date and Time Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <h1>class 8</h1>
+  <body>
+    <script>
+      // let height = 200;
+      // // let t = height ?? 100;
+      // let t = height !== undefined && height !== null ? height : 100;
+      // console.log(t);
+
+      // polyfills Example
+      // console.log(Math.trunc(1.23));
+
+      if (!Math.trunc) {
+        Math.trunc = function (num) {
+          return num < 0 ? Math.ceil(num) : Math.floor(num);
+        };
+      }
+
+      console.log(Math.trunc(-1.23));
+    </script>
+  </body>
+</html>

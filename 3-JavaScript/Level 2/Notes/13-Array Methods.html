@@ -1,0 +1,2395 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Array Methods - Complete Guide</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-example {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        font-family: "Source Code Pro", monospace;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .code-number {
+        color: #098658;
+      }
+
+      .code-function {
+        color: #795e26;
+      }
+
+      .warning-box {
+        background-color: #fef7e0;
+        border-left: 4px solid #f9ab00;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .error-box {
+        background-color: #fce8e6;
+        border-left: 4px solid #d93025;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .success-box {
+        background-color: #e6f4ea;
+        border-left: 4px solid #34a853;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .method-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .method-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .method-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .method-category {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .method-category h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #e1e8ed;
+        padding-bottom: 5px;
+      }
+
+      .method-category ul {
+        padding-left: 20px;
+      }
+
+      .method-category li {
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+
+        .method-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">↑</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">↓</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Array Methods Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Array Methods</h1>
+          <p class="slide-subtitle">
+            Comprehensive guide to JavaScript array operations
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="./3.png" alt="JavaScript Array Methods" />
+          </div>
+          <div class="text-section">
+            <p>
+              Arrays provide a lot of methods. To make things easier, in this
+              chapter, they are split into groups.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Add/remove items</h3>
+            <p>
+              We already know methods that add and remove items from the
+              beginning or the end:
+            </p>
+            <ul class="list-section">
+              <li>arr.push(...items) – adds items to the end,</li>
+              <li>arr.pop() – extracts an item from the end,</li>
+              <li>arr.shift() – extracts an item from the beginning,</li>
+              <li>arr.unshift(...items) – adds items to the beginning.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>Here are a few others.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: splice -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">splice</h1>
+          <p class="slide-subtitle">The Swiss army knife for arrays</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>How to delete an element from the array?</h3>
+            <p>The arrays are objects, so we can try to use delete:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"I"</span
+              >, <span class="code-string">"go"</span>,
+              <span class="code-string">"home"</span>];<br /><br />
+              <span class="code-keyword">delete</span> arr[<span
+                class="code-number"
+                >1</span
+              >]; <span class="code-comment">// remove "go"</span><br /><br />
+              alert(arr[<span class="code-number">1</span>]);
+              <span class="code-comment">// undefined</span><br /><br />
+              <span class="code-comment">// now arr = ["I", , "home"];</span
+              ><br />
+              alert(arr.length); <span class="code-comment">// 3</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The element was removed, but the array still has 3 elements, we
+              can see that arr.length == 3.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's natural, because delete obj.key removes a value by the key.
+              It's all it does. Fine for objects. But for arrays we usually want
+              the rest of the elements to shift and occupy the freed place. We
+              expect to have a shorter array now.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>So, special methods should be used.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The arr.splice method is a Swiss army knife for arrays. It can do
+              everything: insert, remove and replace elements.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax is:</p>
+            <div class="code-example">
+              arr.splice(start[, deleteCount, elem1, ..., elemN])
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It modifies arr starting from the index start: removes deleteCount
+              elements and then inserts elem1, ..., elemN at their place.
+              Returns the array of removed elements.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>This method is easy to grasp by examples.</p>
+          </div>
+
+          <div class="text-section">
+            <p>Let's start with the deletion:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"I"</span
+              >, <span class="code-string">"study"</span>,
+              <span class="code-string">"JavaScript"</span>];<br /><br />
+              arr.splice(<span class="code-number">1</span>,
+              <span class="code-number">1</span>);
+              <span class="code-comment">// from index 1 remove 1 element</span
+              ><br /><br />
+              alert(arr);
+              <span class="code-comment">// ["I", "JavaScript"]</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>Easy, right? Starting from the index 1 it removed 1 element.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In the next example, we remove 3 elements and replace them with
+              the other two:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"I"</span
+              >, <span class="code-string">"study"</span>,
+              <span class="code-string">"JavaScript"</span>,
+              <span class="code-string">"right"</span>,
+              <span class="code-string">"now"</span>];<br /><br />
+              <span class="code-comment"
+                >// remove 3 first elements and replace them with another</span
+              ><br />
+              arr.splice(<span class="code-number">0</span>,
+              <span class="code-number">3</span>,
+              <span class="code-string">"Let's"</span>,
+              <span class="code-string">"dance"</span>);<br /><br />
+              alert(arr);
+              <span class="code-comment"
+                >// now ["Let's", "dance", "right", "now"]</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Here we can see that splice returns the array of removed elements:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"I"</span
+              >, <span class="code-string">"study"</span>,
+              <span class="code-string">"JavaScript"</span>,
+              <span class="code-string">"right"</span>,
+              <span class="code-string">"now"</span>];<br /><br />
+              <span class="code-comment">// remove 2 first elements</span><br />
+              <span class="code-keyword">let</span> removed = arr.splice(<span
+                class="code-number"
+                >0</span
+              >, <span class="code-number">2</span>);<br /><br />
+              alert(removed);
+              <span class="code-comment"
+                >// "I", "study" <-- array of removed elements</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The splice method is also able to insert the elements without any
+              removals. For that, we need to set deleteCount to 0:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"I"</span
+              >, <span class="code-string">"study"</span>,
+              <span class="code-string">"JavaScript"</span>];<br /><br />
+              <span class="code-comment">// from index 2</span><br />
+              <span class="code-comment">// delete 0 elements,</span><br />
+              <span class="code-comment"
+                >// then insert "complex" and "language"</span
+              ><br />
+              arr.splice(<span class="code-number">2</span>,
+              <span class="code-number">0</span>,
+              <span class="code-string">"complex"</span>,
+              <span class="code-string">"language"</span>);<br /><br />
+              alert(arr);
+              <span class="code-comment"
+                >// "I", "study", "complex", "language", "JavaScript"</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Negative indexes allowed</h3>
+            <p>
+              Here and in other array methods, negative indexes are allowed.
+              They specify the position from the end of the array, like here:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">5</span>];<br /><br />
+              <span class="code-comment"
+                >// from index -1 (one step from the end)</span
+              ><br />
+              <span class="code-comment">// delete 0 elements,</span><br />
+              <span class="code-comment">// then insert 3 and 4</span><br />
+              arr.splice(-<span class="code-number">1</span>,
+              <span class="code-number">0</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>);<br /><br />
+              alert(arr); <span class="code-comment">// 1,2,3,4,5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: slice and concat -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">slice and concat</h1>
+          <p class="slide-subtitle">Creating new arrays from existing ones</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>slice</h3>
+            <p>
+              The method arr.slice is much simpler than the similar-looking
+              arr.splice.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax is:</p>
+            <div class="code-example">arr.slice([start], [end])</div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It returns a new array copying to it all items from index start to
+              end (not including end). Both start and end can be negative, in
+              that case position from array end is assumed.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It's similar to a string method str.slice, but instead of
+              substrings, it makes subarrays.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"t"</span
+              >, <span class="code-string">"e"</span>,
+              <span class="code-string">"s"</span>,
+              <span class="code-string">"t"</span>];<br /><br />
+              alert(arr.slice(<span class="code-number">1</span>,
+              <span class="code-number">3</span>));
+              <span class="code-comment">// e,s (copy from 1 to 3)</span
+              ><br /><br />
+              alert(arr.slice(-<span class="code-number">2</span>));
+              <span class="code-comment"
+                >// s,t (copy from -2 till the end)</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              We can also call it without arguments: arr.slice() creates a copy
+              of arr. That's often used to obtain a copy for further
+              transformations that should not affect the original array.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>concat</h3>
+            <p>
+              The method arr.concat creates a new array that includes values
+              from other arrays and additional items.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax is:</p>
+            <div class="code-example">arr.concat(arg1, arg2...)</div>
+          </div>
+
+          <div class="text-section">
+            <p>It accepts any number of arguments – either arrays or values.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The result is a new array containing items from arr, then arg1,
+              arg2 etc.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If an argument argN is an array, then all its elements are copied.
+              Otherwise, the argument itself is copied.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>];<br /><br />
+              <span class="code-comment"
+                >// create an array from: arr and [3,4]</span
+              ><br />
+              alert(arr.concat([<span class="code-number">3</span>,
+              <span class="code-number">4</span>]));
+              <span class="code-comment">// 1,2,3,4</span><br /><br />
+              <span class="code-comment"
+                >// create an array from: arr and [3,4] and [5,6]</span
+              ><br />
+              alert(arr.concat([<span class="code-number">3</span>,
+              <span class="code-number">4</span>], [<span class="code-number"
+                >5</span
+              >, <span class="code-number">6</span>]));
+              <span class="code-comment">// 1,2,3,4,5,6</span><br /><br />
+              <span class="code-comment"
+                >// create an array from: arr and [3,4], then add values 5 and
+                6</span
+              ><br />
+              alert(arr.concat([<span class="code-number">3</span>,
+              <span class="code-number">4</span>],
+              <span class="code-number">5</span>,
+              <span class="code-number">6</span>));
+              <span class="code-comment">// 1,2,3,4,5,6</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Normally, it only copies elements from arrays. Other objects, even
+              if they look like arrays, are added as a whole:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>];<br /><br />
+              <span class="code-keyword">let</span> arrayLike = {<br />
+              &nbsp;&nbsp;<span class="code-number">0</span>:
+              <span class="code-string">"something"</span>,<br />
+              &nbsp;&nbsp;length: <span class="code-number">1</span><br />
+              };<br /><br />
+              alert(arr.concat(arrayLike));
+              <span class="code-comment">// 1,2,[object Object]</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              ...But if an array-like object has a special
+              Symbol.isConcatSpreadable property, then it's treated as an array
+              by concat: its elements are added instead:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>];<br /><br />
+              <span class="code-keyword">let</span> arrayLike = {<br />
+              &nbsp;&nbsp;<span class="code-number">0</span>:
+              <span class="code-string">"something"</span>,<br />
+              &nbsp;&nbsp;<span class="code-number">1</span>:
+              <span class="code-string">"else"</span>,<br />
+              &nbsp;&nbsp;[Symbol.isConcatSpreadable]:
+              <span class="code-keyword">true</span>,<br />
+              &nbsp;&nbsp;length: <span class="code-number">2</span><br />
+              };<br /><br />
+              alert(arr.concat(arrayLike));
+              <span class="code-comment">// 1,2,something,else</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: forEach -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Iterate: forEach</h1>
+          <p class="slide-subtitle">Running a function for every element</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The arr.forEach method allows to run a function for every element
+              of the array.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax:</p>
+            <div class="code-example">
+              arr.forEach(<span class="code-keyword">function</span>(item,
+              index, array) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// ... do something with an item</span
+              ><br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>For instance, this shows each element of the array:</p>
+            <div class="code-example">
+              <span class="code-comment">// for each element call alert</span
+              ><br />
+              [<span class="code-string">"Bilbo"</span>,
+              <span class="code-string">"Gandalf"</span>,
+              <span class="code-string">"Nazgul"</span>].forEach(alert);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              And this code is more elaborate about their positions in the
+              target array:
+            </p>
+            <div class="code-example">
+              [<span class="code-string">"Bilbo"</span>,
+              <span class="code-string">"Gandalf"</span>,
+              <span class="code-string">"Nazgul"</span>].forEach((item, index,
+              array) => {<br />
+              &nbsp;&nbsp;alert(`${item} is at index ${index} in ${array}`);<br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The result of the function (if it returns any) is thrown away and
+              ignored.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              forEach is a great method when you need to execute a function for
+              each element of an array, but you don't need to create a new array
+              or return a value. If you need to transform each element and
+              create a new array, use map instead.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Arrow functions with forEach</h3>
+            <p>Arrow functions make the code more concise:</p>
+            <div class="code-example">
+              [<span class="code-string">"Bilbo"</span>,
+              <span class="code-string">"Gandalf"</span>,
+              <span class="code-string">"Nazgul"</span>].forEach(item => {<br />
+              &nbsp;&nbsp;alert(item);<br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>Or even more concise for simple operations:</p>
+            <div class="code-example">
+              [<span class="code-string">"Bilbo"</span>,
+              <span class="code-string">"Gandalf"</span>,
+              <span class="code-string">"Nazgul"</span>].forEach(alert);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Breaking out of forEach</h3>
+            <p>
+              Unlike a regular for loop, you cannot break out of a forEach loop
+              using break. If you need to break early, you should use a for loop
+              or for..of instead.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              However, you can throw an exception to stop the iteration, but
+              this is generally not recommended as it makes the code harder to
+              understand and debug:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">try</span> {<br />
+              &nbsp;&nbsp;[<span class="code-number">1</span>,
+              <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">5</span>].forEach(item => {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">if</span> (item
+              === <span class="code-number">3</span>)
+              <span class="code-keyword">throw</span>
+              <span class="code-keyword">new</span> Error(<span
+                class="code-string"
+                >"Found 3!"</span
+              >);<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(item);<br />
+              &nbsp;&nbsp;});<br />
+              } <span class="code-keyword">catch</span> (e) {<br />
+              &nbsp;&nbsp;alert(e.message);
+              <span class="code-comment">// "Found 3!"</span><br />
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Searching in array -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Searching in array</h1>
+          <p class="slide-subtitle">Finding elements in arrays</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Now let's cover methods that search in an array.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>indexOf/lastIndexOf and includes</h3>
+            <p>
+              The methods arr.indexOf and arr.includes have the similar syntax
+              and do essentially the same as their string counterparts, but
+              operate on items instead of characters:
+            </p>
+            <ul class="list-section">
+              <li>
+                arr.indexOf(item, from) – looks for item starting from index
+                from, and returns the index where it was found, otherwise -1.
+              </li>
+              <li>
+                arr.includes(item, from) – looks for item starting from index
+                from, returns true if found.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Usually, these methods are used with only one argument: the item
+              to search. By default, the search is from the beginning.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">0</span>,
+              <span class="code-keyword">false</span>];<br /><br />
+              alert(arr.indexOf(<span class="code-number">0</span>));
+              <span class="code-comment">// 1</span><br />
+              alert(arr.indexOf(<span class="code-keyword">false</span>));
+              <span class="code-comment">// 2</span><br />
+              alert(arr.indexOf(<span class="code-keyword">null</span>));
+              <span class="code-comment">// -1</span><br /><br />
+              alert(arr.includes(<span class="code-number">1</span>));
+              <span class="code-comment">// true</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Please note that indexOf uses the strict equality === for
+              comparison. So, if we look for false, it finds exactly false and
+              not the zero.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If we want to check if item exists in the array and don't need the
+              index, then arr.includes is preferred.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The method arr.lastIndexOf is the same as indexOf, but looks for
+              from right to left.
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> fruits = [<span
+                class="code-string"
+                >'Apple'</span
+              >, <span class="code-string">'Orange'</span>,
+              <span class="code-string">'Apple'</span>]<br /><br />
+              alert(fruits.indexOf(<span class="code-string">'Apple'</span>));
+              <span class="code-comment">// 0 (first Apple)</span><br />
+              alert(fruits.lastIndexOf(<span class="code-string">'Apple'</span
+              >)); <span class="code-comment">// 2 (last Apple)</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>The includes method handles NaN correctly</h3>
+            <p>
+              A minor, but noteworthy feature of includes is that it correctly
+              handles NaN, unlike indexOf:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">const</span> arr = [NaN];<br />
+              alert(arr.indexOf(NaN));
+              <span class="code-comment">// -1 (wrong, should be 0)</span><br />
+              alert(arr.includes(NaN));
+              <span class="code-comment">// true (correct)</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's because includes was added to JavaScript much later and
+              uses the more up-to-date comparison algorithm internally.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>find and findIndex/findLastIndex</h3>
+            <p>
+              Imagine we have an array of objects. How do we find an object with
+              a specific condition?
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Here the arr.find(fn) method comes in handy.</p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax is:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> result = arr.find(<span
+                class="code-keyword"
+                >function</span
+              >(item, index, array) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// if true is returned, item is returned and iteration is
+                stopped</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// for falsy scenario returns undefined</span
+              ><br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The function is called for elements of the array, one after
+              another:
+            </p>
+            <ul class="list-section">
+              <li>item is the element.</li>
+              <li>index is its index.</li>
+              <li>array is the array itself.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If it returns true, the search is stopped, the item is returned.
+              If nothing is found, undefined is returned.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For example, we have an array of users, each with the fields id
+              and name. Let's find the one with id == 1:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> users = [<br />
+              &nbsp;&nbsp;{id: <span class="code-number">1</span>, name:
+              <span class="code-string">"John"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">2</span>, name:
+              <span class="code-string">"Pete"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">3</span>, name:
+              <span class="code-string">"Mary"</span>}<br />
+              ];<br /><br />
+              <span class="code-keyword">let</span> user = users.find(item =>
+              item.id == <span class="code-number">1</span>);<br /><br />
+              alert(user.name); <span class="code-comment">// John</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In real life, arrays of objects are a common thing, so the find
+              method is very useful.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Note that in the example we provide to find the function item =>
+              item.id == 1 with one argument. That's typical, other arguments of
+              this function are rarely used.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The arr.findIndex method has the same syntax but returns the index
+              where the element was found instead of the element itself. The
+              value of -1 is returned if nothing is found.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The arr.findLastIndex method is like findIndex, but searches from
+              right to left, similar to lastIndexOf.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Here's an example:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> users = [<br />
+              &nbsp;&nbsp;{id: <span class="code-number">1</span>, name:
+              <span class="code-string">"John"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">2</span>, name:
+              <span class="code-string">"Pete"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">3</span>, name:
+              <span class="code-string">"Mary"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">4</span>, name:
+              <span class="code-string">"John"</span>}<br />
+              ];<br /><br />
+              <span class="code-comment"
+                >// Find the index of the first John</span
+              ><br />
+              alert(users.findIndex(user => user.name ==
+              <span class="code-string">'John'</span>));
+              <span class="code-comment">// 0</span><br /><br />
+              <span class="code-comment"
+                >// Find the index of the last John</span
+              ><br />
+              alert(users.findLastIndex(user => user.name ==
+              <span class="code-string">'John'</span>));
+              <span class="code-comment">// 3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: filter -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">filter</h1>
+          <p class="slide-subtitle">Finding all matching elements</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The find method looks for a single (first) element that makes the
+              function return true.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>If there may be many, we can use arr.filter(fn).</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The syntax is similar to find, but filter returns an array of all
+              matching elements:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> results = arr.filter(<span
+                class="code-keyword"
+                >function</span
+              >(item, index, array) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// if true item is pushed to results and the iteration
+                continues</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// returns empty array if nothing found</span
+              ><br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> users = [<br />
+              &nbsp;&nbsp;{id: <span class="code-number">1</span>, name:
+              <span class="code-string">"John"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">2</span>, name:
+              <span class="code-string">"Pete"</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">3</span>, name:
+              <span class="code-string">"Mary"</span>}<br />
+              ];<br /><br />
+              <span class="code-comment"
+                >// returns array of the first two users</span
+              ><br />
+              <span class="code-keyword">let</span> someUsers =
+              users.filter(item => item.id <
+              <span class="code-number">3</span>);<br /><br />
+              alert(someUsers.length); <span class="code-comment">// 2</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Filter vs. Find</h3>
+            <p>
+              While both methods use a testing function, they serve different
+              purposes:
+            </p>
+            <ul class="list-section">
+              <li>
+                find() returns the first element that satisfies the testing
+                function, or undefined if no values satisfy the testing
+                function.
+              </li>
+              <li>
+                filter() returns a new array with all elements that satisfy the
+                testing function, or an empty array if no values satisfy the
+                testing function.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Choose find() when you need only the first match, and filter()
+              when you need all matches.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Chaining filter with other methods</h3>
+            <p>Filter is often used with other array methods in a chain:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> users = [<br />
+              &nbsp;&nbsp;{id: <span class="code-number">1</span>, name:
+              <span class="code-string">"John"</span>, age:
+              <span class="code-number">25</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">2</span>, name:
+              <span class="code-string">"Pete"</span>, age:
+              <span class="code-number">30</span>},<br />
+              &nbsp;&nbsp;{id: <span class="code-number">3</span>, name:
+              <span class="code-string">"Mary"</span>, age:
+              <span class="code-number">28</span>}<br />
+              ];<br /><br />
+              <span class="code-comment"
+                >// Find users younger than 30 and get their names</span
+              ><br />
+              <span class="code-keyword">let</span> youngUserNames = users<br />
+              &nbsp;&nbsp;.filter(user => user.age <
+              <span class="code-number">30</span>)<br />
+              &nbsp;&nbsp;.map(user => user.name);<br /><br />
+              alert(youngUserNames);
+              <span class="code-comment">// ["John", "Mary"]</span>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Method chaining is a powerful technique that allows you to perform
+              multiple operations on an array in a clean, readable way. Each
+              method in the chain operates on the result of the previous method.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Transform an array -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Transform an array</h1>
+          <p class="slide-subtitle">Methods that change array contents</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Let's move on to methods that transform and reorder an array.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>map</h3>
+            <p>The arr.map method is one of the most useful and often used.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It calls the function for each element of the array and returns
+              the array of results.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax is:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> result = arr.map(<span
+                class="code-keyword"
+                >function</span
+              >(item, index, array) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// returns the new value instead of item</span
+              ><br />
+              });
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>For instance, here we transform each element into its length:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> lengths = [<span
+                class="code-string"
+                >"Bilbo"</span
+              >, <span class="code-string">"Gandalf"</span>,
+              <span class="code-string">"Nazgul"</span>].map(item =>
+              item.length);<br />
+              alert(lengths); <span class="code-comment">// 5,7,6</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>sort(fn)</h3>
+            <p>
+              The call to arr.sort() sorts the array in place, changing its
+              element order.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It also returns the sorted array, but the returned value is
+              usually ignored, as arr itself is modified.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">15</span>];<br /><br />
+              <span class="code-comment"
+                >// the method reorders the content of arr</span
+              ><br />
+              arr.sort();<br /><br />
+              alert(arr); <span class="code-comment">// 1, 15, 2</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>Did you notice anything strange in the outcome?</p>
+          </div>
+
+          <div class="text-section">
+            <p>The order became 1, 15, 2. Incorrect. But why?</p>
+          </div>
+
+          <div class="text-section">
+            <p>The items are sorted as strings by default.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Literally, all elements are converted to strings for comparisons.
+              For strings, lexicographic ordering is applied and indeed "2" >
+              "15".
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              To use our own sorting order, we need to supply a function as the
+              argument of arr.sort().
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The function should compare two arbitrary values and return:</p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">compare</span>(a, b) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (a > b)
+              <span class="code-keyword">return</span>
+              <span class="code-number">1</span>;
+              <span class="code-comment"
+                >// if the first value is greater than the second</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (a == b)
+              <span class="code-keyword">return</span>
+              <span class="code-number">0</span>;
+              <span class="code-comment">// if values are equal</span><br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (a < b)
+              <span class="code-keyword">return</span> -<span
+                class="code-number"
+                >1</span
+              >;
+              <span class="code-comment"
+                >// if the first value is less than the second</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>For instance, to sort as numbers:</p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">compareNumeric</span>(a, b) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (a > b)
+              <span class="code-keyword">return</span>
+              <span class="code-number">1</span>;<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (a == b)
+              <span class="code-keyword">return</span>
+              <span class="code-number">0</span>;<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (a < b)
+              <span class="code-keyword">return</span> -<span
+                class="code-number"
+                >1</span
+              >;<br />
+              }<br /><br />
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">15</span>];<br /><br />
+              arr.sort(compareNumeric);<br /><br />
+              alert(arr); <span class="code-comment">// 1, 2, 15</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>Now it works as intended.</p>
+          </div>
+
+          <div class="text-section">
+            <p>A comparison function may return any number</p>
+            <p>
+              Actually, a comparison function is only required to return a
+              positive number to say "greater" and a negative number to say
+              "less".
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>That allows to write shorter functions:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">15</span>];<br /><br />
+              arr.sort(<span class="code-keyword">function</span>(a, b) {
+              <span class="code-keyword">return</span> a - b; });<br /><br />
+              alert(arr); <span class="code-comment">// 1, 2, 15</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>Arrow functions for the best</p>
+            <p>
+              Remember arrow functions? We can use them here for neater sorting:
+            </p>
+            <div class="code-example">arr.sort((a, b) => a - b);</div>
+          </div>
+
+          <div class="text-section">
+            <p>This works exactly the same as the longer version above.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>Use localeCompare for strings</h3>
+            <p>
+              Remember strings comparison algorithm? It compares letters by
+              their codes by default.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For many alphabets, it's better to use str.localeCompare method to
+              correctly sort letters, such as Ö.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For example, let's sort a few countries in German:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> countries = [<span
+                class="code-string"
+                >'Österreich'</span
+              >, <span class="code-string">'Andorra'</span>,
+              <span class="code-string">'Vietnam'</span>];<br /><br />
+              alert(countries.sort((a, b) => a > b ?
+              <span class="code-number">1</span> : -<span class="code-number"
+                >1</span
+              >));
+              <span class="code-comment"
+                >// Andorra, Vietnam, Österreich (wrong)</span
+              ><br /><br />
+              alert(countries.sort((a, b) => a.localeCompare(b)));
+              <span class="code-comment"
+                >// Andorra,Österreich,Vietnam (correct!)</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>reverse</h3>
+            <p>The method arr.reverse reverses the order of elements in arr.</p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">5</span>];<br />
+              arr.reverse();<br /><br />
+              alert(arr); <span class="code-comment">// 5,4,3,2,1</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>It also returns the array arr after the reversal.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: split and join -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">split and join</h1>
+          <p class="slide-subtitle">Converting between strings and arrays</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Here's the situation from real life. We are writing a messaging
+              app, and the person enters the comma-delimited list of receivers:
+              John, Pete, Mary. But for us an array of names would be much more
+              comfortable than a single string. How to get it?
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The str.split(delim) method does exactly that. It splits the
+              string into an array by the given delimiter delim.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In the example below, we split by a comma followed by a space:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> names =
+              <span class="code-string">'Bilbo, Gandalf, Nazgul'</span
+              >;<br /><br />
+              <span class="code-keyword">let</span> arr = names.split(<span
+                class="code-string"
+                >', '</span
+              >);<br /><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              name <span class="code-keyword">of</span> arr) {<br />
+              &nbsp;&nbsp;alert(<span class="code-string"
+                >`A message to ${name}.`</span
+              >);
+              <span class="code-comment"
+                >// A message to Bilbo (and other names)</span
+              ><br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The split method has an optional second numeric argument – a limit
+              on the array length. If it is provided, then the extra elements
+              are ignored. In practice it is rarely used though:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr =
+              <span class="code-string">'Bilbo, Gandalf, Nazgul, Saruman'</span
+              >.split(<span class="code-string">', '</span>,
+              <span class="code-number">2</span>);<br /><br />
+              alert(arr); <span class="code-comment">// Bilbo, Gandalf</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Split into letters</h3>
+            <p>
+              The call to split(s) with an empty s would split the string into
+              an array of letters:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> str =
+              <span class="code-string">"test"</span>;<br /><br />
+              alert(str.split(<span class="code-string">''</span>));
+              <span class="code-comment">// t,e,s,t</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>join</h3>
+            <p>
+              The call arr.join(glue) does the reverse to split. It creates a
+              string of arr items joined by glue between them.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >'Bilbo'</span
+              >, <span class="code-string">'Gandalf'</span>,
+              <span class="code-string">'Nazgul'</span>];<br /><br />
+              <span class="code-keyword">let</span> str = arr.join(<span
+                class="code-string"
+                >';'</span
+              >);
+              <span class="code-comment"
+                >// glue the array into a string using ;</span
+              ><br /><br />
+              alert(str);
+              <span class="code-comment">// Bilbo;Gandalf;Nazgul</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Practical example: CSV parsing</h3>
+            <p>
+              Let's combine split and join to parse a CSV (Comma-Separated
+              Values) string:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">const</span> csv =
+              <span class="code-string"
+                >'name,age,city\nJohn,30,New York\nJane,25,Los Angeles'</span
+              >;<br /><br />
+              <span class="code-comment">// Split into lines</span><br />
+              <span class="code-keyword">const</span> lines = csv.split(<span
+                class="code-string"
+                >'\n'</span
+              >);<br /><br />
+              <span class="code-comment">// Process each line</span><br />
+              <span class="code-keyword">const</span> data = lines.map(line =>
+              {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// Split each line into values</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-keyword">const</span> values =
+              line.split(<span class="code-string">','</span>);<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// Return an object with named properties</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;name: values[<span class="code-number"
+                >0</span
+              >],<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;age: parseInt(values[<span
+                class="code-number"
+                >1</span
+              >]),<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;city: values[<span class="code-number"
+                >2</span
+              >]<br />
+              &nbsp;&nbsp;};<br />
+              });<br /><br />
+              alert(JSON.stringify(data, <span class="code-keyword">null</span>,
+              <span class="code-number">2</span>));<br />
+              <span class="code-comment"
+                >/*<br />
+                [<br />
+                &nbsp;&nbsp;{ "name": "name", "age": NaN, "city": "age" },<br />
+                &nbsp;&nbsp;{ "name": "John", "age": 30, "city": "New York"
+                },<br />
+                &nbsp;&nbsp;{ "name": "Jane", "age": 25, "city": "Los Angeles"
+                }<br />
+                ]<br />
+                */</span
+              >
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              In the example above, we have an issue with the header row. In a
+              real application, you would need to handle the header separately
+              from the data rows.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Split and join are powerful methods for converting between strings
+              and arrays, which is a common operation in data processing tasks.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: reduce/reduceRight -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">reduce/reduceRight</h1>
+          <p class="slide-subtitle">Calculating a single value from an array</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When we need to iterate over an array – we can use forEach, for or
+              for..of.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              When we need to iterate and return the data for each element – we
+              can use map.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The methods arr.reduce and arr.reduceRight also belong to that
+              breed, but are a little bit more intricate. They are used to
+              calculate a single value based on the array.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The syntax is:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> value = arr.reduce(<span
+                class="code-keyword"
+                >function</span
+              >(accumulator, item, index, array) {<br />
+              &nbsp;&nbsp;<span class="code-comment">// ...</span><br />
+              }, [initial]);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The function is applied to all array elements one after another
+              and "carries on" its result to the next call.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Arguments:</p>
+            <ul class="list-section">
+              <li>
+                accumulator – is the result of the previous function call,
+                equals initial the first time (if initial is provided).
+              </li>
+              <li>item – is the current array item.</li>
+              <li>index – is its position.</li>
+              <li>array – is the array.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As the function is applied, the result of the previous function
+              call is passed to the next one as the first argument.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              So, the first argument is essentially the accumulator that stores
+              the combined result of all previous executions. And at the end, it
+              becomes the result of reduce.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Sounds complicated?</p>
+          </div>
+
+          <div class="text-section">
+            <p>The easiest way to grasp that is by example.</p>
+          </div>
+
+          <div class="text-section">
+            <p>Here we get a sum of an array in one line:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">5</span>];<br /><br />
+              <span class="code-keyword">let</span> result = arr.reduce((sum,
+              current) => sum + current,
+              <span class="code-number">0</span>);<br /><br />
+              alert(result); <span class="code-comment">// 15</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The function passed to reduce uses only 2 arguments, that's
+              typically enough.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Let's see the details of what's going on.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              On the first run, sum is the initial value (the last argument of
+              reduce), equals 0, and current is the first array element, equals
+              1. So the function result is 1.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              On the second run, sum = 1, we add the second array element (2) to
+              it and return.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              On the 3rd run, sum = 3 and we add one more element to it, and so
+              on…
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The calculation flow:</p>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>sum</th>
+                  <th>current</th>
+                  <th>result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>the first call</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>the second call</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td>the third call</td>
+                  <td>3</td>
+                  <td>3</td>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <td>the fourth call</td>
+                  <td>6</td>
+                  <td>4</td>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <td>the fifth call</td>
+                  <td>10</td>
+                  <td>5</td>
+                  <td>15</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Here we can clearly see how the result of the previous call
+              becomes the first argument of the next one.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>We also can omit the initial value:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>,
+              <span class="code-number">3</span>,
+              <span class="code-number">4</span>,
+              <span class="code-number">5</span>];<br /><br />
+              <span class="code-comment"
+                >// removed initial value from reduce (no 0)</span
+              ><br />
+              <span class="code-keyword">let</span> result = arr.reduce((sum,
+              current) => sum + current);<br /><br />
+              alert(result); <span class="code-comment">// 15</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The result is the same. That's because if there's no initial, then
+              reduce takes the first element of the array as the initial value
+              and starts the iteration from the 2nd element.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              But such use requires an extreme care. If the array is empty, then
+              reduce call without initial value gives an error.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Here's an example:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> arr = [];<br /><br />
+              <span class="code-comment"
+                >// Error: Reduce of empty array with no initial value</span
+              ><br />
+              <span class="code-comment"
+                >// if the initial value existed, reduce would return it for the
+                empty arr.</span
+              ><br />
+              arr.reduce((sum, current) => sum + current);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>So it's advised to always specify the initial value.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The method arr.reduceRight does the same but goes from right to
+              left.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Practical examples of reduce</h3>
+          </div>
+
+          <div class="text-section">
+            <p><strong>Flattening an array of arrays:</strong></p>
+            <div class="code-example">
+              <span class="code-keyword">const</span> nested = [[<span
+                class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>], [<span class="code-number"
+                >3</span
+              >, <span class="code-number">4</span>], [<span class="code-number"
+                >5</span
+              >]]; <br />
+              <span class="code-keyword">const</span> flat = nested.reduce((acc,
+              cur) => acc.concat(cur), []);<br />
+              alert(flat); <span class="code-comment">// [1,2,3,4,5]</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p><strong>Counting occurrences of items:</strong></p>
+            <div class="code-example">
+              <span class="code-keyword">const</span> fruits = [<span
+                class="code-string"
+                >'apple'</span
+              >, <span class="code-string">'banana'</span>,
+              <span class="code-string">'orange'</span>,
+              <span class="code-string">'apple'</span>,
+              <span class="code-string">'banana'</span>];<br />
+              <span class="code-keyword">const</span> count =
+              fruits.reduce((acc, fruit) => {<br />
+              &nbsp;&nbsp;acc[fruit] = (acc[fruit] ||
+              <span class="code-number">0</span>) +
+              <span class="code-number">1</span>;<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> acc;<br />
+              }, {});<br />
+              alert(JSON.stringify(count));
+              <span class="code-comment"
+                >// {"apple":2,"banana":2,"orange":1}</span
+              >
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Reduce is a powerful method for transforming arrays into a single
+              value, but it can be harder to read than a simple loop. Use it
+              when the operation is truly a reduction of the array to a single
+              value, otherwise consider using a loop or other array methods.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Array.isArray and thisArg -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Array.isArray and thisArg</h1>
+          <p class="slide-subtitle">Type checking and context binding</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Array.isArray</h3>
+            <p>
+              Arrays do not form a separate language type. They are based on
+              objects.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              So typeof does not help to distinguish a plain object from an
+              array:
+            </p>
+            <div class="code-example">
+              alert(<span class="code-keyword">typeof</span> {});
+              <span class="code-comment">// object</span><br />
+              alert(<span class="code-keyword">typeof</span> []);
+              <span class="code-comment">// object (same)</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              ...But arrays are used so often that there's a special method for
+              that: Array.isArray(value). It returns true if the value is an
+              array, and false otherwise.
+            </p>
+            <div class="code-example">
+              alert(Array.isArray({}));
+              <span class="code-comment">// false</span><br /><br />
+              alert(Array.isArray([]));
+              <span class="code-comment">// true</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Most methods support "thisArg"</h3>
+            <p>
+              Almost all array methods that call functions – like find, filter,
+              map, with a notable exception of sort, accept an optional
+              additional parameter thisArg.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That parameter is not explained in the sections above, because
+              it's rarely used. But for completeness, we have to cover it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Here's the full syntax of these methods:</p>
+            <div class="code-example">
+              arr.find(func, thisArg);<br />
+              arr.filter(func, thisArg);<br />
+              arr.map(func, thisArg);<br />
+              <span class="code-comment">// ...</span><br />
+              <span class="code-comment"
+                >// thisArg is the optional last argument</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>The value of thisArg parameter becomes this for func.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For example, here we use a method of army object as a filter, and
+              thisArg passes the context:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> army = {<br />
+              &nbsp;&nbsp;minAge: <span class="code-number">18</span>,<br />
+              &nbsp;&nbsp;maxAge: <span class="code-number">27</span>,<br />
+              &nbsp;&nbsp;canJoin(user) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              user.age >= <span class="code-keyword">this</span>.minAge &&
+              user.age < <span class="code-keyword">this</span>.maxAge;<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> users = [<br />
+              &nbsp;&nbsp;{age: <span class="code-number">16</span>},<br />
+              &nbsp;&nbsp;{age: <span class="code-number">20</span>},<br />
+              &nbsp;&nbsp;{age: <span class="code-number">23</span>},<br />
+              &nbsp;&nbsp;{age: <span class="code-number">30</span>}<br />
+              ];<br /><br />
+              <span class="code-comment"
+                >// find users, for who army.canJoin returns true</span
+              ><br />
+              <span class="code-keyword">let</span> soldiers =
+              users.filter(army.canJoin, army);<br /><br />
+              alert(soldiers.length); <span class="code-comment">// 2</span
+              ><br />
+              alert(soldiers[<span class="code-number">0</span>].age);
+              <span class="code-comment">// 20</span><br />
+              alert(soldiers[<span class="code-number">1</span>].age);
+              <span class="code-comment">// 23</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If in the example above we used users.filter(army.canJoin), then
+              army.canJoin would be called as a standalone function, with
+              this=undefined, thus leading to an instant error.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              A call to users.filter(army.canJoin, army) can be replaced with
+              users.filter(user => army.canJoin(user)), that does the same. The
+              latter is used more often, as it's a bit easier to understand for
+              most people.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              The thisArg parameter is particularly useful when working with
+              object-oriented programming in JavaScript, where you might want to
+              use methods from one object as callbacks for array operations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Summary</h1>
+          <p class="slide-subtitle">
+            Complete overview of JavaScript array methods
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>A cheat sheet of array methods:</h4>
+
+            <div class="method-grid">
+              <div class="method-category">
+                <h4>To add/remove elements:</h4>
+                <ul class="list-section">
+                  <li>push(...items) – adds items to the end,</li>
+                  <li>pop() – extracts an item from the end,</li>
+                  <li>shift() – extracts an item from the beginning,</li>
+                  <li>unshift(...items) – adds items to the beginning.</li>
+                  <li>
+                    splice(pos, deleteCount, ...items) – at index pos deletes
+                    deleteCount elements and inserts items.
+                  </li>
+                  <li>
+                    slice(start, end) – creates a new array, copies elements
+                    from index start till end (not inclusive) into it.
+                  </li>
+                  <li>
+                    concat(...items) – returns a new array: copies all members
+                    of the current one and adds items to it. If any of items is
+                    an array, then its elements are taken.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="method-category">
+                <h4>To search among elements:</h4>
+                <ul class="list-section">
+                  <li>
+                    indexOf/lastIndexOf(item, pos) – look for item starting from
+                    position pos, and return the index or -1 if not found.
+                  </li>
+                  <li>
+                    includes(value) – returns true if the array has value,
+                    otherwise false.
+                  </li>
+                  <li>
+                    find/filter(func) – filter elements through the function,
+                    return first/all values that make it return true.
+                  </li>
+                  <li>
+                    findIndex is like find, but returns the index instead of a
+                    value.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="method-category">
+                <h4>To iterate over elements:</h4>
+                <ul class="list-section">
+                  <li>
+                    forEach(func) – calls func for every element, does not
+                    return anything.
+                  </li>
+                </ul>
+              </div>
+
+              <div class="method-category">
+                <h4>To transform the array:</h4>
+                <ul class="list-section">
+                  <li>
+                    map(func) – creates a new array from results of calling func
+                    for every element.
+                  </li>
+                  <li>
+                    sort(func) – sorts the array in-place, then returns it.
+                  </li>
+                  <li>
+                    reverse() – reverses the array in-place, then returns it.
+                  </li>
+                  <li>split/join – convert a string to array and back.</li>
+                  <li>
+                    reduce/reduceRight(func, initial) – calculate a single value
+                    over the array by calling func for each element and passing
+                    an intermediate result between the calls.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="method-category">
+              <h4>Additionally:</h4>
+              <ul class="list-section">
+                <li>
+                  Array.isArray(value) checks value for being an array, if so
+                  returns true, otherwise false.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Please note that methods sort, reverse and splice modify the array
+              itself.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              These methods are the most used ones, they cover 99% of use cases.
+              But there are few others:
+            </p>
+          </div>
+
+          <div class="text-section">
+            <ul class="list-section">
+              <li>arr.some(fn)/arr.every(fn) check the array.</li>
+              <li>
+                The function fn is called on each element of the array similar
+                to map. If any/all results are true, returns true, otherwise
+                false.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              These methods behave sort of like || and && operators: if fn
+              returns a truthy value, arr.some() immediately returns true and
+              stops iterating over the rest of items; if fn returns a falsy
+              value, arr.every() immediately returns false and stops iterating
+              over the rest of items as well.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>We can use every to compare arrays:</p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">arraysEqual</span>(arr1, arr2) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> arr1.length
+              === arr2.length && arr1.every((value, index) => value ===
+              arr2[index]);<br />
+              }<br /><br />
+              alert(arraysEqual([<span class="code-number">1</span>,
+              <span class="code-number">2</span>], [<span class="code-number"
+                >1</span
+              >, <span class="code-number">2</span>]));
+              <span class="code-comment">// true</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <ul class="list-section">
+              <li>
+                arr.fill(value, start, end) – fills the array with repeating
+                value from index start to end.
+              </li>
+              <li>
+                arr.copyWithin(target, start, end) – copies its elements from
+                position start till position end into itself, at position target
+                (overwrites existing).
+              </li>
+              <li>
+                arr.flat(depth)/arr.flatMap(fn) create a new flat array from a
+                multidimensional array.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>For the full list, see the manual.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              At first sight, it may seem that there are so many methods, quite
+              difficult to remember. But actually, that's much easier.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Look through the cheat sheet just to be aware of them. Then solve
+              the tasks of this chapter to practice, so that you have experience
+              with array methods.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Afterwards whenever you need to do something with an array, and
+              you don't know how – come here, look at the cheat sheet and find
+              the right method. Examples will help you to write it correctly.
+              Soon you'll automatically remember the methods, without specific
+              efforts from your side.
+            </p>
+          </div>
+
+          <div class="success-box">
+            <p>
+              Congratulations! You've completed the comprehensive guide to
+              JavaScript Array Methods. Keep practicing and exploring these
+              concepts to become a JavaScript expert!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">JavaScript Array Methods - Complete Guide</div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

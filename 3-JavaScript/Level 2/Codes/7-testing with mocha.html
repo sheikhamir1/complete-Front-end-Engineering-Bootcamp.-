@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <title>Mocha Test Demo</title>
+  <!-- Mocha CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.css">
+  <!-- Mocha JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.js"></script>
+  <script>mocha.setup('bdd');</script>
+  <!-- Chai JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js"></script>
+  <script>let assert = chai.assert;</script>
+</head>
+  </head>
+
+  <body>
+    <h1>Mocha Test Demo</h1>
+    <div id="mocha"></div>
+
+    <!-- function to test -->
+
+    <script>
+      function pow(x, n) {        // 2 ** 3 ----------- 2 ,2 ,2
+        let result = 1; // 2 , 4 , 8
+        for(let i = 0 ; i < n; i++){
+            result *= x;
+        }
+        return result;
+       
+      }
+      //   console.log(pow(2, 3));
+      //   console.log(pow(3, 4));
+    </script>
+
+    <!-- Test -->
+
+    <script src="test.js"></script>
+
+    <!-- run Tests -->
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Style</title>
+  </head>
+  <body>
+    <h1>class 6</h1>
+    <script>
+      //  1 ( Clean/ Readable Style)
+
+      //   function max(a, b) {
+      //     if (a > b) {
+      //       return a;
+      //     }
+      //     return b;
+      //   }
+      //   let Result = max(10, 5);
+      //   console.log(Result);
+
+      // 2 (ninja Style)
+      //   const max = (a, b) => (a > b ? a : b);
+      //   console.log(max(10, 5));
+
+      // 3 Competitive Programming Style
+      //   let mx = (a, b) => (a > b ? a : b);
+      //   console.log(mx(10, 5));
+
+      // 4  Defensive Programming Style
+      //   function max(a, b) {
+      //     if (typeof a !== "number" || typeof b !== "number") {
+      //       throw new Error("Invalid input (Not a Number)");
+      //     }
+      //     return a > b ? a : b;
+      //   }
+      //   let Result = max(10, 5);
+      //   console.log(Result);
+
+      //5 Procedural Style
+      //   function max(a, b) {
+      //     let comp;
+      //     if (a > b) {
+      //       comp = a;
+      //     } else {
+      //       comp = b;
+      //     }
+      //     return comp;
+      //   }
+      //   let Result = max(10, 5);
+      //   console.log(Result);
+
+      // 7 Functional Style
+      //   const max = (a, b) => Math.max(a, b);
+      //   let Result = max(10, 5);
+      //   console.log(Result);
+
+      // 8 Object-Oriented Style (OOP)
+      //   class Mathutil {
+      //     max(a, b) {
+      //       return a > b ? a : b;
+      //     }
+      //   }
+
+      //9 Low-Level / Performance-Oriented
+      //   function max(a, b) {
+      //     return a > b;
+      //   }
+      //   let Result = max(4, 5);
+      //   console.log(Result);
+
+      //10 Obfuscated Style
+      //   const _ = ($, $$) => ($ > $$ ? $ : $$);
+      //   //   const max = (a, b) => (a > b ? a : b);
+      //   let Result = _(10, 5);
+      //   console.log(Result);
+    </script>
+  </body>
+</html>

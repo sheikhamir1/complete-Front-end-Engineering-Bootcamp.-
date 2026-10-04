@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Fundamentals</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background-color: white;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f7df1e;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #323330;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f7df1e;
+        padding-bottom: 10px;
+      }
+
+      h2 {
+        color: #323330;
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      h3 {
+        color: #323330;
+        font-size: 1.5em;
+        margin: 20px 0 10px;
+      }
+
+      code {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      ul,
+      ol {
+        margin: 15px 0;
+        padding-left: 30px;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      .warning {
+        background-color: #ffe0e0;
+        border-left: 4px solid #ff0000;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .tip {
+        background-color: #e0ffe0;
+        border-left: 4px solid #00ff00;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .nav {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav a {
+        display: block;
+        padding: 5px;
+        color: #323330;
+        text-decoration: none;
+        margin: 5px 0;
+      }
+
+      .nav a:hover {
+        color: #f7df1e;
+      }
+
+      @media (max-width: 768px) {
+        .two-column {
+          flex-direction: column;
+        }
+
+        .nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <div class="nav">
+      <a href="#slide1">1</a>
+      <a href="#slide2">2</a>
+      <a href="#slide3">3</a>
+      <a href="#slide4">4</a>
+      <a href="#slide5">5</a>
+      <a href="#slide6">6</a>
+      <a href="#slide7">7</a>
+      <a href="#slide8">8</a>
+      <a href="#slide9">9</a>
+      <a href="#slide10">10</a>
+      <a href="#slide11">11</a>
+      <a href="#slide12">12</a>
+      <a href="#slide13">13</a>
+      <a href="#slide14">14</a>
+      <a href="#slide15">15</a>
+      <a href="#slide16">16</a>
+      <a href="#slide17">17</a>
+      <a href="#slide18">18</a>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide" id="slide1">
+      <div class="container">
+        <h1>JavaScript Fundamentals</h1>
+        <p style="font-size: 1.3em">
+          A comprehensive guide to JavaScript basics
+        </p>
+        <div style="margin-top: 30px">
+          <div class="box">
+            <h3>Client-Side JavaScript</h3>
+            <p>Runs in the browser using HTML</p>
+          </div>
+          <div class="box">
+            <h3>Server-Side JavaScript</h3>
+            <p>Runs on the server with Node.js</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Running JavaScript -->
+    <div class="slide" id="slide2">
+      <div class="container">
+        <h1>Running JavaScript</h1>
+        <p>
+          JavaScript can run in the browser (using HTML) or on the server (e.g.,
+          Node.js).
+        </p>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>Browser</h3>
+              <p>Use the <code>&lt;script&gt;</code> tag in HTML</p>
+              <pre>
+&lt;script&gt;
+  alert("Hello, world!");
+&lt;/script&gt;</pre
+              >
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Node.js</h3>
+              <p>Run from command line</p>
+              <pre>node file.js</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Script tag basics -->
+    <div class="slide" id="slide3">
+      <div class="container">
+        <h1>&lt;script&gt; Tag Basics</h1>
+        <ul>
+          <li>JavaScript is placed inside <code>&lt;script&gt;</code></li>
+          <li>
+            Old attributes like <code>type</code> and <code>language</code> are
+            no longer needed
+          </li>
+          <li>Code runs automatically when the browser reads the tag</li>
+        </ul>
+
+        <pre>
+&lt;!-- Modern approach --&gt;
+&lt;script&gt;
+  // JavaScript code here
+  console.log("Hello, JavaScript!");
+&lt;/script&gt;</pre
+        >
+      </div>
+    </div>
+
+    <!-- Slide 4: External scripts -->
+    <div class="slide" id="slide4">
+      <div class="container">
+        <h1>External Scripts</h1>
+        <p>For larger code, use a separate file.</p>
+
+        <pre>&lt;script src="script.js"&gt;&lt;/script&gt;</pre>
+
+        <div class="box">
+          <h3>Benefits</h3>
+          <ul>
+            <li>Cleaner HTML</li>
+            <li>Faster loading (browser caching)</li>
+            <li>Better code organization</li>
+            <li>Reusability across pages</li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          <strong>Important:</strong> If <code>src</code> is used, any code
+          inside the tag is ignored.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Code structure -->
+    <div class="slide" id="slide5">
+      <div class="container">
+        <h1>Code Structure</h1>
+        <ul>
+          <li>JavaScript code is made of statements</li>
+          <li>Statements usually end with a semicolon <code>;</code></li>
+        </ul>
+
+        <pre>
+alert("Hello");
+alert("World");</pre
+        >
+
+        <div class="tip">
+          JavaScript can insert semicolons automatically, but this can cause
+          errors, so using semicolons is safer.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Comments -->
+    <div class="slide" id="slide6">
+      <div class="container">
+        <h1>Comments</h1>
+        <p>Comments explain code and are ignored by JavaScript.</p>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>Single-line</h3>
+              <pre>
+// This is a comment
+let x = 5; // Inline comment</pre
+              >
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Multi-line</h3>
+              <pre>
+/* This is
+   a multi-line
+   comment */</pre
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="warning">
+          <strong>Important:</strong> Nested comments are not allowed in
+          JavaScript.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Strict mode -->
+    <div class="slide" id="slide7">
+      <div class="container">
+        <h1>Strict Mode ("use strict")</h1>
+        <p>Strict mode enables modern, safer JavaScript behavior.</p>
+
+        <ul>
+          <li>Must be at the top of the file</li>
+          <li>Cannot be turned off once enabled</li>
+          <li>Helps catch common coding mistakes</li>
+        </ul>
+
+        <pre>
+"use strict";
+
+// This will cause an error in strict mode
+message = "Hello"; // ReferenceError: message is not defined
+
+// In strict mode, you must declare variables first
+let message = "Hello"; // This works</pre
+        >
+      </div>
+    </div>
+
+    <!-- Slide 8: Variables -->
+    <div class="slide" id="slide8">
+      <div class="container">
+        <h1>Variables (Storing Data)</h1>
+        <p>
+          Variables are named containers for data like user names, messages, or
+          numbers.
+        </p>
+
+        <pre>
+// Declare a variable (modern way)
+let message = "Hello";
+alert(message);
+
+// You can change its value
+message = "World";</pre
+        >
+
+        <div class="warning">
+          A variable must be declared once. Redeclaring with
+          <code>let</code> causes an error.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: let, var, and const -->
+    <div class="slide" id="slide9">
+      <div class="container">
+        <h1>let, var, and const</h1>
+
+        <div class="box">
+          <h3><code>let</code> - Modern, recommended</h3>
+          <ul>
+            <li>Block-scoped</li>
+            <li>Can be reassigned</li>
+            <li>Cannot be redeclared</li>
+          </ul>
+          <pre>
+let age = 25;
+age = 30; // OK</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3><code>var</code> - Old-style, avoid</h3>
+          <ul>
+            <li>Function-scoped</li>
+            <li>Can be reassigned</li>
+            <li>Can be redeclared</li>
+          </ul>
+          <pre>
+var age = 25;
+var age = 30; // OK (but bad practice)</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3><code>const</code> - Value cannot be changed</h3>
+          <pre>
+const PI = 3.14;
+// PI = 4; // TypeError: Assignment to constant variable</pre
+          >
+          <p>Uppercase constants are used for fixed, known values:</p>
+          <pre>const COLOR_RED = "#F00";</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Variable naming rules -->
+    <div class="slide" id="slide10">
+      <div class="container">
+        <h1>Variable Naming Rules</h1>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>Allowed</h3>
+              <ul>
+                <li>Letters, digits, <code>$</code>, <code>_</code></li>
+                <li>Case-sensitive (apple ≠ APPLE)</li>
+              </ul>
+              <pre>
+let userName;
+let shopping_cart;
+let $element;
+let _privateVar;</pre
+              >
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Not Allowed</h3>
+              <ul>
+                <li>Cannot start with a digit</li>
+                <li>Cannot use hyphens</li>
+              </ul>
+              <pre>
+let 1user;     // ❌
+let my-name;  // ❌</pre
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="tip">
+          Use clear, descriptive names—they make code easier to understand and
+          debug.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Strict mode and variables -->
+    <div class="slide" id="slide11">
+      <div class="container">
+        <h1>Strict Mode and Variables</h1>
+        <p>In strict mode, variables must be declared before use.</p>
+
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3>With Strict Mode</h3>
+              <pre>
+"use strict";
+num = 5; // ❌ ReferenceError</pre
+              >
+              <p>JavaScript prevents accidental global variables.</p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3>Without Strict Mode</h3>
+              <pre>num = 5; // Works, but avoid</pre>
+              <p>Creates a global variable unintentionally (bad practice).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Data types -->
+    <div class="slide" id="slide12">
+      <div class="container">
+        <h1>Data Types (Overview)</h1>
+        <p>JavaScript is dynamically typed: a variable can change its type.</p>
+
+        <pre>
+let x = "hello"; // string
+x = 42;          // number (no error)</pre
+        >
+
+        <h3>Primitive Types (7)</h3>
+        <div class="two-column">
+          <div class="column">
+            <div class="box">
+              <h3><code>number</code></h3>
+              <p>123, 12.5, Infinity, NaN</p>
+            </div>
+            <div class="box">
+              <h3><code>bigint</code></h3>
+              <p>Very large integers</p>
+              <pre>const big = 12345678901234567890n;</pre>
+            </div>
+            <div class="box">
+              <h3><code>string</code></h3>
+              <p>Text</p>
+              <pre>
+let name = "John";
+let msg = `Hello, ${name}`;</pre
+              >
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <h3><code>boolean</code></h3>
+              <p>true, false</p>
+            </div>
+            <div class="box">
+              <h3><code>null</code></h3>
+              <p>Known empty/unknown value</p>
+            </div>
+            <div class="box">
+              <h3><code>undefined</code></h3>
+              <p>Not assigned</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>Non-primitive Type (1)</h3>
+        <div class="box">
+          <h3><code>object</code></h3>
+          <p>Collections and complex data</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Special values -->
+    <div class="slide" id="slide13">
+      <div class="container">
+        <h1>Special Values</h1>
+
+        <div class="box">
+          <h3><code>NaN</code> - Not a Number</h3>
+          <p>Invalid math result</p>
+          <pre>
+"abc" / 2; // NaN
+typeof NaN; // "number"</pre
+          >
+          <p>NaN is the only value that is not equal to itself:</p>
+          <pre>NaN === NaN; // false</pre>
+        </div>
+
+        <div class="box">
+          <h3><code>null</code> - Intentional "no value"</h3>
+          <p>Represents the intentional absence of any object value</p>
+          <pre>
+let user = null;
+// user is explicitly set to no value</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3><code>undefined</code> - Not assigned</h3>
+          <p>A variable that has been declared but not assigned a value</p>
+          <pre>
+let x;
+console.log(x); // undefined
+
+// Difference between null and undefined
+let user = null;      // Explicitly set to no value
+let admin;            // Declared but not assigned</pre
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: typeof operator -->
+    <div class="slide" id="slide14">
+      <div class="container">
+        <h1>typeof Operator</h1>
+        <p>Used to check a value's type.</p>
+
+        <pre>
+typeof 123;        // "number"
+typeof "hi";       // "string"
+typeof true;       // "boolean"
+typeof null;       // "object" ❗ (language bug)
+typeof alert;      // "function"</pre
+        >
+
+        <div class="warning">
+          <strong>Known Bug:</strong> <code>typeof null</code> returns "object"
+          instead of "null". This is a historical JavaScript bug that can't be
+          fixed without breaking existing code.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Key takeaways (variables) -->
+    <div class="slide" id="slide15">
+      <div class="container">
+        <h1>Key Takeaways</h1>
+
+        <div class="box">
+          <h3>Variable Declaration</h3>
+          <ul>
+            <li>Use <code>let</code> for variables that will change</li>
+            <li>Use <code>const</code> for fixed values</li>
+            <li>Avoid <code>var</code> in modern code</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Variable Rules</h3>
+          <ul>
+            <li>Always declare variables (especially in strict mode)</li>
+            <li>Use clear, descriptive names</li>
+            <li>Follow naming conventions (camelCase for variables)</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Data Types</h3>
+          <ul>
+            <li>JavaScript has 8 data types (7 primitive + object)</li>
+            <li>Use <code>typeof</code> to check a value's type</li>
+            <li>
+              Be aware of special values like <code>NaN</code>,
+              <code>null</code>, and <code>undefined</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: User interaction -->
+    <div class="slide" id="slide16">
+      <div class="container">
+        <h1>User Interaction in the Browser</h1>
+        <p>
+          JavaScript provides three simple browser functions to interact with
+          users. They are modal, meaning they pause the page until the user
+          responds.
+        </p>
+
+        <div class="box">
+          <h3><code>alert</code></h3>
+          <p>Shows a message and waits for OK.</p>
+          <pre>alert("Hello!");</pre>
+          <p>Used to display information.</p>
+        </div>
+
+        <div class="box">
+          <h3><code>prompt</code></h3>
+          <p>Asks the user for input.</p>
+          <pre>
+let age = prompt("How old are you?", 18);
+alert(age);</pre
+          >
+          <ul>
+            <li>Returns text if OK is pressed</li>
+            <li>Returns null if Cancel or Esc is pressed</li>
+            <li>Always give a default value ("") for better compatibility</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3><code>confirm</code></h3>
+          <p>Asks a yes/no question.</p>
+          <pre>
+let isAdmin = confirm("Are you an admin?");
+alert(isAdmin);</pre
+          >
+          <ul>
+            <li>Returns true → OK</li>
+            <li>Returns false → Cancel / Esc</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Type conversions -->
+    <div class="slide" id="slide17">
+      <div class="container">
+        <h1>Type Conversions (Basics)</h1>
+        <p>
+          JavaScript often converts values automatically, but we can also do it
+          explicitly.
+        </p>
+
+        <div class="box">
+          <h3>String conversion</h3>
+          <p>Used when showing values.</p>
+          <pre>
+let value = true;
+value = String(value); // "true"</pre
+          >
+        </div>
+
+        <div class="box">
+          <h3>Numeric conversion</h3>
+          <p>Used in math operations or when reading input.</p>
+          <pre>
+let num = Number("123"); // 123
+
+// Invalid numbers become NaN:
+Number("abc"); // NaN</pre
+          >
+          <p>Important rules:</p>
+          <ul>
+            <li>null → 0</li>
+            <li>undefined → NaN</li>
+            <li>true → 1, false → 0</li>
+            <li>" 123 " → 123</li>
+            <li>"123z" → NaN</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Boolean conversion</h3>
+          <p>Used in conditions.</p>
+          <pre>
+Boolean(1);      // true
+Boolean(0);      // false
+Boolean("hi");   // true
+Boolean("");     // false</pre
+          >
+          <div class="warning">"0" and " " are true (non-empty strings).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 18: Key takeaways (user interaction) -->
+    <div class="slide" id="slide18">
+      <div class="container">
+        <h1>Key Takeaways</h1>
+
+        <div class="box">
+          <h3>User Interaction</h3>
+          <ul>
+            <li><code>alert</code> → show message</li>
+            <li><code>prompt</code> → get text input (string or null)</li>
+            <li><code>confirm</code> → get yes/no (true / false)</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Type Conversion Rules</h3>
+          <ul>
+            <li><code>String</code> → String(value)</li>
+            <li><code>Number</code> → Number(value)</li>
+            <li><code>Boolean</code> → Boolean(value)</li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Common Mistakes</h3>
+          <ul>
+            <li><code>undefined</code> becomes NaN, not 0</li>
+            <li><code>"0"</code> is true, not false</li>
+            <li>Forgetting that <code>prompt</code> returns a string</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Always validate user input from <code>prompt()</code> and convert it
+          to the appropriate type before using it in calculations.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple scroll behavior
+      document.querySelectorAll(".nav a").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>

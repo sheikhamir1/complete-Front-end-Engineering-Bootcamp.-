@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Primitives: Methods, Numbers, and Strings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 15px;
+        }
+
+        .slide-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #5f6368;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-section {
+            margin-bottom: 20px;
+        }
+
+        .text-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .text-section p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-section {
+            margin-bottom: 20px;
+        }
+
+        .list-section ul {
+            padding-left: 25px;
+        }
+
+        .list-section li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        .highlight-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #0d47a1;
+            transform: scale(1.1);
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: #1a73e8;
+            z-index: 101;
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5f6368;
+            font-size: 0.9rem;
+        }
+
+        .info-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .code-example {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Source Code Pro', monospace;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+
+        .code-number {
+            color: #098658;
+        }
+
+        .code-function {
+            color: #795e26;
+        }
+
+        .warning-box {
+            background-color: #fef7e0;
+            border-left: 4px solid #f9ab00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .error-box {
+            background-color: #fce8e6;
+            border-left: 4px solid #d93025;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background-color: #e6f4ea;
+            border-left: 4px solid #34a853;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #e1e8ed;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+
+            .slide-title {
+                font-size: 1.8rem;
+            }
+
+            .two-column {
+                flex-direction: column;
+            }
+
+            .navigation {
+                bottom: 20px;
+                top: auto;
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-indicator" id="progressBar"></div>
+    
+    <div class="navigation">
+        <button class="nav-btn" id="topBtn" title="Go to top">↑</button>
+        <button class="nav-btn" id="downBtn" title="Go to bottom">↓</button>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Methods of Primitives Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Methods of Primitives</h1>
+                <p class="slide-subtitle">Understanding how primitives work with methods</p>
+            </div>
+            <div class="slide-content">
+                <div class="image-container">
+                    <img src="./1.png" alt="JavaScript Primitives">
+                </div>
+                <div class="text-section">
+                    <p>JavaScript allows us to work with primitives (strings, numbers, etc.) as if they were objects. They also provide methods to call as such. We will study those soon, but first we'll see how it works because, of course, primitives are not objects (and here we will make it even clearer).</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Let's look at the key distinctions between primitives and objects.</h3>
+                    <p><strong>A primitive</strong></p>
+                    <ul class="list-section">
+                        <li>Is a value of a primitive type.</li>
+                        <li>There are 7 primitive types: string, number, bigint, boolean, symbol, null and undefined.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>An object</strong></p>
+                    <ul class="list-section">
+                        <li>Is capable of storing multiple values as properties.</li>
+                        <li>Can be created with {}, for instance: {name: "John", age: 30}. There are other kinds of objects in JavaScript: functions, for example, are objects.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>One of the best things about objects is that we can store a function as one of its properties.</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> john = {<br>
+                        &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br>
+                        &nbsp;&nbsp;sayHi: <span class="code-keyword">function</span>() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-string">"Hi buddy!"</span>);<br>
+                        &nbsp;&nbsp;}<br>
+                        };<br><br>
+                        john.sayHi(); <span class="code-comment">// Hi buddy!</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>So here we've made an object john with the method sayHi.</p>
+                    <p>Many built-in objects already exist, such as those that work with dates, errors, HTML elements, etc. They have different properties and methods.</p>
+                </div>
+                
+                <div class="warning-box">
+                    <p>But, these features come with a cost! Objects are "heavier" than primitives. They require additional resources to support the internal machinery.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: A primitive as an object -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">A primitive as an object</h1>
+                <p class="slide-subtitle">The paradox and solution</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Here's the paradox faced by the creator of JavaScript:</p>
+                    <ul class="list-section">
+                        <li>There are many things one would want to do with a primitive, like a string or a number. It would be great to access them using methods.</li>
+                        <li>Primitives must be as fast and lightweight as possible.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>The solution looks a little bit awkward, but here it is:</p>
+                    <ul class="list-section">
+                        <li>Primitives are still primitive. A single value, as desired.</li>
+                        <li>The language allows access to methods and properties of strings, numbers, booleans and symbols.</li>
+                        <li>In order for that to work, a special "object wrapper" that provides the extra functionality is created, and then is destroyed.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>The "object wrappers" are different for each primitive type and are called: String, Number, Boolean, Symbol and BigInt. Thus, they provide different sets of methods.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance, there exists a string method str.toUpperCase() that returns a capitalized str.</p>
+                    <p>Here's how it works:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"Hello"</span>;<br><br>
+                        alert(str.toUpperCase()); <span class="code-comment">// HELLO</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Simple, right? Here's what actually happens in str.toUpperCase():</p>
+                    <ol class="list-section">
+                        <li>The string str is a primitive. So in the moment of accessing its property, a special object is created that knows the value of the string, and has useful methods, like toUpperCase().</li>
+                        <li>That method runs and returns a new string (shown by alert).</li>
+                        <li>The special object is destroyed, leaving the primitive str alone.</li>
+                    </ol>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>So primitives can provide methods, but they still remain lightweight.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The JavaScript engine highly optimizes this process. It may even skip the creation of the extra object at all. But it must still adhere to the specification and behave as if it creates one.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>A number has methods of its own, for instance, toFixed(n) rounds the number to the given precision:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> n = <span class="code-number">1.23456</span>;<br><br>
+                        alert(n.toFixed(<span class="code-number">2</span>)); <span class="code-comment">// 1.23</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We'll see more specific methods in chapters Numbers and Strings.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Constructors String/Number/Boolean -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Constructors String/Number/Boolean</h1>
+                <p class="slide-subtitle">For internal use only</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Some languages like Java allow us to explicitly create "wrapper objects" for primitives using a syntax like new Number(1) or new Boolean(false).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In JavaScript, that's also possible for historical reasons, but highly unrecommended. Things will go crazy in several places.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        alert(<span class="code-keyword">typeof</span> <span class="code-number">0</span>); <span class="code-comment">// "number"</span><br><br>
+                        alert(<span class="code-keyword">typeof</span> <span class="code-keyword">new</span> Number(<span class="code-number">0</span>)); <span class="code-comment">// "object"!</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Objects are always truthy in if, so here the alert will show up:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> zero = <span class="code-keyword">new</span> Number(<span class="code-number">0</span>);<br><br>
+                        <span class="code-keyword">if</span> (zero) { <span class="code-comment">// zero is true, because it's an object</span><br>
+                        &nbsp;&nbsp;alert(<span class="code-string">"zero is truthy!?!"</span>);<br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>On the other hand, using the same functions String/Number/Boolean without new is totally fine and useful thing. They convert a value to the corresponding type: to a string, a number, or a boolean (primitive).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For example, this is entirely valid:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = Number(<span class="code-string">"123"</span>); <span class="code-comment">// convert a string to number</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>null/undefined have no methods</h3>
+                    <p>The special primitives null and undefined are exceptions. They have no corresponding "wrapper objects" and provide no methods. In a sense, they are "the most primitive".</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>An attempt to access a property of such value would give the error:</p>
+                    <div class="code-example">
+                        alert(<span class="code-keyword">null</span>.test); <span class="code-comment">// error</span>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <h4>Summary</h4>
+                    <p>Primitives except null and undefined provide many helpful methods. We will study those in the upcoming chapters.</p>
+                    <p>Formally, these methods work via temporary objects, but JavaScript engines are well tuned to optimize that internally, so they are not expensive to call.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Numbers Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Numbers</h1>
+                <p class="slide-subtitle">Understanding number types in JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>In modern JavaScript, there are two types of numbers:</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Regular numbers</strong> in JavaScript are stored in 64-bit format IEEE-754, also known as "double precision floating point numbers". These are numbers that we're using most of the time, and we'll talk about them in this chapter.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>BigInt numbers</strong> represent integers of arbitrary length. They are sometimes needed because a regular integer number can't safely exceed (2^53-1) or be less than -(2^53-1), as we mentioned earlier in the chapter Data types. As bigints are used in a few special areas, we devote them to a special chapter BigInt.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>So here we'll talk about regular numbers. Let's expand our knowledge of them.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>More ways to write a number</h3>
+                    <p>Imagine we need to write 1 billion. The obvious way is:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> billion = <span class="code-number">1000000000</span>;
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We also can use underscore _ as the separator:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> billion = <span class="code-number">1_000_000_000</span>;
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Here the underscore _ plays the role of the "syntactic sugar", it makes the number more readable. The JavaScript engine simply ignores _ between digits, so it's exactly the same one billion as above.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In real life though, we try to avoid writing long sequences of zeroes. We're too lazy for that. We'll try to write something like "1bn" for a billion or "7.3bn" for 7 billion 300 million. The same is true for most large numbers.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In JavaScript, we can shorten a number by appending the letter "e" to it and specifying the zeroes count:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> billion = <span class="code-number">1e9</span>;  <span class="code-comment">// 1 billion, literally: 1 and 9 zeroes</span><br><br>
+                        alert(<span class="code-number">7.3e9</span>);  <span class="code-comment">// 7.3 billions (same as 7300000000 or 7_300_000_000)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>In other words, e multiplies the number by 1 with the given zeroes count.</p>
+                    <div class="code-example">
+                        <span class="code-number">1e3</span> === <span class="code-number">1</span> * <span class="code-number">1000</span>; <span class="code-comment">// e3 means *1000</span><br>
+                        <span class="code-number">1.23e6</span> === <span class="code-number">1.23</span> * <span class="code-number">1000000</span>; <span class="code-comment">// e6 means *1000000</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Now let's write something very small. Say, 1 microsecond (one-millionth of a second):</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> mсs = <span class="code-number">0.000001</span>;
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Just like before, using "e" can help. If we'd like to avoid writing the zeroes explicitly, we could write the same as:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> mcs = <span class="code-number">1e-6</span>; <span class="code-comment">// five zeroes to the left from 1</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>If we count the zeroes in 0.000001, there are 6 of them. So naturally it's 1e-6.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In other words, a negative number after "e" means a division by 1 with the given number of zeroes:</p>
+                    <div class="code-example">
+                        <span class="code-comment">// -3 divides by 1 with 3 zeroes</span><br>
+                        <span class="code-number">1e-3</span> === <span class="code-number">1</span> / <span class="code-number">1000</span>; <span class="code-comment">// 0.001</span><br><br>
+                        <span class="code-comment">// -6 divides by 1 with 6 zeroes</span><br>
+                        <span class="code-number">1.23e-6</span> === <span class="code-number">1.23</span> / <span class="code-number">1000000</span>; <span class="code-comment">// 0.00000123</span><br><br>
+                        <span class="code-comment">// an example with a bigger number</span><br>
+                        <span class="code-number">1234e-2</span> === <span class="code-number">1234</span> / <span class="code-number">100</span>; <span class="code-comment">// 12.34, decimal point moves 2 times</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Hex, binary and octal numbers -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Hex, binary and octal numbers</h1>
+                <p class="slide-subtitle">Different numeral systems in JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Hexadecimal numbers are widely used in JavaScript to represent colors, encode characters, and for many other things. So naturally, there exists a shorter way to write them: 0x and then the number.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">0xff</span>); <span class="code-comment">// 255</span><br>
+                        alert(<span class="code-number">0xFF</span>); <span class="code-comment">// 255 (the same, case doesn't matter)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Binary and octal numeral systems are rarely used, but also supported using the 0b and 0o prefixes:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> a = <span class="code-number">0b11111111</span>; <span class="code-comment">// binary form of 255</span><br>
+                        <span class="code-keyword">let</span> b = <span class="code-number">0o377</span>; <span class="code-comment">// octal form of 255</span><br><br>
+                        alert(a == b); <span class="code-comment">// true, the same number 255 at both sides</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are only 3 numeral systems with such support. For other numeral systems, we should use the function parseInt (which we will see later in this chapter).</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>toString(base)</h3>
+                    <p>The method num.toString(base) returns a string representation of num in the numeral system with the given base.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For example:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = <span class="code-number">255</span>;<br><br>
+                        alert(num.toString(<span class="code-number">16</span>));  <span class="code-comment">// ff</span><br>
+                        alert(num.toString(<span class="code-number">2</span>));   <span class="code-comment">// 11111111</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The base can vary from 2 to 36. By default, it's 10.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Common use cases for this are:</p>
+                    <ul class="list-section">
+                        <li>base=16 is used for hex colors, character encodings etc, digits can be 0..9 or A..F.</li>
+                        <li>base=2 is mostly for debugging bitwise operations, digits can be 0 or 1.</li>
+                        <li>base=36 is the maximum, digits can be 0..9 or A..Z. The whole Latin alphabet is used to represent a number. A funny, but useful case for 36 is when we need to turn a long numeric identifier into something shorter, for example, to make a short url. Can simply represent it in the numeral system with base 36:</li>
+                    </ul>
+                </div>
+                
+                <div class="code-example">
+                    alert(<span class="code-number">123456</span>..toString(<span class="code-number">36</span>)); <span class="code-comment">// 2n9c</span>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Two dots to call a method</h3>
+                    <p>Please note that two dots in 123456..toString(36) is not a typo. If we want to call a method directly on a number, like toString in the example above, then we need to place two dots .. after it.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>If we placed a single dot: 123456.toString(36), then there would be an error, because JavaScript syntax implies the decimal part after the first dot. And if we place one more dot, then JavaScript knows that the decimal part is empty and now uses the method.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Also could write (123456).toString(36).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Rounding -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Rounding</h1>
+                <p class="slide-subtitle">Different ways to round numbers</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>One of the most used operations when working with numbers is rounding.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are several built-in functions for rounding:</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.floor</strong></p>
+                    <p>Rounds down: 3.1 becomes 3, and -1.1 becomes -2.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.ceil</strong></p>
+                    <p>Rounds up: 3.1 becomes 4, and -1.1 becomes -1.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.round</strong></p>
+                    <p>Rounds to the nearest integer: 3.1 becomes 3, 3.6 becomes 4. In the middle cases 3.5 rounds up to 4, and -3.5 rounds up to -3.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.trunc</strong> (not supported by Internet Explorer)</p>
+                    <p>Removes anything after the decimal point without rounding: 3.1 becomes 3, -1.1 becomes -1.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Here's the table to summarize the differences between them:</p>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Math.floor</th>
+                                <th>Math.ceil</th>
+                                <th>Math.round</th>
+                                <th>Math.trunc</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3.1</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>3</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>3.5</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>4</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>3.6</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>4</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>-1.1</td>
+                                <td>-2</td>
+                                <td>-1</td>
+                                <td>-1</td>
+                                <td>-1</td>
+                            </tr>
+                            <tr>
+                                <td>-1.5</td>
+                                <td>-2</td>
+                                <td>-1</td>
+                                <td>-1</td>
+                                <td>-1</td>
+                            </tr>
+                            <tr>
+                                <td>-1.6</td>
+                                <td>-2</td>
+                                <td>-1</td>
+                                <td>-2</td>
+                                <td>-1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-section">
+                    <p>These functions cover all of the possible ways to deal with the decimal part of a number. But what if we'd like to round the number to n-th digit after the decimal?</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance, we have 1.2345 and want to round it to 2 digits, getting only 1.23.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are two ways to do so:</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Multiply-and-divide.</strong></p>
+                    <p>For example, to round the number to the 2nd digit after the decimal, we can multiply the number by 100, call the rounding function and then divide it back.</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = <span class="code-number">1.23456</span>;<br><br>
+                        alert(Math.round(num * <span class="code-number">100</span>) / <span class="code-number">100</span>); <span class="code-comment">// 1.23456 -> 123.456 -> 123 -> 1.23</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>The method toFixed(n)</strong> rounds the number to n digits after the point and returns a string representation of the result.</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = <span class="code-number">12.34</span>;<br>
+                        alert(num.toFixed(<span class="code-number">1</span>)); <span class="code-comment">// "12.3"</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>This rounds up or down to the nearest value, similar to Math.round:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = <span class="code-number">12.36</span>;<br>
+                        alert(num.toFixed(<span class="code-number">1</span>)); <span class="code-comment">// "12.4"</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Please note that the result of toFixed is a string. If the decimal part is shorter than required, zeroes are appended to the end:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = <span class="code-number">12.34</span>;<br>
+                        alert(num.toFixed(<span class="code-number">5</span>)); <span class="code-comment">// "12.34000", added zeroes to make exactly 5 digits</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can convert it to a number using the unary plus or a Number() call, e.g. write +num.toFixed(5).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Imprecise calculations -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Imprecise calculations</h1>
+                <p class="slide-subtitle">Understanding floating-point precision issues</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Internally, a number is represented in 64-bit format IEEE-754, so there are exactly 64 bits to store a number: 52 of them are used to store the digits, 11 of them store the position of the decimal point, and 1 bit is for the sign.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>If a number is really huge, it may overflow the 64-bit storage and become a special numeric value Infinity:</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">1e500</span>); <span class="code-comment">// Infinity</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>What may be a little less obvious, but happens quite often, is the loss of precision.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Consider this (falsy!) equality test:</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">0.1</span> + <span class="code-number">0.2</span> == <span class="code-number">0.3</span>); <span class="code-comment">// false</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>That's right, if we check whether the sum of 0.1 and 0.2 is 0.3, we get false.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Strange! What is it then if not 0.3?</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">0.1</span> + <span class="code-number">0.2</span>); <span class="code-comment">// 0.30000000000000004</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Ouch! Imagine you're making an e-shopping site and the visitor puts $0.10 and $0.20 goods into their cart. The order total will be $0.30000000000000004. That would surprise anyone.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>But why does this happen?</p>
+                    <p>A number is stored in memory in its binary form, a sequence of bits – ones and zeroes. But fractions like 0.1, 0.2 that look simple in the decimal numeric system are actually unending fractions in their binary form.</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">0.1</span>.toString(<span class="code-number">2</span>)); <span class="code-comment">// 0.0001100110011001100110011001100110011001100110011001101</span><br>
+                        alert(<span class="code-number">0.2</span>.toString(<span class="code-number">2</span>)); <span class="code-comment">// 0.001100110011001100110011001100110011001100110011001101</span><br>
+                        alert((<span class="code-number">0.1</span> + <span class="code-number">0.2</span>).toString(<span class="code-number">2</span>)); <span class="code-comment">// 0.0100110011001100110011001100110011001100110011001101</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>What is 0.1? It is one divided by ten 1/10, one-tenth. In the decimal numeral system, such numbers are easily representable. Compare it to one-third: 1/3. It becomes an endless fraction 0.33333(3).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>So, division by powers 10 is guaranteed to work well in the decimal system, but division by 3 is not. For the same reason, in the binary numeral system, the division by powers of 2 is guaranteed to work, but 1/10 becomes an endless binary fraction.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There's just no way to store exactly 0.1 or exactly 0.2 using the binary system, just like there is no way to store one-third as a decimal fraction.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The numeric format IEEE-754 solves this by rounding to the nearest possible number. These rounding rules normally don't allow us to see that "tiny precision loss", but it exists.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can see this in action:</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">0.1</span>.toFixed(<span class="code-number">20</span>)); <span class="code-comment">// 0.10000000000000000555</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>And when we sum two numbers, their "precision losses" add up.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>That's why 0.1 + 0.2 is not exactly 0.3.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Not only JavaScript</strong></p>
+                    <p>The same issue exists in many other programming languages.</p>
+                    <p>PHP, Java, C, Perl, and Ruby give exactly the same result, because they are based on the same numeric format.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Can we work around the problem?</strong> Sure, the most reliable method is to round the result with the help of a method toFixed(n):</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> sum = <span class="code-number">0.1</span> + <span class="code-number">0.2</span>;<br>
+                        alert(sum.toFixed(<span class="code-number">2</span>)); <span class="code-comment">// "0.30"</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Please note that toFixed always returns a string. It ensures that it has 2 digits after the decimal point. That's actually convenient if we have an e-shopping and need to show $0.30. For other cases, we can use the unary plus to coerce it into a number:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> sum = <span class="code-number">0.1</span> + <span class="code-number">0.2</span>;<br>
+                        alert(+sum.toFixed(<span class="code-number">2</span>)); <span class="code-comment">// 0.3</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We also can temporarily multiply the numbers by 100 (or a bigger number) to turn them into integers, do the maths, and then divide back. Then, as we're doing maths with integers, the error somewhat decreases, but we still get it on division:</p>
+                    <div class="code-example">
+                        alert((<span class="code-number">0.1</span> * <span class="code-number">10</span> + <span class="code-number">0.2</span> * <span class="code-number">10</span>) / <span class="code-number">10</span>); <span class="code-comment">// 0.3</span><br>
+                        alert((<span class="code-number">0.28</span> * <span class="code-number">100</span> + <span class="code-number">0.14</span> * <span class="code-number">100</span>) / <span class="code-number">100</span>); <span class="code-comment">// 0.4200000000000001</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>So, the multiply/divide approach reduces the error, but doesn't remove it totally.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Sometimes we could try to evade fractions at all. Like if we're dealing with a shop, then we can store prices in cents instead of dollars. But what if we apply a discount of 30%? In practice, totally evading fractions is rarely possible. Just round them to cut "tails" when needed.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: More number peculiarities -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">More number peculiarities</h1>
+                <p class="slide-subtitle">Additional number issues and tests</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>The funny thing</h3>
+                    <p>Try running this:</p>
+                    <div class="code-example">
+                        <span class="code-comment">// Hello! I'm a self-increasing number!</span><br>
+                        alert(<span class="code-number">9999999999999999</span>); <span class="code-comment">// shows 10000000000000000</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>This suffers from the same issue: a loss of precision. There are 64 bits for the number, 52 of them can be used to store digits, but that's not enough. So the least significant digits disappear.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>JavaScript doesn't trigger an error in such events. It does its best to fit the number into the desired format, but unfortunately, this format is not big enough.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Two zeroes</h3>
+                    <p>Another funny consequence of the internal representation of numbers is the existence of two zeroes: 0 and -0.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>That's because a sign is represented by a single bit, so it can be set or not set for any number including a zero.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In most cases, the distinction is unnoticeable, because operators are suited to treat them as the same.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Tests: isFinite and isNaN</h3>
+                    <p>Remember these two special numeric values?</p>
+                    <ul class="list-section">
+                        <li>Infinity (and -Infinity) is a special numeric value that is greater (less) than anything.</li>
+                        <li>NaN represents an error.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>They belong to the type number, but are not "normal" numbers, so there are special functions to check for them:</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>isNaN(value)</strong> converts its argument to a number and then tests it for being NaN:</p>
+                    <div class="code-example">
+                        alert(isNaN(NaN)); <span class="code-comment">// true</span><br>
+                        alert(isNaN(<span class="code-string">"str"</span>)); <span class="code-comment">// true</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>But do we need this function? Can't we just use the comparison === NaN? Unfortunately not. The value NaN is unique in that it does not equal anything, including itself:</p>
+                    <div class="code-example">
+                        alert(NaN === NaN); <span class="code-comment">// false</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>isFinite(value)</strong> converts its argument to a number and returns true if it's a regular number, not NaN/Infinity/-Infinity:</p>
+                    <div class="code-example">
+                        alert(isFinite(<span class="code-string">"15"</span>)); <span class="code-comment">// true</span><br>
+                        alert(isFinite(<span class="code-string">"str"</span>)); <span class="code-comment">// false, because a special value: NaN</span><br>
+                        alert(isFinite(Infinity)); <span class="code-comment">// false, because a special value: Infinity</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Sometimes isFinite is used to validate whether a string value is a regular number:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> num = +prompt(<span class="code-string">"Enter a number"</span>, <span class="code-string">''</span>);<br><br>
+                        <span class="code-comment">// will be true unless you enter Infinity, -Infinity or not a number</span><br>
+                        alert(isFinite(num));
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Please note that an empty or a space-only string is treated as 0 in all numeric functions including isFinite.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Number.isNaN and Number.isFinite</h3>
+                    <p>Number.isNaN and Number.isFinite methods are the more "strict" versions of isNaN and isFinite functions. They do not autoconvert their argument into a number, but check if it belongs to the number type instead.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Number.isNaN(value)</strong> returns true if the argument belongs to the number type and it is NaN. In any other case, it returns false.</p>
+                    <div class="code-example">
+                        alert(Number.isNaN(NaN)); <span class="code-comment">// true</span><br>
+                        alert(Number.isNaN(<span class="code-string">"str"</span> / <span class="code-number">2</span>)); <span class="code-comment">// true</span><br><br>
+                        <span class="code-comment">// Note the difference:</span><br>
+                        alert(Number.isNaN(<span class="code-string">"str"</span>)); <span class="code-comment">// false, because "str" belongs to the string type, not the number type</span><br>
+                        alert(isNaN(<span class="code-string">"str"</span>)); <span class="code-comment">// true, because isNaN converts string "str" into a number and gets NaN as a result of this conversion</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Number.isFinite(value)</strong> returns true if the argument belongs to the number type and it is not NaN/Infinity/-Infinity. In any other case, it returns false.</p>
+                    <div class="code-example">
+                        alert(Number.isFinite(<span class="code-number">123</span>)); <span class="code-comment">// true</span><br>
+                        alert(Number.isFinite(Infinity)); <span class="code-comment">// false</span><br>
+                        alert(Number.isFinite(<span class="code-number">2</span> / <span class="code-number">0</span>)); <span class="code-comment">// false</span><br><br>
+                        <span class="code-comment">// Note the difference:</span><br>
+                        alert(Number.isFinite(<span class="code-string">"123"</span>)); <span class="code-comment">// false, because "123" belongs to the string type, not the number type</span><br>
+                        alert(isFinite(<span class="code-string">"123"</span>)); <span class="code-comment">// true, because isFinite converts string "123" into a number 123</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>In a way, Number.isNaN and Number.isFinite are simpler and more straightforward than isNaN and isFinite functions. In practice though, isNaN and isFinite are mostly used, as they're shorter to write.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Comparison with Object.is</h3>
+                    <p>There is a special built-in method Object.is that compares values like ===, but is more reliable for two edge cases:</p>
+                    <ul class="list-section">
+                        <li>It works with NaN: Object.is(NaN, NaN) === true, that's a good thing.</li>
+                        <li>Values 0 and -0 are different: Object.is(0, -0) === false, technically that's correct because internally the number has a sign bit that may be different even if all other bits are zeroes.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>In all other cases, Object.is(a, b) is the same as a === b.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>We mention Object.is here, because it's often used in JavaScript specification. When an internal algorithm needs to compare two values for being exactly the same, it uses Object.is (internally called SameValue).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: parseInt and parseFloat -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">parseInt and parseFloat</h1>
+                <p class="slide-subtitle">Converting strings to numbers</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Numeric conversion using a plus + or Number() is strict. If a value is not exactly a number, it fails:</p>
+                    <div class="code-example">
+                        alert(+<span class="code-string">"100px"</span>); <span class="code-comment">// NaN</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The sole exception is spaces at the beginning or at the end of the string, as they are ignored.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>But in real life, we often have values in units, like "100px" or "12pt" in CSS. Also in many countries, the currency symbol goes after the amount, so we have "19€" and would like to extract a numeric value out of that.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>That's what parseInt and parseFloat are for.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>They "read" a number from a string until they can't. In case of an error, the gathered number is returned. The function parseInt returns an integer, whilst parseFloat will return a floating-point number:</p>
+                    <div class="code-example">
+                        alert(parseInt(<span class="code-string">'100px'</span>)); <span class="code-comment">// 100</span><br>
+                        alert(parseFloat(<span class="code-string">'12.5em'</span>)); <span class="code-comment">// 12.5</span><br><br>
+                        alert(parseInt(<span class="code-string">'12.3'</span>)); <span class="code-comment">// 12, only the integer part is returned</span><br>
+                        alert(parseFloat(<span class="code-string">'12.3.4'</span>)); <span class="code-comment">// 12.3, the second point stops the reading</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are situations when parseInt/parseFloat will return NaN. It happens when no digits could be read:</p>
+                    <div class="code-example">
+                        alert(parseInt(<span class="code-string">'a123'</span>)); <span class="code-comment">// NaN, the first symbol stops the process</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>The second argument of parseInt(str, radix)</h3>
+                    <p>The parseInt() function has an optional second parameter. It specifies the base of the numeral system, so parseInt can also parse strings of hex numbers, binary numbers and so on:</p>
+                    <div class="code-example">
+                        alert(parseInt(<span class="code-string">'0xff'</span>, <span class="code-number">16</span>)); <span class="code-comment">// 255</span><br>
+                        alert(parseInt(<span class="code-string">'ff'</span>, <span class="code-number">16</span>)); <span class="code-comment">// 255, without 0x also works</span><br><br>
+                        alert(parseInt(<span class="code-string">'2n9c'</span>, <span class="code-number">36</span>)); <span class="code-comment">// 123456</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Other math functions</h3>
+                    <p>JavaScript has a built-in Math object which contains a small library of mathematical functions and constants.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>A few examples:</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.random()</strong></p>
+                    <p>Returns a random number from 0 to 1 (not including 1).</p>
+                    <div class="code-example">
+                        alert(Math.random()); <span class="code-comment">// 0.1234567894322</span><br>
+                        alert(Math.random()); <span class="code-comment">// 0.5435252343232</span><br>
+                        alert(Math.random()); <span class="code-comment">// ... (any random numbers)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.max(a, b, c...) and Math.min(a, b, c...)</strong></p>
+                    <p>Returns the greatest and smallest from the arbitrary number of arguments.</p>
+                    <div class="code-example">
+                        alert(Math.max(<span class="code-number">3</span>, <span class="code-number">5</span>, -<span class="code-number">10</span>, <span class="code-number">0</span>, <span class="code-number">1</span>)); <span class="code-comment">// 5</span><br>
+                        alert(Math.min(<span class="code-number">1</span>, <span class="code-number">2</span>)); <span class="code-comment">// 1</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>Math.pow(n, power)</strong></p>
+                    <p>Returns n raised to the given power.</p>
+                    <div class="code-example">
+                        alert(Math.pow(<span class="code-number">2</span>, <span class="code-number">10</span>)); <span class="code-comment">// 2 in power 10 = 1024</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are more functions and constants in Math object, including trigonometry, which you can find in the docs for the Math object.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h4>Summary</h4>
+                    <p>To write numbers with many zeroes:</p>
+                    <ul class="list-section">
+                        <li>Append "e" with the zeroes count to the number. Like: 123e6 is the same as 123 with 6 zeroes 123000000.</li>
+                        <li>A negative number after "e" causes the number to be divided by 1 with given zeroes. E.g. 123e-6 means 0.000123 (123 millionths).</li>
+                    </ul>
+                    
+                    <p>For different numeral systems:</p>
+                    <ul class="list-section">
+                        <li>Can write numbers directly in hex (0x), octal (0o) and binary (0b) systems.</li>
+                        <li>parseInt(str, base) parses the string str into an integer in numeral system with given base, 2 ≤ base ≤ 36.</li>
+                        <li>num.toString(base) converts a number to a string in the numeral system with the given base.</li>
+                    </ul>
+                    
+                    <p>For regular number tests:</p>
+                    <ul class="list-section">
+                        <li>isNaN(value) converts its argument to a number and then tests it for being NaN</li>
+                        <li>Number.isNaN(value) checks whether its argument belongs to the number type, and if so, tests it for being NaN</li>
+                        <li>isFinite(value) converts its argument to a number and then tests it for not being NaN/Infinity/-Infinity</li>
+                        <li>Number.isFinite(value) checks whether its argument belongs to the number type, and if so, tests it for not being NaN/Infinity/-Infinity</li>
+                    </ul>
+                    
+                    <p>For converting values like 12pt and 100px to a number:</p>
+                    <ul class="list-section">
+                        <li>Use parseInt/parseFloat for the "soft" conversion, which reads a number from a string and then returns the value they could read before the error.</li>
+                    </ul>
+                    
+                    <p>For fractions:</p>
+                    <ul class="list-section">
+                        <li>Round using Math.floor, Math.ceil, Math.trunc, Math.round or num.toFixed(precision).</li>
+                        <li>Make sure to remember there's a loss of precision when working with fractions.</li>
+                    </ul>
+                    
+                    <p>More mathematical functions:</p>
+                    <ul class="list-section">
+                        <li>See the Math object when you need them. The library is very small but can cover basic needs.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Strings Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Strings</h1>
+                <p class="slide-subtitle">Working with text in JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>In JavaScript, the textual data is stored as strings. There is no separate type for a single character.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The internal format for strings is always UTF-16, it is not tied to the page encoding.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Quotes</h3>
+                    <p>Let's recall the kinds of quotes.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Strings can be enclosed within either single quotes, double quotes or backticks:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> single = <span class="code-string">'single-quoted'</span>;<br>
+                        <span class="code-keyword">let</span> double = <span class="code-string">"double-quoted"</span>;<br><br>
+                        <span class="code-keyword">let</span> backticks = <span class="code-string">`backticks`</span>;
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Single and double quotes are essentially the same. Backticks, however, allow us to embed any expression into the string, by wrapping it in ${…}:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">function</span> <span class="code-function">sum</span>(a, b) {<br>
+                        &nbsp;&nbsp;<span class="code-keyword">return</span> a + b;<br>
+                        }<br><br>
+                        alert(<span class="code-string">`1 + 2 = ${sum(1, 2)}.`</span>); <span class="code-comment">// 1 + 2 = 3.</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Another advantage of using backticks is that they allow a string to span multiple lines:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> guestList = <span class="code-string">`Guests:<br>
+                         * John<br>
+                         * Pete<br>
+                         * Mary<br>
+                        `</span>;<br><br>
+                        alert(guestList); <span class="code-comment">// a list of guests, multiple lines</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Looks natural, right? But single or double quotes do not work this way.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>If we use them and try to use multiple lines, there'll be an error:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> guestList = <span class="code-string">"Guests: // Error: Unexpected token ILLEGAL<br>
+                          * John"</span>;
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Single and double quotes come from ancient times of language creation, when the need for multiline strings was not taken into account. Backticks appeared much later and thus are more versatile.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Backticks also allow us to specify a "template function" before the first backtick. The syntax is: func`string`. The function func is called automatically, receives the string and embedded expressions and can process them. This feature is called "tagged templates", it's rarely seen, but you can read about it in the MDN: Template literals.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Special characters -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Special characters</h1>
+                <p class="slide-subtitle">Escape sequences in strings</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>It is still possible to create multiline strings with single and double quotes by using a so-called "newline character", written as \n, which denotes a line break:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> guestList = <span class="code-string">"Guests:\n * John\n * Pete\n * Mary"</span>;<br><br>
+                        alert(guestList); <span class="code-comment">// a multiline list of guests, same as above</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>As a simpler example, these two lines are equal, just written differently:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str1 = <span class="code-string">"Hello\nWorld"</span>; <span class="code-comment">// two lines using a "newline symbol"</span><br><br>
+                        <span class="code-comment">// two lines using a normal newline and backticks</span><br>
+                        <span class="code-keyword">let</span> str2 = <span class="code-string">`Hello<br>
+                        World`</span>;<br><br>
+                        alert(str1 == str2); <span class="code-comment">// true</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are other, less common special characters:</p>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>\n</td>
+                                <td>New line</td>
+                            </tr>
+                            <tr>
+                                <td>\r</td>
+                                <td>In Windows text files a combination of two characters \r\n represents a new break, while on non-Windows OS it's just \n. That's for historical reasons, most Windows software also understands \n.</td>
+                            </tr>
+                            <tr>
+                                <td>\', \", \`</td>
+                                <td>Quotes</td>
+                            </tr>
+                            <tr>
+                                <td>\\</td>
+                                <td>Backslash</td>
+                            </tr>
+                            <tr>
+                                <td>\t</td>
+                                <td>Tab</td>
+                            </tr>
+                            <tr>
+                                <td>\b, \f, \v</td>
+                                <td>Backspace, Form Feed, Vertical Tab – mentioned for completeness, coming from old times, not used nowadays (you can forget them right now).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-section">
+                    <p>As you can see, all special characters start with a backslash character \. It is also called an "escape character".</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Because it's so special, if we need to show an actual backslash \ within the string, we need to double it:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">`The backslash: \\`</span>); <span class="code-comment">// The backslash: \</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>So-called "escaped" quotes \', \", \` are used to insert a quote into the same-quoted string.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">'I\'m the Walrus!'</span>); <span class="code-comment">// I'm the Walrus!</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>As you can see, we have to prepend the inner quote by the backslash \', because otherwise it would indicate the string end.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Of course, only the quotes that are the same as the enclosing ones need to be escaped. So, as a more elegant solution, we could switch to double quotes or backticks instead:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">"I'm the Walrus!"</span>); <span class="code-comment">// I'm the Walrus!</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Besides these special characters, there's also a special notation for Unicode codes \u…, it's rarely used and is covered in the optional chapter about Unicode.</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: String length and accessing characters -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">String length and accessing characters</h1>
+                <p class="slide-subtitle">Working with individual characters</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>String length</h3>
+                    <p>The length property has the string length:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">`My\n`</span>.length); <span class="code-comment">// 3</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Note that \n is a single "special" character, so the length is indeed 3.</p>
+                </div>
+                
+                <div class="warning-box">
+                    <p><strong>length is a property</strong></p>
+                    <p>People with a background in some other languages sometimes mistype by calling str.length() instead of just str.length. That doesn't work.</p>
+                    <p>Please note that str.length is a numeric property, not a function. There is no need to add parenthesis after it. Not .length(), but .length.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Accessing characters</h3>
+                    <p>To get a character at position pos, use square brackets [pos] or call the method str.at(pos). The first character starts from the zero position:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">`Hello`</span>;<br><br>
+                        <span class="code-comment">// the first character</span><br>
+                        alert(str[<span class="code-number">0</span>]); <span class="code-comment">// H</span><br>
+                        alert(str.at(<span class="code-number">0</span>)); <span class="code-comment">// H</span><br><br>
+                        <span class="code-comment">// the last character</span><br>
+                        alert(str[str.length - <span class="code-number">1</span>]); <span class="code-comment">// o</span><br>
+                        alert(str.at(-<span class="code-number">1</span>)); <span class="code-comment">// o</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>As you can see, the .at(pos) method has a benefit of allowing negative position. If pos is negative, then it's counted from the end of the string.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>So .at(-1) means the last character, and .at(-2) is the one before it, etc.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The square brackets always return undefined for negative indexes, for instance:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">`Hello`</span>;<br><br>
+                        alert(str[-<span class="code-number">2</span>]); <span class="code-comment">// undefined</span><br>
+                        alert(str.at(-<span class="code-number">2</span>)); <span class="code-comment">// l</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can also iterate over characters using for..of:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">for</span> (<span class="code-keyword">let</span> char <span class="code-keyword">of</span> <span class="code-string">"Hello"</span>) {<br>
+                        &nbsp;&nbsp;alert(char); <span class="code-comment">// H,e,l,l,o (char becomes "H", then "e", then "l" etc)</span><br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Strings are immutable</h3>
+                    <p>Strings can't be changed in JavaScript. It is impossible to change a character.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Let's try it to show that it doesn't work:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">'Hi'</span>;<br><br>
+                        str[<span class="code-number">0</span>] = <span class="code-string">'h'</span>; <span class="code-comment">// error</span><br>
+                        alert(str[<span class="code-number">0</span>]); <span class="code-comment">// doesn't work</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The usual workaround is to create a whole new string and assign it to str instead of the old one.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">'Hi'</span>;<br><br>
+                        str = <span class="code-string">'h'</span> + str[<span class="code-number">1</span>]; <span class="code-comment">// replace the string</span><br><br>
+                        alert(str); <span class="code-comment">// hi</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>In the following sections we'll see more examples of this.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Changing the case</h3>
+                    <p>Methods toLowerCase() and toUpperCase() change the case:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">'Interface'</span>.toUpperCase()); <span class="code-comment">// INTERFACE</span><br>
+                        alert(<span class="code-string">'Interface'</span>.toLowerCase()); <span class="code-comment">// interface</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Or, if we want a single character lowercased:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">'Interface'</span>[<span class="code-number">0</span>].toLowerCase()); <span class="code-comment">// 'i'</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Searching for a substring -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Searching for a substring</h1>
+                <p class="slide-subtitle">Finding text within strings</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>There are multiple ways to look for a substring within a string.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>str.indexOf</h3>
+                    <p>The first method is str.indexOf(substr, pos).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>It looks for the substr in str, starting from the given position pos, and returns the position where the match was found or -1 if nothing can be found.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">'Widget with id'</span>;<br><br>
+                        alert(str.indexOf(<span class="code-string">'Widget'</span>)); <span class="code-comment">// 0, because 'Widget' is found at the beginning</span><br>
+                        alert(str.indexOf(<span class="code-string">'widget'</span>)); <span class="code-comment">// -1, not found, the search is case-sensitive</span><br><br>
+                        alert(str.indexOf(<span class="code-string">"id"</span>)); <span class="code-comment">// 1, "id" is found at the position 1 (..idget with id)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The optional second parameter allows us to start searching from a given position.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance, the first occurrence of "id" is at position 1. To look for the next occurrence, let's start the search from position 2:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">'Widget with id'</span>;<br><br>
+                        alert(str.indexOf(<span class="code-string">'id'</span>, <span class="code-number">2</span>)) <span class="code-comment">// 12</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>If we're interested in all occurrences, we can run indexOf in a loop. Every new call is made with the position after the previous match:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">'As sly as a fox, as strong as an ox'</span>;<br><br>
+                        <span class="code-keyword">let</span> target = <span class="code-string">'as'</span>; <span class="code-comment">// let's look for it</span><br><br>
+                        <span class="code-keyword">let</span> pos = <span class="code-number">0</span>;<br>
+                        <span class="code-keyword">while</span> (<span class="code-keyword">true</span>) {<br>
+                        &nbsp;&nbsp;<span class="code-keyword">let</span> foundPos = str.indexOf(target, pos);<br>
+                        &nbsp;&nbsp;<span class="code-keyword">if</span> (foundPos == -<span class="code-number">1</span>) <span class="code-keyword">break</span>;<br><br>
+                        &nbsp;&nbsp;alert(<span class="code-string">`Found at ${foundPos}`</span>);<br>
+                        &nbsp;&nbsp;pos = foundPos + <span class="code-number">1</span>; <span class="code-comment">// continue the search from the next position</span><br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The same algorithm can be layed out shorter:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"As sly as a fox, as strong as an ox"</span>;<br>
+                        <span class="code-keyword">let</span> target = <span class="code-string">"as"</span>;<br><br>
+                        <span class="code-keyword">let</span> pos = -<span class="code-number">1</span>;<br>
+                        <span class="code-keyword">while</span> ((pos = str.indexOf(target, pos + <span class="code-number">1</span>)) != -<span class="code-number">1</span>) {<br>
+                        &nbsp;&nbsp;alert(pos);<br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>str.lastIndexOf(substr, position)</h3>
+                    <p>There is also a similar method str.lastIndexOf(substr, position) that searches from the end of a string to its beginning.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>It would list the occurrences in the reverse order.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There is a slight inconvenience with indexOf in the if test. We can't put it in the if like this:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"Widget with id"</span>;<br><br>
+                        <span class="code-keyword">if</span> (str.indexOf(<span class="code-string">"Widget"</span>)) {<br>
+                        &nbsp;&nbsp;alert(<span class="code-string">"We found it"</span>); <span class="code-comment">// doesn't work!</span><br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The alert in the example above doesn't show because str.indexOf("Widget") returns 0 (meaning that it found the match at the starting position). Right, but if considers 0 to be false.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>So, we should actually check for -1, like this:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"Widget with id"</span>;<br><br>
+                        <span class="code-keyword">if</span> (str.indexOf(<span class="code-string">"Widget"</span>) != -<span class="code-number">1</span>) {<br>
+                        &nbsp;&nbsp;alert(<span class="code-string">"We found it"</span>); <span class="code-comment">// works now!</span><br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>includes, startsWith, endsWith</h3>
+                    <p>The more modern method str.includes(substr, pos) returns true/false depending on whether str contains substr within.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>It's the right choice if we need to test for the match, but don't need its position:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">"Widget with id"</span>.includes(<span class="code-string">"Widget"</span>)); <span class="code-comment">// true</span><br><br>
+                        alert(<span class="code-string">"Hello"</span>.includes(<span class="code-string">"Bye"</span>)); <span class="code-comment">// false</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The optional second argument of str.includes is the position to start searching from:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">"Widget"</span>.includes(<span class="code-string">"id"</span>)); <span class="code-comment">// true</span><br>
+                        alert(<span class="code-string">"Widget"</span>.includes(<span class="code-string">"id"</span>, <span class="code-number">3</span>)); <span class="code-comment">// false, from position 3 there is no "id"</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The methods str.startsWith and str.endsWith do exactly what they say:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">"Widget"</span>.startsWith(<span class="code-string">"Wid"</span>)); <span class="code-comment">// true, "Widget" starts with "Wid"</span><br>
+                        alert(<span class="code-string">"Widget"</span>.endsWith(<span class="code-string">"get"</span>)); <span class="code-comment">// true, "Widget" ends with "get"</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Getting a substring -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Getting a substring</h1>
+                <p class="slide-subtitle">Extracting parts of strings</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>There are 3 methods in JavaScript to get a substring: substring, substr and slice.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>str.slice(start [, end])</h3>
+                    <p>Returns the part of the string from start to (but not including) end.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"stringify"</span>;<br>
+                        alert(str.slice(<span class="code-number">0</span>, <span class="code-number">5</span>)); <span class="code-comment">// 'strin', the substring from 0 to 5 (not including 5)</span><br>
+                        alert(str.slice(<span class="code-number">0</span>, <span class="code-number">1</span>)); <span class="code-comment">// 's', from 0 to 1, but not including 1, so only character at 0</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>If there is no second argument, then slice goes till the end of the string:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"stringify"</span>;<br>
+                        alert(str.slice(<span class="code-number">2</span>)); <span class="code-comment">// 'ringify', from the 2nd position till the end</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Negative values for start/end are also possible. They mean the position is counted from the string end:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"stringify"</span>;<br><br>
+                        <span class="code-comment">// start at the 4th position from the right, end at the 1st from the right</span><br>
+                        alert(str.slice(-<span class="code-number">4</span>, -<span class="code-number">1</span>)); <span class="code-comment">// 'gif'</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>str.substring(start [, end])</h3>
+                    <p>Returns the part of the string between start and end (not including end).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>This is almost the same as slice, but it allows start to be greater than end (in this case it simply swaps start and end values).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"stringify"</span>;<br><br>
+                        <span class="code-comment">// these are same for substring</span><br>
+                        alert(str.substring(<span class="code-number">2</span>, <span class="code-number">6</span>)); <span class="code-comment">// "ring"</span><br>
+                        alert(str.substring(<span class="code-number">6</span>, <span class="code-number">2</span>)); <span class="code-comment">// "ring"</span><br><br>
+                        <span class="code-comment">// ...but not for slice:</span><br>
+                        alert(str.slice(<span class="code-number">2</span>, <span class="code-number">6</span>)); <span class="code-comment">// "ring" (the same)</span><br>
+                        alert(str.slice(<span class="code-number">6</span>, <span class="code-number">2</span>)); <span class="code-comment">// "" (an empty string)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Negative arguments are (unlike slice) not supported, they are treated as 0.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>str.substr(start [, length])</h3>
+                    <p>Returns the part of the string from start, with the given length.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In contrast with the previous methods, this one allows us to specify the length instead of the ending position:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"stringify"</span>;<br>
+                        alert(str.substr(<span class="code-number">2</span>, <span class="code-number">4</span>)); <span class="code-comment">// 'ring', from the 2nd position get 4 characters</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The first argument may be negative, to count from the end:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">"stringify"</span>;<br>
+                        alert(str.substr(-<span class="code-number">4</span>, <span class="code-number">2</span>)); <span class="code-comment">// 'gi', from the 4th position get 2 characters</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>This method resides in the Annex B of the language specification. It means that only browser-hosted Javascript engines should support it, and it's not recommended to use it. In practice, it's supported everywhere.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Let's recap these methods to avoid any confusion:</p>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>method</th>
+                                <th>selects…</th>
+                                <th>negatives</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>slice(start, end)</td>
+                                <td>from start to end (not including end)</td>
+                                <td>allows negatives</td>
+                            </tr>
+                            <tr>
+                                <td>substring(start, end)</td>
+                                <td>between start and end (not including end)</td>
+                                <td>negative values mean 0</td>
+                            </tr>
+                            <tr>
+                                <td>substr(start, length)</td>
+                                <td>from start get length characters</td>
+                                <td>allows negative start</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Which one to choose?</h3>
+                    <p>All of them can do the job. Formally, substr has a minor drawback: it is described not in the core JavaScript specification, but in Annex B, which covers browser-only features that exist mainly for historical reasons. So, non-browser environments may fail to support it. But in practice it works everywhere.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Of the other two variants, slice is a little bit more flexible, it allows negative arguments and shorter to write.</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>So, for practical use it's enough to remember only slice.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Comparing strings -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Comparing strings</h1>
+                <p class="slide-subtitle">How string comparison works</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>As we know from the chapter Comparisons, strings are compared character-by-character in alphabetical order.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Although, there are some oddities.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>A lowercase letter is always greater than the uppercase:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">'a'</span> > <span class="code-string">'Z'</span>); <span class="code-comment">// true</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Letters with diacritical marks are "out of order":</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">'Österreich'</span> > <span class="code-string">'Zealand'</span>); <span class="code-comment">// true</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>This may lead to strange results if we sort these country names. Usually people would expect Zealand to come after Österreich in the list.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>To understand what happens, we should be aware that strings in Javascript are encoded using UTF-16. That is: each character has a corresponding numeric code.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are special methods that allow to get the character for the code and back:</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>str.codePointAt(pos)</h3>
+                    <p>Returns a decimal number representing the code for the character at position pos:</p>
+                    <div class="code-example">
+                        <span class="code-comment">// different case letters have different codes</span><br>
+                        alert(<span class="code-string">"Z"</span>.codePointAt(<span class="code-number">0</span>)); <span class="code-comment">// 90</span><br>
+                        alert(<span class="code-string">"z"</span>.codePointAt(<span class="code-number">0</span>)); <span class="code-comment">// 122</span><br>
+                        alert(<span class="code-string">"z"</span>.codePointAt(<span class="code-number">0</span>).toString(<span class="code-number">16</span>)); <span class="code-comment">// 7a (if we need a hexadecimal value)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>String.fromCodePoint(code)</h3>
+                    <p>Creates a character by its numeric code</p>
+                    <div class="code-example">
+                        alert(String.fromCodePoint(<span class="code-number">90</span>)); <span class="code-comment">// Z</span><br>
+                        alert(String.fromCodePoint(<span class="code-number">0x5a</span>)); <span class="code-comment">// Z (we can also use a hex value as an argument)</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Now let's see the characters with codes 65..220 (the latin alphabet and a little bit extra) by making a string of them:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> str = <span class="code-string">''</span>;<br><br>
+                        <span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-number">65</span>; i <= <span class="code-number">220</span>; i++) {<br>
+                        &nbsp;&nbsp;str += String.fromCodePoint(i);<br>
+                        }<br>
+                        alert(str);<br>
+                        <span class="code-comment">// Output:</span><br>
+                        <span class="code-comment">// ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</span><br>
+                        <span class="code-comment">// ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜ</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>See? Capital characters go first, then a few special ones, then lowercase characters, and Ö near the end of the output.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Now it becomes obvious why a > Z.</p>
+                    <ul class="list-section">
+                        <li>The characters are compared by their numeric code. The greater code means that the character is greater. The code for a (97) is greater than the code for Z (90).</li>
+                        <li>All lowercase letters go after uppercase letters because their codes are greater.</li>
+                        <li>Some letters like Ö stand apart from the main alphabet. Here, its code is greater than anything from a to z.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Correct comparisons</h3>
+                    <p>The "right" algorithm to do string comparisons is more complex than it may seem, because alphabets are different for different languages.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>So, the browser needs to know the language to compare.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Luckily, modern browsers support the internationalization standard ECMA-402.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>It provides a special method to compare strings in different languages, following their rules.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The call str.localeCompare(str2) returns an integer indicating whether str is less, equal or greater than str2 according to the language rules:</p>
+                    <ul class="list-section">
+                        <li>Returns a negative number if str is less than str2.</li>
+                        <li>Returns a positive number if str is greater than str2.</li>
+                        <li>Returns 0 if they are equivalent.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">'Österreich'</span>.localeCompare(<span class="code-string">'Zealand'</span>)); <span class="code-comment">// -1</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>This method actually has two additional arguments specified in the documentation, which allows it to specify the language (by default taken from the environment, letter order depends on the language) and setup additional rules like case sensitivity or should "a" and "á" be treated as the same etc.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: String Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">String Summary</h1>
+                <p class="slide-subtitle">Complete overview of string methods</p>
+            </div>
+            <div class="slide-content">
+                <div class="info-card">
+                    <h4>Summary</h4>
+                    <ul class="list-section">
+                        <li>There are 3 types of quotes. Backticks allow a string to span multiple lines and embed expressions ${…}.</li>
+                        <li>We can use special characters, such as a line break \n.</li>
+                        <li>To get a character, use: [] or at method.</li>
+                        <li>To get a substring, use: slice or substring.</li>
+                        <li>To lowercase/uppercase a string, use: toLowerCase/toUpperCase.</li>
+                        <li>To look for a substring, use: indexOf, or includes/startsWith/endsWith for simple checks.</li>
+                        <li>To compare strings according to the language, use: localeCompare, otherwise they are compared by character codes.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>There are several other helpful methods in strings:</p>
+                    <ul class="list-section">
+                        <li>str.trim() – removes ("trims") spaces from the beginning and end of the string.</li>
+                        <li>str.repeat(n) – repeats the string n times.</li>
+                        <li>…and more to be found in the manual.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>Strings also have methods for doing search/replace with regular expressions. But that's big topic, so it's explained in a separate tutorial section Regular expressions.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Also, as of now it's important to know that strings are based on Unicode encoding, and hence there're issues with comparisons. There's more about Unicode in the chapter Unicode, String internals.</p>
+                </div>
+                
+                <div class="success-box">
+                    <p>Congratulations! You've completed the comprehensive guide to JavaScript Primitives: Methods, Numbers, and Strings. Keep practicing and exploring these concepts to become a JavaScript expert!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        JavaScript Primitives: Methods, Numbers, and Strings - Complete Guide
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.getElementById('topBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('downBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Progress bar functionality
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Add fade-in animation to slides when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px",
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(20px)';
+            slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(slide);
+        });
+    </script>
+</body>
+</html>

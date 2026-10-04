@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Arrays - Complete Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 15px;
+        }
+
+        .slide-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #5f6368;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-section {
+            margin-bottom: 20px;
+        }
+
+        .text-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .text-section p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-section {
+            margin-bottom: 20px;
+        }
+
+        .list-section ul {
+            padding-left: 25px;
+        }
+
+        .list-section li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        .highlight-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #0d47a1;
+            transform: scale(1.1);
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: #1a73e8;
+            z-index: 101;
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5f6368;
+            font-size: 0.9rem;
+        }
+
+        .info-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .code-example {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Source Code Pro', monospace;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #008000;
+        }
+
+        .code-keyword {
+            color: #0000ff;
+        }
+
+        .code-string {
+            color: #a31515;
+        }
+
+        .code-number {
+            color: #098658;
+        }
+
+        .code-function {
+            color: #795e26;
+        }
+
+        .warning-box {
+            background-color: #fef7e0;
+            border-left: 4px solid #f9ab00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .error-box {
+            background-color: #fce8e6;
+            border-left: 4px solid #d93025;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background-color: #e6f4ea;
+            border-left: 4px solid #34a853;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #e1e8ed;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .performance-comparison {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .performance-item {
+            flex: 1;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .performance-item.fast {
+            border-left: 4px solid #34a853;
+        }
+
+        .performance-item.slow {
+            border-left: 4px solid #d93025;
+        }
+
+        .performance-item h4 {
+            margin-bottom: 10px;
+        }
+
+        .performance-item.fast h4 {
+            color: #34a853;
+        }
+
+        .performance-item.slow h4 {
+            color: #d93025;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+
+            .slide-title {
+                font-size: 1.8rem;
+            }
+
+            .two-column {
+                flex-direction: column;
+            }
+
+            .navigation {
+                bottom: 20px;
+                top: auto;
+                flex-direction: row;
+            }
+            
+            .performance-comparison {
+                flex-direction: column;
+            }
+            
+            .performance-item {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-indicator" id="progressBar"></div>
+    
+    <div class="navigation">
+        <button class="nav-btn" id="topBtn" title="Go to top">↑</button>
+        <button class="nav-btn" id="downBtn" title="Go to bottom">↓</button>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Arrays Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Arrays</h1>
+                <p class="slide-subtitle">Ordered collections in JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <div class="image-container">
+                    <img src="./2.png" alt="JavaScript Arrays">
+                </div>
+                <div class="text-section">
+                    <p>Objects allow you to store keyed collections of values. That's fine.</p>
+                    <p>But quite often we find that we need an ordered collection, where we have a 1st, a 2nd, a 3rd element and so on. For example, we need that to store a list of something: users, goods, HTML elements etc.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>It is not convenient to use an object here, because it provides no methods to manage the order of elements. We can't insert a new property "between" the existing ones. Objects are just not meant for such use.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There exists a special data structure named Array, to store ordered collections.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Declaration</h3>
+                    <p>There are two syntaxes for creating an empty array:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = <span class="code-keyword">new</span> Array();<br>
+                        <span class="code-keyword">let</span> arr = [];
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Almost all the time, the second syntax is used. We can supply initial elements in the brackets:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Array elements are numbered, starting with zero.</p>
+                    <p>We can get an element by its number in square brackets:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];<br><br>
+                        alert(fruits[<span class="code-number">0</span>]); <span class="code-comment">// Apple</span><br>
+                        alert(fruits[<span class="code-number">1</span>]); <span class="code-comment">// Orange</span><br>
+                        alert(fruits[<span class="code-number">2</span>]); <span class="code-comment">// Plum</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can replace an element:</p>
+                    <div class="code-example">
+                        fruits[<span class="code-number">2</span>] = <span class="code-string">'Pear'</span>; <span class="code-comment">// now ["Apple", "Orange", "Pear"]</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>...Or add a new one to the array:</p>
+                    <div class="code-example">
+                        fruits[<span class="code-number">3</span>] = <span class="code-string">'Lemon'</span>; <span class="code-comment">// now ["Apple", "Orange", "Pear", "Lemon"]</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The total count of the elements in the array is its length:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];<br><br>
+                        alert(fruits.length); <span class="code-comment">// 3</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can also use alert to show the whole array.</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];<br><br>
+                        alert(fruits); <span class="code-comment">// Apple,Orange,Plum</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Array Types and Trailing Comma -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Array Types and Trailing Comma</h1>
+                <p class="slide-subtitle">Working with different data types and syntax</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>An array can store elements of any type.</p>
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        <span class="code-comment">// mix of values</span><br>
+                        <span class="code-keyword">let</span> arr = [<span class="code-string">'Apple'</span>, { name: <span class="code-string">'John'</span> }, <span class="code-keyword">true</span>, <span class="code-keyword">function</span>() { alert(<span class="code-string">'hello'</span>); }];<br><br>
+                        <span class="code-comment">// get the object at index 1 and then show its name</span><br>
+                        alert(arr[<span class="code-number">1</span>].name); <span class="code-comment">// John</span><br><br>
+                        <span class="code-comment">// get the function at index 3 and run it</span><br>
+                        arr[<span class="code-number">3</span>](); <span class="code-comment">// hello</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Trailing comma</h3>
+                    <p>An array, just like an object, may end with a comma:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<br>
+                        &nbsp;&nbsp;<span class="code-string">"Apple"</span>,<br>
+                        &nbsp;&nbsp;<span class="code-string">"Orange"</span>,<br>
+                        &nbsp;&nbsp;<span class="code-string">"Plum"</span>,<br>
+                        ];
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The "trailing comma" style makes it easier to insert/remove items, because all lines become alike.</p>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>This style is particularly useful in version control systems (like Git), as it reduces the number of lines that change when adding or removing items from the array.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Get last elements with "at" -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Get last elements with "at"</h1>
+                <p class="slide-subtitle">A recent addition to JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <div class="warning-box">
+                    <p>This is a recent addition to the language. Old browsers may need polyfills.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Let's say we want the last element of the array.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Some programming languages allow the use of negative indexes for the same purpose, like fruits[-1].</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>However, in JavaScript it won't work. The result will be undefined, because the index in square brackets is treated literally.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can explicitly calculate the last element index and then access it: fruits[fruits.length - 1].</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];<br><br>
+                        alert(fruits[fruits.length-<span class="code-number">1</span>]); <span class="code-comment">// Plum</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>A bit cumbersome, isn't it? We need to write the variable name twice.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Luckily, there's a shorter syntax: fruits.at(-1):</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];<br><br>
+                        <span class="code-comment">// same as fruits[fruits.length-1]</span><br>
+                        alert(fruits.at(-<span class="code-number">1</span>)); <span class="code-comment">// Plum</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>In other words, arr.at(i):</p>
+                    <ul class="list-section">
+                        <li>is exactly the same as arr[i], if i >= 0.</li>
+                        <li>for negative values of i, it steps back from the end of the array.</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>The at() method provides a more intuitive way to access elements from the end of an array without having to manually calculate the index.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Methods pop/push, shift/unshift -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Methods pop/push, shift/unshift</h1>
+                <p class="slide-subtitle">Working with array elements</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>A queue is one of the most common uses of an array. In computer science, this means an ordered collection of elements which supports two operations:</p>
+                    <ul class="list-section">
+                        <li>push appends an element to the end.</li>
+                        <li>shift get an element from the beginning, advancing the queue, so that the 2nd element becomes the 1st.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>Arrays support both operations.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In practice we need it very often. For example, a queue of messages that need to be shown on-screen.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>There's another use case for arrays – the data structure named stack.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>It supports two operations:</p>
+                    <ul class="list-section">
+                        <li>push adds an element to the end.</li>
+                        <li>pop takes an element from the end.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-section">
+                    <p>So new elements are added or taken always from the "end".</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>A stack is usually illustrated as a pack of cards: new cards are added to the top or taken from the top.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For stacks, the latest pushed item is received first, that's also called LIFO (Last-In-First-Out) principle. For queues, we have FIFO (First-In-First-Out).</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Arrays in JavaScript can work both as a queue and as a stack. They allow you to add/remove elements, both to/from the beginning or the end.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>In computer science, the data structure that allows this, is called deque.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Methods that work with the end of the array:</h3>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>pop</strong></p>
+                    <p>Extracts the last element of the array and returns it:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Pear"</span>];<br><br>
+                        alert(fruits.pop()); <span class="code-comment">// remove "Pear" and alert it</span><br><br>
+                        alert(fruits); <span class="code-comment">// Apple, Orange</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Both fruits.pop() and fruits.at(-1) return the last element of the array, but fruits.pop() also modifies the array by removing it.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>push</strong></p>
+                    <p>Append the element to the end of the array:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>];<br><br>
+                        fruits.push(<span class="code-string">"Pear"</span>);<br><br>
+                        alert(fruits); <span class="code-comment">// Apple, Orange, Pear</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The call fruits.push(...) is equal to fruits[fruits.length] = ....</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Methods that work with the beginning of the array:</h3>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>shift</strong></p>
+                    <p>Extracts the first element of the array and returns it:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Pear"</span>];<br><br>
+                        alert(fruits.shift()); <span class="code-comment">// remove Apple and alert it</span><br><br>
+                        alert(fruits); <span class="code-comment">// Orange, Pear</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p><strong>unshift</strong></p>
+                    <p>Add the element to the beginning of the array:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Orange"</span>, <span class="code-string">"Pear"</span>];<br><br>
+                        fruits.unshift(<span class="code-string">'Apple'</span>);<br><br>
+                        alert(fruits); <span class="code-comment">// Apple, Orange, Pear</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Methods push and unshift can add multiple elements at once:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>];<br><br>
+                        fruits.push(<span class="code-string">"Orange"</span>, <span class="code-string">"Peach"</span>);<br>
+                        fruits.unshift(<span class="code-string">"Pineapple"</span>, <span class="code-string">"Lemon"</span>);<br><br>
+                        <span class="code-comment">// ["Pineapple", "Lemon", "Apple", "Orange", "Peach"]</span><br>
+                        alert(fruits);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Internals and Performance -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Internals and Performance</h1>
+                <p class="slide-subtitle">How arrays work under the hood</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>Internals</h3>
+                    <p>An array is a special kind of object. The square brackets used to access a property arr[0] actually come from the object syntax. That's essentially the same as obj[key], where arr is the object, while numbers are used as keys.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>They extend objects providing special methods to work with ordered collections of data and also the length property. But at the core it's still an object.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Remember, there are only eight basic data types in JavaScript (see the Data types chapter for more info). Array is an object and thus behaves like an object.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance, it is copied by reference:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Banana"</span>]<br><br>
+                        <span class="code-keyword">let</span> arr = fruits; <span class="code-comment">// copy by reference (two variables reference the same array)</span><br><br>
+                        alert(arr === fruits); <span class="code-comment">// true</span><br><br>
+                        arr.push(<span class="code-string">"Pear"</span>); <span class="code-comment">// modify the array by reference</span><br><br>
+                        alert(fruits); <span class="code-comment">// Banana, Pear - 2 items now</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>...But what makes arrays really special is their internal representation. The engine tries to store its elements in the contiguous memory area, one after another, just as depicted on the illustrations in this chapter, and there are other optimizations as well, to make arrays work really fast.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>But they all break if we quit working with an array as with an "ordered collection" and start working with it as if it were a regular object.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance, technically we can do this:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = []; <span class="code-comment">// make an array</span><br><br>
+                        fruits[<span class="code-number">99999</span>] = <span class="code-number">5</span>; <span class="code-comment">// assign a property with the index far greater than its length</span><br><br>
+                        fruits.age = <span class="code-number">25</span>; <span class="code-comment">// create a property with an arbitrary name</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>That's possible, because arrays are objects at their base. We can add any properties to them.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>But the engine will see that we're working with the array as with a regular object. Array-specific optimizations are not suited for such cases and will be turned off, their benefits disappear.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The ways to misuse an array:</p>
+                    <ul class="list-section">
+                        <li>Add a non-numeric property like arr.test = 5.</li>
+                        <li>Make holes, like: add arr[0] and then arr[1000] (and nothing between them).</li>
+                        <li>Fill the array in the reverse order, like arr[1000], arr[999] and so on.</li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <p>Please think of arrays as special structures to work with the ordered data. They provide special methods for that. Arrays are carefully tuned inside JavaScript engines to work with contiguous ordered data, please use them this way. And if you need arbitrary keys, chances are high that you actually require a regular object {}.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Performance</h3>
+                    <p>Methods push/pop run fast, while shift/unshift are slow.</p>
+                </div>
+                
+                <div class="performance-comparison">
+                    <div class="performance-item fast">
+                        <h4>Fast Operations</h4>
+                        <p>push()</p>
+                        <p>pop()</p>
+                        <p>These operations work with the end of the array and don't need to reindex other elements.</p>
+                    </div>
+                    <div class="performance-item slow">
+                        <h4>Slow Operations</h4>
+                        <p>shift()</p>
+                        <p>unshift()</p>
+                        <p>These operations work with the beginning of the array and require reindexing all elements.</p>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Why is it faster to work with the end of an array than with its beginning? Let's see what happens during the execution:</p>
+                    <div class="code-example">
+                        fruits.shift(); <span class="code-comment">// take 1 element from the start</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>It's not enough to take and remove the element with the index 0. Other elements need to be renumbered as well.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The shift operation must do 3 things:</p>
+                    <ol class="list-section">
+                        <li>Remove the element with the index 0.</li>
+                        <li>Move all elements to the left, renumber them from the index 1 to 0, from 2 to 1 and so on.</li>
+                        <li>Update the length property.</li>
+                    </ol>
+                </div>
+                
+                <div class="text-section">
+                    <p>The more elements in the array, the more time to move them, more in-memory operations.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The similar thing happens with unshift: to add an element to the beginning of the array, we need first to move existing elements to the right, increasing their indexes.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>And what's with push/pop? They do not need to move anything. To extract an element from the end, the pop method cleans the index and shortens length.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The actions for the pop operation:</p>
+                    <div class="code-example">
+                        fruits.pop(); <span class="code-comment">// take 1 element from the end</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The pop method does not need to move anything, because other elements keep their indexes. That's why it's blazingly fast.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>The similar thing with the push method.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Loops -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Loops</h1>
+                <p class="slide-subtitle">Iterating over array elements</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>One of the oldest ways to cycle array items is the for loop over indexes:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Pear"</span>];<br><br>
+                        <span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-number">0</span>; i < arr.length; i++) {<br>
+                        &nbsp;&nbsp;alert(arr[i]);<br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>But for arrays there is another form of loop, for..of:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Plum"</span>];<br><br>
+                        <span class="code-comment">// iterates over array elements</span><br>
+                        <span class="code-keyword">for</span> (<span class="code-keyword">let</span> fruit <span class="code-keyword">of</span> fruits) {<br>
+                        &nbsp;&nbsp;alert(fruit);<br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>The for..of doesn't give access to the number of the current element, just its value, but in most cases that's enough. And it's shorter.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Technically, because arrays are objects, it is also possible to use for..in:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = [<span class="code-string">"Apple"</span>, <span class="code-string">"Orange"</span>, <span class="code-string">"Pear"</span>];<br><br>
+                        <span class="code-keyword">for</span> (<span class="code-keyword">let</span> key <span class="code-keyword">in</span> arr) {<br>
+                        &nbsp;&nbsp;alert(arr[key]); <span class="code-comment">// Apple, Orange, Pear</span><br>
+                        }
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>But that's actually a bad idea. There are potential problems with it:</p>
+                </div>
+                
+                <div class="text-section">
+                    <ol class="list-section">
+                        <li>The loop for..in iterates over all properties, not only the numeric ones.</li>
+                        <li>There are so-called "array-like" objects in the browser and in other environments, that look like arrays. That is, they have length and indexes properties, but they may also have other non-numeric properties and methods, which we usually don't need. The for..in loop will list them though. So if we need to work with array-like objects, then these "extra" properties can become a problem.</li>
+                        <li>The for..in loop is optimized for generic objects, not arrays, and thus is 10-100 times slower. Of course, it's still very fast. The speedup may only matter in bottlenecks. But still we should be aware of the difference.</li>
+                    </ol>
+                </div>
+                
+                <div class="error-box">
+                    <p>Generally, we shouldn't use for..in for arrays.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>A word about "length"</h3>
+                    <p>The length property automatically updates when we modify the array. To be precise, it is actually not the count of values in the array, but the greatest numeric index plus one.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance, a single element with a large index gives a big length:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> fruits = [];<br>
+                        fruits[<span class="code-number">123</span>] = <span class="code-string">"Apple"</span>;<br><br>
+                        alert(fruits.length); <span class="code-comment">// 124</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Note that we usually don't use arrays like that.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Another interesting thing about the length property is that it's writable.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>If we increase it manually, nothing interesting happens. But if we decrease it, the array is truncated. The process is irreversible, here's the example:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>, <span class="code-number">4</span>, <span class="code-number">5</span>];<br><br>
+                        arr.length = <span class="code-number">2</span>; <span class="code-comment">// truncate to 2 elements</span><br>
+                        alert(arr); <span class="code-comment">// [1, 2]</span><br><br>
+                        arr.length = <span class="code-number">5</span>; <span class="code-comment">// return length back</span><br>
+                        alert(arr[<span class="code-number">3</span>]); <span class="code-comment">// undefined: the values do not return</span>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>So, the simplest way to clear the array is: arr.length = 0;.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: new Array() and Multidimensional Arrays -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">new Array() and Multidimensional Arrays</h1>
+                <p class="slide-subtitle">Alternative array creation and nested arrays</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>new Array()</h3>
+                    <p>There is one more syntax to create an array:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = <span class="code-keyword">new</span> Array(<span class="code-string">"Apple"</span>, <span class="code-string">"Pear"</span>, <span class="code-string">"etc"</span>);
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>It's rarely used, because square brackets [] are shorter. Also, there's a tricky feature with it.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>If new Array is called with a single argument which is a number, then it creates an array without items, but with the given length.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Let's see how one can shoot themselves in the foot:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = <span class="code-keyword">new</span> Array(<span class="code-number">2</span>); <span class="code-comment">// will it create an array of [2] ?</span><br><br>
+                        alert(arr[<span class="code-number">0</span>]); <span class="code-comment">// undefined! no elements.</span><br><br>
+                        alert(arr.length); <span class="code-comment">// length 2</span>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <p>To avoid such surprises, we usually use square brackets, unless we really know what we're doing.</p>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Multidimensional arrays</h3>
+                    <p>Arrays can have items that are also arrays. We can use it for multidimensional arrays, for example to store matrices:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> matrix = [<br>
+                        &nbsp;&nbsp;[<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>],<br>
+                        &nbsp;&nbsp;[<span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">6</span>],<br>
+                        &nbsp;&nbsp;[<span class="code-number">7</span>, <span class="code-number">8</span>, <span class="code-number">9</span>]<br>
+                        ];<br><br>
+                        alert(matrix[<span class="code-number">0</span>][<span class="code-number">1</span>]); <span class="code-comment">// 2, the second value of the first inner array</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Multidimensional arrays are useful for representing grids, tables, or any data that has multiple dimensions.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>We can create arrays with any number of dimensions:</p>
+                    <div class="code-example">
+                        <span class="code-comment">// 3D array (cube)</span><br>
+                        <span class="code-keyword">let</span> cube = [<br>
+                        &nbsp;&nbsp;[<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;[<span class="code-number">1</span>, <span class="code-number">2</span>],<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;[<span class="code-number">3</span>, <span class="code-number">4</span>]<br>
+                        &nbsp;&nbsp;],<br>
+                        &nbsp;&nbsp;[<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;[<span class="code-number">5</span>, <span class="code-number">6</span>],<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;[<span class="code-number">7</span>, <span class="code-number">8</span>]<br>
+                        &nbsp;&nbsp;]<br>
+                        ];<br><br>
+                        alert(cube[<span class="code-number">1</span>][<span class="code-number">0</span>][<span class="code-number">1</span>]); <span class="code-comment">// 6</span>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p>While multidimensional arrays can be useful, be aware that deeply nested arrays can become difficult to manage. In many cases, using objects with meaningful property names might be more maintainable.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: toString and Array Comparison -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">toString and Array Comparison</h1>
+                <p class="slide-subtitle">String conversion and comparing arrays</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <h3>toString</h3>
+                    <p>Arrays have their own implementation of toString method that returns a comma-separated list of elements.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For instance:</p>
+                    <div class="code-example">
+                        <span class="code-keyword">let</span> arr = [<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>];<br><br>
+                        alert(arr); <span class="code-comment">// 1,2,3</span><br>
+                        alert(String(arr) === <span class="code-string">'1,2,3'</span>); <span class="code-comment">// true</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Also, let's try this:</p>
+                    <div class="code-example">
+                        alert([] + <span class="code-number">1</span>); <span class="code-comment">// "1"</span><br>
+                        alert([<span class="code-number">1</span>] + <span class="code-number">1</span>); <span class="code-comment">// "11"</span><br>
+                        alert([<span class="code-number">1</span>,<span class="code-number">2</span>] + <span class="code-number">1</span>); <span class="code-comment">// "1,21"</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Arrays do not have Symbol.toPrimitive, neither a viable valueOf, they implement only toString conversion, so here [] becomes an empty string, [1] becomes "1" and [1,2] becomes "1,2".</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>When the binary plus "+" operator adds something to a string, it converts it to a string as well, so the next step looks like this:</p>
+                    <div class="code-example">
+                        alert(<span class="code-string">""</span> + <span class="code-number">1</span>); <span class="code-comment">// "1"</span><br>
+                        alert(<span class="code-string">"1"</span> + <span class="code-number">1</span>); <span class="code-comment">// "11"</span><br>
+                        alert(<span class="code-string">"1,2"</span> + <span class="code-number">1</span>); <span class="code-comment">// "1,21"</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <h3>Don't compare arrays with ==</h3>
+                    <p>Arrays in JavaScript, unlike some other programming languages, shouldn't be compared with operator ==.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>This operator has no special treatment for arrays, it works with them as with any objects.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Let's recall the rules:</p>
+                    <ol class="list-section">
+                        <li>Two objects are equal == only if they're references to the same object.</li>
+                        <li>If one of the arguments of == is an object, and the other one is a primitive, then the object gets converted to primitive, as explained in the chapter Object to primitive conversion.</li>
+                        <li>…With an exception of null and undefined that equal == each other and nothing else.</li>
+                    </ol>
+                </div>
+                
+                <div class="text-section">
+                    <p>The strict comparison === is even simpler, as it doesn't convert types.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>So, if we compare arrays with ==, they are never the same, unless we compare two variables that reference exactly the same array.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>For example:</p>
+                    <div class="code-example">
+                        alert([] == []); <span class="code-comment">// false</span><br>
+                        alert([<span class="code-number">0</span>] == [<span class="code-number">0</span>]); <span class="code-comment">// false</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>These arrays are technically different objects. So they aren't equal. The == operator doesn't do item-by-item comparison.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Comparison with primitives may give seemingly strange results as well:</p>
+                    <div class="code-example">
+                        alert(<span class="code-number">0</span> == []); <span class="code-comment">// true</span><br><br>
+                        alert(<span class="code-string">'0'</span> == []); <span class="code-comment">// false</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>Here, in both cases, we compare a primitive with an array object. So the array [] gets converted to primitive for the purpose of comparison and becomes an empty string ''.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>Then the comparison process goes on with the primitives, as described in the chapter Type Conversions:</p>
+                    <div class="code-example">
+                        <span class="code-comment">// after [] was converted to ''</span><br>
+                        alert(<span class="code-number">0</span> == <span class="code-string">''</span>); <span class="code-comment">// true, as '' becomes converted to number 0</span><br><br>
+                        alert(<span class="code-string">'0'</span> == <span class="code-string">''</span>); <span class="code-comment">// false, no type conversion, different strings</span>
+                    </div>
+                </div>
+                
+                <div class="text-section">
+                    <p>So, how to compare arrays?</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>That's simple: don't use the == operator. Instead, compare them item-by-item in a loop or using iteration methods explained in the next chapter.</p>
+                </div>
+                
+                <div class="error-box">
+                    <p>Never use == or === to compare arrays. They will only return true if they reference the exact same array object in memory.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Summary</h1>
+                <p class="slide-subtitle">Complete overview of JavaScript arrays</p>
+            </div>
+            <div class="slide-content">
+                <div class="info-card">
+                    <h4>Array is a special kind of object, suited to storing and managing ordered data items.</h4>
+                    
+                    <p><strong>The declaration:</strong></p>
+                    <div class="code-example">
+                        <span class="code-comment">// square brackets (usual)</span><br>
+                        <span class="code-keyword">let</span> arr = [item1, item2...];<br><br>
+                        <span class="code-comment">// new Array (exceptionally rare)</span><br>
+                        <span class="code-keyword">let</span> arr = <span class="code-keyword">new</span> Array(item1, item2...);
+                    </div>
+                    
+                    <p>The call to new Array(number) creates an array with the given length, but without elements.</p>
+                    
+                    <p><strong>The length property</strong> is the array length or, to be precise, its last numeric index plus one. It is auto-adjusted by array methods.</p>
+                    <ul class="list-section">
+                        <li>If we shorten length manually, the array is truncated.</li>
+                    </ul>
+                    
+                    <p><strong>Getting the elements:</strong></p>
+                    <ul class="list-section">
+                        <li>we can get element by its index, like arr[0]</li>
+                        <li>also we can use at(i) method that allows negative indexes. For negative values of i, it steps back from the end of the array. If i >= 0, it works same as arr[i].</li>
+                    </ul>
+                    
+                    <p><strong>We can use an array as a deque with the following operations:</strong></p>
+                    <ul class="list-section">
+                        <li>push(...items) adds items to the end.</li>
+                        <li>pop() removes the element from the end and returns it.</li>
+                        <li>shift() removes the element from the beginning and returns it.</li>
+                        <li>unshift(...items) adds items to the beginning.</li>
+                    </ul>
+                    
+                    <p><strong>To loop over the elements of the array:</strong></p>
+                    <ul class="list-section">
+                        <li>for (let i=0; i<arr.length; i++) – works fastest, old-browser-compatible.</li>
+                        <li>for (let item of arr) – the modern syntax for items only,</li>
+                        <li>for (let i in arr) – never use.</li>
+                    </ul>
+                    
+                    <p><strong>To compare arrays, don't use the == operator</strong> (as well as >, < and others), as they have no special treatment for arrays. They handle them as any objects, and it's not what we usually want.</p>
+                    <p>Instead you can use for..of loop to compare arrays item-by-item.</p>
+                </div>
+                
+                <div class="text-section">
+                    <p>We will continue with arrays and study more methods to add, remove, extract elements and sort arrays in the next chapter Array methods.</p>
+                </div>
+                
+                <div class="success-box">
+                    <p>Congratulations! You've completed the comprehensive guide to JavaScript Arrays. Keep practicing and exploring these concepts to become a JavaScript expert!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        JavaScript Arrays - Complete Guide
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.getElementById('topBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('downBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Progress bar functionality
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Add fade-in animation to slides when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(20px)';
+            slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(slide);
+        });
+    </script>
+</body>
+</html>

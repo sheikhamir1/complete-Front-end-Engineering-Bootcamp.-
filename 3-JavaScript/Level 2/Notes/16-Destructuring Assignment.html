@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Destructuring Assignment</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Destructuring Assignment</h1>
+          <p class="slide-subtitle">
+            A powerful JavaScript feature for extracting values from arrays and
+            objects
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img src="./6.png" alt="JavaScript code" />
+          </div>
+          <div class="text-section">
+            <p>
+              The two most used data structures in JavaScript are
+              <strong>Object</strong> and <strong>Array</strong>.
+            </p>
+            <ul>
+              <li>
+                Objects allow us to create a single entity that stores data
+                items by key.
+              </li>
+              <li>
+                Arrays allow us to gather data items into an ordered list.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Destructuring assignment is a special syntax that allows us to
+              "unpack" arrays or objects into a bunch of variables, as sometimes
+              that's more convenient.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Array Destructuring -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Array Destructuring</h1>
+          <p class="slide-subtitle">
+            Extracting values from arrays into variables
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Basic Syntax</h3>
+            <p>
+              Here's an example of how an array is destructured into variables:
+            </p>
+            <div class="code-block">
+              <span class="code-comment"
+                >// we have an array with a name and surname</span
+              ><br />
+              <span class="code-keyword">let</span> arr = [<span
+                class="code-string"
+                >"John"</span
+              >, <span class="code-string">"Smith"</span>]<br /><br />
+              <span class="code-comment">// destructuring assignment</span
+              ><br />
+              <span class="code-comment">// sets firstName = arr[0]</span><br />
+              <span class="code-comment">// and surname = arr[1]</span><br />
+              <span class="code-keyword">let</span> [firstName, surname] =
+              arr;<br /><br />
+              alert(firstName); <span class="code-comment">// John</span><br />
+              alert(surname); <span class="code-comment">// Smith</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Combining with String Methods</h3>
+            <p>
+              It looks great when combined with split or other array-returning
+              methods:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> [firstName, surname] =
+              <span class="code-string">"John Smith"</span>.split(<span
+                class="code-string"
+                >' '</span
+              >);<br />
+              alert(firstName); <span class="code-comment">// John</span><br />
+              alert(surname); <span class="code-comment">// Smith</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              "Destructuring" does not mean "destructive". It's called
+              "destructuring assignment" because it "destructurizes" by copying
+              items into variables. However, the array itself is not modified.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Array Destructuring Advanced -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Array Destructuring Advanced</h1>
+          <p class="slide-subtitle">
+            Ignoring elements and working with iterables
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Ignoring Elements</h3>
+            <p>
+              Unwanted elements of the array can be thrown away via an extra
+              comma:
+            </p>
+            <div class="code-block">
+              <span class="code-comment">// second element is not needed</span
+              ><br />
+              <span class="code-keyword">let</span> [firstName, , title] =
+              [<span class="code-string">"Julius"</span>,
+              <span class="code-string">"Caesar"</span>,
+              <span class="code-string">"Consul"</span>,
+              <span class="code-string">"of the Roman Republic"</span
+              >];<br /><br />
+              alert(title); <span class="code-comment">// Consul</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Works with Any Iterable</h3>
+            <p>We can use it with any iterable, not only arrays:</p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> [a, b, c] =
+              <span class="code-string">"abc"</span>;
+              <span class="code-comment">// ["a", "b", "c"]</span><br />
+              <span class="code-keyword">let</span> [one, two, three] =
+              <span class="code-keyword">new</span> Set([1, 2, 3]);
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Looping with .entries()</h3>
+            <p>
+              We can use it with destructuring to loop over the keys-and-values
+              of an object:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: 30<br />
+              };<br /><br />
+              <span class="code-comment">// loop over the keys-and-values</span
+              ><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              [key, value]
+              <span class="code-keyword">of</span> Object.entries(user)) {<br />
+              &nbsp;&nbsp;alert(`${key}:${value}`);
+              <span class="code-comment">// name:John, then age:30</span><br />
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Array Destructuring Techniques -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Array Destructuring Techniques</h1>
+          <p class="slide-subtitle">
+            Swapping variables and using the rest operator
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Swap Variables Trick</h3>
+            <p>
+              There's a well-known trick for swapping values of two variables
+              using a destructuring assignment:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> guest =
+              <span class="code-string">"Jane"</span>;<br />
+              <span class="code-keyword">let</span> admin =
+              <span class="code-string">"Pete"</span>;<br /><br />
+              <span class="code-comment"
+                >// Let's swap the values: make guest=Pete, admin=Jane</span
+              ><br />
+              [guest, admin] = [admin, guest];<br /><br />
+              alert(`${guest} ${admin}`);
+              <span class="code-comment"
+                >// Pete Jane (successfully swapped!)</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>The Rest '...'</h3>
+            <p>
+              If we'd like to gather all remaining items, we can add one more
+              parameter that gets "the rest" using three dots "...":
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> [name1, name2, ...rest] =
+              [<span class="code-string">"Julius"</span>,
+              <span class="code-string">"Caesar"</span>,
+              <span class="code-string">"Consul"</span>,
+              <span class="code-string">"of the Roman Republic"</span
+              >];<br /><br />
+              <span class="code-comment"
+                >// rest is an array of items, starting from the 3rd one</span
+              ><br />
+              alert(rest[0]); <span class="code-comment">// Consul</span><br />
+              alert(rest[1]);
+              <span class="code-comment">// of the Roman Republic</span><br />
+              alert(rest.length); <span class="code-comment">// 2</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Default Values</h3>
+            <p>
+              If the array is shorter than the list of variables on the left, we
+              can provide default values using "=":
+            </p>
+            <div class="code-block">
+              <span class="code-comment">// default values</span><br />
+              <span class="code-keyword">let</span> [name =
+              <span class="code-string">"Guest"</span>, surname =
+              <span class="code-string">"Anonymous"</span>] = [<span
+                class="code-string"
+                >"Julius"</span
+              >];<br /><br />
+              alert(name);
+              <span class="code-comment">// Julius (from array)</span><br />
+              alert(surname);
+              <span class="code-comment">// Anonymous (default used)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Object Destructuring -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object Destructuring</h1>
+          <p class="slide-subtitle">
+            Extracting properties from objects into variables
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Basic Syntax</h3>
+            <p>The basic syntax is:</p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> {var1, var2} = {var1:…,
+              var2:…}
+            </div>
+            <p>For instance:</p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> options = {<br />
+              &nbsp;&nbsp;title: <span class="code-string">"Menu"</span>,<br />
+              &nbsp;&nbsp;width: 100,<br />
+              &nbsp;&nbsp;height: 200<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> {title, width, height} =
+              options;<br /><br />
+              alert(title); <span class="code-comment">// Menu</span><br />
+              alert(width); <span class="code-comment">// 100</span><br />
+              alert(height); <span class="code-comment">// 200</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Mapping Properties to Variables</h3>
+            <p>
+              If we want to assign a property to a variable with another name,
+              we can use a colon:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> options = {<br />
+              &nbsp;&nbsp;title: <span class="code-string">"Menu"</span>,<br />
+              &nbsp;&nbsp;width: 100,<br />
+              &nbsp;&nbsp;height: 200<br />
+              };<br /><br />
+              <span class="code-comment"
+                >// { sourceProperty: targetVariable }</span
+              ><br />
+              <span class="code-keyword">let</span> {width: w, height: h, title}
+              = options;<br /><br />
+              <span class="code-comment"
+                >// width -> w, height -> h, title -> title</span
+              ><br />
+              alert(title); <span class="code-comment">// Menu</span><br />
+              alert(w); <span class="code-comment">// 100</span><br />
+              alert(h); <span class="code-comment">// 200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Object Destructuring Advanced -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object Destructuring Advanced</h1>
+          <p class="slide-subtitle">Default values and the rest pattern</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Default Values</h3>
+            <p>
+              For potentially missing properties, we can set default values
+              using "=":
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> options = {<br />
+              &nbsp;&nbsp;title: <span class="code-string">"Menu"</span><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> {width = 100, height = 200,
+              title} = options;<br /><br />
+              alert(title); <span class="code-comment">// Menu</span><br />
+              alert(width); <span class="code-comment">// 100</span><br />
+              alert(height); <span class="code-comment">// 200</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>The Rest Pattern "..."</h3>
+            <p>
+              If the object has more properties than we have variables, we can
+              take some and assign the "rest" somewhere:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> options = {<br />
+              &nbsp;&nbsp;title: <span class="code-string">"Menu"</span>,<br />
+              &nbsp;&nbsp;height: 200,<br />
+              &nbsp;&nbsp;width: 100<br />
+              };<br /><br />
+              <span class="code-comment">// title = property named title</span
+              ><br />
+              <span class="code-comment"
+                >// rest = object with the rest of properties</span
+              ><br />
+              <span class="code-keyword">let</span> {title, ...rest} =
+              options;<br /><br />
+              <span class="code-comment"
+                >// now title="Menu", rest={height: 200, width: 100}</span
+              ><br />
+              alert(rest.height); <span class="code-comment">// 200</span><br />
+              alert(rest.width); <span class="code-comment">// 100</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Gotcha if There's No Let</h3>
+            <p>
+              If we want to use existing variables, we need to wrap the
+              expression in parentheses:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> title, width, height;<br /><br />
+              <span class="code-comment">// okay now</span><br />
+              ({title, width, height} = {title:
+              <span class="code-string">"Menu"</span>, width: 200, height:
+              100});<br /><br />
+              alert(title); <span class="code-comment">// Menu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Nested Destructuring -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Nested Destructuring</h1>
+          <p class="slide-subtitle">
+            Extracting values from nested objects and arrays
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If an object or an array contains other nested objects and arrays,
+              we can use more complex left-side patterns to extract deeper
+              portions.
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">let</span> options = {<br />
+              &nbsp;&nbsp;size: {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;width: 100,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;height: 200<br />
+              &nbsp;&nbsp;},<br />
+              &nbsp;&nbsp;items: [<span class="code-string">"Cake"</span>,
+              <span class="code-string">"Donut"</span>],<br />
+              &nbsp;&nbsp;extra: <span class="code-keyword">true</span><br />
+              };<br /><br />
+              <span class="code-comment"
+                >// destructuring assignment split in multiple lines for
+                clarity</span
+              ><br />
+              <span class="code-keyword">let</span> {<br />
+              &nbsp;&nbsp;size: {
+              <span class="code-comment">// put size here</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;width,<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;height<br />
+              &nbsp;&nbsp;},<br />
+              &nbsp;&nbsp;items: [item1, item2],
+              <span class="code-comment">// assign items here</span><br />
+              &nbsp;&nbsp;title = <span class="code-string">"Menu"</span>
+              <span class="code-comment"
+                >// not present in the object (default value is used)</span
+              ><br />
+              } = options;<br /><br />
+              alert(title); <span class="code-comment">// Menu</span><br />
+              alert(width); <span class="code-comment">// 100</span><br />
+              alert(height); <span class="code-comment">// 200</span><br />
+              alert(item1); <span class="code-comment">// Cake</span><br />
+              alert(item2); <span class="code-comment">// Donut</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              All properties of options object except extra which is absent in
+              the left part, are assigned to corresponding variables. Note that
+              there are no variables for size and items, as we take their
+              content instead.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Smart Function Parameters -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Smart Function Parameters</h1>
+          <p class="slide-subtitle">
+            Using destructuring with function parameters
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Problem with Many Parameters</h3>
+            <p>
+              There are times when a function has many parameters, most of which
+              are optional. Here's a bad way to write such a function:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">function</span> showMenu(title =
+              <span class="code-string">"Untitled"</span>, width = 200, height =
+              100, items = []) {<br />
+              &nbsp;&nbsp;<span class="code-comment">// ...</span><br />
+              }
+            </div>
+            <p>Calling this function with mostly default values is ugly:</p>
+            <div class="code-block">
+              <span class="code-comment"
+                >// undefined where default values are fine</span
+              ><br />
+              showMenu(<span class="code-string">"My Menu"</span>,
+              <span class="code-keyword">undefined</span>,
+              <span class="code-keyword">undefined</span>, [<span
+                class="code-string"
+                >"Item1"</span
+              >, <span class="code-string">"Item2"</span>])
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Solution with Destructuring</h3>
+            <p>
+              We can pass parameters as an object, and the function immediately
+              destructurizes them into variables:
+            </p>
+            <div class="code-block">
+              <span class="code-comment">// we pass object to function</span
+              ><br />
+              <span class="code-keyword">let</span> options = {<br />
+              &nbsp;&nbsp;title:
+              <span class="code-string">"My menu"</span>,<br />
+              &nbsp;&nbsp;items: [<span class="code-string">"Item1"</span>,
+              <span class="code-string">"Item2"</span>]<br />
+              };<br /><br />
+              <span class="code-comment"
+                >// ...and it immediately expands it to variables</span
+              ><br />
+              <span class="code-keyword">function</span> showMenu({title =
+              <span class="code-string">"Untitled"</span>, width = 200, height =
+              100, items = []}) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// title, items – taken from options,</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// width, height – defaults used</span
+              ><br />
+              &nbsp;&nbsp;alert(`${title} ${width} ${height}`);
+              <span class="code-comment">// My Menu 200 100</span><br />
+              &nbsp;&nbsp;alert(items);
+              <span class="code-comment">// Item1, Item2</span><br />
+              }<br /><br />
+              showMenu(options);
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Default Empty Object</h3>
+            <p>
+              If we want all values by default, we should specify an empty
+              object as the default value for the whole object of parameters:
+            </p>
+            <div class="code-block">
+              <span class="code-keyword">function</span> showMenu({ title =
+              <span class="code-string">"Menu"</span>, width = 100, height = 200
+              } = {}) {<br />
+              &nbsp;&nbsp;alert(`${title} ${width} ${height}`);<br />
+              }<br /><br />
+              showMenu(); <span class="code-comment">// Menu 100 200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Summary</h1>
+          <p class="slide-subtitle">
+            Key takeaways from destructuring assignment
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Object Destructuring</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> {prop : varName =
+              defaultValue, ...rest} = object
+            </div>
+            <p>
+              This means that property prop should go into the variable varName
+              and, if no such property exists, then the default value should be
+              used. Object properties that have no mapping are copied to the
+              rest object.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Array Destructuring</h3>
+            <div class="code-block">
+              <span class="code-keyword">let</span> [item1 = defaultValue,
+              item2, ...rest] = array
+            </div>
+            <p>
+              The first item goes to item1; the second goes into item2, and all
+              the rest makes the array rest.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Nested Destructuring</h3>
+            <p>
+              It's possible to extract data from nested arrays/objects. For
+              that, the left side must have the same structure as the right one.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Destructuring assignment allows for instantly mapping an object or
+              array onto many variables, making code more concise and readable.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>JavaScript Destructuring Assignment Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

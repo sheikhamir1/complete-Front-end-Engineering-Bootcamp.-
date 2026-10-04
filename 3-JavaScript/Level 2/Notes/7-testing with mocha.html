@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automated Testing with Mocha</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background-color: white;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #8d6748;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #8d6748;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #8d6748;
+        padding-bottom: 10px;
+      }
+
+      h2 {
+        color: #8d6748;
+        font-size: 2em;
+        margin-bottom: 15px;
+      }
+
+      h3 {
+        color: #8d6748;
+        font-size: 1.5em;
+        margin: 20px 0 10px;
+      }
+
+      code {
+        background-color: #f0f0f0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      pre code {
+        background: none;
+        padding: 0;
+      }
+
+      ul,
+      ol {
+        margin: 15px 0;
+        padding-left: 30px;
+      }
+
+      li {
+        margin: 8px 0;
+      }
+
+      .warning {
+        background-color: #ffe0e0;
+        border-left: 4px solid #ff0000;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .tip {
+        background-color: #e0ffe0;
+        border-left: 4px solid #00ff00;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .box {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .nav {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .nav a {
+        display: block;
+        padding: 5px;
+        color: #8d6748;
+        text-decoration: none;
+        margin: 5px 0;
+      }
+
+      .nav a:hover {
+        color: #8d6748;
+        background-color: #f0f0f0;
+      }
+
+      .emoji {
+        font-size: 1.2em;
+        margin-right: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .two-column {
+          flex-direction: column;
+        }
+
+        .nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <div class="nav">
+      <a href="#slide1">1</a>
+      <a href="#slide2">2</a>
+      <a href="#slide3">3</a>
+      <a href="#slide4">4</a>
+      <a href="#slide5">5</a>
+      <a href="#slide6">6</a>
+      <a href="#slide7">7</a>
+      <a href="#slide8">8</a>
+      <a href="#slide9">9</a>
+      <a href="#slide10">10</a>
+      <a href="#slide11">11</a>
+      <a href="#slide12">12</a>
+      <a href="#slide13">13</a>
+    </div>
+
+    <!-- Slide 1: Why Do We Need Tests? -->
+    <div class="slide" id="slide1">
+      <div class="container">
+        <h1>Why Do We Need Tests?</h1>
+
+        <p>Imagine you write a function:</p>
+
+        <pre>
+function pow(x, n) {
+  return x ** n;
+}</pre
+        >
+
+        <p>You might test it manually in the console:</p>
+
+        <pre>
+pow(2,3) // 8
+pow(3,4) // 81</pre
+        >
+
+        <div class="warning">
+          But what if you change something in your function later? You might
+          forget to check every previous case. Manual testing is error-prone and
+          slow.
+        </div>
+
+        <div class="tip">
+          Solution: Automated testing runs all the checks for you, every time
+          you change your code.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Behavior Driven Development (BDD) -->
+    <div class="slide" id="slide2">
+      <div class="container">
+        <h1>Behavior Driven Development (BDD)</h1>
+
+        <p>BDD combines tests + documentation + examples.</p>
+
+        <div class="box">
+          <h3>Key BDD Components:</h3>
+          <ul>
+            <li>
+              <strong>describe</strong> → group of tests, e.g., a function we
+              are testing
+            </li>
+            <li><strong>it</strong> → a single test case or scenario</li>
+            <li>
+              <strong>assert</strong> → checks if the actual output matches the
+              expected output
+            </li>
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Benefits of BDD:</h3>
+          <ul>
+            <li>Tests serve as documentation</li>
+            <li>Examples show how code should be used</li>
+            <li>Catches regressions automatically</li>
+            <li>Encourages better code design</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Setting Up the Testing Environment -->
+    <div class="slide" id="slide3">
+      <div class="container">
+        <h1>Setting Up the Testing Environment in the Browser</h1>
+
+        <p>We'll test a pow(x,n) function in a browser using Mocha + Chai.</p>
+
+        <div class="box">
+          <h3>Step 1: Create an HTML page</h3>
+          <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Mocha Test Demo&lt;/title&gt;
+  &lt;!-- Mocha CSS --&gt;
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.css"&gt;
+  &lt;!-- Mocha JS --&gt;
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.js"&gt;&lt;/script&gt;
+  &lt;script&gt;mocha.setup('bdd');&lt;/script&gt;
+  &lt;!-- Chai JS --&gt;
+  &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js"&gt;&lt;/script&gt;
+  &lt;script&gt;let assert = chai.assert;&lt;/script&gt;
+&lt;/head&gt;</pre
+          >
+        </div>
+
+        <div class="tip">
+          This HTML file includes Mocha for test running, Chai for assertions,
+          and sets up BDD mode.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Setting Up (continued) -->
+    <div class="slide" id="slide4">
+      <div class="container">
+        <h1>Setting Up (continued)</h1>
+
+        <div class="box">
+          <h3>Step 2: Add body content</h3>
+          <pre>
+&lt;body&gt;
+  &lt;h1&gt;Mocha Test Demo&lt;/h1&gt;
+  &lt;div id="mocha"&gt;&lt;/div&gt;
+
+  &lt;!-- Function to test --&gt;
+  &lt;script&gt;
+    function pow(x, n) {
+      // empty implementation for now
+    }
+  &lt;/script&gt;
+
+  &lt;!-- Test spec --&gt;
+  &lt;script src="test.js"&gt;&lt;/script&gt;
+
+  &lt;!-- Run tests --&gt;
+  &lt;script&gt;mocha.run();&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre
+          >
+        </div>
+
+        <div class="tip">
+          The div with id="mocha" is where test results will be displayed. The
+          function to test and the test spec are included as separate script
+          files.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Writing the First Test -->
+    <div class="slide" id="slide5">
+      <div class="container">
+        <h1>Writing the First Test (Spec)</h1>
+
+        <p>Create a test.js file:</p>
+
+        <pre>
+describe("pow", function() {
+
+  it("raises 2 to the power 3", function() {
+    assert.equal(pow(2, 3), 8);
+  });
+
+});</pre
+        >
+
+        <div class="box">
+          <h3>Explanation:</h3>
+          <ul>
+            <li>
+              <strong>describe("pow", ...)</strong> → groups all tests for the
+              pow function
+            </li>
+            <li>
+              <strong>it("raises 2 to the power 3", ...)</strong> → one test
+              case
+            </li>
+            <li>
+              <strong>assert.equal(actual, expected)</strong> → checks if the
+              function returns the expected value
+            </li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          If the function is empty, this test will fail, which is expected in
+          BDD.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Running Tests in Browser -->
+    <div class="slide" id="slide6">
+      <div class="container">
+        <h1>Running Tests in Browser</h1>
+
+        <div class="box">
+          <h3>Steps to run tests:</h3>
+          <ol>
+            <li>Open index.html in Chrome</li>
+            <li>
+              Mocha automatically shows test results in the
+              <code>&lt;div id="mocha"&gt;</code>
+            </li>
+            <li>You'll see the test fail (red), because pow is empty</li>
+          </ol>
+        </div>
+
+        <div class="box">
+          <h3>Test results:</h3>
+          <ul>
+            <li><strong>Red</strong> → Test failed</li>
+            <li><strong>Green</strong> → Test passed</li>
+            <li>Mocha shows which test failed and why</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          This "red-green" cycle is a core part of BDD: write a failing test,
+          then implement code to make it pass.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Implementing the Function -->
+    <div class="slide" id="slide7">
+      <div class="container">
+        <h1>Implementing the Function</h1>
+
+        <p>Write a dummy implementation first:</p>
+
+        <pre>
+function pow(x, n) {
+  return 8; // cheat, only works for 2^3
+}</pre
+        >
+
+        <div class="box">
+          <h3>What happens now:</h3>
+          <ul>
+            <li>The first test now passes (green)</li>
+            <li>But pow(3, 4) would fail</li>
+            <li>This is expected - we're implementing incrementally</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          This approach of writing a minimal implementation to pass the test is
+          called "Red-Green-Refactor" in TDD/BDD methodology.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Add More Tests -->
+    <div class="slide" id="slide8">
+      <div class="container">
+        <h1>Add More Tests</h1>
+
+        <pre>
+describe("pow", function() {
+
+  it("2^3 = 8", function() {
+    assert.equal(pow(2,3), 8);
+  });
+
+  it("3^4 = 81", function() {
+    assert.equal(pow(3,4), 81);
+  });
+
+});</pre
+        >
+
+        <div class="box">
+          <h3>Key points:</h3>
+          <ul>
+            <li>Each <strong>it</strong> tests one specific thing</li>
+            <li>Tests should be independent of each other</li>
+            <li>
+              When a test fails, Mocha shows exactly which test failed, making
+              debugging easy
+            </li>
+          </ul>
+        </div>
+
+        <div class="warning">
+          Our current implementation will pass the first test but fail the
+          second one. This drives us to improve the implementation.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Writing a Real Implementation -->
+    <div class="slide" id="slide9">
+      <div class="container">
+        <h1>Writing a Real Implementation</h1>
+
+        <pre>
+function pow(x, n) {
+  let result = 1;
+  for (let i = 0; i < n; i++) {
+    result *= x;
+  }
+  return result;
+}</pre
+        >
+
+        <div class="box">
+          <h3>What this does:</h3>
+          <ul>
+            <li>Starts with result = 1</li>
+            <li>Multiplies result by x, n times</li>
+            <li>Returns the final result</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          All tests now pass. ✅ This is a correct implementation for positive
+          integer powers.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Using Loops to Generate Tests -->
+    <div class="slide" id="slide10">
+      <div class="container">
+        <h1>Using Loops to Generate Tests</h1>
+
+        <p>You can generate tests dynamically for multiple inputs:</p>
+
+        <pre>
+describe("pow", function() {
+  for (let x = 1; x <= 5; x++) {
+    it(`${x}^3 = ${x*x*x}`, function() {
+      assert.equal(pow(x, 3), x*x*x);
+    });
+  }
+});</pre
+        >
+
+        <div class="box">
+          <h3>Benefits of this approach:</h3>
+          <ul>
+            <li>Checks many cases automatically</li>
+            <li>No need to write each test manually</li>
+            <li>Template literals make test descriptions clear</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          This is especially useful for testing functions with many valid input
+          combinations.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Nested describe for Organization -->
+    <div class="slide" id="slide11">
+      <div class="container">
+        <h1>Nested describe for Organization</h1>
+
+        <pre>
+describe("pow", function() {
+
+  describe("raises x to the power 3", function() {
+    for (let x = 1; x <= 5; x++) {
+      it(`${x}^3 = ${x*x*x}`, function() {
+        assert.equal(pow(x, 3), x*x*x);
+      });
+    }
+  });
+
+});</pre
+        >
+
+        <div class="box">
+          <h3>Benefits of nesting:</h3>
+          <ul>
+            <li>Helps group similar tests</li>
+            <li>Output in Mocha is indented, making it easy to read</li>
+            <li>Can apply hooks to specific groups</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          You can nest describe blocks as deeply as needed to organize your
+          tests logically.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: before/after and beforeEach/afterEach -->
+    <div class="slide" id="slide12">
+      <div class="container">
+        <h1>before/after and beforeEach/afterEach</h1>
+
+        <pre>
+describe("demo hooks", function() {
+  before(() => console.log("All tests starting"));
+  after(() => console.log("All tests finished"));
+
+  beforeEach(() => console.log("Before a test"));
+  afterEach(() => console.log("After a test"));
+
+  it("test 1", () => console.log("Running test 1"));
+  it("test 2", () => console.log("Running test 2"));
+});</pre
+        >
+
+        <div class="box">
+          <h3>Hook types:</h3>
+          <ul>
+            <li><strong>before</strong> → runs once before all tests</li>
+            <li><strong>after</strong> → runs once after all tests</li>
+            <li><strong>beforeEach</strong> → runs before every it</li>
+            <li><strong>afterEach</strong> → runs after every it</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          Hooks are useful to reset state between tests or set up/tear down
+          resources.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Adding Edge Case Tests -->
+    <div class="slide" id="slide13">
+      <div class="container">
+        <h1>Adding Edge Case Tests</h1>
+
+        <pre>
+describe("pow", function() {
+  it("negative n returns NaN", function() {
+    assert.isNaN(pow(2,-1));
+  });
+
+  it("non-integer n returns NaN", function() {
+    assert.isNaN(pow(2,1.5));
+  });
+});</pre
+        >
+
+        <div class="box">
+          <h3>Our function must now handle invalid inputs:</h3>
+          <pre>
+function pow(x, n) {
+  if (n < 0 || Math.round(n) !== n) return NaN;
+  let result = 1;
+  for (let i = 0; i < n; i++) result *= x;
+  return result;
+}</pre
+          >
+        </div>
+
+        <div class="tip">
+          Tests fail first (red), then pass after implementation (green). This
+          is BDD in action: tests first, then implementation.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Summary -->
+    <div class="slide" id="slide14">
+      <div class="container">
+        <h1>Summary</h1>
+
+        <div class="box">
+          <h3>BDD Workflow:</h3>
+          <ol>
+            <li>Write a test spec first</li>
+            <li>Implement the function to pass the test</li>
+            <li>Add more tests for other cases</li>
+          </ol>
+        </div>
+
+        <div class="box">
+          <h3>Benefits of Mocha + Chai:</h3>
+          <ul>
+            <li>Automates all tests, no manual checking</li>
+            <li>Tests act as documentation, examples, and safety checks</li>
+            <li>Use hooks (before, after, etc.) for setup/cleanup</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          BDD ensures robust, well-structured, maintainable code by making you
+          think about expected behavior before implementation.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple scroll behavior
+      document.querySelectorAll(".nav a").forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          target.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>

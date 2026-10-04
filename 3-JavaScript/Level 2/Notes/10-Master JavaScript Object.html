@@ -1,0 +1,3227 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Objects and Methods - Complete Guide</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-example {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        font-family: "Source Code Pro", monospace;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .code-number {
+        color: #098658;
+      }
+
+      .code-function {
+        color: #795e26;
+      }
+
+      .warning-box {
+        background-color: #fef7e0;
+        border-left: 4px solid #f9ab00;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .error-box {
+        background-color: #fce8e6;
+        border-left: 4px solid #d93025;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .success-box {
+        background-color: #e6f4ea;
+        border-left: 4px solid #34a853;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">↑</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">↓</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction to Objects and Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Master JavaScript Object</h1>
+          <p class="slide-subtitle">
+            Understanding the fundamentals of JavaScript objects
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://miro.medium.com/1*bgcutrYqFA7HBsIwYjPPJw.jpeg"
+              alt="JavaScript Objects"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Objects are usually created to represent entities of the real
+              world, like users, orders and so on:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: <span class="code-number">30</span><br />
+              };
+            </div>
+            <p>
+              And, in the real world, a user can act: select something from the
+              shopping cart, login, logout etc.
+            </p>
+            <p>
+              Actions are represented in JavaScript by functions in properties.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              When we write our code using objects to represent entities, that's
+              called <strong>object-oriented programming</strong>, in short:
+              "OOP".
+            </p>
+          </div>
+          <div class="text-section">
+            <p>
+              OOP is a big thing, an interesting science of its own. How to
+              choose the right entities? How to organize the interaction between
+              them? That's architecture, and there are great books on that
+              topic, like "Design Patterns: Elements of Reusable Object-Oriented
+              Software" by E. Gamma, R. Helm, R. Johnson, J. Vissides or
+              "Object-Oriented Analysis and Design with Applications" by G.
+              Booch, and more.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Method Examples -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Method Examples</h1>
+          <p class="slide-subtitle">Creating and using methods in objects</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>For a start, let's teach the user to say hello:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: <span class="code-number">30</span><br />
+              };<br /><br />
+              user.sayHi = <span class="code-keyword">function</span>() {<br />
+              &nbsp;&nbsp;alert(<span class="code-string">"Hello!"</span
+              >);<br />
+              };<br /><br />
+              user.sayHi(); <span class="code-comment">// Hello!</span>
+            </div>
+            <p>
+              Here we've just used a Function Expression to create a function
+              and assign it to the property user.sayHi of the object.
+            </p>
+            <p>Then we can call it as user.sayHi(). The user can now speak!</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              A function that is a property of an object is called its method.
+            </p>
+            <p>So, here we've got a method sayHi of the object user.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Of course, we could use a pre-declared function as a method, like
+              this:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;<span class="code-comment">// ...</span><br />
+              };<br /><br />
+              <span class="code-comment">// first, declare</span><br />
+              <span class="code-keyword">function</span>
+              <span class="code-function">sayHi</span>() {<br />
+              &nbsp;&nbsp;alert(<span class="code-string">"Hello!"</span
+              >);<br />
+              }<br /><br />
+              <span class="code-comment">// then add as a method</span><br />
+              user.sayHi = sayHi;<br /><br />
+              user.sayHi(); <span class="code-comment">// Hello!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Method Shorthand -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Method Shorthand</h1>
+          <p class="slide-subtitle">
+            Shorter syntax for methods in object literals
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              There exists a shorter syntax for methods in an object literal:
+            </p>
+            <div class="code-example">
+              <span class="code-comment">// these objects do the same</span
+              ><br /><br />
+              user = {<br />
+              &nbsp;&nbsp;sayHi: <span class="code-keyword">function</span>()
+              {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-string"
+                >"Hello"</span
+              >);<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="code-comment"
+                >// method shorthand looks better, right?</span
+              ><br />
+              user = {<br />
+              &nbsp;&nbsp;sayHi() {
+              <span class="code-comment"
+                >// same as "sayHi: function(){...}"</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-string"
+                >"Hello"</span
+              >);<br />
+              &nbsp;&nbsp;}<br />
+              };
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As demonstrated, we can omit "function" and just write sayHi().
+            </p>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              To tell the truth, the notations are not fully identical. There
+              are subtle differences related to object inheritance (to be
+              covered later), but for now they do not matter. In almost all
+              cases, the shorter syntax is preferred.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: "this" in Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">"this" in Methods</h1>
+          <p class="slide-subtitle">
+            Accessing the object from within its methods
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              It's common that an object method needs to access the information
+              stored in the object to do its job.
+            </p>
+            <p>
+              For instance, the code inside user.sayHi() may need the name of
+              the user.
+            </p>
+            <p>To access the object, a method can use the this keyword.</p>
+            <p>
+              The value of this is the object "before dot", the one used to call
+              the method.
+            </p>
+          </div>
+
+          <div class="code-example">
+            <span class="code-keyword">let</span> user = {<br />
+            &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+            &nbsp;&nbsp;age: <span class="code-number">30</span>,<br /><br />
+            &nbsp;&nbsp;sayHi() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"
+              >// "this" is the "current object"</span
+            ><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-keyword">this</span
+            >.name);<br />
+            &nbsp;&nbsp;}<br /><br />
+            };<br /><br />
+            user.sayHi(); <span class="code-comment">// John</span>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Here during the execution of user.sayHi(), the value of this will
+              be user.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Technically, it's also possible to access the object without this,
+              by referencing it via the outer variable:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: <span class="code-number">30</span>,<br /><br />
+              &nbsp;&nbsp;sayHi() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(user.name);
+              <span class="code-comment">// "user" instead of "this"</span
+              ><br />
+              &nbsp;&nbsp;}<br />
+              };
+            </div>
+          </div>
+
+          <div class="error-box">
+            <p>
+              ...But such code is unreliable. If we decide to copy user to
+              another variable, e.g. admin = user and overwrite user with
+              something else, then it will access the wrong object.
+            </p>
+          </div>
+
+          <div class="code-example">
+            <span class="code-keyword">let</span> user = {<br />
+            &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+            &nbsp;&nbsp;age: <span class="code-number">30</span>,<br /><br />
+            &nbsp;&nbsp;sayHi() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;alert(user.name);
+            <span class="code-comment">// leads to an error</span><br />
+            &nbsp;&nbsp;}<br />
+            };<br /><br />
+            <span class="code-keyword">let</span> admin = user;<br />
+            user = <span class="code-keyword">null</span>;
+            <span class="code-comment">// overwrite to make things obvious</span
+            ><br /><br />
+            admin.sayHi();
+            <span class="code-comment"
+              >// TypeError: Cannot read property 'name' of null</span
+            >
+          </div>
+
+          <div class="success-box">
+            <p>
+              If we used this.name instead of user.name inside the alert, then
+              the code would work.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: "this" is not bound -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">"this" is not bound</h1>
+          <p class="slide-subtitle">
+            Understanding the dynamic nature of "this"
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              In JavaScript, keyword this behaves unlike most other programming
+              languages. It can be used in any function, even if it's not a
+              method of an object.
+            </p>
+            <p>There's no syntax error in the following example:</p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">sayHi</span>() {<br />
+              &nbsp;&nbsp;alert(<span class="code-keyword">this</span
+              >.name);<br />
+              }
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The value of this is evaluated during the run-time, depending on
+              the context.
+            </p>
+            <p>
+              For instance, here the same function is assigned to two different
+              objects and has different "this" in the calls:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = { name:
+              <span class="code-string">"John"</span> };<br />
+              <span class="code-keyword">let</span> admin = { name:
+              <span class="code-string">"Admin"</span> };<br /><br />
+              <span class="code-keyword">function</span>
+              <span class="code-function">sayHi</span>() {<br />
+              &nbsp;&nbsp;alert(<span class="code-keyword">this</span
+              >.name);<br />
+              }<br /><br />
+              <span class="code-comment"
+                >// use the same function in two objects</span
+              ><br />
+              user.f = sayHi;<br />
+              admin.f = sayHi;<br /><br />
+              <span class="code-comment"
+                >// these calls have different this</span
+              ><br />
+              <span class="code-comment"
+                >// "this" inside the function is the object "before the
+                dot"</span
+              ><br />
+              user.f(); <span class="code-comment">// John (this == user)</span
+              ><br />
+              admin.f();
+              <span class="code-comment">// Admin (this == admin)</span
+              ><br /><br />
+              admin[<span class="code-string">'f'</span>]();
+              <span class="code-comment"
+                >// Admin (dot or square brackets access the method – doesn't
+                matter)</span
+              >
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              The rule is simple: if obj.f() is called, then this is obj during
+              the call of f. So it's either user or admin in the example above.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Calling without an object -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Calling without an object</h1>
+          <p class="slide-subtitle">
+            What happens to "this" when there's no object context
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>We can even call the function without an object at all:</p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">sayHi</span>() {<br />
+              &nbsp;&nbsp;alert(<span class="code-keyword">this</span>);<br />
+              }<br /><br />
+              sayHi(); <span class="code-comment">// undefined</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In this case this is undefined in strict mode. If we try to access
+              this.name, there will be an error.
+            </p>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              In non-strict mode the value of this in such case will be the
+              global object (window in a browser, we'll get to it later in the
+              chapter Global object). This is a historical behavior that "use
+              strict" fixes.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Usually such call is a programming error. If there's this inside a
+              function, it expects to be called in an object context.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>The consequences of unbound this</h3>
+            <p>
+              If you come from another programming language, then you are
+              probably used to the idea of a "bound this", where methods defined
+              in an object always have this referencing that object.
+            </p>
+            <p>
+              In JavaScript this is "free", its value is evaluated at call-time
+              and does not depend on where the method was declared, but rather
+              on what object is "before the dot".
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The concept of run-time evaluated this has both pluses and
+              minuses. On the one hand, a function can be reused for different
+              objects. On the other hand, the greater flexibility creates more
+              possibilities for mistakes.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Here our position is not to judge whether this language design
+              decision is good or bad. We'll understand how to work with it, how
+              to get benefits and avoid problems.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Arrow functions have no "this" -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Arrow functions have no "this"</h1>
+          <p class="slide-subtitle">
+            Special behavior of arrow functions with "this"
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Arrow functions are special: they don't have their "own" this. If
+              we reference this from such a function, it's taken from the outer
+              "normal" function.
+            </p>
+          </div>
+
+          <div class="code-example">
+            <span class="code-keyword">let</span> user = {<br />
+            &nbsp;&nbsp;firstName:
+            <span class="code-string">"Ilya"</span>,<br />
+            &nbsp;&nbsp;sayHi() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">let</span> arrow
+            = () => alert(<span class="code-keyword">this</span
+            >.firstName);<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;arrow();<br />
+            &nbsp;&nbsp;}<br />
+            };<br /><br />
+            user.sayHi(); <span class="code-comment">// Ilya</span>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, here arrow() uses this from the outer user.sayHi()
+              method.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              That's a special feature of arrow functions, it's useful when we
+              actually do not want to have a separate this, but rather to take
+              it from the outer context. Later in the chapter Arrow functions
+              revisited we'll go more deeply into arrow functions.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <h4>Summary of "this"</h4>
+            <ul class="list-section">
+              <li>
+                Functions that are stored in object properties are called
+                "methods".
+              </li>
+              <li>Methods allow objects to "act" like object.doSomething().</li>
+              <li>Methods can reference the object as this.</li>
+              <li>The value of this is defined at run-time.</li>
+              <li>
+                When a function is declared, it may use this, but that this has
+                no value until the function is called.
+              </li>
+              <li>A function can be copied between objects.</li>
+              <li>
+                When a function is called in the "method" syntax:
+                object.method(), the value of this during the call is object.
+              </li>
+              <li>
+                Please note that arrow functions are special: they have no this.
+                When this is accessed inside an arrow function, it is taken from
+                outside.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Constructor Functions Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Constructor, operator "new"</h1>
+          <p class="slide-subtitle">
+            Creating multiple similar objects efficiently
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The regular {...} syntax allows us to create one object. But often
+              we need to create many similar objects, like multiple users or
+              menu items and so on.
+            </p>
+            <p>
+              That can be done using constructor functions and the "new"
+              operator.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Constructor function</h3>
+            <p>
+              Constructor functions technically are regular functions. There are
+              two conventions though:
+            </p>
+            <ul class="list-section">
+              <li>They are named with capital letter first.</li>
+              <li>They should be executed only with "new" operator.</li>
+            </ul>
+          </div>
+
+          <div class="code-example">
+            <span class="code-keyword">function</span>
+            <span class="code-function">User</span>(name) {<br />
+            &nbsp;&nbsp;<span class="code-keyword">this</span>.name = name;<br />
+            &nbsp;&nbsp;<span class="code-keyword">this</span>.isAdmin =
+            <span class="code-keyword">false</span>;<br />
+            }<br /><br />
+            <span class="code-keyword">let</span> user =
+            <span class="code-keyword">new</span> User(<span class="code-string"
+              >"Jack"</span
+            >);<br /><br />
+            alert(user.name); <span class="code-comment">// Jack</span><br />
+            alert(user.isAdmin); <span class="code-comment">// false</span>
+          </div>
+
+          <div class="text-section">
+            <p>
+              When a function is executed with new, it does the following steps:
+            </p>
+            <ol class="list-section">
+              <li>A new empty object is created and assigned to this.</li>
+              <li>
+                The function body executes. Usually it modifies this, adds new
+                properties to it.
+              </li>
+              <li>The value of this is returned.</li>
+            </ol>
+          </div>
+
+          <div class="highlight-box">
+            <p>In other words, new User(...) does something like:</p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">User</span>(name) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// this = {}; (implicitly)</span
+              ><br /><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// add properties to this</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.name = name;<br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.isAdmin =
+              <span class="code-keyword">false</span>;<br /><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// return this; (implicitly)</span
+              ><br />
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: More on Constructors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">More on Constructor Functions</h1>
+          <p class="slide-subtitle">
+            Advanced constructor patterns and features
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>So let user = new User("Jack") gives the same result as:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"Jack"</span>,<br />
+              &nbsp;&nbsp;isAdmin: <span class="code-keyword">false</span><br />
+              };
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Now if we want to create other users, we can call new User("Ann"),
+              new User("Alice") and so on. Much shorter than using literals
+              every time, and also easy to read.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              That's the main purpose of constructors – to implement reusable
+              object creation code.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Let's note once again – technically, any function (except arrow
+              functions, as they don't have this) can be used as a constructor.
+              It can be run with new, and it will execute the algorithm above.
+              The "capital letter first" is a common agreement, to make it clear
+              that a function is to be run with new.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>new function() { … }</h3>
+            <p>
+              If we have many lines of code all about creation of a single
+              complex object, we can wrap them in an immediately called
+              constructor function, like this:
+            </p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// create a function and immediately call it with new</span
+              ><br />
+              <span class="code-keyword">let</span> user =
+              <span class="code-keyword">new function</span>() {<br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.name =
+              <span class="code-string">"John"</span>;<br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.isAdmin =
+              <span class="code-keyword">false</span>;<br /><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// ...other code for user creation</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// maybe complex logic and statements</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// local variables etc</span
+              ><br />
+              };
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              This constructor can't be called again, because it is not saved
+              anywhere, just created and called. So this trick aims to
+              encapsulate the code that constructs the single object, without
+              future reuse.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Constructor mode test -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Constructor mode test: new.target</h1>
+          <p class="slide-subtitle">Advanced stuff</p>
+        </div>
+        <div class="slide-content">
+          <div class="warning-box">
+            <p>
+              The syntax from this section is rarely used, skip it unless you
+              want to know everything.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Inside a function, we can check whether it was called with new or
+              without it, using a special new.target property.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It is undefined for regular calls and equals the function if
+              called with new:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">User</span>() {<br />
+              &nbsp;&nbsp;alert(new.target);<br />
+              }<br /><br />
+              <span class="code-comment">// without "new":</span><br />
+              User(); <span class="code-comment">// undefined</span><br /><br />
+              <span class="code-comment">// with "new":</span><br />
+              <span class="code-keyword">new</span> User();
+              <span class="code-comment">// function User { ... }</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That can be used inside the function to know whether it was called
+              with new, "in constructor mode", or without it, "in regular mode".
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              We can also make both new and regular calls to do the same, like
+              this:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">User</span>(name) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">if</span> (!new.target) {
+              <span class="code-comment">// if you run me without new</span
+              ><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword"
+                >return new</span
+              >
+              User(name);
+              <span class="code-comment">// ...I will add new for you</span
+              ><br />
+              &nbsp;&nbsp;}<br /><br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.name = name;<br />
+              }<br /><br />
+              <span class="code-keyword">let</span> john = User(<span
+                class="code-string"
+                >"John"</span
+              >); <span class="code-comment">// redirects call to new User</span
+              ><br />
+              alert(john.name); <span class="code-comment">// John</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              This approach is sometimes used in libraries to make the syntax
+              more flexible. So that people may call the function with or
+              without new, and it still works.
+            </p>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              Probably not a good thing to use everywhere though, because
+              omitting new makes it a bit less obvious what's going on. With new
+              we all know that the new object is being created.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Return from constructors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Return from constructors</h1>
+          <p class="slide-subtitle">What constructors can return</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Usually, constructors do not have a return statement. Their task
+              is to write all necessary stuff into this, and it automatically
+              becomes the result.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>But if there is a return statement, then the rule is simple:</p>
+            <ul class="list-section">
+              <li>
+                If return is called with an object, then the object is returned
+                instead of this.
+              </li>
+              <li>If return is called with a primitive, it's ignored.</li>
+            </ul>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              In other words, return with an object returns that object, in all
+              other cases this is returned.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, here return overrides this by returning an object:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">BigUser</span>() {<br /><br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.name =
+              <span class="code-string">"John"</span>;<br /><br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span> { name:
+              <span class="code-string">"Godzilla"</span> };
+              <span class="code-comment">// <-- returns this object</span><br />
+              }<br /><br />
+              alert(<span class="code-keyword">new</span> BigUser().name);
+              <span class="code-comment">// Godzilla, got that object</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              And here's an example with an empty return (or we could place a
+              primitive after it, doesn't matter):
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">SmallUser</span>() {<br /><br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.name =
+              <span class="code-string">"John"</span>;<br /><br />
+              &nbsp;&nbsp;<span class="code-keyword">return</span>;
+              <span class="code-comment">// <-- returns this</span><br />
+              }<br /><br />
+              alert(<span class="code-keyword">new</span> SmallUser().name);
+              <span class="code-comment">// John</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Usually constructors don't have a return statement. Here we
+              mention the special behavior with returning objects mainly for the
+              sake of completeness.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Omitting parentheses -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Omitting parentheses</h1>
+          <p class="slide-subtitle">Optional syntax with new operator</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>By the way, we can omit parentheses after new:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user =
+              <span class="code-keyword">new</span> User;
+              <span class="code-comment">// <-- no parentheses</span><br />
+              <span class="code-comment">// same as</span><br />
+              <span class="code-keyword">let</span> user =
+              <span class="code-keyword">new</span> User();
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              Omitting parentheses here is not considered a "good style", but
+              the syntax is permitted by specification.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Methods in constructor</h3>
+            <p>
+              Using constructor functions to create objects gives a great deal
+              of flexibility. The constructor function may have parameters that
+              define how to construct the object, and what to put in it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Of course, we can add to this not only properties, but methods as
+              well.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, new User(name) below creates an object with the
+              given name and the method sayHi:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">function</span>
+              <span class="code-function">User</span>(name) {<br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.name = name;<br /><br />
+              &nbsp;&nbsp;<span class="code-keyword">this</span>.sayHi =
+              <span class="code-keyword">function</span>() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-string"
+                >"My name is: "</span
+              >
+              + <span class="code-keyword">this</span>.name);<br />
+              &nbsp;&nbsp;};<br />
+              }<br /><br />
+              <span class="code-keyword">let</span> john =
+              <span class="code-keyword">new</span> User(<span
+                class="code-string"
+                >"John"</span
+              >);<br /><br />
+              john.sayHi();
+              <span class="code-comment">// My name is: John</span>
+            </div>
+          </div>
+
+          <div class="code-example">
+            <span class="code-comment">/*</span><br />
+            john = {<br />
+            &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+            &nbsp;&nbsp;sayHi: <span class="code-keyword">function</span>() {
+            ... }<br />
+            }<br />
+            <span class="code-comment">*/</span>
+          </div>
+
+          <div class="text-section">
+            <p>
+              To create complex objects, there's a more advanced syntax,
+              classes, that we'll cover later.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <h4>Summary of Constructors</h4>
+            <ul class="list-section">
+              <li>
+                Constructor functions or, briefly, constructors, are regular
+                functions, but there's a common agreement to name them with
+                capital letter first.
+              </li>
+              <li>
+                Constructor functions should only be called using new. Such a
+                call implies a creation of empty this at the start and returning
+                the populated one at the end.
+              </li>
+              <li>
+                We can use constructor functions to make multiple similar
+                objects.
+              </li>
+              <li>
+                JavaScript provides constructor functions for many built-in
+                language objects: like Date for dates, Set for sets and others
+                that we plan to study.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 13: Objects, we'll be back! -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Objects, we'll be back!</h1>
+          <p class="slide-subtitle">What's coming next</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              In this chapter we only cover the basics about objects and
+              constructors. They are essential for learning more about data
+              types and functions in the next chapters.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              After we learn that, we return to objects and cover them in-depth
+              in the chapters Prototypes, inheritance and Classes.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              Objects are a fundamental concept in JavaScript, and understanding
+              them thoroughly is key to becoming a proficient JavaScript
+              developer.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 14: Optional Chaining Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Optional chaining '?.'</h1>
+          <p class="slide-subtitle">A recent addition to the language</p>
+        </div>
+        <div class="slide-content">
+          <div class="warning-box">
+            <p>
+              This is a recent addition to the language. Old browsers may need
+              polyfills.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The optional chaining ?. is a safe way to access nested object
+              properties, even if an intermediate property doesn't exist.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>The "non-existing property" problem</h3>
+            <p>
+              If you've just started to read the tutorial and learn JavaScript,
+              maybe the problem hasn't touched you yet, but it's quite common.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As an example, let's say we have user objects that hold the
+              information about our users.
+            </p>
+            <p>
+              Most of our users have addresses in user.address property, with
+              the street user.address.street, but some did not provide them.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In such case, when we attempt to get user.address.street, and the
+              user happens to be without an address, we get an error:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {};
+              <span class="code-comment"
+                >// a user without "address" property</span
+              ><br /><br />
+              alert(user.address.street);
+              <span class="code-comment">// Error!</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's the expected result. JavaScript works like this. As
+              user.address is undefined, an attempt to get user.address.street
+              fails with an error.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In many practical cases we'd prefer to get undefined instead of an
+              error here (meaning "no street").
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              ...and another example. In Web development, we can get an object
+              that corresponds to a web page element using a special method
+              call, such as document.querySelector('.elem'), and it returns null
+              when there's no such element.
+            </p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// document.querySelector('.elem') is null if there's no
+                element</span
+              ><br />
+              <span class="code-keyword">let</span> html =
+              document.querySelector(<span class="code-string">'.elem'</span
+              >).innerHTML;
+              <span class="code-comment">// error if it's null</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Once again, if the element doesn't exist, we'll get an error
+              accessing .innerHTML property of null. And in some cases, when the
+              absence of the element is normal, we'd like to avoid the error and
+              just accept html = null as the result.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 15: Solutions before optional chaining -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Solutions before optional chaining</h1>
+          <p class="slide-subtitle">How we handled this problem before ?.</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>How can we do this?</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The obvious solution would be to check the value using if or the
+              conditional operator ?, before accessing its property, like this:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {};<br /><br />
+              alert(user.address ? user.address.street :
+              <span class="code-keyword">undefined</span>);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              It works, there's no error… But it's quite inelegant. As you can
+              see, the "user.address" appears twice in the code.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Here's how the same would look for document.querySelector:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> html =
+              document.querySelector(<span class="code-string">'.elem'</span>) ?
+              document.querySelector(<span class="code-string">'.elem'</span
+              >).innerHTML : <span class="code-keyword">null</span>;
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              We can see that the element search document.querySelector('.elem')
+              is actually called twice here. Not good.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For more deeply nested properties, it becomes even uglier, as more
+              repetitions are required.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>E.g. let's get user.address.street.name in a similar fashion.</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {};
+              <span class="code-comment">// user has no address</span
+              ><br /><br />
+              alert(user.address ? user.address.street ?
+              user.address.street.name :
+              <span class="code-keyword">null</span> :
+              <span class="code-keyword">null</span>);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's just awful, one may even have problems understanding such
+              code.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There's a little better way to write it, using the && operator:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {};
+              <span class="code-comment">// user has no address</span
+              ><br /><br />
+              alert(user.address && user.address.street &&
+              user.address.street.name);
+              <span class="code-comment">// undefined (no error)</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              AND'ing the whole path to the property ensures that all components
+              exist (if not, the evaluation stops), but also isn't ideal.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As you can see, property names are still duplicated in the code.
+              E.g. in the code above, user.address appears three times.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              That's why the optional chaining ?. was added to the language. To
+              solve this problem once and for all!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 16: Optional Chaining Details -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Optional Chaining Details</h1>
+          <p class="slide-subtitle">How ?. works</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The optional chaining ?. stops the evaluation if the value before
+              ?. is undefined or null and returns undefined.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Further in this article, for brevity, we'll be saying that
+              something "exists" if it's not null and not undefined.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>In other words, value?.prop:</p>
+            <ul class="list-section">
+              <li>works as value.prop, if value exists,</li>
+              <li>
+                otherwise (when value is undefined/null) it returns undefined.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>Here's the safe way to access user.address.street using ?.:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {};
+              <span class="code-comment">// user has no address</span
+              ><br /><br />
+              alert(user?.address?.street);
+              <span class="code-comment">// undefined (no error)</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>The code is short and clean, there's no duplication at all.</p>
+          </div>
+
+          <div class="text-section">
+            <p>Here's an example with document.querySelector:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> html =
+              document.querySelector(<span class="code-string">'.elem'</span
+              >)?.innerHTML;
+              <span class="code-comment"
+                >// will be undefined, if there's no element</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Reading the address with user?.address works even if user object
+              doesn't exist:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user =
+              <span class="code-keyword">null</span>;<br /><br />
+              alert(user?.address);
+              <span class="code-comment">// undefined</span><br />
+              alert(user?.address.street);
+              <span class="code-comment">// undefined</span>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              Please note: the ?. syntax makes optional the value before it, but
+              not any further.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              E.g. in user?.address.street.name the ?. allows user to safely be
+              null/undefined (and returns undefined in that case), but that's
+              only for user. Further properties are accessed in a regular way.
+              If we want some of them to be optional, then we'll need to replace
+              more . with ?..
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 17: Optional Chaining Best Practices -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Optional Chaining Best Practices</h1>
+          <p class="slide-subtitle">When and how to use ?. effectively</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Don't overuse the optional chaining</h3>
+            <p>
+              We should use ?. only where it's ok that something doesn't exist.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For example, if according to our code logic user object must
+              exist, but address is optional, then we should write
+              user.address?.street, but not user?.address?.street.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Then, if user happens to be undefined, we'll see a programming
+              error about it and fix it. Otherwise, if we overuse ?., coding
+              errors can be silenced where not appropriate, and become more
+              difficult to debug.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>The variable before ?. must be declared</h3>
+            <p>
+              If there's no variable user at all, then user?.anything triggers
+              an error:
+            </p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// ReferenceError: user is not defined</span
+              ><br />
+              user?.address;
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The variable must be declared (e.g. let/const/var user or as a
+              function parameter). The optional chaining works only for declared
+              variables.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Short-circuiting</h3>
+            <p>
+              As it was said before, the ?. immediately stops ("short-circuits")
+              the evaluation if the left part doesn't exist.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              So, if there are any further function calls or operations to the
+              right of ?., they won't be made.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user =
+              <span class="code-keyword">null</span>;<br />
+              <span class="code-keyword">let</span> x =
+              <span class="code-number">0</span>;<br /><br />
+              user?.sayHi(x++);
+              <span class="code-comment"
+                >// no "user", so the execution doesn't reach sayHi call and
+                x++</span
+              ><br /><br />
+              alert(x);
+              <span class="code-comment">// 0, value not incremented</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 18: Other variants of optional chaining -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Other variants: ?.(), ?.[]</h1>
+          <p class="slide-subtitle">
+            Optional chaining with functions and brackets
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The optional chaining ?. is not an operator, but a special syntax
+              construct, that also works with functions and square brackets.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For example, ?.() is used to call a function that may not exist.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In the code below, some of our users have admin method, and some
+              don't:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> userAdmin = {<br />
+              &nbsp;&nbsp;admin() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(<span class="code-string"
+                >"I am admin"</span
+              >);<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="code-keyword">let</span> userGuest = {};<br /><br />
+              userAdmin.admin?.();
+              <span class="code-comment">// I am admin</span><br /><br />
+              userGuest.admin?.();
+              <span class="code-comment"
+                >// nothing happens (no such method)</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Here, in both lines we first use the dot (userAdmin.admin) to get
+              admin property, because we assume that the user object exists, so
+              it's safe read from it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Then ?.() checks the left part: if the admin function exists, then
+              it runs (that's so for userAdmin). Otherwise (for userGuest) the
+              evaluation stops without errors.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The ?.[] syntax also works, if we'd like to use brackets [] to
+              access properties instead of dot .. Similar to previous cases, it
+              allows to safely read a property from an object that may not
+              exist.
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> key =
+              <span class="code-string">"firstName"</span>;<br /><br />
+              <span class="code-keyword">let</span> user1 = {<br />
+              &nbsp;&nbsp;firstName: <span class="code-string">"John"</span
+              ><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> user2 =
+              <span class="code-keyword">null</span>;<br /><br />
+              alert(user1?.[key]); <span class="code-comment">// John</span
+              ><br />
+              alert(user2?.[key]);
+              <span class="code-comment">// undefined</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>Also we can use ?. with delete:</p>
+            <div class="code-example">
+              <span class="code-keyword">delete</span> user?.name;
+              <span class="code-comment"
+                >// delete user.name if user exists</span
+              >
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p>We can use ?. for safe reading and deleting, but not writing</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The optional chaining ?. has no use on the left side of an
+              assignment.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For example:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user =
+              <span class="code-keyword">null</span>;<br /><br />
+              user?.name = <span class="code-string">"John"</span>;
+              <span class="code-comment">// Error, doesn't work</span><br />
+              <span class="code-comment"
+                >// because it evaluates to: undefined = "John"</span
+              >
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h4>Summary of Optional Chaining</h4>
+            <p>The optional chaining ?. syntax has three forms:</p>
+            <ul class="list-section">
+              <li>
+                obj?.prop – returns obj.prop if obj exists, otherwise undefined.
+              </li>
+              <li>
+                obj?.[prop] – returns obj[prop] if obj exists, otherwise
+                undefined.
+              </li>
+              <li>
+                obj.method?.() – calls obj.method() if obj.method exists,
+                otherwise returns undefined.
+              </li>
+            </ul>
+            <p>
+              As we can see, all of them are straightforward and simple to use.
+              The ?. checks the left part for null/undefined and allows the
+              evaluation to proceed if it's not so.
+            </p>
+            <p>A chain of ?. allows to safely access nested properties.</p>
+            <p>
+              Still, we should apply ?. carefully, only where it's acceptable,
+              according to our code logic, that the left part doesn't exist. So
+              that it won't hide programming errors from us, if they occur.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 19: Symbol Type Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Symbol type</h1>
+          <p class="slide-subtitle">Unique identifiers for object properties</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              By specification, only two primitive types may serve as object
+              property keys:
+            </p>
+            <ul class="list-section">
+              <li>string type, or</li>
+              <li>symbol type.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Otherwise, if one uses another type, such as number, it's
+              autoconverted to string. So that obj[1] is the same as obj["1"],
+              and obj[true] is the same as obj["true"].
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Until now we've been using only strings.</p>
+          </div>
+
+          <div class="text-section">
+            <p>Now let's explore symbols, see what they can do for us.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>Symbols</h3>
+            <p>A "symbol" represents a unique identifier.</p>
+          </div>
+
+          <div class="text-section">
+            <p>A value of this type can be created using Symbol():</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol();
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Upon creation, we can give symbols a description (also called a
+              symbol name), mostly useful for debugging purposes:
+            </p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// id is a symbol with the description "id"</span
+              ><br />
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Symbols are guaranteed to be unique. Even if we create many
+              symbols with exactly the same description, they are different
+              values. The description is just a label that doesn't affect
+              anything.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, here are two symbols with the same description –
+              they are not equal:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id1 = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br />
+              <span class="code-keyword">let</span> id2 = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br /><br />
+              alert(id1 == id2); <span class="code-comment">// false</span>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p>
+              If you are familiar with Ruby or another language that also has
+              some sort of "symbols" – please don't be misguided. JavaScript
+              symbols are different.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              So, to summarize, a symbol is a "primitive unique value" with an
+              optional description. Let's see where we can use them.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 20: Symbol Characteristics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Symbol Characteristics</h1>
+          <p class="slide-subtitle">Understanding how symbols behave</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Symbols don't auto-convert to a string</h3>
+            <p>
+              Most values in JavaScript support implicit conversion to a string.
+              For instance, we can alert almost any value, and it will work.
+              Symbols are special. They don't auto-convert.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance, this alert will show an error:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br />
+              alert(id);
+              <span class="code-comment"
+                >// TypeError: Cannot convert a Symbol value to a string</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's a "language guard" against messing up, because strings and
+              symbols are fundamentally different and should not accidentally
+              convert one into another.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If we really want to show a symbol, we need to explicitly call
+              .toString() on it, like here:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br />
+              alert(id.toString());
+              <span class="code-comment">// Symbol(id), now it works</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Or get symbol.description property to show the description only:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br />
+              alert(id.description); <span class="code-comment">// id</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>"Hidden" properties</h3>
+            <p>
+              Symbols allow us to create "hidden" properties of an object, that
+              no other part of code can accidentally access or overwrite.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, if we're working with user objects, that belong to a
+              third-party code. We'd like to add identifiers to them.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Let's use a symbol key for it:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {
+              <span class="code-comment">// belongs to another code</span><br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br /><br />
+              user[id] = <span class="code-number">1</span>;<br /><br />
+              alert(user[id]);
+              <span class="code-comment"
+                >// we can access the data using the symbol as the key</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 21: Symbol Benefits -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Symbol Benefits</h1>
+          <p class="slide-subtitle">Why use symbols for properties</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>What's the benefit of using Symbol("id") over a string "id"?</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As user objects belong to another codebase, it's unsafe to add
+              fields to them, since we might affect pre-defined behavior in that
+              other codebase. However, symbols cannot be accessed accidentally.
+              The third-party code won't be aware of newly defined symbols, so
+              it's safe to add symbols to the user objects.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Also, imagine that another script wants to have its own identifier
+              inside user, for its own purposes.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Then that script can create its own Symbol("id"), like this:</p>
+            <div class="code-example">
+              <span class="code-comment">// ...</span><br />
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br /><br />
+              user[id] = <span class="code-string">"Their id value"</span>;
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There will be no conflict between our and their identifiers,
+              because symbols are always different, even if they have the same
+              name.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              ...But if we used a string "id" instead of a symbol for the same
+              purpose, then there would be a conflict:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = { name:
+              <span class="code-string">"John"</span> };<br /><br />
+              <span class="code-comment">// Our script uses "id" property</span
+              ><br />
+              user.id =
+              <span class="code-string">"Our id value"</span>;<br /><br />
+              <span class="code-comment"
+                >// ...Another script also wants "id" for its purposes...</span
+              ><br /><br />
+              user.id = <span class="code-string">"Their id value"</span><br />
+              <span class="code-comment"
+                >// Boom! overwritten by another script!</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <h3>Symbols in an object literal</h3>
+            <p>
+              If we want to use a symbol in an object literal {...}, we need
+              square brackets around it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>Like this:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br /><br />
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;[id]: <span class="code-number">123</span>
+              <span class="code-comment">// not "id": 123</span><br />
+              };
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That's because we need the value from the variable id as the key,
+              not the string "id".
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 22: Symbol Iteration -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Symbol Iteration</h1>
+          <p class="slide-subtitle">
+            How symbols behave in loops and operations
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Symbols are skipped by for…in</h3>
+            <p>Symbolic properties do not participate in for..in loop.</p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br />
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;age: <span class="code-number">30</span>,<br />
+              &nbsp;&nbsp;[id]: <span class="code-number">123</span><br />
+              };<br /><br />
+              <span class="code-keyword">for</span> (<span class="code-keyword"
+                >let</span
+              >
+              key <span class="code-keyword">in</span> user) alert(key);
+              <span class="code-comment">// name, age (no symbols)</span
+              ><br /><br />
+              <span class="code-comment"
+                >// the direct access by the symbol works</span
+              ><br />
+              alert(<span class="code-string">"Direct: "</span> + user[id]);
+              <span class="code-comment">// Direct: 123</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Object.keys(user) also ignores them. That's a part of the general
+              "hiding symbolic properties" principle. If another script or a
+              library loops over our object, it won't unexpectedly access a
+              symbolic property.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In contrast, Object.assign copies both string and symbol
+              properties:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> id = Symbol(<span
+                class="code-string"
+                >"id"</span
+              >);<br />
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;[id]: <span class="code-number">123</span><br />
+              };<br /><br />
+              <span class="code-keyword">let</span> clone = Object.assign({},
+              user);<br /><br />
+              alert(clone[id]); <span class="code-comment">// 123</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There's no paradox here. That's by design. The idea is that when
+              we clone an object or merge objects, we usually want all
+              properties to be copied (including symbols like id).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 23: Global Symbols -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Global Symbols</h1>
+          <p class="slide-subtitle">Sharing symbols across the code</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              As we've seen, usually all symbols are different, even if they
+              have the same name. But sometimes we want same-named symbols to be
+              same entities. For instance, different parts of our application
+              want to access symbol "id" meaning exactly the same property.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              To achieve that, there exists a global symbol registry. We can
+              create symbols in it and access them later, and it guarantees that
+              repeated accesses by the same name return exactly the same symbol.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In order to read (create if absent) a symbol from the registry,
+              use Symbol.for(key).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              That call checks the global registry, and if there's a symbol
+              described as key, then returns it, otherwise creates a new symbol
+              Symbol(key) and stores it in the registry by the given key.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-comment">// read from the global registry</span
+              ><br />
+              <span class="code-keyword">let</span> id = Symbol.for(<span
+                class="code-string"
+                >"id"</span
+              >);
+              <span class="code-comment"
+                >// if the symbol did not exist, it is created</span
+              ><br /><br />
+              <span class="code-comment"
+                >// read it again (maybe from another part of the code)</span
+              ><br />
+              <span class="code-keyword">let</span> idAgain = Symbol.for(<span
+                class="code-string"
+                >"id"</span
+              >);<br /><br />
+              <span class="code-comment">// the same symbol</span><br />
+              alert(id === idAgain); <span class="code-comment">// true</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Symbols inside the registry are called global symbols. If we want
+              an application-wide symbol, accessible everywhere in the code –
+              that's what they are for.
+            </p>
+          </div>
+
+          <div class="warning-box">
+            <p>That sounds like Ruby</p>
+            <p>
+              In some programming languages, like Ruby, there's a single symbol
+              per name.
+            </p>
+            <p>In JavaScript, as we can see, that's true for global symbols.</p>
+          </div>
+
+          <div class="text-section">
+            <h3>Symbol.keyFor</h3>
+            <p>
+              We have seen that for global symbols, Symbol.for(key) returns a
+              symbol by name. To do the opposite – return a name by global
+              symbol – we can use: Symbol.keyFor(sym):
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-comment">// get symbol by name</span><br />
+              <span class="code-keyword">let</span> sym = Symbol.for(<span
+                class="code-string"
+                >"name"</span
+              >);<br />
+              <span class="code-keyword">let</span> sym2 = Symbol.for(<span
+                class="code-string"
+                >"id"</span
+              >);<br /><br />
+              <span class="code-comment">// get name by symbol</span><br />
+              alert(Symbol.keyFor(sym));
+              <span class="code-comment">// name</span><br />
+              alert(Symbol.keyFor(sym2));
+              <span class="code-comment">// id</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The Symbol.keyFor internally uses the global symbol registry to
+              look up the key for the symbol. So it doesn't work for non-global
+              symbols. If the symbol is not global, it won't be able to find it
+              and returns undefined.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>That said, all symbols have the description property.</p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> globalSymbol =
+              Symbol.for(<span class="code-string">"name"</span>);<br />
+              <span class="code-keyword">let</span> localSymbol = Symbol(<span
+                class="code-string"
+                >"name"</span
+              >);<br /><br />
+              alert(Symbol.keyFor(globalSymbol));
+              <span class="code-comment">// name, global symbol</span><br />
+              alert(Symbol.keyFor(localSymbol));
+              <span class="code-comment">// undefined, not global</span
+              ><br /><br />
+              alert(localSymbol.description);
+              <span class="code-comment">// name</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 24: System Symbols -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">System Symbols</h1>
+          <p class="slide-subtitle">
+            Built-in symbols for customizing behavior
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              There exist many "system" symbols that JavaScript uses internally,
+              and we can use them to fine-tune various aspects of our objects.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              They are listed in the specification in the Well-known symbols
+              table:
+            </p>
+            <ul class="list-section">
+              <li>Symbol.hasInstance</li>
+              <li>Symbol.isConcatSpreadable</li>
+              <li>Symbol.iterator</li>
+              <li>Symbol.toPrimitive</li>
+              <li>...and so on.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, Symbol.toPrimitive allows us to describe object to
+              primitive conversion. We'll see its use very soon.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Other symbols will also become familiar when we study the
+              corresponding language features.
+            </p>
+          </div>
+
+          <div class="info-card">
+            <h4>Summary of Symbol Type</h4>
+            <ul class="list-section">
+              <li>Symbol is a primitive type for unique identifiers.</li>
+              <li>
+                Symbols are created with Symbol() call with an optional
+                description (name).
+              </li>
+              <li>
+                Symbols are always different values, even if they have the same
+                name. If we want same-named symbols to be equal, then we should
+                use the global registry: Symbol.for(key) returns (creates if
+                needed) a global symbol with key as the name. Multiple calls of
+                Symbol.for with the same key return exactly the same symbol.
+              </li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h4>Symbol Use Cases</h4>
+            <ul class="list-section">
+              <li>
+                "Hidden" object properties. If we want to add a property into an
+                object that "belongs" to another script or a library, we can
+                create a symbol and use it as a property key. A symbolic
+                property does not appear in for..in, so it won't be accidentally
+                processed together with other properties. Also it won't be
+                accessed directly, because another script does not have our
+                symbol. So the property will be protected from accidental use or
+                overwrite.
+              </li>
+              <li>
+                System symbols used by JavaScript which are accessible as
+                Symbol.*. We can use them to alter some built-in behaviors. For
+                instance, later in the tutorial we'll use Symbol.iterator for
+                iterables, Symbol.toPrimitive to setup object-to-primitive
+                conversion and so on.
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Technically, symbols are not 100% hidden. There is a built-in
+              method Object.getOwnPropertySymbols(obj) that allows us to get all
+              symbols. Also there is a method named Reflect.ownKeys(obj) that
+              returns all keys of an object including symbolic ones. But most
+              libraries, built-in functions and syntax constructs don't use
+              these methods.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 25: Object to Primitive Conversion Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Object to primitive conversion</h1>
+          <p class="slide-subtitle">
+            How objects are converted to primitive values
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What happens when objects are added obj1 + obj2, subtracted obj1 -
+              obj2 or printed using alert(obj)?
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              JavaScript doesn't allow you to customize how operators work on
+              objects. Unlike some other programming languages, such as Ruby or
+              C++, we can't implement a special object method to handle addition
+              (or other operators).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In case of such operations, objects are auto-converted to
+              primitives, and then the operation is carried out over these
+              primitives and results in a primitive value.
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              That's an important limitation: the result of obj1 + obj2 (or
+              another math operation) can't be another object!
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              E.g. we can't make objects representing vectors or matrices (or
+              achievements or whatever), add them and expect a "summed" object
+              as the result. Such architectural feats are automatically "off the
+              board".
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              So, because we can't technically do much here, there's no maths
+              with objects in real projects. When it happens, with rare
+              exceptions, it's because of a coding mistake.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In this chapter we'll cover how an object converts to primitive
+              and how to customize it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>We have two purposes:</p>
+            <ol class="list-section">
+              <li>
+                It will allow us to understand what's going on in case of coding
+                mistakes, when such an operation happened accidentally.
+              </li>
+              <li>
+                There are exceptions, where such operations are possible and
+                look good. E.g. subtracting or comparing dates (Date objects).
+                We'll come across them later.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 26: Conversion Rules -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Conversion Rules</h1>
+          <p class="slide-subtitle">
+            How JavaScript decides what conversion to apply
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              In the chapter Type Conversions we've seen the rules for numeric,
+              string and boolean conversions of primitives. But we left a gap
+              for objects. Now, as we know about methods and symbols it becomes
+              possible to fill it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There's no conversion to boolean. All objects are true in a
+              boolean context, as simple as that. There exist only numeric and
+              string conversions.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The numeric conversion happens when we subtract objects or apply
+              mathematical functions. For instance, Date objects (to be covered
+              in the chapter Date and time) can be subtracted, and the result of
+              date1 - date2 is the time difference between two dates.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As for the string conversion – it usually happens when we output
+              an object with alert(obj) and in similar contexts.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              We can implement string and numeric conversion by ourselves, using
+              special object methods.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Now let's get into technical details, because it's the only way to
+              cover the topic in-depth.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Hints</h3>
+            <p>How does JavaScript decide which conversion to apply?</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There are three variants of type conversion, that happen in
+              various situations. They're called "hints", as described in the
+              specification:
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h4>"string"</h4>
+            <p>
+              For an object-to-string conversion, when we're doing an operation
+              on an object that expects a string, like alert:
+            </p>
+            <div class="code-example">
+              <span class="code-comment">// output</span><br />
+              alert(obj);<br /><br />
+              <span class="code-comment">// using object as a property key</span
+              ><br />
+              anotherObj[obj] = <span class="code-number">123</span>;
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 27: More Conversion Hints -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">More Conversion Hints</h1>
+          <p class="slide-subtitle">
+            Understanding "number" and "default" hints
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h4>"number"</h4>
+            <p>
+              For an object-to-number conversion, like when we're doing maths:
+            </p>
+            <div class="code-example">
+              <span class="code-comment">// explicit conversion</span><br />
+              <span class="code-keyword">let</span> num = Number(obj);<br /><br />
+              <span class="code-comment">// maths (except binary plus)</span
+              ><br />
+              <span class="code-keyword">let</span> n = +obj;
+              <span class="code-comment">// unary plus</span><br />
+              <span class="code-keyword">let</span> delta = date1 - date2;<br /><br />
+              <span class="code-comment">// less/greater comparison</span><br />
+              <span class="code-keyword">let</span> greater = user1 > user2;
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Most built-in mathematical functions also include such conversion.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h4>"default"</h4>
+            <p>
+              Occurs in rare cases when the operator is "not sure" what type to
+              expect.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, binary plus + can work both with strings
+              (concatenates them) and numbers (adds them). So if a binary plus
+              gets an object as an argument, it uses the "default" hint to
+              convert it.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Also, if an object is compared using == with a string, number or a
+              symbol, it's also unclear which conversion should be done, so the
+              "default" hint is used.
+            </p>
+            <div class="code-example">
+              <span class="code-comment"
+                >// binary plus uses the "default" hint</span
+              ><br />
+              <span class="code-keyword">let</span> total = obj1 + obj2;<br /><br />
+              <span class="code-comment"
+                >// obj == number uses the "default" hint</span
+              ><br />
+              <span class="code-keyword">if</span> (user ==
+              <span class="code-number">1</span>) { ... };
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The greater and less comparison operators, such as < >, can work
+              with both strings and numbers too. Still, they use the "number"
+              hint, not "default". That's for historical reasons.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>In practice though, things are a bit simpler.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              All built-in objects except for one case (Date object, we'll learn
+              it later) implement "default" conversion the same way as "number".
+              And we probably should do the same.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Still, it's important to know about all 3 hints, soon we'll see
+              why.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 28: Conversion Algorithm -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Conversion Algorithm</h1>
+          <p class="slide-subtitle">
+            How JavaScript performs object-to-primitive conversion
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              To do the conversion, JavaScript tries to find and call three
+              object methods:
+            </p>
+          </div>
+
+          <div class="text-section">
+            <ol class="list-section">
+              <li>
+                Call obj[Symbol.toPrimitive](hint) – the method with the
+                symbolic key Symbol.toPrimitive (system symbol), if such method
+                exists,
+              </li>
+              <li>
+                Otherwise if hint is "string" - try calling obj.toString() or
+                obj.valueOf(), whatever exists.
+              </li>
+              <li>
+                Otherwise if hint is "number" or "default" - try calling
+                obj.valueOf() or obj.toString(), whatever exists.
+              </li>
+            </ol>
+          </div>
+
+          <div class="text-section">
+            <h3>Symbol.toPrimitive</h3>
+            <p>
+              Let's start from the first method. There's a built-in symbol named
+              Symbol.toPrimitive that should be used to name the conversion
+              method, like this:
+            </p>
+            <div class="code-example">
+              obj[Symbol.toPrimitive] =
+              <span class="code-keyword">function</span>(hint) {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// here goes the code to convert this object to a
+                primitive</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// it must return a primitive value</span
+              ><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// hint = one of "string", "number", "default"</span
+              ><br />
+              };
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If the method Symbol.toPrimitive exists, it's used for all hints,
+              and no more methods are needed.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>For instance, here user object implements it:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;money:
+              <span class="code-number">1000</span>,<br /><br />
+              &nbsp;&nbsp;[Symbol.toPrimitive](hint) {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;alert(`hint: ${hint}`);<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              hint == <span class="code-string">"string"</span> ? `{name:
+              <span class="code-string">"${this.name}"</span>}` :
+              <span class="code-keyword">this</span>.money;<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              <span class="code-comment">// conversions demo:</span><br />
+              alert(user);
+              <span class="code-comment">// hint: string -> {name: "John"}</span
+              ><br />
+              alert(+user);
+              <span class="code-comment">// hint: number -> 1000</span><br />
+              alert(user + <span class="code-number">500</span>);
+              <span class="code-comment">// hint: default -> 1500</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As we can see from the code, user becomes a self-descriptive
+              string or a money amount, depending on the conversion. The single
+              method user[Symbol.toPrimitive] handles all conversion cases.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 29: toString/valueOf -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">toString/valueOf</h1>
+          <p class="slide-subtitle">Alternative methods for conversion</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If there's no Symbol.toPrimitive then JavaScript tries to find
+              methods toString and valueOf:
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For the "string" hint: call toString method, and if it doesn't
+              exist or if it returns an object instead of a primitive value,
+              then call valueOf (so toString has the priority for string
+              conversions).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For other hints: call valueOf, and if it doesn't exist or if it
+              returns an object instead of a primitive value, then call toString
+              (so valueOf has the priority for maths).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Methods toString and valueOf come from ancient times. They are not
+              symbols (symbols did not exist that long ago), but rather
+              "regular" string-named methods. They provide an alternative
+              "old-style" way to implement the conversion.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              These methods must return a primitive value. If toString or
+              valueOf returns an object, then it's ignored (same as if there
+              were no method).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              By default, a plain object has following toString and valueOf
+              methods:
+            </p>
+            <ul class="list-section">
+              <li>The toString method returns a string "[object Object]".</li>
+              <li>The valueOf method returns the object itself.</li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>Here's the demo:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {name:
+              <span class="code-string">"John"</span>};<br /><br />
+              alert(user); <span class="code-comment">// [object Object]</span
+              ><br />
+              alert(user.valueOf() === user);
+              <span class="code-comment">// true</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              So if we try to use an object as a string, like in an alert or so,
+              then by default we see [object Object].
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The default valueOf is mentioned here only for the sake of
+              completeness, to avoid any confusion. As you can see, it returns
+              the object itself, and so is ignored. Don't ask me why, that's for
+              historical reasons. So we can assume it doesn't exist.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 30: Implementing Conversion Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Implementing Conversion Methods</h1>
+          <p class="slide-subtitle">Customizing object conversion</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Let's implement these methods to customize the conversion.</p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              For instance, here user does the same as above using a combination
+              of toString and valueOf instead of Symbol.toPrimitive:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: <span class="code-string">"John"</span>,<br />
+              &nbsp;&nbsp;money:
+              <span class="code-number">1000</span>,<br /><br />
+              &nbsp;&nbsp;<span class="code-comment">// for hint="string"</span
+              ><br />
+              &nbsp;&nbsp;toString() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              `{name: <span class="code-string">"${this.name}"</span>}`;<br />
+              &nbsp;&nbsp;},<br /><br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// for hint="number" or "default"</span
+              ><br />
+              &nbsp;&nbsp;valueOf() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">this</span>.money;<br />
+              &nbsp;&nbsp;}<br /><br />
+              };<br /><br />
+              alert(user);
+              <span class="code-comment">// toString -> {name: "John"}</span
+              ><br />
+              alert(+user); <span class="code-comment">// valueOf -> 1000</span
+              ><br />
+              alert(user + <span class="code-number">500</span>);
+              <span class="code-comment">// valueOf -> 1500</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              As we can see, the behavior is the same as the previous example
+              with Symbol.toPrimitive.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Often we want a single "catch-all" place to handle all primitive
+              conversions. In this case, we can implement toString only, like
+              this:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name:
+              <span class="code-string">"John"</span>,<br /><br />
+              &nbsp;&nbsp;toString() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-keyword">this</span>.name;<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              alert(user); <span class="code-comment">// toString -> John</span
+              ><br />
+              alert(user + <span class="code-number">500</span>);
+              <span class="code-comment">// toString -> John500</span>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In the absence of Symbol.toPrimitive and valueOf, toString will
+              handle all primitive conversions.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 31: Conversion Return Values -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Conversion Return Values</h1>
+          <p class="slide-subtitle">What conversion methods can return</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>A conversion can return any primitive type</h3>
+            <p>
+              The important thing to know about all primitive-conversion methods
+              is that they do not necessarily return the "hinted" primitive.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              There is no control whether toString returns exactly a string, or
+              whether Symbol.toPrimitive method returns a number for the hint
+              "number".
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The only mandatory thing: these methods must return a primitive,
+              not an object.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Historical notes</h3>
+            <p>
+              For historical reasons, if toString or valueOf returns an object,
+              there's no error, but such value is ignored (like if the method
+              didn't exist). That's because in ancient times there was no good
+              "error" concept in JavaScript.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              In contrast, Symbol.toPrimitive is stricter, it must return a
+              primitive, otherwise there will be an error.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <h3>Further conversions</h3>
+            <p>
+              As we know already, many operators and functions perform type
+              conversions, e.g. multiplication * converts operands to numbers.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              If we pass an object as an argument, then there are two stages of
+              calculations:
+            </p>
+            <ol class="list-section">
+              <li>
+                The object is converted to a primitive (using the rules
+                described above).
+              </li>
+              <li>
+                If necessary for further calculations, the resulting primitive
+                is also converted.
+              </li>
+            </ol>
+          </div>
+
+          <div class="text-section">
+            <p>For instance:</p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> obj = {<br />
+              &nbsp;&nbsp;<span class="code-comment"
+                >// toString handles all conversions in the absence of other
+                methods</span
+              ><br />
+              &nbsp;&nbsp;toString() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-string">"2"</span>;<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              alert(obj * <span class="code-number">2</span>);
+              <span class="code-comment"
+                >// 4, object converted to primitive "2", then multiplication
+                made it a number</span
+              >
+            </div>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The multiplication obj * 2 first converts the object to primitive
+              (that's a string "2").
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Then "2" * 2 becomes 2 * 2 (the string is converted to number).
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>
+              Binary plus will concatenate strings in the same situation, as it
+              gladly accepts a string:
+            </p>
+            <div class="code-example">
+              <span class="code-keyword">let</span> obj = {<br />
+              &nbsp;&nbsp;toString() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span>
+              <span class="code-string">"2"</span>;<br />
+              &nbsp;&nbsp;}<br />
+              };<br /><br />
+              alert(obj + <span class="code-number">2</span>);
+              <span class="code-comment"
+                >// "22" ("2" + 2), conversion to primitive returned a string =>
+                concatenation</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 32: Final Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Summary</h1>
+          <p class="slide-subtitle">
+            Complete overview of object-to-primitive conversion
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The object-to-primitive conversion is called automatically by many
+              built-in functions and operators that expect a primitive as a
+              value.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>There are 3 types (hints) of it:</p>
+            <ul class="list-section">
+              <li>
+                "string" (for alert and other operations that need a string)
+              </li>
+              <li>"number" (for maths)</li>
+              <li>
+                "default" (few operators, usually objects implement it the same
+                way as "number")
+              </li>
+            </ul>
+          </div>
+
+          <div class="text-section">
+            <p>
+              The specification describes explicitly which operator uses which
+              hint.
+            </p>
+          </div>
+
+          <div class="text-section">
+            <p>The conversion algorithm is:</p>
+            <ol class="list-section">
+              <li>Call obj[Symbol.toPrimitive](hint) if the method exists,</li>
+              <li>
+                Otherwise if hint is "string" - try calling obj.toString() or
+                obj.valueOf(), whatever exists.
+              </li>
+              <li>
+                Otherwise if hint is "number" or "default" - try calling
+                obj.valueOf() or obj.toString(), whatever exists.
+              </li>
+            </ol>
+          </div>
+
+          <div class="text-section">
+            <p>
+              All these methods must return a primitive to work (if defined).
+            </p>
+          </div>
+
+          <div class="highlight-box">
+            <p>
+              In practice, it's often enough to implement only obj.toString() as
+              a "catch-all" method for string conversions that should return a
+              "human-readable" representation of an object, for logging or
+              debugging purposes.
+            </p>
+          </div>
+
+          <div class="success-box">
+            <p>
+              Congratulations! You've completed the comprehensive guide to
+              JavaScript Objects and Methods. Keep practicing and exploring
+              these concepts to become a JavaScript expert!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">JavaScript Objects and Methods - Complete Guide</div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>
