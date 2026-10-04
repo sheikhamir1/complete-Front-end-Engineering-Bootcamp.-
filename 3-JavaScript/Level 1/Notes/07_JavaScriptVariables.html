@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Variables - White Text Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Source Sans Pro", sans-serif;
+        color: #ffffff;
+        overflow: hidden;
+        background-color: #0f172a;
+      }
+      .presentation-container {
+        width: 1280px;
+        min-height: 720px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        background-color: #0f172a;
+      }
+      .slide {
+        width: 100%;
+        min-height: 720px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+        background-color: #0f172a;
+      }
+      .slide.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+        opacity: 0.2;
+        filter: blur(3px);
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(30, 41, 59, 0.95)
+        );
+        z-index: -1;
+      }
+      .header {
+        padding: 30px 50px 15px;
+        background: linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(30, 41, 59, 0.95)
+        );
+        border-bottom: 2px solid rgba(99, 102, 241, 0.5);
+      }
+      .title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      .content {
+        display: flex;
+        flex-grow: 1;
+        padding: 30px 50px;
+      }
+      .left-content {
+        flex: 1;
+        padding-right: 30px;
+      }
+      .right-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #ffffff;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      .key-point {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+      }
+      .key-point i {
+        color: #a5b4fc;
+        margin-right: 15px;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      .key-point-text {
+        font-size: 1.1rem;
+        color: #ffffff;
+      }
+      .highlight {
+        color: #a5b4fc;
+        font-weight: 600;
+      }
+      .code-block {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-family: "Courier New", monospace;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-left: 4px solid #6366f1;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+      }
+      .code-comment {
+        color: #94a3b8;
+        font-style: italic;
+      }
+      .example-box {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .example-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .example-title i {
+        margin-right: 10px;
+        color: #a5b4fc;
+      }
+      .navigation {
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        z-index: 10;
+      }
+      .nav-button {
+        background-color: rgba(99, 102, 241, 0.8);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .nav-button:hover {
+        background-color: rgba(129, 140, 248, 0.9);
+        transform: scale(1.05);
+      }
+      .nav-button i {
+        font-size: 1.2rem;
+        color: #ffffff;
+      }
+      .slide-indicator {
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+      }
+      .indicator-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(148, 163, 184, 0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .indicator-dot.active {
+        background-color: #ffffff;
+        transform: scale(1.2);
+      }
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        padding: 0 50px;
+        text-align: center;
+      }
+      .main-title {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+        color: #ffffff;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+      .subtitle {
+        font-size: 1.5rem;
+        font-weight: 400;
+        max-width: 80%;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .icon-container {
+        margin-bottom: 30px;
+      }
+      .icon-container i {
+        font-size: 4rem;
+        color: #a5b4fc;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .comparison-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+      }
+      .comparison-column {
+        flex: 1;
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .comparison-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+      }
+      .comparison-title i {
+        margin-right: 8px;
+        font-size: 1rem;
+      }
+      .good-title {
+        color: #4ade80;
+      }
+      .bad-title {
+        color: #f87171;
+      }
+      .tip-box {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .tip-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .tip-title i {
+        margin-right: 10px;
+        font-size: 1.2rem;
+        color: #a5b4fc;
+      }
+      .footer {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .footer-icon {
+        color: #a5b4fc;
+        font-size: 1.8rem;
+        margin-right: 15px;
+      }
+      .footer-text {
+        font-size: 1.1rem;
+        line-height: 1.4;
+        color: #ffffff;
+      }
+      .summary-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        flex-grow: 1;
+      }
+      .summary-box {
+        flex: 1 1 calc(50% - 20px);
+        min-width: calc(50% - 20px);
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+      }
+      .summary-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .summary-title i {
+        margin-right: 12px;
+        font-size: 1.3rem;
+        color: #a5b4fc;
+      }
+      ul {
+        list-style-type: none;
+        margin-left: 0;
+      }
+      ul li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 8px;
+        color: #ffffff;
+        font-size: 1rem;
+      }
+      ul li:before {
+        content: "•";
+        color: #a5b4fc;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+      }
+      .keyword {
+        display: inline-block;
+        background-color: rgba(99, 102, 241, 0.2);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide active" id="slide1">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/4d40dadd80f6.png"
+          alt="JavaScript Variables Concept"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="center-content">
+          <div class="icon-container">
+            <i class="fas fa-code"></i>
+          </div>
+          <h1 class="main-title">JavaScript Variables</h1>
+          <p class="subtitle">
+            Understanding the Building Blocks of Data Storage
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 2: Introduction to Variables -->
+      <div class="slide" id="slide2">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/0fdeebcb4b5e.png"
+          alt="Variables as boxes"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Introduction to Variables</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">What are variables?</p>
+            <div class="key-point">
+              <i class="fas fa-database"></i>
+              <p class="key-point-text">
+                <span class="keyword">Named storage</span> for data in
+                JavaScript
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-brain"></i>
+              <p class="key-point-text">
+                <span class="keyword">Store, access, modify</span> information
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-tools"></i>
+              <p class="key-point-text">
+                <span class="keyword">Building blocks</span> of programming
+              </p>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Real-world applications:</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-shopping-cart"></i>
+                Online Shop
+              </div>
+              <ul>
+                <li>Product information</li>
+                <li>Shopping cart items</li>
+                <li>User preferences</li>
+              </ul>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-comments"></i>
+                Chat Application
+              </div>
+              <ul>
+                <li>User profiles</li>
+                <li>Message history</li>
+                <li>Online status</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Creating Variables -->
+      <div class="slide" id="slide3">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/e180fc17be74.png"
+          alt="Variable declaration and assignment"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Creating Variables</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Using the 'let' keyword</p>
+            <div class="code-block">
+              <span class="keyword">let</span> message;
+              <span class="code-comment">// declares a variable</span><br />
+              message = 'Hello';
+              <span class="code-comment">// stores a string</span><br />
+              alert(message); <span class="code-comment">// shows "Hello"</span>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-arrow-right"></i>
+              <p class="key-point-text">
+                <span class="keyword">let</span> - modern way to declare
+                variables
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-equals"></i>
+              <p class="key-point-text">
+                <span class="keyword">=</span> - assignment operator
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> message = 'Hello!';
+              <span class="code-comment">// declare & assign</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Multiple Variables</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-times"></i>
+                Not Recommended
+              </div>
+              <div class="code-block">
+                <span class="keyword">let</span> user = 'John', age = 25,
+                message = 'Hello';
+              </div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-check"></i>
+                Recommended
+              </div>
+              <div class="code-block">
+                <span class="keyword">let</span> user = 'John';<br />
+                <span class="keyword">let</span> age = 25;<br />
+                <span class="keyword">let</span> message = 'Hello';
+              </div>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p class="key-point-text">
+                A variable should be declared
+                <span class="keyword">only once</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Variable Analogy -->
+      <div class="slide" id="slide4">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/79cc7aa77dae.svg"
+          alt="Variable box analogy"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Variable Analogy</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Variables as "Boxes"</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-box"></i>
+                The Box Concept
+              </div>
+              <ul>
+                <li>Variable name = <span class="keyword">Label</span></li>
+                <li>Variable value = <span class="keyword">Contents</span></li>
+                <li>
+                  Assignment = <span class="keyword">Putting something in</span>
+                </li>
+              </ul>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-sync-alt"></i>
+              <p class="key-point-text">
+                You can <span class="keyword">change</span> what's inside
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-copy"></i>
+              <p class="key-point-text">
+                You can <span class="keyword">copy</span> contents to another
+                box
+              </p>
+            </div>
+          </div>
+          <div class="right-content">
+            <div class="code-block">
+              <span class="keyword">let</span> message;
+              <span class="code-comment">// create a box</span><br />
+              message = 'Hello!';
+              <span class="code-comment">// put "Hello!" in</span><br />
+              message = 'World!';
+              <span class="code-comment">// replace with "World!"</span>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-exchange-alt"></i>
+                Copying Variables
+              </div>
+              <p class="key-point-text">
+                When you copy a variable, you're creating a
+                <span class="keyword">duplicate</span>:
+              </p>
+              <div class="code-block" style="margin-top: 10px">
+                <span class="keyword">let</span> hello = 'Hello world!';<br />
+                <span class="keyword">let</span> message;<br />
+                message = hello; <span class="code-comment">// copy value</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: 'var' vs 'let' -->
+      <div class="slide" id="slide5">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/75cb3ac8d46b.jpg"
+          alt="JavaScript LET, CONST, and VAR keywords"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">'var' vs 'let'</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">let (Modern)</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">Modern</span> way to declare variables
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">Block-scoped</span> - visible within block
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">Cannot be redeclared</span> in same scope
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">Recommended</span> for modern JavaScript
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> message = 'Hello';<br />
+              <span class="code-comment">// Works as expected</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">var (Old-school)</p>
+            <div class="key-point">
+              <i class="fas fa-history"></i>
+              <p class="key-point-text">
+                <span class="keyword">Old-school</span> way to declare variables
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-history"></i>
+              <p class="key-point-text">
+                <span class="keyword">Function-scoped</span> - visible
+                throughout function
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-history"></i>
+              <p class="key-point-text">
+                <span class="keyword">Can be redeclared</span> in same scope
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-history"></i>
+              <p class="key-point-text">
+                <span class="keyword">Found in older scripts</span> and legacy
+                code
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">var</span> message = 'Hello';<br />
+              <span class="code-comment">// Works but not recommended</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Variable Naming Rules -->
+      <div class="slide" id="slide6">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/4b96f562ff74.jpeg"
+          alt="JavaScript variable naming best practices"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Variable Naming Rules</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Basic Rules</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-font"></i>
+                Allowed Characters
+              </div>
+              <ul>
+                <li><span class="keyword">Letters</span> (a-z, A-Z)</li>
+                <li><span class="keyword">Digits</span> (0-9)</li>
+                <li><span class="keyword">Symbols</span> $ and _</li>
+              </ul>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-sort-numeric-up"></i>
+                First Character
+              </div>
+              <p class="key-point-text">
+                The first character
+                <span class="keyword">cannot be a digit</span>
+              </p>
+              <div class="comparison-container">
+                <div class="comparison-column">
+                  <div class="comparison-title good-title">
+                    <i class="fas fa-check"></i>
+                    Valid
+                  </div>
+                  <div class="code-block">
+                    <span class="keyword">let</span> userName;<br />
+                    <span class="keyword">let</span> _test;<br />
+                    <span class="keyword">let</span> $value;
+                  </div>
+                </div>
+                <div class="comparison-column">
+                  <div class="comparison-title bad-title">
+                    <i class="fas fa-times"></i>
+                    Invalid
+                  </div>
+                  <div class="code-block">
+                    <span class="keyword">let</span> 1user;<br />
+                    <span class="keyword">let</span> 123test;<br />
+                    <span class="keyword">let</span> 7value;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Naming Conventions</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-text-height"></i>
+                camelCase
+              </div>
+              <p class="key-point-text">
+                Multiple words joined together, each word (except first) starts
+                with capital:
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> myVariableName;<br />
+                <span class="keyword">let</span> shoppingCart;<br />
+                <span class="keyword">let</span> currentUser;
+              </div>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-ban"></i>
+              <p class="key-point-text">
+                <span class="keyword">Reserved words</span> cannot be used as
+                variable names
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> let = 5;
+              <span class="code-comment">// ERROR!</span><br />
+              <span class="keyword">let</span> return = 5;
+              <span class="code-comment">// ERROR!</span>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-language"></i>
+              <p class="key-point-text">
+                Use <span class="keyword">English</span> for international
+                compatibility
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Constants -->
+      <div class="slide" id="slide7">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/79c3b2e26b34.png"
+          alt="Constants declaration"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Constants</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Using 'const' Keyword</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-lock"></i>
+                Immutable Variables
+              </div>
+              <p class="key-point-text">
+                Constants declared using
+                <span class="keyword">const</span> cannot be reassigned
+              </p>
+              <div class="code-block">
+                <span class="keyword">const</span> myBirthday = '18.04.1982';<br />
+                <span class="code-comment">// Cannot be reassigned</span>
+              </div>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-exclamation-circle"></i>
+              <p class="key-point-text">
+                Attempting to reassign causes an
+                <span class="keyword">error</span>
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">const</span> myBirthday = '18.04.1982';<br />
+              myBirthday = '01.01.2001';
+              <span class="code-comment">// ERROR!</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">When to Use Constants</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-fill-drip"></i>
+                Uppercase Constants
+              </div>
+              <p class="key-point-text">
+                Constants for hard-coded values use
+                <span class="keyword">CAPITAL LETTERS</span>:
+              </p>
+              <div class="code-block">
+                <span class="keyword">const</span> COLOR_RED = "#F00";<br />
+                <span class="keyword">const</span> COLOR_GREEN = "#0F0";<br />
+                <span class="keyword">const</span> COLOR_BLUE = "#00F";
+              </div>
+            </div>
+            <div class="tip-box">
+              <div class="tip-title">
+                <i class="fas fa-lightbulb"></i>
+                Runtime Constants
+              </div>
+              <p class="key-point-text">
+                Some constants calculated at runtime but don't change:
+              </p>
+              <div class="code-block">
+                <span class="keyword">const</span> pageLoadTime =
+                <span class="code-comment">/* time taken */</span>;<br />
+                <span class="code-comment"
+                  >// Named normally, not in uppercase</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Best Practices -->
+      <div class="slide" id="slide8">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/3741bafbe43c.png"
+          alt="How not to name things"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Best Practices</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Naming Conventions</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-signature"></i>
+                Descriptive Names
+              </div>
+              <p class="key-point-text">
+                Variable names should have a
+                <span class="keyword">clean, obvious meaning</span>
+              </p>
+              <div class="comparison-container">
+                <div class="comparison-column">
+                  <div class="comparison-title good-title">
+                    <i class="fas fa-check"></i>
+                    Good
+                  </div>
+                  <div class="code-block">
+                    <span class="keyword">let</span> userName;<br />
+                    <span class="keyword">let</span> shoppingCart;<br />
+                    <span class="keyword">let</span> currentPage;
+                  </div>
+                </div>
+                <div class="comparison-column">
+                  <div class="comparison-title bad-title">
+                    <i class="fas fa-times"></i>
+                    Bad
+                  </div>
+                  <div class="code-block">
+                    <span class="keyword">let</span> a;<br />
+                    <span class="keyword">let</span> b;<br />
+                    <span class="keyword">let</span> c;
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-brain"></i>
+              <p class="key-point-text">
+                <span class="keyword">Think before naming</span> - good names
+                save time later
+              </p>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Descriptive vs. Generic Names</p>
+            <div class="key-point">
+              <i class="fas fa-thumbs-up"></i>
+              <p class="key-point-text">
+                <span class="keyword">Be specific</span> - avoid generic names
+                like "data" or "value"
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-thumbs-up"></i>
+              <p class="key-point-text">
+                <span class="keyword">Be concise</span> - but not at the expense
+                of clarity
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-thumbs-down"></i>
+              <p class="key-point-text">
+                <span class="keyword">Avoid ambiguity</span> - names should be
+                self-explanatory
+              </p>
+            </div>
+            <div class="tip-box">
+              <div class="tip-title">
+                <i class="fas fa-lightbulb"></i>
+                Reuse or Create?
+              </div>
+              <p class="key-point-text">
+                <span class="keyword">Create new variables</span> for different
+                values rather than reusing existing ones
+              </p>
+              <p class="key-point-text" style="margin-top: 10px">
+                An extra variable is <span class="keyword">good, not evil</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide" id="slide9">
+        <img
+          src="https://sfile.chatglm.cn/images-ppt/5435494a6d42.png"
+          alt="JavaScript var, let, const comparison"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Summary</h1>
+        </div>
+        <div class="content">
+          <div class="summary-container">
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-code"></i>
+                Variable Declaration
+              </div>
+              <ul>
+                <li><span class="keyword">let</span> - Modern, block scope</li>
+                <li>
+                  <span class="keyword">var</span> - Old-school, function scope
+                </li>
+                <li>
+                  <span class="keyword">const</span> - For unchanging values
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-spell-check"></i>
+                Naming Rules
+              </div>
+              <ul>
+                <li>Use <span class="keyword">letters, digits, $, _</span></li>
+                <li>
+                  First character <span class="keyword">not a digit</span>
+                </li>
+                <li>
+                  <span class="keyword">camelCase</span> for multi-word names
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-star"></i>
+                Best Practices
+              </div>
+              <ul>
+                <li>Use <span class="keyword">descriptive names</span></li>
+                <li>Maintain <span class="keyword">consistency</span></li>
+                <li>
+                  <span class="keyword">Create new variables</span> rather than
+                  reusing
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-lightbulb"></i>
+                Key Concepts
+              </div>
+              <ul>
+                <li>
+                  Variables are <span class="keyword">named storage</span> for
+                  data
+                </li>
+                <li>
+                  Values can be <span class="keyword">changed</span> (except
+                  constants)
+                </li>
+                <li>
+                  Avoid <span class="keyword">reserved words</span> as names
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer">
+            <i class="fas fa-star footer-icon"></i>
+            <p class="footer-text">
+              Variables are fundamental building blocks. Good naming and proper
+              declaration make code more readable and maintainable.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="navigation">
+        <button class="nav-button" id="prevBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-button" id="nextBtn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Slide Indicators -->
+      <div class="slide-indicator">
+        <div class="indicator-dot active" data-slide="1"></div>
+        <div class="indicator-dot" data-slide="2"></div>
+        <div class="indicator-dot" data-slide="3"></div>
+        <div class="indicator-dot" data-slide="4"></div>
+        <div class="indicator-dot" data-slide="5"></div>
+        <div class="indicator-dot" data-slide="6"></div>
+        <div class="indicator-dot" data-slide="7"></div>
+        <div class="indicator-dot" data-slide="8"></div>
+        <div class="indicator-dot" data-slide="9"></div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicatorDots = document.querySelectorAll(".indicator-dot");
+
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+          // Hide all slides
+          slides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+
+          // Remove active class from all indicators
+          indicatorDots.forEach((dot) => {
+            dot.classList.remove("active");
+          });
+
+          // Handle boundaries
+          if (n > totalSlides) {
+            currentSlide = 1;
+          } else if (n < 1) {
+            currentSlide = totalSlides;
+          } else {
+            currentSlide = n;
+          }
+
+          // Show current slide
+          slides[currentSlide - 1].classList.add("active");
+
+          // Update indicator
+          indicatorDots[currentSlide - 1].classList.add("active");
+        }
+
+        // Next button
+        nextBtn.addEventListener("click", function () {
+          showSlide(currentSlide + 1);
+        });
+
+        // Previous button
+        prevBtn.addEventListener("click", function () {
+          showSlide(currentSlide - 1);
+        });
+
+        // Indicator dots
+        indicatorDots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const slideNum = parseInt(this.getAttribute("data-slide"));
+            showSlide(slideNum);
+          });
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") {
+            showSlide(currentSlide + 1);
+          } else if (e.key === "ArrowLeft") {
+            showSlide(currentSlide - 1);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

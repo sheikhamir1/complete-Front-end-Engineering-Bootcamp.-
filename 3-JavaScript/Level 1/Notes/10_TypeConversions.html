@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Type Conversions in JavaScript</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .slide {
+        display: none;
+        min-height: 100vh;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .slide-in-left {
+        animation: slideInLeft 0.6s ease-out;
+      }
+      @keyframes slideInLeft {
+        from {
+          transform: translateX(-100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .slide-in-right {
+        animation: slideInRight 0.6s ease-out;
+      }
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .scale-in {
+        animation: scaleIn 0.6s ease-out;
+      }
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .code-block {
+        background-color: #f8fafc;
+        border-radius: 8px;
+        padding: 16px;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+        border-left: 4px solid #3b82f6;
+      }
+      .nav-button {
+        transition: all 0.3s ease;
+      }
+      .nav-button:hover {
+        transform: translateY(-2px);
+      }
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          #e0f2fe 0%,
+          #dbeafe 50%,
+          #e0e7ff 100%
+        );
+      }
+      .card-shadow {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body class="gradient-bg">
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-6 right-6 z-50 flex space-x-3">
+      <button
+        id="prevBtn"
+        class="nav-button bg-white rounded-full p-3 shadow-lg hover:shadow-xl"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-blue-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+      <button
+        id="nextBtn"
+        class="nav-button bg-white rounded-full p-3 shadow-lg hover:shadow-xl"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-blue-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Slide Progress Indicator -->
+    <div
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white bg-opacity-80 rounded-full px-4 py-2 shadow-md"
+    >
+      <div class="flex space-x-2">
+        <div
+          class="w-3 h-3 rounded-full bg-blue-500 slide-indicator"
+          data-slide="1"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="2"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="3"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="4"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="5"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="6"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="7"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="8"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="9"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Cover / Title Slide -->
+    <div class="slide active flex-col justify-center items-center p-8 fade-in">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12 text-center"
+      >
+        <div class="flex justify-center mb-8">
+          <div
+            class="bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full p-5 animate__animated animate__pulse animate__infinite"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-20 w-20 text-white"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"
+              />
+            </svg>
+          </div>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+          Type Conversions
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Understanding how JavaScript converts between types
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition duration-300 transform hover:scale-105"
+          >
+            Start Learning
+          </button>
+          <button
+            class="bg-white text-blue-600 border border-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition duration-300 transform hover:scale-105"
+          >
+            View Examples
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction / Summary -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Introduction <span class="text-blue-500">🔄</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-blue-50 rounded-xl p-6 shadow-md slide-in-left">
+            <div class="flex items-center mb-4">
+              <div class="bg-blue-100 p-2 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">
+                Automatic Conversions
+              </h3>
+            </div>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start">
+                <span class="text-blue-500 mr-2">•</span>
+                <span
+                  >Operators and functions convert values automatically</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-blue-500 mr-2">•</span>
+                <span>alert() converts values to strings</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-blue-500 mr-2">•</span>
+                <span>Math operations convert values to numbers</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-indigo-50 rounded-xl p-6 shadow-md slide-in-right">
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-100 p-2 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">
+                Explicit Conversions
+              </h3>
+            </div>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start">
+                <span class="text-indigo-500 mr-2">•</span>
+                <span>Sometimes we need to convert types explicitly</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-indigo-500 mr-2">•</span>
+                <span>String(), Number(), Boolean() functions</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-indigo-500 mr-2">•</span>
+                <span>Important for predictable behavior</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">
+            Key Takeaway <span class="text-indigo-500">💡</span>
+          </h3>
+          <p class="text-gray-600">
+            Understanding type conversions is essential for writing predictable
+            JavaScript code and avoiding common bugs.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: String Conversion -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          String Conversion <span class="text-purple-500">📝</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-purple-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                When It Happens
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-purple-500 mr-2">•</span>
+                  <span>alert() automatically converts to string</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-purple-500 mr-2">•</span>
+                  <span>String concatenation with + operator</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-purple-500 mr-2">•</span>
+                  <span>Explicit conversion with String(value)</span>
+                </li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Conversion Rules
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-blue-500 mr-2">•</span>
+                  <span><code>true</code> → "true"</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-blue-500 mr-2">•</span>
+                  <span><code>false</code> → "false"</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-blue-500 mr-2">•</span>
+                  <span><code>null</code> → "null"</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-blue-500 mr-2">•</span>
+                  <span><code>undefined</code> → "undefined"</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">Example</h3>
+              <div class="code-block mb-4">
+                <pre><code>let value = true;
+alert(typeof value); // boolean
+
+value = String(value); // "true"
+alert(typeof value); // string</code></pre>
+              </div>
+              <p class="text-gray-600 text-sm">
+                The boolean value is converted to its string representation
+              </p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Use Cases
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Displaying values to users</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Building output strings</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Serializing data</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Numeric Conversion -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Numeric Conversion <span class="text-green-500">🔢</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-green-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                When It Happens
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Mathematical operations (+, -, *, /)</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Comparison operators (>, <)</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Explicit conversion with Number(value)</span>
+                </li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Conversion Rules
+              </h3>
+              <div class="overflow-x-auto">
+                <table class="min-w-full text-gray-600">
+                  <thead>
+                    <tr class="bg-blue-100">
+                      <th class="py-2 px-3 text-left">Value</th>
+                      <th class="py-2 px-3 text-left">Becomes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-3">undefined</td>
+                      <td class="py-2 px-3">NaN</td>
+                    </tr>
+                    <tr class="bg-blue-50">
+                      <td class="py-2 px-3">null</td>
+                      <td class="py-2 px-3">0</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3">true / false</td>
+                      <td class="py-2 px-3">1 / 0</td>
+                    </tr>
+                    <tr class="bg-blue-50">
+                      <td class="py-2 px-3">string</td>
+                      <td class="py-2 px-3">Number or NaN</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">Examples</h3>
+              <div class="code-block mb-4">
+                <pre><code>alert( "6" / "2" ); // 3
+
+let str = "123";
+let num = Number(str); // 123
+alert(typeof num); // number
+
+let age = Number("invalid");
+alert(age); // NaN</code></pre>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Strings are converted to numbers, invalid strings become NaN
+              </p>
+            </div>
+            <div class="bg-yellow-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                String Conversion Details
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-yellow-500 mr-2">•</span>
+                  <span>Whitespace is trimmed</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-500 mr-2">•</span>
+                  <span>Empty string becomes 0</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-500 mr-2">•</span>
+                  <span>Non-numeric characters result in NaN</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Boolean Conversion -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Boolean Conversion <span class="text-yellow-500">✅</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-yellow-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                When It Happens
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-yellow-500 mr-2">•</span>
+                  <span>Logical operations (&&, ||, !)</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-500 mr-2">•</span>
+                  <span>Conditional statements (if, while)</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-yellow-500 mr-2">•</span>
+                  <span>Explicit conversion with Boolean(value)</span>
+                </li>
+              </ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Conversion Rules
+              </h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-lg">
+                  <h4 class="font-semibold text-gray-800 mb-2">Falsy Values</h4>
+                  <ul class="text-gray-600 space-y-1">
+                    <li>• 0</li>
+                    <li>• ""</li>
+                    <li>• null</li>
+                    <li>• undefined</li>
+                    <li>• NaN</li>
+                    <li>• false</li>
+                  </ul>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                  <h4 class="font-semibold text-gray-800 mb-2">
+                    Truthy Values
+                  </h4>
+                  <ul class="text-gray-600 space-y-1">
+                    <li>• "0"</li>
+                    <li>• " "</li>
+                    <li>• []</li>
+                    <li>• {}</li>
+                    <li>• 1</li>
+                    <li>• true</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">Examples</h3>
+              <div class="code-block mb-4">
+                <pre><code>alert( Boolean(1) );     // true
+alert( Boolean(0) );     // false
+alert( Boolean("hello") ); // true
+alert( Boolean("") );    // false</code></pre>
+              </div>
+              <div class="bg-yellow-100 p-3 rounded-lg mb-3">
+                <p class="text-gray-700 font-medium">Important Note:</p>
+                <p class="text-gray-600 text-sm">
+                  The string "0" is truthy in JavaScript, unlike some other
+                  languages.
+                </p>
+              </div>
+              <div class="code-block">
+                <pre><code>alert( Boolean("0") );  // true
+alert( Boolean(" ") );  // true</code></pre>
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Use Cases
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Conditional logic</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Checking for empty values</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="text-green-500 mr-2">•</span>
+                  <span>Short-circuit evaluation</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Rules and Exceptions -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Rules and Exceptions <span class="text-red-500">⚠️</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-red-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Common Mistakes
+            </h3>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span
+                  ><strong>undefined</strong> becomes <strong>NaN</strong> as a
+                  number, not 0</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span
+                  ><strong>"0"</strong> and space-only strings like
+                  <strong>" "</strong> are <strong>true</strong> as a
+                  boolean</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span
+                  >Forgetting that <strong>null</strong> becomes 0 in numeric
+                  conversion</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span>Assuming empty objects are falsy (they're truthy)</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-6 shadow-md slide-in-right">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Conversion Summary
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-gray-600">
+                <thead>
+                  <tr class="bg-blue-100">
+                    <th class="py-2 px-3 text-left">Original Value</th>
+                    <th class="py-2 px-3 text-left">String</th>
+                    <th class="py-2 px-3 text-left">Number</th>
+                    <th class="py-2 px-3 text-left">Boolean</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="py-2 px-3">undefined</td>
+                    <td class="py-2 px-3">"undefined"</td>
+                    <td class="py-2 px-3">NaN</td>
+                    <td class="py-2 px-3">false</td>
+                  </tr>
+                  <tr class="bg-blue-50">
+                    <td class="py-2 px-3">null</td>
+                    <td class="py-2 px-3">"null"</td>
+                    <td class="py-2 px-3">0</td>
+                    <td class="py-2 px-3">false</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3">true</td>
+                    <td class="py-2 px-3">"true"</td>
+                    <td class="py-2 px-3">1</td>
+                    <td class="py-2 px-3">true</td>
+                  </tr>
+                  <tr class="bg-blue-50">
+                    <td class="py-2 px-3">false</td>
+                    <td class="py-2 px-3">"false"</td>
+                    <td class="py-2 px-3">0</td>
+                    <td class="py-2 px-3">false</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 px-3">""</td>
+                    <td class="py-2 px-3">""</td>
+                    <td class="py-2 px-3">0</td>
+                    <td class="py-2 px-3">false</td>
+                  </tr>
+                  <tr class="bg-blue-50">
+                    <td class="py-2 px-3">"0"</td>
+                    <td class="py-2 px-3">"0"</td>
+                    <td class="py-2 px-3">0</td>
+                    <td class="py-2 px-3">true</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">
+            Remember <span class="text-yellow-500">🧠</span>
+          </h3>
+          <p class="text-gray-600">
+            These conversion rules are fundamental to JavaScript. Understanding
+            them helps prevent bugs and write more predictable code.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Code Example(s) -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Code Examples <span class="text-blue-500">💻</span>
+        </h2>
+        <div class="space-y-6">
+          <div class="bg-blue-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              String Conversion
+            </h3>
+            <div class="code-block">
+              <pre><code>// Automatic conversion
+alert(true);      // "true"
+alert(null);      // "null"
+
+// Explicit conversion
+let value = false;
+let str = String(value);
+alert(str);       // "false"</code></pre>
+            </div>
+          </div>
+          <div class="bg-green-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Numeric Conversion
+            </h3>
+            <div class="code-block">
+              <pre><code>// Automatic conversion
+alert("5" - 3);   // 2
+alert("5" * "2"); // 10
+
+// Explicit conversion
+let str = "123";
+let num = Number(str);
+alert(num);       // 123
+
+// Special cases
+alert(Number(null));      // 0
+alert(Number(undefined)); // NaN</code></pre>
+            </div>
+          </div>
+          <div class="bg-yellow-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Boolean Conversion
+            </h3>
+            <div class="code-block">
+              <pre><code>// Explicit conversion
+alert(Boolean(1));     // true
+alert(Boolean(0));     // false
+alert(Boolean(""));    // false
+alert(Boolean("0"));   // true
+
+// Implicit conversion in conditions
+let value = "hello";
+if (value) {
+  alert("This will run because 'hello' is truthy");
+}
+
+// Checking for empty values
+let userInput = "";
+if (!userInput) {
+  alert("Please enter a value");
+}</code></pre>
+            </div>
+          </div>
+          <div class="bg-purple-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Combined Example
+            </h3>
+            <div class="code-block">
+              <pre><code>// A practical example of type conversions
+function processInput(input) {
+  // Convert to string to ensure it's a string
+  const strInput = String(input);
+  
+  // Check if it's a valid number
+  const numInput = Number(strInput);
+  
+  if (isNaN(numInput)) {
+    // Not a valid number
+    alert(`"${strInput}" is not a valid number`);
+    return null;
+  }
+  
+  // Convert to boolean to check if it's truthy
+  const boolInput = Boolean(numInput);
+  
+  if (boolInput) {
+    return numInput * 2;  // Double the number
+  } else {
+    alert("The number is zero");
+    return 0;
+  }
+}
+
+// Test cases
+processInput("5");     // Returns 10
+processInput("0");     // Alerts "The number is zero"
+processInput("hello"); // Alerts "hello" is not a valid number"</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Tips, Best Practices, Common Mistakes -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Tips & Best Practices <span class="text-green-500">✨</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-green-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Best Practices
+            </h3>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <div class="bg-green-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <span>Use explicit conversion for predictable behavior</span>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-green-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <span
+                  >Always validate user input with Number() before math
+                  operations</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div class="bg-green-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <span>Use strict equality (===) to avoid type coercion</span>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-green-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <span>Be explicit about your intentions in code comments</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-red-50 rounded-xl p-6 shadow-md slide-in-right">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Common Mistakes
+            </h3>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span>Forgetting that "0" is truthy in boolean context</span>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span>Using == instead of === for comparisons</span>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span>Not handling NaN after numeric conversion</span>
+              </li>
+              <li class="flex items-start">
+                <div class="bg-red-100 rounded-full p-1 mr-3 mt-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span>Assuming undefined converts to 0 in math operations</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 bg-blue-50 rounded-xl p-6 shadow-md scale-in">
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">
+            Pro Tip <span class="text-blue-500">🔍</span>
+          </h3>
+          <p class="text-gray-600">
+            Use modern JavaScript features like optional chaining and nullish
+            coalescing to handle undefined/null values more gracefully.
+          </p>
+          <div class="code-block mt-3">
+            <pre><code>// Instead of this
+let username = user.name || "Guest";
+
+// Consider this (for null/undefined only)
+let username = user.name ?? "Guest";</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Conclusion / Next Steps -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Conclusion & Next Steps <span class="text-indigo-600">🚀</span>
+        </h2>
+        <div class="mb-8 slide-in-left">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">
+            Key Takeaways
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-indigo-50 rounded-xl p-5 shadow-md">
+              <div
+                class="bg-indigo-100 rounded-full p-3 w-12 h-12 flex items-center justify-center mb-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+              <h4 class="font-semibold text-gray-800 mb-2">
+                String Conversion
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Occurs with alert() and String(). Most primitive values have
+                obvious string representations.
+              </p>
+            </div>
+            <div class="bg-indigo-50 rounded-xl p-5 shadow-md">
+              <div
+                class="bg-indigo-100 rounded-full p-3 w-12 h-12 flex items-center justify-center mb-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h4 class="font-semibold text-gray-800 mb-2">
+                Numeric Conversion
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Happens in math operations. undefined becomes NaN, null becomes
+                0, strings are parsed.
+              </p>
+            </div>
+            <div class="bg-indigo-50 rounded-xl p-5 shadow-md">
+              <div
+                class="bg-indigo-100 rounded-full p-3 w-12 h-12 flex items-center justify-center mb-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+              </div>
+              <h4 class="font-semibold text-gray-800 mb-2">
+                Boolean Conversion
+              </h4>
+              <p class="text-gray-600 text-sm">
+                Simple rules: empty values (0, "", null, undefined, NaN) are
+                false, others are true.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="mb-8 slide-in-right">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Next Steps</h3>
+          <ul class="space-y-3 text-gray-600">
+            <li class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <span
+                >Learn about operators and their type conversion behavior</span
+              >
+            </li>
+            <li class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <span>Explore object-to-primitive conversion</span>
+            </li>
+            <li class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <span>Practice with real-world examples and exercises</span>
+            </li>
+            <li class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-1 mr-3 mt-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-indigo-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <span>Study type coercion in comparisons (== vs ===)</span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 shadow-md text-white scale-in"
+        >
+          <h3 class="text-xl font-semibold mb-3">
+            Keep Learning! <span class="text-yellow-300">🌟</span>
+          </h3>
+          <p class="mb-4">
+            Type conversions are fundamental to JavaScript. Mastering them will
+            help you write more robust and predictable code.
+          </p>
+          <div class="flex space-x-4">
+            <button
+              class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-indigo-50 transition duration-300"
+            >
+              Try Examples
+            </button>
+            <button
+              class="bg-indigo-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-900 transition duration-300"
+            >
+              More Resources
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Slide navigation functionality
+      let currentSlide = 1;
+      const totalSlides = 9;
+
+      const slides = document.querySelectorAll(".slide");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const indicators = document.querySelectorAll(".slide-indicator");
+
+      function showSlide(n) {
+        // Hide all slides
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Update indicators
+        indicators.forEach((indicator) => {
+          indicator.classList.remove("bg-blue-500");
+          indicator.classList.add("bg-gray-300");
+        });
+
+        // Show current slide
+        if (n > totalSlides) currentSlide = 1;
+        if (n < 1) currentSlide = totalSlides;
+
+        slides[currentSlide - 1].classList.add("active");
+        indicators[currentSlide - 1].classList.remove("bg-gray-300");
+        indicators[currentSlide - 1].classList.add("bg-blue-500");
+
+        // Add animation classes
+        const activeSlide = slides[currentSlide - 1];
+        const elements = activeSlide.querySelectorAll(
+          ".slide-in-left, .slide-in-right, .scale-in, .fade-in"
+        );
+        elements.forEach((el, index) => {
+          setTimeout(() => {
+            el.style.opacity = "1";
+          }, index * 100);
+        });
+      }
+
+      // Next slide
+      function nextSlide() {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+
+      // Previous slide
+      function prevSlide() {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+
+      // Event listeners
+      nextBtn.addEventListener("click", nextSlide);
+      prevBtn.addEventListener("click", prevSlide);
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") nextSlide();
+        if (e.key === "ArrowLeft") prevSlide();
+      });
+
+      // Initialize the first slide
+      showSlide(currentSlide);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Data Types - Interactive Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        overflow: hidden;
+        background-color: #0f172a;
+        color: #ffffff;
+      }
+      .presentation-container {
+        width: 1280px;
+        min-height: 820px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        background-color: #0f172a;
+      }
+      .slide {
+        width: 100%;
+        min-height: 720px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+        background-color: #0f172a;
+      }
+      .slide.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+        opacity: 0.15;
+        filter: blur(3px);
+      }
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(30, 41, 59, 0.95)
+        );
+        z-index: -1;
+      }
+      .header {
+        padding: 30px 50px 15px;
+        background: linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(30, 41, 59, 0.95)
+        );
+        border-bottom: 2px solid rgba(99, 102, 241, 0.5);
+      }
+      .title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      .content {
+        display: flex;
+        flex-grow: 1;
+        padding: 30px 50px;
+      }
+      .left-content {
+        flex: 1;
+        padding-right: 30px;
+      }
+      .right-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #ffffff;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      .key-point {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+      }
+      .key-point i {
+        color: #a5b4fc;
+        margin-right: 15px;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      .key-point-text {
+        font-size: 1.1rem;
+        color: #ffffff;
+      }
+      .highlight {
+        color: #a5b4fc;
+        font-weight: 600;
+      }
+      .code-block {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-family: "Courier New", monospace;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-left: 4px solid #6366f1;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+      }
+      .code-comment {
+        color: #94a3b8;
+        font-style: italic;
+      }
+      .example-box {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .example-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .example-title i {
+        margin-right: 10px;
+        color: #a5b4fc;
+      }
+      .navigation {
+        position: absolute;
+        bottom: 30px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        z-index: 10;
+      }
+      .nav-button {
+        background-color: rgba(99, 102, 241, 0.8);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .nav-button:hover {
+        background-color: rgba(129, 140, 248, 0.9);
+        transform: scale(1.05);
+      }
+      .nav-button i {
+        font-size: 1.2rem;
+        color: #ffffff;
+      }
+      .slide-indicator {
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+      }
+      .indicator-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(148, 163, 184, 0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .indicator-dot.active {
+        background-color: #ffffff;
+        transform: scale(1.2);
+      }
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        padding: 0 50px;
+        text-align: center;
+      }
+      .main-title {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+        color: #ffffff;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+      .subtitle {
+        font-size: 1.5rem;
+        font-weight: 400;
+        max-width: 80%;
+        color: #ffffff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .icon-container {
+        margin-bottom: 30px;
+      }
+      .icon-container i {
+        font-size: 4rem;
+        color: #a5b4fc;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .comparison-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+      }
+      .comparison-column {
+        flex: 1;
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .comparison-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        color: #ffffff;
+      }
+      .comparison-title i {
+        margin-right: 8px;
+        font-size: 1rem;
+      }
+      .good-title {
+        color: #4ade80;
+      }
+      .bad-title {
+        color: #f87171;
+      }
+      .tip-box {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .tip-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .tip-title i {
+        margin-right: 10px;
+        font-size: 1.2rem;
+        color: #a5b4fc;
+      }
+      .footer {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .footer-icon {
+        color: #a5b4fc;
+        font-size: 1.8rem;
+        margin-right: 15px;
+      }
+      .footer-text {
+        font-size: 1.1rem;
+        line-height: 1.4;
+        color: #ffffff;
+      }
+      .summary-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        flex-grow: 1;
+      }
+      .summary-box {
+        flex: 1 1 calc(50% - 20px);
+        min-width: calc(50% - 20px);
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+      }
+      .summary-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+      }
+      .summary-title i {
+        margin-right: 12px;
+        font-size: 1.3rem;
+        color: #a5b4fc;
+      }
+      ul {
+        list-style-type: none;
+        margin-left: 0;
+      }
+      ul li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 8px;
+        color: #ffffff;
+        font-size: 1rem;
+      }
+      ul li:before {
+        content: "•";
+        color: #a5b4fc;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+      }
+      .keyword {
+        display: inline-block;
+        background-color: rgba(99, 102, 241, 0.2);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+      .data-type-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .data-type-card {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .data-type-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
+      }
+      .data-type-icon {
+        font-size: 2rem;
+        color: #a5b4fc;
+        margin-bottom: 10px;
+      }
+      .data-type-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #ffffff;
+      }
+      .data-type-desc {
+        font-size: 0.9rem;
+        color: #cbd5e1;
+      }
+      .emoji {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+      .animated {
+        animation: fadeIn 1s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .delay-1 {
+        animation-delay: 0.2s;
+      }
+      .delay-2 {
+        animation-delay: 0.4s;
+      }
+      .delay-3 {
+        animation-delay: 0.6s;
+      }
+      .delay-4 {
+        animation-delay: 0.8s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- Slide 1: Summary of JavaScript Data Types -->
+      <div class="slide active" id="slide1">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/4d40dadd80f6.png"
+          alt="JavaScript Data Types"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="center-content">
+          <div class="icon-container">
+            <i class="fas fa-database"></i>
+          </div>
+          <h1 class="main-title">JavaScript Data Types</h1>
+          <p class="subtitle">
+            Understanding the Building Blocks of JavaScript
+          </p>
+
+          <div class="data-type-grid animated">
+            <div class="data-type-card delay-1">
+              <div class="data-type-icon">🔢</div>
+              <div class="data-type-name">Number</div>
+              <div class="data-type-desc">Integers & floats</div>
+            </div>
+            <div class="data-type-card delay-2">
+              <div class="data-type-icon">🔢</div>
+              <div class="data-type-name">BigInt</div>
+              <div class="data-type-desc">Large integers</div>
+            </div>
+            <div class="data-type-card delay-3">
+              <div class="data-type-icon">📝</div>
+              <div class="data-type-name">String</div>
+              <div class="data-type-desc">Text data</div>
+            </div>
+            <div class="data-type-card delay-1">
+              <div class="data-type-icon">✅</div>
+              <div class="data-type-name">Boolean</div>
+              <div class="data-type-desc">true or false</div>
+            </div>
+            <div class="data-type-card delay-2">
+              <div class="data-type-icon">⭕</div>
+              <div class="data-type-name">Null</div>
+              <div class="data-type-desc">Empty value</div>
+            </div>
+            <div class="data-type-card delay-3">
+              <div class="data-type-icon">❓</div>
+              <div class="data-type-name">Undefined</div>
+              <div class="data-type-desc">Unassigned value</div>
+            </div>
+            <div class="data-type-card delay-1">
+              <div class="data-type-icon">🔑</div>
+              <div class="data-type-name">Symbol</div>
+              <div class="data-type-desc">Unique identifier</div>
+            </div>
+            <div class="data-type-card delay-2">
+              <div class="data-type-icon">📦</div>
+              <div class="data-type-name">Object</div>
+              <div class="data-type-desc">Complex data</div>
+            </div>
+            <div class="data-type-card delay-3">
+              <div class="data-type-icon">🔍</div>
+              <div class="data-type-name">typeof</div>
+              <div class="data-type-desc">Type operator</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Number Type -->
+      <div class="slide" id="slide2">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/0fdeebcb4b5e.png"
+          alt="Number Type"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Number Type 🔢</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Basic Number Type</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Represents <span class="keyword">integers</span> and
+                <span class="keyword">floating point</span> numbers
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Supports math operations: <span class="keyword">+ - * /</span>
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> n = 123;<br />
+              <span class="keyword">let</span> pi = 3.14;<br />
+              <span class="keyword">let</span> sum = 5 + 7;
+              <span class="code-comment">// 12</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Special Numeric Values</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-infinity"></i>
+                Infinity
+              </div>
+              <p class="key-point-text">Greater than any number</p>
+              <div class="code-block">
+                alert( 1 / 0 ); <span class="code-comment">// Infinity</span
+                ><br />
+                alert( Infinity ); <span class="code-comment">// Infinity</span>
+              </div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                NaN
+              </div>
+              <p class="key-point-text">Result of incorrect math operation</p>
+              <div class="code-block">
+                alert( "not a number" / 2 );
+                <span class="code-comment">// NaN</span><br />
+                alert( NaN + 1 ); <span class="code-comment">// NaN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: BigInt Type -->
+      <div class="slide" id="slide3">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/e180fc17be74.png"
+          alt="BigInt Type"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">BigInt Type 🔢</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">What is BigInt?</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                For <span class="keyword">integers of arbitrary length</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Created by appending <span class="keyword">n</span> to an
+                integer
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Used for <span class="keyword">cryptography</span> or
+                <span class="keyword">precision timestamps</span>
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">const</span> bigInt =
+              1234567890123456789012345678901234567890n;
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Why BigInt?</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-exclamation-circle"></i>
+                Number Type Limitation
+              </div>
+              <p class="key-point-text">
+                Regular numbers are limited to ±(2<sup>53</sup>-1)
+              </p>
+              <div class="code-block">
+                <span class="code-comment"
+                  >// Both show same result (precision error)</span
+                ><br />
+                console.log(9007199254740991 + 1);
+                <span class="code-comment">// 9007199254740992</span><br />
+                console.log(9007199254740991 + 2);
+                <span class="code-comment">// 9007199254740992</span>
+              </div>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-lightbulb"></i>
+              <p class="key-point-text">
+                BigInt solves this by
+                <span class="keyword">storing exact values</span> of any size
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: String Type -->
+      <div class="slide" id="slide4">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/79cc7aa77dae.svg"
+          alt="String Type"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">String Type 📝</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">String Basics</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Represents <span class="keyword">textual data</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Must be surrounded by <span class="keyword">quotes</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                No separate <span class="keyword">character type</span> in
+                JavaScript
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> str = "Hello";<br />
+              <span class="keyword">let</span> str2 = 'Single quotes';<br />
+              <span class="keyword">let</span> phrase = `Backticks`;
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Types of Quotes</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-quote-right"></i>
+                Double & Single Quotes
+              </div>
+              <p class="key-point-text">
+                Simple quotes, practically no difference
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> double = "Hello";<br />
+                <span class="keyword">let</span> single = 'World';
+              </div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-code"></i>
+                Backticks
+              </div>
+              <p class="key-point-text">
+                Extended functionality with <span class="keyword">${...}</span>
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> name = "John";<br />
+                alert( `Hello, ${name}!` );
+                <span class="code-comment">// Hello, John!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Boolean Type -->
+      <div class="slide" id="slide5">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/75cb3ac8d46b.jpg"
+          alt="Boolean Type"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Boolean Type ✅</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Boolean Basics</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Only <span class="keyword">two values</span>: true and false
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Used for <span class="keyword">yes/no</span> values
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">true</span> means "yes, correct"
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">false</span> means "no, incorrect"
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> nameFieldChecked =
+              <span class="keyword">true</span>;<br />
+              <span class="keyword">let</span> ageFieldChecked =
+              <span class="keyword">false</span>;
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Boolean from Comparisons</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-balance-scale"></i>
+                Comparison Results
+              </div>
+              <p class="key-point-text">Comparisons return boolean values</p>
+              <div class="code-block">
+                <span class="keyword">let</span> isGreater = 4 > 1;<br />
+                alert( isGreater ); <span class="code-comment">// true</span
+                ><br /><br />
+                <span class="keyword">let</span> isEqual = 5 === 5;<br />
+                alert( isEqual ); <span class="code-comment">// true</span>
+              </div>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-lightbulb"></i>
+              <p class="key-point-text">
+                Essential for <span class="keyword">conditional logic</span> and
+                <span class="keyword">control flow</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Null and Undefined Types -->
+      <div class="slide" id="slide6">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/4b96f562ff74.jpeg"
+          alt="Null and Undefined Types"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Null and Undefined Types ⭕❓</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Null Type ⭕</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Special value meaning <span class="keyword">"nothing"</span> or
+                <span class="keyword">"empty"</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Represents <span class="keyword">"value unknown"</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Forms a <span class="keyword">separate type</span> of its own
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> age =
+              <span class="keyword">null</span>;<br />
+              <span class="code-comment">// age is unknown or empty</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Undefined Type ❓</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Means <span class="keyword">"value is not assigned"</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Default value for
+                <span class="keyword">unassigned variables</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Also forms a <span class="keyword">separate type</span> of its
+                own
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> age;<br />
+              alert(age); <span class="code-comment">// "undefined"</span
+              ><br /><br />
+              <span class="keyword">let</span> name = undefined;
+              <span class="code-comment">// Not recommended</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Objects and Symbols -->
+      <div class="slide" id="slide7">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/3741bafbe43c.png"
+          alt="Objects and Symbols"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Objects and Symbols 📦🔑</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Object Type 📦</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                <span class="keyword">Non-primitive</span> data type
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Used to store <span class="keyword">collections of data</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Can contain <span class="keyword">multiple values</span> and
+                <span class="keyword">complex entities</span>
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> user = {<br />
+              &nbsp;&nbsp;name: "John",<br />
+              &nbsp;&nbsp;age: 30<br />
+              };
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Symbol Type 🔑</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Used to create
+                <span class="keyword">unique identifiers</span> for objects
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Values are <span class="keyword">guaranteed to be unique</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Often used as <span class="keyword">object property keys</span>
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">let</span> id = Symbol("id");<br />
+              <span class="keyword">let</span> user = {<br />
+              &nbsp;&nbsp;[id]: 123<br />
+              };
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: The typeof Operator -->
+      <div class="slide" id="slide8">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/5435494a6d42.png"
+          alt="The typeof Operator"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">The typeof Operator 🔍</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">What is typeof?</p>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Returns the <span class="keyword">type</span> of the operand
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Useful for
+                <span class="keyword">processing different types</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check"></i>
+              <p class="key-point-text">
+                Returns a <span class="keyword">string</span> with the type name
+              </p>
+            </div>
+            <div class="code-block">
+              <span class="keyword">typeof</span> undefined
+              <span class="code-comment">// "undefined"</span><br />
+              <span class="keyword">typeof</span> 0
+              <span class="code-comment">// "number"</span><br />
+              <span class="keyword">typeof</span> true
+              <span class="code-comment">// "boolean"</span><br />
+              <span class="keyword">typeof</span> "foo"
+              <span class="code-comment">// "string"</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Special Cases</p>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                typeof null
+              </div>
+              <p class="key-point-text">
+                Returns <span class="keyword">"object"</span> (official error)
+              </p>
+              <div class="code-block">
+                <span class="keyword">typeof</span> null
+                <span class="code-comment">// "object"</span><br />
+                <span class="code-comment">// This is a language error!</span>
+              </div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">
+                <i class="fas fa-function"></i>
+                typeof functions
+              </div>
+              <p class="key-point-text">
+                Returns <span class="keyword">"function"</span> (convenience)
+              </p>
+              <div class="code-block">
+                <span class="keyword">typeof</span> alert
+                <span class="code-comment">// "function"</span><br />
+                <span class="code-comment"
+                  >// Functions are technically objects</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Final Summary -->
+      <div class="slide" id="slide9">
+        <img
+          src="https://sfile.chatglm.cn/testfiles/79c3b2e26b34.png"
+          alt="Final Summary"
+          class="background-image"
+        />
+        <div class="overlay"></div>
+        <div class="header">
+          <h1 class="title">Summary 📝</h1>
+        </div>
+        <div class="content">
+          <div class="summary-container">
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-layer-group"></i>
+                Primitive Types
+              </div>
+              <ul>
+                <li><span class="keyword">number</span> - integers & floats</li>
+                <li><span class="keyword">bigint</span> - large integers</li>
+                <li><span class="keyword">string</span> - text data</li>
+                <li><span class="keyword">boolean</span> - true/false</li>
+                <li><span class="keyword">null</span> - empty value</li>
+                <li>
+                  <span class="keyword">undefined</span> - unassigned value
+                </li>
+                <li>
+                  <span class="keyword">symbol</span> - unique identifiers
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-cube"></i>
+                Non-Primitive Type
+              </div>
+              <ul>
+                <li>
+                  <span class="keyword">object</span> - collections of data
+                </li>
+                <li>Used for complex data structures</li>
+                <li>Can contain multiple values</li>
+                <li>Functions are technically objects</li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-search"></i>
+                typeof Operator
+              </div>
+              <ul>
+                <li>Returns the type of a value</li>
+                <li>Useful for type checking</li>
+                <li>
+                  Special case: <span class="keyword">typeof null</span> is
+                  "object"
+                </li>
+                <li>
+                  Convenience: <span class="keyword">typeof function</span> is
+                  "function"
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-lightbulb"></i>
+                Key Takeaways
+              </div>
+              <ul>
+                <li>
+                  JavaScript is <span class="keyword">dynamically typed</span>
+                </li>
+                <li>Variables can change types</li>
+                <li>8 basic data types total</li>
+                <li>Use <span class="keyword">typeof</span> to check types</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer">
+            <i class="fas fa-star footer-icon"></i>
+            <p class="footer-text">
+              Understanding data types is fundamental to writing effective
+              JavaScript code. Each type has its specific use cases and
+              behaviors.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="navigation">
+        <button class="nav-button" id="prevBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-button" id="nextBtn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Slide Indicators -->
+      <div class="slide-indicator">
+        <div class="indicator-dot active" data-slide="1"></div>
+        <div class="indicator-dot" data-slide="2"></div>
+        <div class="indicator-dot" data-slide="3"></div>
+        <div class="indicator-dot" data-slide="4"></div>
+        <div class="indicator-dot" data-slide="5"></div>
+        <div class="indicator-dot" data-slide="6"></div>
+        <div class="indicator-dot" data-slide="7"></div>
+        <div class="indicator-dot" data-slide="8"></div>
+        <div class="indicator-dot" data-slide="9"></div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicatorDots = document.querySelectorAll(".indicator-dot");
+
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+          // Hide all slides
+          slides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+
+          // Remove active class from all indicators
+          indicatorDots.forEach((dot) => {
+            dot.classList.remove("active");
+          });
+
+          // Handle boundaries
+          if (n > totalSlides) {
+            currentSlide = 1;
+          } else if (n < 1) {
+            currentSlide = totalSlides;
+          } else {
+            currentSlide = n;
+          }
+
+          // Show current slide
+          slides[currentSlide - 1].classList.add("active");
+
+          // Update indicator
+          indicatorDots[currentSlide - 1].classList.add("active");
+
+          // Add animation to elements
+          const animatedElements =
+            slides[currentSlide - 1].querySelectorAll(".animated");
+          animatedElements.forEach((el) => {
+            el.style.animation = "none";
+            setTimeout(() => {
+              el.style.animation = "";
+            }, 10);
+          });
+        }
+
+        // Next button
+        nextBtn.addEventListener("click", function () {
+          showSlide(currentSlide + 1);
+        });
+
+        // Previous button
+        prevBtn.addEventListener("click", function () {
+          showSlide(currentSlide - 1);
+        });
+
+        // Indicator dots
+        indicatorDots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const slideNum = parseInt(this.getAttribute("data-slide"));
+            showSlide(slideNum);
+          });
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") {
+            showSlide(currentSlide + 1);
+          } else if (e.key === "ArrowLeft") {
+            showSlide(currentSlide - 1);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrow Functions in JavaScript 🚀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+      .slide {
+        display: none;
+        min-height: 100vh;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .slide-in-left {
+        animation: slideInLeft 0.5s ease-in-out;
+      }
+      @keyframes slideInLeft {
+        from {
+          transform: translateX(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .slide-in-right {
+        animation: slideInRight 0.5s ease-in-out;
+      }
+      @keyframes slideInRight {
+        from {
+          transform: translateX(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .scale-in {
+        animation: scaleIn 0.5s ease-in-out;
+      }
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .code-block {
+        background-color: #f8f9fa;
+        border-left: 4px solid #4f46e5;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .emoji-bounce {
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navigation -->
+    <div class="fixed bottom-6 right-6 z-50 flex space-x-3">
+      <button
+        onclick="previousSlide()"
+        class="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-300"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button
+        onclick="nextSlide()"
+        class="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-300"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Slide Indicator -->
+    <div
+      class="fixed top-6 right-6 z-50 bg-white px-4 py-2 rounded-full shadow-md"
+    >
+      <span id="slideIndicator" class="text-indigo-600 font-medium">1 / 9</span>
+    </div>
+
+    <!-- Slide 1: Cover / Title Slide -->
+    <div
+      id="slide1"
+      class="slide active gradient-bg flex-col justify-center items-center p-8"
+    >
+      <div class="max-w-4xl text-center animate__animated animate__fadeIn">
+        <div class="mb-8 scale-in">
+          <div class="emoji-bounce text-8xl">🚀</div>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-4">
+          Arrow Functions 😊
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-600 mb-8">
+          The Basics of Modern JavaScript Functions ✨
+        </p>
+        <div class="flex justify-center space-x-4">
+          <span
+            class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-medium"
+            >🎯 ES6</span
+          >
+          <span
+            class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-medium"
+            >💻 JavaScript</span
+          >
+          <span
+            class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-medium"
+            >⚡ Functions</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction / Summary -->
+    <div id="slide2" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Introduction 🌟 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <div class="flex items-start mb-4">
+            <div class="text-2xl mr-3 mt-1">💡</div>
+            <p class="text-lg text-gray-700">
+              Arrow functions provide a more concise syntax for writing function
+              expressions in JavaScript. 🎯
+            </p>
+          </div>
+
+          <div class="flex items-start mb-4">
+            <div class="text-2xl mr-3 mt-1">👨‍💻</div>
+            <p class="text-lg text-gray-700">
+              They were introduced in ES6 and have become a standard in modern
+              JavaScript development. 🚀
+            </p>
+          </div>
+
+          <div class="flex items-start">
+            <div class="text-2xl mr-3 mt-1">🔥</div>
+            <p class="text-lg text-gray-700">
+              Arrow functions are not just syntactic sugar - they also have
+              differences in how they handle
+              <code class="bg-gray-100 px-1 rounded">this</code>. 🤔
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 slide-in-left">
+          <div class="bg-indigo-50 rounded-lg p-4 card-hover">
+            <div class="text-indigo-600 text-3xl mb-2">🚀</div>
+            <h3 class="font-semibold text-gray-800 mb-1">Concise</h3>
+            <p class="text-gray-600 text-sm">
+              Shorter syntax for function expressions 📝
+            </p>
+          </div>
+          <div class="bg-indigo-50 rounded-lg p-4 card-hover">
+            <div class="text-indigo-600 text-3xl mb-2">🔄</div>
+            <h3 class="font-semibold text-gray-800 mb-1">Lexical this</h3>
+            <p class="text-gray-600 text-sm">No binding of their own this 🎯</p>
+          </div>
+          <div class="bg-indigo-50 rounded-lg p-4 card-hover">
+            <div class="text-indigo-600 text-3xl mb-2">👍</div>
+            <h3 class="font-semibold text-gray-800 mb-1">Convenient</h3>
+            <p class="text-gray-600 text-sm">
+              Great for callbacks and one-liners ✨
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Key Concept 1 - Basic Syntax -->
+    <div id="slide3" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Basic Syntax 📝 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <div class="mb-6">
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-3 flex items-center"
+            >
+              <div class="text-2xl mr-2">👴</div>
+              Traditional Function
+            </h3>
+            <div class="code-block">
+              <pre>
+let func = function(arg1, arg2, ..., argN) {
+  return expression;
+};</pre
+              >
+            </div>
+          </div>
+
+          <div>
+            <h3
+              class="text-xl font-semibold text-gray-800 mb-3 flex items-center"
+            >
+              <div class="text-2xl mr-2">✨</div>
+              Arrow Function
+            </h3>
+            <div class="code-block">
+              <pre>let func = (arg1, arg2, ..., argN) => expression;</pre>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded slide-in-left"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <div class="text-xl">⚠️</div>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-yellow-700">
+                The arrow function creates a function that evaluates the
+                expression on the right side and returns its result. 🎯
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Key Concept 2 - Single Argument -->
+    <div id="slide4" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Single Argument 🎯 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2">👉</div>
+            Parentheses Can Be Omitted
+          </h3>
+
+          <div class="mb-6">
+            <div class="code-block mb-4">
+              <pre>
+let double = n => n * 2;
+// roughly the same as:
+// let double = function(n) { return n * 2; }
+
+alert( double(3) ); // 6</pre
+              >
+            </div>
+
+            <div class="flex items-center justify-center mt-4">
+              <div class="bg-indigo-100 rounded-lg p-4 text-center">
+                <div class="text-indigo-600 text-4xl mb-2 emoji-bounce">➡️</div>
+                <p class="text-gray-700">
+                  With a single argument, parentheses can be omitted for even
+                  shorter syntax! 🎉
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 slide-in-left">
+          <div class="bg-indigo-50 rounded-lg p-4 card-hover">
+            <div class="text-indigo-600 text-3xl mb-2">👉</div>
+            <h3 class="font-semibold text-gray-800 mb-1">With Parentheses</h3>
+            <div class="code-block text-sm">
+              <pre>let square = (x) => x * x;</pre>
+            </div>
+          </div>
+          <div class="bg-green-50 rounded-lg p-4 card-hover">
+            <div class="text-green-600 text-3xl mb-2">✅</div>
+            <h3 class="font-semibold text-gray-800 mb-1">
+              Without Parentheses
+            </h3>
+            <div class="code-block text-sm">
+              <pre>let square = x => x * x;</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Key Concept 3 - No Arguments -->
+    <div id="slide5" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          No Arguments 🤷‍♂️ <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2">⚠️</div>
+            Empty Parentheses Required
+          </h3>
+
+          <div class="code-block mb-6">
+            <pre>
+let sayHi = () => alert("Hello!");
+
+sayHi(); // Shows "Hello!"</pre
+            >
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <div class="text-xl">💡</div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  When there are no arguments, parentheses are empty but they
+                  must be present! 📌
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 slide-in-left">
+          <div class="bg-green-50 rounded-lg p-4 card-hover">
+            <div class="text-green-600 text-3xl mb-2">✅</div>
+            <h3 class="font-semibold text-gray-800 mb-1">Correct</h3>
+            <div class="code-block text-sm">
+              <pre>let greet = () => "Hi!";</pre>
+            </div>
+          </div>
+          <div class="bg-red-50 rounded-lg p-4 card-hover">
+            <div class="text-red-600 text-3xl mb-2">❌</div>
+            <h3 class="font-semibold text-gray-800 mb-1">Incorrect</h3>
+            <div class="code-block text-sm">
+              <pre>let greet = => "Hi!"; // Syntax error</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Key Concept 4 - Dynamic Creation -->
+    <div id="slide6" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Dynamic Creation 🎭 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2">🎨</div>
+            Using Arrow Functions Conditionally
+          </h3>
+
+          <div class="code-block mb-6">
+            <pre>
+let age = prompt("What is your age?", 18);
+let welcome = (age < 18) ?
+  () => alert('Hello!') :
+  () => alert("Greetings!");
+
+welcome();</pre
+            >
+          </div>
+
+          <div class="bg-indigo-50 rounded-lg p-4">
+            <h4 class="font-semibold text-gray-800 mb-2">How it works: 🧠</h4>
+            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+              <li>
+                Arrow functions can be used in the same way as Function
+                Expressions 🔄
+              </li>
+              <li>
+                They're great for creating functions dynamically based on
+                conditions 🎯
+              </li>
+              <li>
+                The ternary operator selects which arrow function to assign 🎲
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flex justify-center slide-in-left">
+          <div
+            class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white max-w-md"
+          >
+            <div class="text-4xl mb-3 text-center emoji-bounce">🎯</div>
+            <h3 class="text-xl font-semibold mb-2 text-center">
+              Perfect for Callbacks
+            </h3>
+            <p class="text-center">
+              Arrow functions are especially useful for callbacks in event
+              handlers, array methods, and more! 🚀
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Code Example(s) -->
+    <div id="slide7" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Code Examples 💻 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2">📝</div>
+            Multiline Arrow Functions
+          </h3>
+
+          <div class="code-block mb-4">
+            <pre>
+let sum = (a, b) => {  // the curly brace opens a multiline function
+  let result = a + b;
+  return result; // if we use curly braces, then we need an explicit "return"
+};
+
+alert( sum(1, 2) ); // 3</pre
+            >
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <div class="text-xl">⚠️</div>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  When using curly braces for multiline arrow functions, you
+                  must explicitly use the
+                  <code class="bg-yellow-100 px-1 rounded">return</code>
+                  statement to return a value. 📌
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 slide-in-left">
+          <div class="bg-indigo-50 rounded-lg p-4">
+            <h3 class="font-semibold text-gray-800 mb-2 flex items-center">
+              <div class="text-2xl mr-2">🚀</div>
+              One-liner
+            </h3>
+            <div class="code-block text-sm">
+              <pre>let multiply = (x, y) => x * y;</pre>
+            </div>
+            <p class="text-gray-600 text-sm mt-2">
+              Implicit return of expression ✨
+            </p>
+          </div>
+          <div class="bg-indigo-50 rounded-lg p-4">
+            <h3 class="font-semibold text-gray-800 mb-2 flex items-center">
+              <div class="text-2xl mr-2">📋</div>
+              Multiline
+            </h3>
+            <div class="code-block text-sm">
+              <pre>
+let multiply = (x, y) => {
+  let result = x * y;
+  return result;
+};</pre
+              >
+            </div>
+            <p class="text-gray-600 text-sm mt-2">
+              Explicit return required 📝
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Tips, Best Practices, or Common Mistakes -->
+    <div id="slide8" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Tips & Best Practices 💡 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 slide-in-right">
+          <div class="bg-green-50 rounded-xl p-5 card-hover">
+            <div class="text-green-600 text-3xl mb-3">✅</div>
+            <h3 class="font-semibold text-gray-800 mb-2">Best Practices 🎯</h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start">
+                <div class="text-green-500 mt-1 mr-2">✓</div>
+                <span>Use for simple one-liners and callbacks 🚀</span>
+              </li>
+              <li class="flex items-start">
+                <div class="text-green-500 mt-1 mr-2">✓</div>
+                <span>Great for array methods like map, filter, reduce 📊</span>
+              </li>
+              <li class="flex items-start">
+                <div class="text-green-500 mt-1 mr-2">✓</div>
+                <span>Use when you need lexical this binding 🔄</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-red-50 rounded-xl p-5 card-hover">
+            <div class="text-red-600 text-3xl mb-3">❌</div>
+            <h3 class="font-semibold text-gray-800 mb-2">Common Mistakes ⚠️</h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start">
+                <div class="text-red-500 mt-1 mr-2">✗</div>
+                <span>Forgetting parentheses with no arguments 🤷‍♂️</span>
+              </li>
+              <li class="flex items-start">
+                <div class="text-red-500 mt-1 mr-2">✗</div>
+                <span
+                  >Forgetting explicit return in multiline functions 📝</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div class="text-red-500 mt-1 mr-2">✗</div>
+                <span>Using as object methods (this binding issues) 🎭</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-indigo-50 rounded-xl p-5 slide-in-left">
+          <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+            <div class="text-2xl mr-2">💡</div>
+            Pro Tip
+          </h3>
+          <p class="text-gray-700">
+            Arrow functions may appear unfamiliar at first, but they quickly
+            become more readable as you get used to the structure. They're
+            perfect for simple actions when you want to write less code! 🎉
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Conclusion / Next Steps -->
+    <div id="slide9" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 slide-in-left">
+          Conclusion 🎉 <span class="text-indigo-600">→</span>
+        </h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2">⭐</div>
+            Key Takeaways
+          </h3>
+
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <div class="text-indigo-600">✓</div>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800">Two Flavors 🍦</h4>
+                <p class="text-gray-600">
+                  Without curly braces:
+                  <code class="bg-gray-100 px-1 rounded"
+                    >(...args) => expression</code
+                  >
+                </p>
+                <p class="text-gray-600">
+                  With curly braces:
+                  <code class="bg-gray-100 px-1 rounded"
+                    >(...args) => { body }</code
+                  >
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <div class="text-indigo-600">✓</div>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800">
+                  Handy for Simple Actions 🎯
+                </h4>
+                <p class="text-gray-600">
+                  Especially useful for one-liners and callbacks ✨
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="bg-indigo-100 rounded-full p-2 mr-3">
+                <div class="text-indigo-600">✓</div>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800">More to Learn 📚</h4>
+                <p class="text-gray-600">
+                  Arrow functions have other interesting features we'll explore
+                  later! 🔍
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white slide-in-left"
+        >
+          <h3 class="text-xl font-semibold mb-3 flex items-center">
+            <div class="text-2xl mr-2">🚀</div>
+            Next Steps
+          </h3>
+          <p class="mb-4">
+            Continue your JavaScript journey by exploring more advanced arrow
+            function concepts:
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-center">
+              <div class="mr-2">➡️</div>
+              <span
+                >Learn about lexical "this" binding in arrow functions 🎯</span
+              >
+            </li>
+            <li class="flex items-center">
+              <div class="mr-2">➡️</div>
+              <span>Explore arrow functions in array methods 📊</span>
+            </li>
+            <li class="flex items-center">
+              <div class="mr-2">➡️</div>
+              <span>Discover more ES6+ features ✨</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentSlide = 1;
+      const totalSlides = 9;
+
+      function showSlide(n) {
+        // Hide all slides
+        const slides = document.querySelectorAll(".slide");
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Show the current slide
+        document.getElementById(`slide${n}`).classList.add("active");
+
+        // Update slide indicator
+        document.getElementById(
+          "slideIndicator"
+        ).textContent = `${n} / ${totalSlides}`;
+
+        // Add animation classes to elements
+        const activeSlide = document.getElementById(`slide${n}`);
+        const elementsToAnimate = activeSlide.querySelectorAll(
+          ".slide-in-left, .slide-in-right, .scale-in"
+        );
+        elementsToAnimate.forEach((el) => {
+          el.style.opacity = "0";
+          setTimeout(() => {
+            el.style.opacity = "1";
+          }, 100);
+        });
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides) {
+          currentSlide++;
+          showSlide(currentSlide);
+        }
+      }
+
+      function previousSlide() {
+        if (currentSlide > 1) {
+          currentSlide--;
+          showSlide(currentSlide);
+        }
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          previousSlide();
+        }
+      });
+
+      // Touch/swipe support for mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide(); // Swipe left
+        }
+        if (touchEndX > touchStartX + 50) {
+          previousSlide(); // Swipe right
+        }
+      }
+    </script>
+  </body>
+</html>

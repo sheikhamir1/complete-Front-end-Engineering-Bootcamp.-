@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Specials</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      .slide {
+        display: none;
+        min-height: 100vh;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .code-block {
+        background-color: #1e293b;
+        border-left: 4px solid #f7df1e;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+        color: #e2e8f0;
+      }
+      .gradient-js {
+        background: linear-gradient(135deg, #f7df1e 0%, #323330 100%);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(247, 223, 30, 0.3),
+          0 4px 6px -2px rgba(247, 223, 30, 0.2);
+      }
+      .emoji-bounce {
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+      .js-yellow {
+        color: #f7df1e;
+      }
+      .js-dark {
+        color: #323330;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900">
+    <!-- Navigation -->
+    <div class="fixed bottom-6 right-6 z-50 flex space-x-3">
+      <button
+        onclick="previousSlide()"
+        class="bg-yellow-500 text-gray-900 p-3 rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button
+        onclick="nextSlide()"
+        class="bg-yellow-500 text-gray-900 p-3 rounded-full shadow-lg hover:bg-yellow-400 transition-all duration-300"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Slide Indicator -->
+    <div
+      class="fixed top-6 right-6 z-50 bg-gray-800 px-4 py-2 rounded-full shadow-md"
+    >
+      <span id="slideIndicator" class="text-yellow-500 font-medium">1 / 9</span>
+    </div>
+
+    <!-- Slide 1: Cover / Title Slide -->
+    <div
+      id="slide1"
+      class="slide active gradient-bg flex-col justify-center items-center p-8"
+    >
+      <div class="max-w-4xl text-center animate__animated animate__fadeIn">
+        <div class="mb-8 scale-in">
+          <div class="emoji-bounce text-8xl js-yellow">⚡</div>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-bold js-yellow mb-4">
+          JavaScript Specials
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 mb-8">
+          A Deep Dive into JavaScript's Unique Features
+        </p>
+        <div class="flex justify-center space-x-4">
+          <span
+            class="bg-yellow-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium"
+            >🚀 ES6+</span
+          >
+          <span
+            class="bg-yellow-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium"
+            >💻 Advanced</span
+          >
+          <span
+            class="bg-yellow-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium"
+            >🔍 Deep Dive</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction / Summary -->
+    <div id="slide2" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Introduction 🌟 <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <div class="flex items-start mb-4">
+            <div class="text-2xl mr-3 mt-1 js-yellow">💡</div>
+            <p class="text-lg text-gray-300">
+              This chapter recaps JavaScript features we've learned, paying
+              special attention to subtle moments! 🎯
+            </p>
+          </div>
+
+          <div class="flex items-start mb-4">
+            <div class="text-2xl mr-3 mt-1 js-yellow">👨‍💻</div>
+            <p class="text-lg text-gray-300">
+              We'll explore code structure, strict mode, variables,
+              interactions, operators, loops, and functions! 🔍
+            </p>
+          </div>
+
+          <div class="flex items-start">
+            <div class="text-2xl mr-3 mt-1 js-yellow">🔥</div>
+            <p class="text-lg text-gray-300">
+              Understanding these concepts deeply will make you a better
+              JavaScript developer! 🚀
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 slide-in-left">
+          <div class="bg-gray-800 rounded-lg p-4 card-hover">
+            <div class="text-yellow-500 text-3xl mb-2">📝</div>
+            <h3 class="font-semibold text-gray-200 mb-1">Code Structure</h3>
+            <p class="text-gray-400 text-sm">Semicolons and blocks 📋</p>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-4 card-hover">
+            <div class="text-yellow-500 text-3xl mb-2">🔒</div>
+            <h3 class="font-semibold text-gray-200 mb-1">Strict Mode</h3>
+            <p class="text-gray-400 text-sm">Modern JavaScript features 🛡️</p>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-4 card-hover">
+            <div class="text-yellow-500 text-3xl mb-2">📊</div>
+            <h3 class="font-semibold text-gray-200 mb-1">Data Types</h3>
+            <p class="text-gray-400 text-sm">Variables and types 🧮</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Code Structure -->
+    <div id="slide3" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Code Structure 📝 <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <div class="mb-6">
+            <h3
+              class="text-xl font-semibold text-gray-200 mb-3 flex items-center"
+            >
+              <div class="text-2xl mr-2 js-yellow">⚡</div>
+              Semicolons in JavaScript
+            </h3>
+            <div class="code-block mb-4">
+              <pre>
+alert('Hello'); alert('World');
+
+// Usually, a line-break is also treated as a delimiter
+alert('Hello')
+alert('World')</pre
+              >
+            </div>
+            <p class="text-gray-400 mb-4">
+              This is called "automatic semicolon insertion" 🤖
+            </p>
+          </div>
+
+          <div>
+            <h3
+              class="text-xl font-semibold text-gray-200 mb-3 flex items-center"
+            >
+              <div class="text-2xl mr-2 js-yellow">⚠️</div>
+              When It Doesn't Work
+            </h3>
+            <div class="code-block">
+              <pre>
+alert("There will be an error after this message")
+[1, 2].forEach(alert) // Error!</pre
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-yellow-900 bg-opacity-30 border-l-4 border-yellow-500 p-4 rounded slide-in-left"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <div class="text-xl js-yellow">💡</div>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-yellow-200">
+                Most style guides agree that we should put a semicolon after
+                each statement! 📌
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Strict Mode -->
+    <div id="slide4" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Strict Mode 🔒 <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">🛡️</div>
+            Enabling Modern JavaScript
+          </h3>
+
+          <div class="code-block mb-6">
+            <pre>
+// To fully enable all features of modern JavaScript
+'use strict';
+...
+// The directive must be at the top of a script 
+// or at the beginning of a function body</pre
+            >
+          </div>
+
+          <div class="bg-gray-700 rounded-lg p-4">
+            <h4 class="font-semibold text-gray-200 mb-2">
+              Why Use Strict Mode? 🤔
+            </h4>
+            <ul class="list-disc pl-5 space-y-1 text-gray-300">
+              <li>Catches common coding errors and throws exceptions 🚨</li>
+              <li>Prevents or throws errors for unsafe actions ⚠️</li>
+              <li>Disables confusing or poorly thought-out features 🚫</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 slide-in-left">
+          <div class="bg-gray-800 rounded-lg p-4 card-hover">
+            <div class="text-yellow-500 text-3xl mb-2">✅</div>
+            <h3 class="font-semibold text-gray-200 mb-1">With Strict Mode</h3>
+            <p class="text-gray-400 text-sm">
+              Modern behavior, better error handling 🚀
+            </p>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-4 card-hover">
+            <div class="text-yellow-500 text-3xl mb-2">⚠️</div>
+            <h3 class="font-semibold text-gray-200 mb-1">
+              Without Strict Mode
+            </h3>
+            <p class="text-gray-400 text-sm">
+              Old-fashioned "compatible" behavior 👴
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Variables & Data Types -->
+    <div id="slide5" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Variables & Data Types 📊 <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">📝</div>
+            Variable Declarations
+          </h3>
+
+          <div class="code-block mb-6">
+            <pre>
+// Can be declared using:
+let name = "John";      // Modern, block-scoped
+const PI = 3.14;        // Constant, can't be changed
+var oldStyle = "ES5";   // Old-style, function-scoped</pre
+            >
+          </div>
+
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">🔢</div>
+            Data Types (8 total)
+          </h3>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">🔢</div>
+              <p class="text-gray-300 text-sm">number</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">🔢</div>
+              <p class="text-gray-300 text-sm">bigint</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">📝</div>
+              <p class="text-gray-300 text-sm">string</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">✅</div>
+              <p class="text-gray-300 text-sm">boolean</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">🚫</div>
+              <p class="text-gray-300 text-sm">null</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">❓</div>
+              <p class="text-gray-300 text-sm">undefined</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">🧩</div>
+              <p class="text-gray-300 text-sm">object</p>
+            </div>
+            <div class="bg-gray-700 rounded-lg p-3 text-center">
+              <div class="text-yellow-500 text-xl mb-1">🔑</div>
+              <p class="text-gray-300 text-sm">symbol</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-yellow-900 bg-opacity-30 border-l-4 border-yellow-500 p-4 rounded slide-in-left"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <div class="text-xl js-yellow">⚠️</div>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-yellow-200">
+                typeof null == "object" // Error in the language! 🐛<br />
+                typeof function(){} == "function" // Functions are special! ✨
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Interaction -->
+    <div id="slide6" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Interaction 🖥️ <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">💬</div>
+            Browser Interaction Functions
+          </h3>
+
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-semibold text-gray-300 mb-2 flex items-center">
+                <div class="text-yellow-500 mr-2">❓</div>
+                prompt(question, [default])
+              </h4>
+              <p class="text-gray-400 mb-2">
+                Ask a question, return visitor input or null if canceled
+              </p>
+              <div class="code-block">
+                <pre>let userName = prompt("Your name?", "Alice");</pre>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-gray-300 mb-2 flex items-center">
+                <div class="text-yellow-500 mr-2">✅</div>
+                confirm(question)
+              </h4>
+              <p class="text-gray-400 mb-2">
+                Ask a question, return true/false based on selection
+              </p>
+              <div class="code-block">
+                <pre>let isTeaWanted = confirm("Do you want some tea?");</pre>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-gray-300 mb-2 flex items-center">
+                <div class="text-yellow-500 mr-2">📢</div>
+                alert(message)
+              </h4>
+              <p class="text-gray-400 mb-2">Output a message to the user</p>
+              <div class="code-block">
+                <pre>alert("Visitor: " + userName);</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-5 slide-in-left">
+          <h3 class="font-semibold text-gray-200 mb-3 flex items-center">
+            <div class="text-2xl mr-2 js-yellow">⚠️</div>
+            Important Note
+          </h3>
+          <p class="text-gray-300">
+            All these functions are modal - they pause code execution and
+            prevent visitor interaction with the page until answered! ⏸️
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Operators -->
+    <div id="slide7" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Operators ⚙️ <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-200 mb-3 flex items-center"
+              >
+                <div class="text-2xl mr-2 js-yellow">🔢</div>
+                Arithmetic
+              </h3>
+              <div class="code-block mb-4">
+                <pre>
+// Regular: * + - /, % for remainder
+// ** for power of a number
+let result = 5 ** 2; // 25</pre
+                >
+              </div>
+              <p class="text-gray-400 text-sm">
+                Binary plus + concatenates strings! 📝
+              </p>
+            </div>
+
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-200 mb-3 flex items-center"
+              >
+                <div class="text-2xl mr-2 js-yellow">🔄</div>
+                Assignments
+              </h3>
+              <div class="code-block mb-4">
+                <pre>
+// Simple: a = b
+// Combined: a *= 2, a += 3, etc.
+let x = 5;
+x += 3; // x = 8</pre
+                >
+              </div>
+            </div>
+
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-200 mb-3 flex items-center"
+              >
+                <div class="text-2xl mr-2 js-yellow">❓</div>
+                Conditional
+              </h3>
+              <div class="code-block mb-4">
+                <pre>
+// Only operator with three parameters
+let result = (age > 18) ? "Adult" : "Minor";</pre
+                >
+              </div>
+            </div>
+
+            <div>
+              <h3
+                class="text-xl font-semibold text-gray-200 mb-3 flex items-center"
+              >
+                <div class="text-2xl mr-2 js-yellow">🤔</div>
+                Logical
+              </h3>
+              <div class="code-block mb-4">
+                <pre>
+// AND &&, OR ||, NOT !
+// Short-circuit evaluation
+let result = a || b; // First truthy value</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 slide-in-left">
+          <div class="bg-gray-800 rounded-lg p-4">
+            <h3 class="font-semibold text-gray-200 mb-2 flex items-center">
+              <div class="text-yellow-500 mr-2">🆕</div>
+              Nullish Coalescing
+            </h3>
+            <div class="code-block text-sm">
+              <pre>
+// a ?? b: a unless null/undefined
+let user = "John";
+let name = user ?? "Anonymous";</pre
+              >
+            </div>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-4">
+            <h3 class="font-semibold text-gray-200 mb-2 flex items-center">
+              <div class="text-yellow-500 mr-2">⚖️</div>
+              Comparisons
+            </h3>
+            <div class="code-block text-sm">
+              <pre>
+// == converts types, === doesn't
+alert(0 == false);   // true
+alert(0 === false);  // false</pre
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Loops & Switch -->
+    <div id="slide8" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Loops & Switch 🔄 <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">🔄</div>
+            Types of Loops
+          </h3>
+
+          <div class="code-block mb-6">
+            <pre>
+// 1. While loop
+while (condition) { ... }
+
+// 2. Do-while loop
+do { ... } while (condition);
+
+// 3. For loop
+for(let i = 0; i < 10; i++) { ... }</pre
+            >
+          </div>
+
+          <div class="bg-gray-700 rounded-lg p-4 mb-6">
+            <h4 class="font-semibold text-gray-200 mb-2">Loop Control 🎮</h4>
+            <ul class="list-disc pl-5 space-y-1 text-gray-300">
+              <li>
+                <code class="bg-gray-600 px-1 rounded">break</code> - Exit the
+                entire loop
+              </li>
+              <li>
+                <code class="bg-gray-600 px-1 rounded">continue</code> - Exit
+                the current iteration
+              </li>
+              <li>Use labels to break nested loops 🏷️</li>
+            </ul>
+          </div>
+
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">🔀</div>
+            Switch Statement
+          </h3>
+
+          <div class="code-block">
+            <pre>
+let age = prompt('Your age?', 18);
+
+switch (age) {
+  case "18":
+    alert("This works!"); // Uses strict equality (===)
+    break;
+  default:
+    alert("Any value not equal to one above");
+}</pre
+            >
+          </div>
+        </div>
+
+        <div
+          class="bg-yellow-900 bg-opacity-30 border-l-4 border-yellow-500 p-4 rounded slide-in-left"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <div class="text-xl js-yellow">💡</div>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-yellow-200">
+                Switch uses strict equality (===) for comparisons! That's why
+                case 18: didn't work with prompt's string result! 🤔
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Functions & Conclusion -->
+    <div id="slide9" class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full">
+        <h2 class="text-4xl font-bold js-yellow mb-6 slide-in-left">
+          Functions & Conclusion 🎉 <span class="text-gray-400">→</span>
+        </h2>
+
+        <div class="bg-gray-800 rounded-xl shadow-lg p-6 mb-6 slide-in-right">
+          <h3
+            class="text-xl font-semibold text-gray-200 mb-4 flex items-center"
+          >
+            <div class="text-2xl mr-2 js-yellow">⚙️</div>
+            Ways to Create Functions
+          </h3>
+
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-semibold text-gray-300 mb-2 flex items-center">
+                <div class="text-yellow-500 mr-2">1️⃣</div>
+                Function Declaration
+              </h4>
+              <div class="code-block">
+                <pre>
+function sum(a, b) {
+  let result = a + b;
+  return result;
+}</pre
+                >
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-gray-300 mb-2 flex items-center">
+                <div class="text-yellow-500 mr-2">2️⃣</div>
+                Function Expression
+              </h4>
+              <div class="code-block">
+                <pre>
+let sum = function(a, b) {
+  let result = a + b;
+  return result;
+};</pre
+                >
+              </div>
+            </div>
+
+            <div>
+              <h4 class="font-semibold text-gray-300 mb-2 flex items-center">
+                <div class="text-yellow-500 mr-2">3️⃣</div>
+                Arrow Functions
+              </h4>
+              <div class="code-block">
+                <pre>
+// Expression on the right side
+let sum = (a, b) => a + b;
+
+// Multi-line with explicit return
+let sum = (a, b) => {
+  return a + b;
+}</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-gradient-to-r from-yellow-600 to-yellow-800 rounded-xl p-6 text-white slide-in-left"
+        >
+          <h3 class="text-xl font-semibold mb-3 flex items-center">
+            <div class="text-2xl mr-2">🚀</div>
+            Next Steps
+          </h3>
+          <p class="mb-4">
+            This was just a brief list of JavaScript features! We've only
+            covered the basics so far.
+          </p>
+          <ul class="space-y-2">
+            <li class="flex items-center">
+              <div class="mr-2">➡️</div>
+              <span
+                >Continue exploring more advanced JavaScript concepts! 🔍</span
+              >
+            </li>
+            <li class="flex items-center">
+              <div class="mr-2">➡️</div>
+              <span>Learn about objects, prototypes, and classes! 🧩</span>
+            </li>
+            <li class="flex items-center">
+              <div class="mr-2">➡️</div>
+              <span
+                >Master asynchronous JavaScript with Promises and async/await!
+                ⏳</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentSlide = 1;
+      const totalSlides = 9;
+
+      function showSlide(n) {
+        // Hide all slides
+        const slides = document.querySelectorAll(".slide");
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Show the current slide
+        document.getElementById(`slide${n}`).classList.add("active");
+
+        // Update slide indicator
+        document.getElementById(
+          "slideIndicator"
+        ).textContent = `${n} / ${totalSlides}`;
+
+        // Add animation classes to elements
+        const activeSlide = document.getElementById(`slide${n}`);
+        const elementsToAnimate = activeSlide.querySelectorAll(
+          ".slide-in-left, .slide-in-right, .scale-in"
+        );
+        elementsToAnimate.forEach((el) => {
+          el.style.opacity = "0";
+          setTimeout(() => {
+            el.style.opacity = "1";
+          }, 100);
+        });
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides) {
+          currentSlide++;
+          showSlide(currentSlide);
+        }
+      }
+
+      function previousSlide() {
+        if (currentSlide > 1) {
+          currentSlide--;
+          showSlide(currentSlide);
+        }
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          previousSlide();
+        }
+      });
+
+      // Touch/swipe support for mobile
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      document.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      document.addEventListener("touchend", (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide(); // Swipe left
+        }
+        if (touchEndX > touchStartX + 50) {
+          previousSlide(); // Swipe right
+        }
+      }
+    </script>
+  </body>
+</html>

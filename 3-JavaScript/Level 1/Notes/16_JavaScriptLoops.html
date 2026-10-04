@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Loops: while and for</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        overflow: hidden;
+      }
+      .slide {
+        display: none;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .light-gradient-bg {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      }
+      .code-block {
+        background-color: #2d3748;
+        color: #e2e8f0;
+        border-radius: 0.5rem;
+        font-family: "Courier New", monospace;
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .pulse-animation {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .slide-indicator {
+        transition: all 0.3s ease;
+      }
+      .slide-indicator.active {
+        background-color: #4c51bf;
+        transform: scale(1.2);
+      }
+      .nav-button {
+        transition: all 0.2s ease;
+      }
+      .nav-button:hover {
+        transform: scale(1.1);
+      }
+      .nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .highlight-text {
+        background: linear-gradient(120deg, #a78bfa 0%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Slide 1: Cover/Title Slide -->
+    <div class="slide active gradient-bg text-white">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center items-center h-full"
+      >
+        <div class="text-center mb-8 animate__animated animate__fadeInDown">
+          <i
+            class="fab fa-js-square text-8xl mb-6 animate__animated animate__pulse animate__infinite"
+          ></i>
+          <h1 class="text-7xl font-bold mb-4">JavaScript Loops</h1>
+          <h2 class="text-4xl font-light mb-8">while and for</h2>
+          <p class="text-2xl opacity-90">Mastering Repetition in Code</p>
+        </div>
+
+        <div
+          class="flex justify-center space-x-8 mt-12 animate__animated animate__fadeInUp"
+        >
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center card-hover"
+          >
+            <i class="fas fa-sync-alt text-4xl mb-3"></i>
+            <p class="text-xl font-semibold">Repetition</p>
+          </div>
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center card-hover"
+          >
+            <i class="fas fa-code text-4xl mb-3"></i>
+            <p class="text-xl font-semibold">Efficiency</p>
+          </div>
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center card-hover"
+          >
+            <i class="fas fa-cogs text-4xl mb-3"></i>
+            <p class="text-xl font-semibold">Control Flow</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction/Summary -->
+    <div class="slide light-gradient-bg">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Introduction to Loops 🔄
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-sync-alt text-3xl text-indigo-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">What are Loops?</h2>
+            </div>
+            <ul class="space-y-3 text-lg">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Repeating code multiple times</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Iterating over data collections</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Automating repetitive tasks</span>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Why Use Loops?</h2>
+            </div>
+            <ul class="space-y-3 text-lg">
+              <li class="flex items-start">
+                <i class="fas fa-code text-indigo-500 mt-1 mr-2"></i>
+                <span>Reduce code duplication</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-tachometer-alt text-indigo-500 mt-1 mr-2"></i>
+                <span>Improve efficiency</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-brain text-indigo-500 mt-1 mr-2"></i>
+                <span>Make code more readable</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Types of Loops We'll Cover
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-indigo-50 rounded-lg p-4 text-center card-hover">
+              <i
+                class="fas fa-hourglass-half text-3xl text-indigo-600 mb-2"
+              ></i>
+              <h3 class="font-semibold text-lg">while</h3>
+              <p class="text-sm">Condition checked before each iteration</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-4 text-center card-hover">
+              <i class="fas fa-redo text-3xl text-purple-600 mb-2"></i>
+              <h3 class="font-semibold text-lg">do...while</h3>
+              <p class="text-sm">Condition checked after each iteration</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 text-center card-hover">
+              <i class="fas fa-step-forward text-3xl text-blue-600 mb-2"></i>
+              <h3 class="font-semibold text-lg">for</h3>
+              <p class="text-sm">
+                Most common loop with initialization, condition, and increment
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: The "while" loop -->
+    <div class="slide bg-gradient-to-br from-indigo-50 to-purple-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          The "while" Loop ⏳
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i
+                class="fas fa-hourglass-half text-3xl text-indigo-500 mr-4"
+              ></i>
+              <h2 class="text-2xl font-semibold">Syntax</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>while (condition) {
+  // code to execute
+  // "loop body"
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><strong>Condition</strong> checked before each
+                  iteration</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Code runs as long as condition is
+                  <span class="font-semibold text-indigo-600"
+                    >truthy</span
+                  ></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Single execution = one
+                  <span class="font-semibold text-indigo-600"
+                    >iteration</span
+                  ></span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-code text-3xl text-purple-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Example</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let i = 0;
+while (i < 3) {
+  alert(i);
+  i++;
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >Shows <span class="font-semibold">0</span>, then
+                  <span class="font-semibold">1</span>, then
+                  <span class="font-semibold">2</span></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-2"
+                ></i>
+                <span
+                  >Don't forget <span class="font-semibold">i++</span> or loop
+                  runs forever!</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">How It Works</h2>
+          <div class="flex flex-col md:flex-row justify-around items-center">
+            <div class="flex flex-col items-center mb-4 md:mb-0">
+              <div
+                class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-indigo-600">1</span>
+              </div>
+              <p class="text-center font-medium">Check condition</p>
+            </div>
+            <i
+              class="fas fa-arrow-right text-indigo-500 text-2xl mb-4 md:mb-0"
+            ></i>
+            <div class="flex flex-col items-center mb-4 md:mb-0">
+              <div
+                class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-indigo-600">2</span>
+              </div>
+              <p class="text-center font-medium">Execute code</p>
+            </div>
+            <i
+              class="fas fa-arrow-right text-indigo-500 text-2xl mb-4 md:mb-0"
+            ></i>
+            <div class="flex flex-col items-center">
+              <div
+                class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-indigo-600">3</span>
+              </div>
+              <p class="text-center font-medium">Repeat if true</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: The "do...while" loop -->
+    <div class="slide bg-gradient-to-br from-purple-50 to-indigo-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          The "do...while" Loop 🔄
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-redo text-3xl text-purple-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Syntax</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>do {
+  // code to execute
+  // "loop body"
+} while (condition);</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><strong>Condition</strong> checked
+                  <span class="font-semibold text-purple-600">after</span> each
+                  iteration</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Body
+                  <span class="font-semibold text-purple-600"
+                    >always runs at least once</span
+                  ></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Use when code must run before checking condition</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-code text-3xl text-indigo-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Example</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let i = 0;
+do {
+  alert(i);
+  i++;
+} while (i < 3);</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >Shows <span class="font-semibold">0</span>, then
+                  <span class="font-semibold">1</span>, then
+                  <span class="font-semibold">2</span></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-2"
+                ></i>
+                <span
+                  >Even if condition is
+                  <span class="font-semibold">false</span>, body runs once</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-6 text-center">How It Works</h2>
+          <div class="flex flex-col md:flex-row justify-around items-center">
+            <div class="flex flex-col items-center mb-8 md:mb-0">
+              <div
+                class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-purple-600">1</span>
+              </div>
+              <p class="text-center font-medium">Execute code</p>
+            </div>
+
+            <div class="flex flex-col items-center mb-8 md:mb-0">
+              <div
+                class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-purple-600">2</span>
+              </div>
+              <p class="text-center font-medium">Check condition</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div
+                class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-purple-600">3</span>
+              </div>
+              <p class="text-center font-medium">Repeat if true</p>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-purple-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-2xl text-yellow-500 mr-3"></i>
+              <p class="text-lg">
+                <span class="font-semibold">Key Difference:</span> Unlike while
+                loops, do...while guarantees at least one execution of the loop
+                body, even if the condition is initially false.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: The "for" loop -->
+    <div class="slide bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          The "for" Loop 🔁
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-step-forward text-3xl text-indigo-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Syntax</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>for (begin; condition; step) {
+  // loop body
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-indigo-600"
+                    >Most commonly used</span
+                  >
+                  loop in JavaScript</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >All loop control in
+                  <span class="font-semibold text-indigo-600"
+                    >one line</span
+                  ></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Ideal for
+                  <span class="font-semibold text-indigo-600"
+                    >counter-based</span
+                  >
+                  iterations</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-code text-3xl text-purple-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Example</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>for (let i = 0; i < 3; i++) {
+  alert(i);
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >Shows <span class="font-semibold">0</span>, then
+                  <span class="font-semibold">1</span>, then
+                  <span class="font-semibold">2</span></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-2"
+                ></i>
+                <span
+                  >Variable <span class="font-semibold">i</span> only visible
+                  inside the loop</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-6 text-center">How It Works</h2>
+
+          <div
+            class="flex flex-col md:flex-row justify-around items-center mb-8"
+          >
+            <div class="flex flex-col items-center mb-6 md:mb-0">
+              <div class="bg-blue-100 rounded-lg p-3 mb-2 pulse-animation">
+                <span class="text-xl font-bold text-blue-600">begin</span>
+              </div>
+              <p class="text-center font-medium">let i = 0</p>
+              <p class="text-center text-sm text-gray-600">Executes once</p>
+            </div>
+
+            <div class="flex flex-col items-center mb-6 md:mb-0">
+              <div class="bg-indigo-100 rounded-lg p-3 mb-2 pulse-animation">
+                <span class="text-xl font-bold text-indigo-600">condition</span>
+              </div>
+              <p class="text-center font-medium">i < 3</p>
+              <p class="text-center text-sm text-gray-600">
+                Checked before each iteration
+              </p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="bg-purple-100 rounded-lg p-3 mb-2 pulse-animation">
+                <span class="text-xl font-bold text-purple-600">step</span>
+              </div>
+              <p class="text-center font-medium">i++</p>
+              <p class="text-center text-sm text-gray-600">
+                Executes after each iteration
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-indigo-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-2xl text-yellow-500 mr-3"></i>
+              <p class="text-lg">
+                <span class="font-semibold">Execution Flow:</span> begin →
+                condition → body → step → condition → body → step → ... until
+                condition is false
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Breaking and Continuing Loops -->
+    <div class="slide bg-gradient-to-br from-pink-50 to-purple-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Breaking & Continuing Loops ⏭️
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-stop-circle text-3xl text-red-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">
+                The <span class="text-red-500">break</span> Statement
+              </h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let sum = 0;
+while (true) {
+  let value = +prompt("Enter a number", '');
+  if (!value) break; // Exit the loop
+  sum += value;
+}
+alert('Sum: ' + sum);</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">Exits</span> the loop
+                  immediately</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Useful for
+                  <span class="font-semibold">early termination</span></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Works with
+                  <span class="font-semibold">all loop types</span></span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-forward text-3xl text-blue-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">
+                The <span class="text-blue-500">continue</span> Statement
+              </h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>for (let i = 0; i < 10; i++) {
+  // Skip even numbers
+  if (i % 2 == 0) continue;
+  alert(i); // Shows 1, 3, 5, 7, 9
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">Skips</span> current
+                  iteration</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Jumps to
+                  <span class="font-semibold">next iteration</span></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Reduces <span class="font-semibold">code nesting</span></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-6 text-center">
+            Flow Control Comparison
+          </h2>
+
+          <div class="flex flex-col md:flex-row justify-around items-center">
+            <div class="flex flex-col items-center mb-8 md:mb-0">
+              <h3 class="text-xl font-semibold mb-4 text-red-500">
+                Normal Loop Flow
+              </h3>
+              <div class="flex flex-col items-center">
+                <div class="bg-indigo-100 rounded-lg p-3 mb-2">
+                  <span class="font-medium">Check Condition</span>
+                </div>
+                <div class="bg-indigo-100 rounded-lg p-3 mb-2">
+                  <span class="font-medium">Execute Body</span>
+                </div>
+                <div class="bg-indigo-100 rounded-lg p-3">
+                  <span class="font-medium">Update Counter</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center mb-8 md:mb-0">
+              <h3 class="text-xl font-semibold mb-4 text-red-500">
+                With <span class="text-red-500">break</span>
+              </h3>
+              <div class="flex flex-col items-center">
+                <div class="bg-indigo-100 rounded-lg p-3 mb-2">
+                  <span class="font-medium">Check Condition</span>
+                </div>
+                <div class="bg-red-100 rounded-lg p-3 mb-2">
+                  <span class="font-medium text-red-500">break → Exit</span>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-3 opacity-50">
+                  <span class="font-medium">Not Executed</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <h3 class="text-xl font-semibold mb-4 text-blue-500">
+                With <span class="text-blue-500">continue</span>
+              </h3>
+              <div class="flex flex-col items-center">
+                <div class="bg-indigo-100 rounded-lg p-3 mb-2">
+                  <span class="font-medium">Check Condition</span>
+                </div>
+                <div class="bg-blue-100 rounded-lg p-3 mb-2">
+                  <span class="font-medium text-blue-500">continue → Skip</span>
+                </div>
+                <div class="bg-indigo-100 rounded-lg p-3">
+                  <span class="font-medium">Next Iteration</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-yellow-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i
+                class="fas fa-exclamation-triangle text-2xl text-yellow-500 mr-3"
+              ></i>
+              <p class="text-lg">
+                <span class="font-semibold">Remember:</span> break/continue
+                cannot be used with the ternary operator (?) and must be inside
+                a loop.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Code Examples -->
+    <div class="slide bg-gradient-to-br from-indigo-50 to-blue-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Code Examples 💻
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div
+            class="bg-white rounded-xl p-5 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-3">
+              <i
+                class="fas fa-hourglass-half text-2xl text-indigo-500 mr-3"
+              ></i>
+              <h2 class="text-xl font-semibold">while Loop</h2>
+            </div>
+            <div class="code-block p-3 rounded-lg mb-3 text-sm">
+              <pre><code>// Sum numbers until user enters 0
+let sum = 0;
+let num;
+while (num !== 0) {
+  num = +prompt("Enter a number");
+  sum += num;
+}
+alert(`Sum: ${sum}`);</code></pre>
+            </div>
+            <div class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+              User input validation
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-5 shadow-lg card-hover animate__animated animate__fadeInUp"
+          >
+            <div class="flex items-center mb-3">
+              <i class="fas fa-redo text-2xl text-purple-500 mr-3"></i>
+              <h2 class="text-xl font-semibold">do...while Loop</h2>
+            </div>
+            <div class="code-block p-3 rounded-lg mb-3 text-sm">
+              <pre><code>// Menu selection
+let choice;
+do {
+  choice = prompt("Select an option:\n1. View\n2. Edit\n3. Exit");
+  // Process choice
+} while (choice !== "3");</code></pre>
+            </div>
+            <div class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+              Menu-driven interface
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-5 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-3">
+              <i class="fas fa-step-forward text-2xl text-blue-500 mr-3"></i>
+              <h2 class="text-xl font-semibold">for Loop</h2>
+            </div>
+            <div class="code-block p-3 rounded-lg mb-3 text-sm">
+              <pre><code>// Find max value in array
+const numbers = [5, 12, 8, 130, 44];
+let max = numbers[0];
+for (let i = 1; i < numbers.length; i++) {
+  if (numbers[i] > max) {
+    max = numbers[i];
+  }
+}
+alert(`Max: ${max}`);</code></pre>
+            </div>
+            <div class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+              Array processing
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Practical Use Cases
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-3 flex items-center">
+                <i class="fas fa-search text-indigo-500 mr-2"></i>
+                Searching in Data
+              </h3>
+              <div class="code-block p-4 rounded-lg text-sm">
+                <pre><code>// Linear search with for loop
+function findItem(arr, target) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === target) {
+      return i; // Found at index i
+    }
+  }
+  return -1; // Not found
+}</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold mb-3 flex items-center">
+                <i class="fas fa-filter text-purple-500 mr-2"></i>
+                Filtering Data
+              </h3>
+              <div class="code-block p-4 rounded-lg text-sm">
+                <pre><code>// Filter even numbers with while loop
+function getEvenNumbers(arr) {
+  const result = [];
+  let i = 0;
+  while (i < arr.length) {
+    if (arr[i] % 2 === 0) {
+      result.push(arr[i]);
+    }
+    i++;
+  }
+  return result;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 bg-indigo-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-2xl text-yellow-500 mr-3"></i>
+              <p class="text-lg">
+                <span class="font-semibold">Pro Tip:</span> Choose the right
+                loop for your task - for loops are ideal for known iterations,
+                while loops for unknown iterations, and do...when when you need
+                at least one execution.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Tips, Best Practices, and Common Mistakes -->
+    <div class="slide bg-gradient-to-br from-green-50 to-blue-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Tips & Best Practices 💡
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Best Practices</h2>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-green-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Choose the right loop</h3>
+                  <p class="text-gray-600">
+                    Use for for known iterations, while for unknown, do...while
+                    when at least one execution is needed
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-green-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Cache array length</h3>
+                  <p class="text-gray-600">
+                    Store length in a variable before looping for better
+                    performance
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-green-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">
+                    Use meaningful variable names
+                  </h3>
+                  <p class="text-gray-600">
+                    Instead of i, j, k use descriptive names like index,
+                    userIndex, etc.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i
+                class="fas fa-exclamation-triangle text-3xl text-red-500 mr-4"
+              ></i>
+              <h2 class="text-2xl font-semibold">Common Mistakes</h2>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <i
+                  class="fas fa-times-circle text-red-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Infinite loops</h3>
+                  <p class="text-gray-600">
+                    Forgetting to update the counter or having a condition that
+                    never becomes false
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-times-circle text-red-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Off-by-one errors</h3>
+                  <p class="text-gray-600">
+                    Using < instead of <= or vice versa, causing one too many or
+                    too few iterations
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-times-circle text-red-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">
+                    Modifying collection while iterating
+                  </h3>
+                  <p class="text-gray-600">
+                    Adding or removing items from an array while looping through
+                    it
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-6 text-center">
+            Performance Tips
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-indigo-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i
+                  class="fas fa-tachometer-alt text-2xl text-indigo-600 mr-3"
+                ></i>
+                <h3 class="text-lg font-semibold">Minimize DOM access</h3>
+              </div>
+              <p class="text-gray-700">
+                Avoid querying the DOM inside loops. Cache DOM references before
+                looping.
+              </p>
+            </div>
+
+            <div class="bg-purple-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-bolt text-2xl text-purple-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Use break/continue wisely</h3>
+              </div>
+              <p class="text-gray-700">
+                Break early when possible. Continue to skip unnecessary
+                iterations.
+              </p>
+            </div>
+
+            <div class="bg-blue-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-compress-alt text-2xl text-blue-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Move invariants outside</h3>
+              </div>
+              <p class="text-gray-700">
+                Place calculations that don't change with each iteration outside
+                the loop.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 bg-yellow-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-code text-2xl text-yellow-600 mr-3"></i>
+              <div>
+                <p class="text-lg font-semibold mb-1">
+                  Code Example: Caching Array Length
+                </p>
+                <div class="code-block p-3 rounded-lg text-sm">
+                  <pre><code>// Instead of this:
+for (let i = 0; i < array.length; i++) { ... }
+
+// Do this:
+const len = array.length;
+for (let i = 0; i < len; i++) { ... }</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Conclusion / Next Steps -->
+    <div class="slide gradient-bg text-white">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center animate__animated animate__fadeInDown"
+        >
+          Conclusion & Next Steps 🚀
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-hourglass-half text-3xl mr-3"></i>
+              <h2 class="text-xl font-semibold">while Loop</h2>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Condition checked
+                  <span class="font-semibold">before</span> iteration</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Use for
+                  <span class="font-semibold">unknown</span> iterations</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span>May not execute at all</span>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInUp"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-redo text-3xl mr-3"></i>
+              <h2 class="text-xl font-semibold">do...while Loop</h2>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Condition checked
+                  <span class="font-semibold">after</span> iteration</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Always executes
+                  <span class="font-semibold">at least once</span></span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span>Perfect for input validation</span>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-step-forward text-3xl mr-3"></i>
+              <h2 class="text-xl font-semibold">for Loop</h2>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Most
+                  <span class="font-semibold">commonly used</span> loop</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Ideal for
+                  <span class="font-semibold">known</span> iterations</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span>Compact syntax with counter</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">Next Steps</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-3 flex items-center">
+                <i class="fas fa-book mr-2"></i>
+                Further Learning
+              </h3>
+              <ul class="space-y-2">
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    >Explore <span class="font-semibold">for...in</span> loops
+                    for object properties</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    >Learn <span class="font-semibold">for...of</span> loops for
+                    arrays and iterables</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    >Discover
+                    <span class="font-semibold">Array methods</span> like map,
+                    filter, reduce</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    >Practice with
+                    <span class="font-semibold">real-world projects</span></span
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold mb-3 flex items-center">
+                <i class="fas fa-tools mr-2"></i>
+                Resources
+              </h3>
+              <ul class="space-y-2">
+                <li class="flex items-start">
+                  <i class="fas fa-globe mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">MDN Web Docs</span> -
+                    JavaScript Guide</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-code mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">JavaScript.info</span> - Loops
+                    and Iteration</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-video mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">FreeCodeCamp</span> -
+                    JavaScript Algorithms</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-users mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">Coding communities</span> for
+                    practice and feedback</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-2xl font-semibold mb-4">
+              Practice makes perfect! 💪
+            </p>
+            <p class="text-xl opacity-90">
+              Master loops to write more efficient and elegant JavaScript code
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="fixed bottom-6 right-6 flex space-x-2 z-50">
+      <button
+        id="prevBtn"
+        class="bg-white rounded-full p-3 shadow-md hover:bg-gray-100 transition-colors nav-button disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <i class="fas fa-chevron-left text-gray-600"></i>
+      </button>
+      <button
+        id="nextBtn"
+        class="bg-indigo-600 rounded-full p-3 shadow-md hover:bg-indigo-700 transition-colors nav-button"
+      >
+        <i class="fas fa-chevron-right text-white"></i>
+      </button>
+    </div>
+
+    <!-- Slide Indicator -->
+    <div class="fixed bottom-6 left-6 flex space-x-2 z-50">
+      <div
+        class="w-3 h-3 rounded-full bg-indigo-600 slide-indicator active"
+        data-slide="1"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="2"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="3"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="4"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="5"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="6"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="7"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="8"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="9"
+      ></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicators = document.querySelectorAll(".slide-indicator");
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+          if (n < 1) currentSlide = 1;
+          if (n > totalSlides) currentSlide = totalSlides;
+
+          slides.forEach((slide) => slide.classList.remove("active"));
+          slides[currentSlide - 1].classList.add("active");
+
+          indicators.forEach((indicator) => {
+            if (parseInt(indicator.dataset.slide) === currentSlide) {
+              indicator.classList.add("active");
+              indicator.classList.remove("bg-gray-300");
+            } else {
+              indicator.classList.remove("active");
+              indicator.classList.add("bg-gray-300");
+            }
+          });
+
+          prevBtn.disabled = currentSlide === 1;
+          nextBtn.disabled = currentSlide === totalSlides;
+        }
+
+        prevBtn.addEventListener("click", () => {
+          currentSlide--;
+          showSlide(currentSlide);
+        });
+
+        nextBtn.addEventListener("click", () => {
+          currentSlide++;
+          showSlide(currentSlide);
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") {
+            currentSlide--;
+            showSlide(currentSlide);
+          } else if (e.key === "ArrowRight") {
+            currentSlide++;
+            showSlide(currentSlide);
+          }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+      });
+    </script>
+  </body>
+</html>

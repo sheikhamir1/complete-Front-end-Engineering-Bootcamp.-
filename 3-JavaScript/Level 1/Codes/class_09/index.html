@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class 09 - Browser Interaction</title>
+
+    <!-- ✅ Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ✅ Custom Tailwind Config (optional, for better fonts/colors) -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              heading: ['"Segoe UI"', "Roboto", "sans-serif"],
+              body: ['"Open Sans"', "sans-serif"],
+            },
+            backgroundImage: {
+              "nature-bg":
+                "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80')",
+            },
+            colors: {
+              nature: {
+                green: "#2f855a",
+                beige: "#fefae0",
+                brown: "#7f5539",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- ✅ Meta Styling -->
+    <style>
+      body {
+        font-family: "Open Sans", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-nature-bg bg-cover bg-center min-h-screen text-white">
+    <!-- Overlay -->
+    <div
+      class="bg-black bg-opacity-60 min-h-screen flex items-center justify-center px-4"
+    >
+      <div
+        class="max-w-2xl text-center p-8 rounded-xl backdrop-blur-md bg-white/10 shadow-2xl border border-white/20"
+      >
+        <!-- Heading -->
+        <h1
+          class="text-4xl font-heading font-bold text-nature-green mb-6 drop-shadow"
+        >
+          🌿 Class 09: Browser Interaction
+        </h1>
+
+        <!-- Subtopics -->
+        <div class="space-y-4 text-lg text-beige">
+          <h3 class="hover:text-white transition">
+            🔔 What is <strong>Alert</strong>?
+          </h3>
+          <h3 class="hover:text-white transition">
+            💬 What is <strong>Prompt</strong>?
+          </h3>
+          <h3 class="hover:text-white transition">
+            ❓ What is <strong>Confirm</strong>?
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="/class_09/browserInteraction.js"></script>
+  </body>
+</html>

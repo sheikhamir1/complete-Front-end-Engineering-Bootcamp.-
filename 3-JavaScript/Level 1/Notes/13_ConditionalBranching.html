@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conditional Branching in JavaScript</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+          font-family: 'Space Grotesk', sans-serif;
+          background-color: #0f172a;
+          color: #e2e8f0;
+      }
+      .slide {
+          display: none;
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      }
+      .slide.active {
+          display: flex;
+      }
+      .fade-in {
+          animation: fadeIn 0.6s ease-in-out;
+      }
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+      .slide-in-left {
+          animation: slideInLeft 0.6s ease-out;
+      }
+      @keyframes slideInLeft {
+          from { transform: translateX(-100px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+      }
+      .slide-in-right {
+          animation: slideInRight 0.6s ease-out;
+      }
+      @keyframes slideInRight {
+          from { transform: translateX(100px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+      }
+      .scale-in {
+          animation: scaleIn 0.6s ease-out;
+      }
+      @keyframes scaleIn {
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+      }
+      .code-block {
+          background-color: #1e293b;
+          border-radius: 8px;
+          padding: 16px;
+          font-family: 'Courier New', monospace;
+          overflow-x: auto;
+          border-left: 4px solid #8b5cf6;
+          color: #e2e8f0;
+      }
+      .nav-button {
+          transition: all 0.3s ease;
+      }
+      .nav-button:hover {
+          transform: translateY(-2px);
+      }
+      .interactive {
+          transition: all 0.2s ease;
+          cursor: pointer;
+      }
+      .interactive:hover {
+          transform: scale(1.05);
+      }
+      .sound-toggle {
+          position: fixed;
+          bottom: 6rem;
+          right: 6rem;
+          z-50;
+      }
+      .glass-effect {
+          background: rgba(30, 41, 59, 0.7);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .neon-text {
+          text-shadow: 0 0 10px rgba(139, 92, 246, 0.7), 0 0 20px rgba(139, 92, 246, 0.5);
+      }
+      .neon-border {
+          box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), inset 0 0 15px rgba(139, 92, 246, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sound Toggle Button -->
+    <div class="sound-toggle">
+      <button
+        id="soundToggle"
+        class="glass-effect rounded-full p-3 shadow-lg hover:shadow-xl"
+      >
+        <i class="fas fa-volume-up text-purple-400 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-6 right-6 z-50 flex space-x-3">
+      <button
+        id="prevBtn"
+        class="nav-button glass-effect rounded-full p-3 shadow-lg hover:shadow-xl interactive"
+      >
+        <i class="fas fa-chevron-left text-purple-400 text-xl"></i>
+      </button>
+      <button
+        id="nextBtn"
+        class="nav-button glass-effect rounded-full p-3 shadow-lg hover:shadow-xl interactive"
+      >
+        <i class="fas fa-chevron-right text-purple-400 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Slide Progress Indicator -->
+    <div
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-effect rounded-full px-4 py-2 shadow-md"
+    >
+      <div class="flex space-x-2">
+        <div
+          class="w-3 h-3 rounded-full bg-purple-500 slide-indicator"
+          data-slide="1"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="2"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="3"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="4"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="5"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="6"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="7"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="8"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-600 slide-indicator"
+          data-slide="9"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Cover / Title Slide -->
+    <div class="slide active flex-col justify-center items-center p-8 fade-in">
+      <div
+        class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12 text-center neon-border"
+      >
+        <div class="flex justify-center mb-8">
+          <div
+            class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full p-5 animate__animated animate__pulse animate__infinite"
+          >
+            <i class="fas fa-code-branch text-white text-5xl"></i>
+          </div>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 neon-text">
+          Conditional Branching
+        </h1>
+        <p class="text-xl text-purple-200 mb-8">
+          Mastering if statements and the ternary operator in JavaScript
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition duration-300 transform hover:scale-105 interactive"
+          >
+            Start Learning
+          </button>
+          <button
+            class="glass-effect text-purple-300 border border-purple-500 px-6 py-3 rounded-lg font-medium hover:bg-purple-900 hover:bg-opacity-30 transition duration-300 transform hover:scale-105 interactive"
+          >
+            View Examples
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction / Summary -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          Introduction <span class="text-purple-400">🔍</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            class="bg-purple-900 bg-opacity-30 rounded-xl p-6 shadow-md slide-in-left"
+          >
+            <div class="flex items-center mb-4">
+              <div class="bg-purple-800 bg-opacity-50 p-2 rounded-lg mr-4">
+                <i class="fas fa-code text-purple-400 text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-white">
+                Conditional Statements
+              </h3>
+            </div>
+            <ul class="space-y-2 text-purple-200">
+              <li class="flex items-start">
+                <span class="text-purple-400 mr-2">•</span>
+                <span>if statement for basic conditions</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-purple-400 mr-2">•</span>
+                <span>else clause for alternative paths</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-purple-400 mr-2">•</span>
+                <span>else if for multiple conditions</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-purple-400 mr-2">•</span>
+                <span>Ternary operator for concise expressions</span>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="bg-indigo-900 bg-opacity-30 rounded-xl p-6 shadow-md slide-in-right"
+          >
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-800 bg-opacity-50 p-2 rounded-lg mr-4">
+                <i class="fas fa-lightbulb text-indigo-400 text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Key Concepts</h3>
+            </div>
+            <ul class="space-y-2 text-indigo-200">
+              <li class="flex items-start">
+                <span class="text-indigo-400 mr-2">•</span>
+                <span>Boolean conversion in conditions</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-indigo-400 mr-2">•</span>
+                <span>Truthy and falsy values</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-indigo-400 mr-2">•</span>
+                <span>Code blocks and curly braces</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-indigo-400 mr-2">•</span>
+                <span>Nested conditionals</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-purple-900 to-indigo-900 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-white mb-4">
+            Why This Matters <span class="text-purple-400">💡</span>
+          </h3>
+          <p class="text-purple-200">
+            Conditional branching is fundamental to programming logic. It allows
+            your code to make decisions and respond differently to varying
+            inputs and situations.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: The "if" statement -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          The "if" Statement <span class="text-blue-400">🔧</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div
+              class="bg-blue-900 bg-opacity-30 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Basic Syntax
+              </h3>
+              <p class="text-blue-200 mb-4">
+                The if statement evaluates a condition and executes code if the
+                result is true.
+              </p>
+              <div class="code-block">
+                <code
+                  >let year = prompt('In which year was ECMAScript-2015
+                  published?', '');<br /><br />if (year == 2015) {<br />&nbsp;&nbsp;alert('You
+                  are right!');<br />}</code
+                >
+              </div>
+            </div>
+            <div class="bg-indigo-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">Code Blocks</h3>
+              <p class="text-indigo-200 mb-4">
+                Use curly braces {} to group multiple statements:
+              </p>
+              <div class="code-block">
+                <code
+                  >if (year == 2015) {<br />&nbsp;&nbsp;alert("That's
+                  correct!");<br />&nbsp;&nbsp;alert("You're so smart!");<br />}</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div
+              class="bg-gray-800 bg-opacity-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Best Practice
+              </h3>
+              <p class="text-gray-300 mb-4">
+                Always use curly braces, even for single statements:
+              </p>
+              <div class="flex justify-center mb-4">
+                <div class="bg-green-900 bg-opacity-50 rounded-lg p-4 w-full">
+                  <p class="text-green-300 font-medium">✓ Recommended</p>
+                  <div class="code-block mt-2">
+                    <code
+                      >if (condition) {<br />&nbsp;&nbsp;// code<br />}</code
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-center">
+                <div class="bg-red-900 bg-opacity-50 rounded-lg p-4 w-full">
+                  <p class="text-red-300 font-medium">✗ Not Recommended</p>
+                  <div class="code-block mt-2">
+                    <code>if (condition)<br />&nbsp;&nbsp;// code</code>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-purple-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">Use Cases</h3>
+              <ul class="space-y-2 text-purple-200">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-purple-400 mt-1 mr-2"></i>
+                  <span>Input validation</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-purple-400 mt-1 mr-2"></i>
+                  <span>Feature toggling</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-purple-400 mt-1 mr-2"></i>
+                  <span>Error handling</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Boolean conversion -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          Boolean Conversion <span class="text-green-400">✅</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div
+              class="bg-green-900 bg-opacity-30 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Truthy & Falsy Values
+              </h3>
+              <p class="text-green-200 mb-4">
+                The if statement converts the condition to a boolean:
+              </p>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-red-900 bg-opacity-50 rounded-lg p-4">
+                  <h4 class="font-semibold text-red-300 mb-2">Falsy Values</h4>
+                  <ul class="text-red-200 text-sm space-y-1">
+                    <li>• 0</li>
+                    <li>• "" (empty string)</li>
+                    <li>• null</li>
+                    <li>• undefined</li>
+                    <li>• NaN</li>
+                    <li>• false</li>
+                  </ul>
+                </div>
+                <div class="bg-green-900 bg-opacity-50 rounded-lg p-4">
+                  <h4 class="font-semibold text-green-300 mb-2">
+                    Truthy Values
+                  </h4>
+                  <ul class="text-green-200 text-sm space-y-1">
+                    <li>• "0" (non-empty string)</li>
+                    <li>• " " (whitespace)</li>
+                    <li>• [] (empty array)</li>
+                    <li>• {} (empty object)</li>
+                    <li>• 1 (any non-zero number)</li>
+                    <li>• true</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="bg-teal-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">Examples</h3>
+              <div class="code-block">
+                <code
+                  >// This code will never execute<br />if (0) {<br />&nbsp;&nbsp;//
+                  ...<br />}<br /><br />// This code will always execute<br />if
+                  (1) {<br />&nbsp;&nbsp;// ...<br />}</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div
+              class="bg-gray-800 bg-opacity-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Pre-evaluated Boolean
+              </h3>
+              <p class="text-gray-300 mb-4">
+                You can pass a pre-evaluated boolean value:
+              </p>
+              <div class="code-block">
+                <code
+                  >let cond = (year == 2015); // true or false<br /><br />if
+                  (cond) {<br />&nbsp;&nbsp;// code<br />}</code
+                >
+              </div>
+            </div>
+            <div class="bg-yellow-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Practical Implications
+              </h3>
+              <p class="text-yellow-200 mb-4">
+                Understanding truthy/falsy values helps write concise code:
+              </p>
+              <div class="code-block mb-4">
+                <code
+                  >// Instead of this<br />if (name !== null && name !==
+                  undefined && name !== "") {<br />&nbsp;&nbsp;// use name<br />}</code
+                >
+              </div>
+              <div class="code-block">
+                <code
+                  >// You can write this<br />if (name) {<br />&nbsp;&nbsp;//
+                  use name<br />}</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: The "else" clause -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          The "else" Clause <span class="text-yellow-400">🔄</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div
+              class="bg-yellow-900 bg-opacity-30 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Basic Syntax
+              </h3>
+              <p class="text-yellow-200 mb-4">
+                The else block executes when the if condition is falsy:
+              </p>
+              <div class="code-block">
+                <code
+                  >let year = prompt('In which year was ECMAScript-2015
+                  published?', '');<br /><br />if (year == 2015) {<br />&nbsp;&nbsp;alert('You
+                  guessed it right!');<br />} else {<br />&nbsp;&nbsp;alert('How
+                  can you be so wrong?');<br />}</code
+                >
+              </div>
+            </div>
+            <div class="bg-amber-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Flow Control
+              </h3>
+              <p class="text-amber-200 mb-4">
+                The else clause provides an alternative path when the condition
+                fails:
+              </p>
+              <div class="flex justify-center">
+                <div class="bg-gray-800 rounded-lg p-4 w-full">
+                  <div class="flex items-center justify-between mb-4">
+                    <div class="bg-blue-500 rounded-lg px-3 py-1 text-white">
+                      if (condition)
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-400"></i>
+                    <div class="bg-green-500 rounded-lg px-3 py-1 text-white">
+                      true path
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="bg-blue-500 rounded-lg px-3 py-1 text-white">
+                      else
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-400"></i>
+                    <div class="bg-red-500 rounded-lg px-3 py-1 text-white">
+                      false path
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div
+              class="bg-gray-800 bg-opacity-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">Use Cases</h3>
+              <ul class="space-y-3 text-gray-300">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                  <span>Error handling and fallbacks</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                  <span>Default values</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                  <span>Alternative behaviors</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-yellow-400 mt-1 mr-2"></i>
+                  <span>Validation feedback</span>
+                </li>
+              </ul>
+            </div>
+            <div class="bg-orange-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">Example</h3>
+              <div class="code-block">
+                <code
+                  >function checkAge(age) {<br />&nbsp;&nbsp;if (age >= 18) {<br />&nbsp;&nbsp;&nbsp;&nbsp;return
+                  "Access granted";<br />&nbsp;&nbsp;} else {<br />&nbsp;&nbsp;&nbsp;&nbsp;return
+                  "Access denied";<br />&nbsp;&nbsp;}<br />}</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Several conditions: "else if" -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          Multiple Conditions: "else if" <span class="text-red-400">🔀</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-red-900 bg-opacity-30 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-white mb-3">Syntax</h3>
+              <p class="text-red-200 mb-4">
+                Test multiple conditions sequentially:
+              </p>
+              <div class="code-block">
+                <code
+                  >let year = prompt('In which year was ECMAScript-2015
+                  published?', '');<br /><br />if (year < 2015) {<br />&nbsp;&nbsp;alert('Too
+                  early...');<br />} else if (year > 2015) {<br />&nbsp;&nbsp;alert('Too
+                  late');<br />} else {<br />&nbsp;&nbsp;alert('Exactly!');<br />}</code
+                >
+              </div>
+            </div>
+            <div class="bg-pink-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Execution Flow
+              </h3>
+              <p class="text-pink-200 mb-4">
+                JavaScript checks conditions in order:
+              </p>
+              <ol class="space-y-2 text-pink-200 list-decimal pl-5">
+                <li>First condition is evaluated</li>
+                <li>If true, its block executes and the rest are skipped</li>
+                <li>If false, next condition is evaluated</li>
+                <li>Continues until a condition is true or else is reached</li>
+              </ol>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div
+              class="bg-gray-800 bg-opacity-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Visual Example
+              </h3>
+              <div class="space-y-3">
+                <div class="flex items-center">
+                  <div
+                    class="bg-red-500 rounded-lg px-3 py-1 text-white text-sm"
+                  >
+                    if (year < 2015)
+                  </div>
+                  <i class="fas fa-arrow-right text-red-400 mx-2"></i>
+                  <div
+                    class="bg-gray-700 rounded-lg px-3 py-1 text-gray-300 text-sm"
+                  >
+                    false
+                  </div>
+                  <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                  <div class="text-gray-500 text-sm">continue</div>
+                </div>
+                <div class="flex items-center">
+                  <div
+                    class="bg-yellow-500 rounded-lg px-3 py-1 text-white text-sm"
+                  >
+                    else if (year > 2015)
+                  </div>
+                  <i class="fas fa-arrow-right text-yellow-400 mx-2"></i>
+                  <div
+                    class="bg-gray-700 rounded-lg px-3 py-1 text-gray-300 text-sm"
+                  >
+                    false
+                  </div>
+                  <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                  <div class="text-gray-500 text-sm">continue</div>
+                </div>
+                <div class="flex items-center">
+                  <div
+                    class="bg-green-500 rounded-lg px-3 py-1 text-white text-sm"
+                  >
+                    else
+                  </div>
+                  <i class="fas fa-arrow-right text-green-400 mx-2"></i>
+                  <div
+                    class="bg-green-700 rounded-lg px-3 py-1 text-white text-sm"
+                  >
+                    executes
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-purple-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Practical Use
+              </h3>
+              <div class="code-block">
+                <code
+                  >function getGrade(score) {<br />&nbsp;&nbsp;if (score >= 90)
+                  {<br />&nbsp;&nbsp;&nbsp;&nbsp;return "A";<br />&nbsp;&nbsp;}
+                  else if (score >= 80) {<br />&nbsp;&nbsp;&nbsp;&nbsp;return
+                  "B";<br />&nbsp;&nbsp;} else if (score >= 70) {<br />&nbsp;&nbsp;&nbsp;&nbsp;return
+                  "C";<br />&nbsp;&nbsp;} else {<br />&nbsp;&nbsp;&nbsp;&nbsp;return
+                  "F";<br />&nbsp;&nbsp;}<br />}</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Conditional operator '?' -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          Conditional Operator '?' <span class="text-teal-400">❓</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div
+              class="bg-teal-900 bg-opacity-30 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Basic Syntax
+              </h3>
+              <p class="text-teal-200 mb-4">
+                The ternary operator is a concise way to assign values based on
+                a condition:
+              </p>
+              <div class="code-block">
+                <code>let result = condition ? value1 : value2;</code>
+              </div>
+              <p class="text-teal-200 mt-3">
+                If condition is truthy, returns value1; otherwise, returns
+                value2.
+              </p>
+            </div>
+            <div class="bg-cyan-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">Example</h3>
+              <p class="text-cyan-200 mb-4">
+                Instead of a full if-else statement:
+              </p>
+              <div class="code-block mb-4">
+                <code
+                  >let accessAllowed;<br />let age = prompt('How old are you?',
+                  '');<br /><br />if (age > 18) {<br />&nbsp;&nbsp;accessAllowed
+                  = true;<br />} else {<br />&nbsp;&nbsp;accessAllowed =
+                  false;<br />}</code
+                >
+              </div>
+              <div class="code-block">
+                <code
+                  >// Using ternary operator<br />let accessAllowed = (age > 18)
+                  ? true : false;</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div
+              class="bg-gray-800 bg-opacity-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Simplified Form
+              </h3>
+              <p class="text-gray-300 mb-4">
+                When the condition itself returns a boolean:
+              </p>
+              <div class="code-block">
+                <code
+                  >// Instead of this<br />let accessAllowed = (age > 18) ? true
+                  : false;<br /><br />// You can write this<br />let
+                  accessAllowed = age > 18;</code
+                >
+              </div>
+            </div>
+            <div class="bg-blue-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Multiple '?' Operators
+              </h3>
+              <p class="text-blue-200 mb-4">
+                Chain ternary operators for multiple conditions:
+              </p>
+              <div class="code-block">
+                <code
+                  >let age = prompt('age?', 18);<br /><br />let message = (age <
+                  3) ? 'Hi, baby!' :<br />&nbsp;&nbsp;(age < 18) ? 'Hello!' :<br />&nbsp;&nbsp;(age
+                  < 100) ? 'Greetings!' :<br />&nbsp;&nbsp;'What an unusual
+                  age!';</code
+                >
+              </div>
+              <p class="text-blue-200 text-sm mt-3">
+                This is equivalent to a series of if-else statements.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Non-traditional use of '?' -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          Non-traditional Use of '?' <span class="text-orange-400">⚠️</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div
+              class="bg-orange-900 bg-opacity-30 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Using '?' Instead of if
+              </h3>
+              <p class="text-orange-200 mb-4">
+                Sometimes the question mark is used as a replacement for if:
+              </p>
+              <div class="code-block">
+                <code
+                  >let company = prompt('Which company created JavaScript?',
+                  '');<br /><br />(company == 'Netscape') ?<br />&nbsp;&nbsp;alert('Right!')
+                  : alert('Wrong.');</code
+                >
+              </div>
+              <p class="text-orange-200 text-sm mt-3">
+                This executes different code based on the condition.
+              </p>
+            </div>
+            <div class="bg-amber-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Why It's Problematic
+              </h3>
+              <ul class="space-y-2 text-amber-200">
+                <li class="flex items-start">
+                  <i class="fas fa-times text-amber-400 mt-1 mr-2"></i>
+                  <span>Less readable than if-else</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-times text-amber-400 mt-1 mr-2"></i>
+                  <span>Harder to debug</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-times text-amber-400 mt-1 mr-2"></i>
+                  <span>Not the intended use of the operator</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div
+              class="bg-gray-800 bg-opacity-50 rounded-xl p-6 shadow-md mb-6"
+            >
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Recommended Approach
+              </h3>
+              <p class="text-gray-300 mb-4">
+                Use if-else for executing different code branches:
+              </p>
+              <div class="code-block">
+                <code
+                  >let company = prompt('Which company created JavaScript?',
+                  '');<br /><br />if (company == 'Netscape') {<br />&nbsp;&nbsp;alert('Right!');<br />}
+                  else {<br />&nbsp;&nbsp;alert('Wrong.');<br />}</code
+                >
+              </div>
+              <div class="bg-yellow-900 bg-opacity-30 p-4 rounded-lg mt-4">
+                <p class="text-yellow-200">
+                  <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>Our eyes
+                  scan code vertically. Multi-line blocks are easier to
+                  understand than long horizontal instructions.
+                </p>
+              </div>
+            </div>
+            <div class="bg-purple-900 bg-opacity-30 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-white mb-3">
+                Best Practice
+              </h3>
+              <p class="text-purple-200 mb-4">
+                Use the ternary operator for its intended purpose:
+              </p>
+              <div class="bg-green-900 bg-opacity-50 rounded-lg p-4">
+                <p class="text-green-300 font-medium mb-2">✓ Good Use</p>
+                <div class="code-block">
+                  <code>let accessAllowed = age > 18 ? true : false;</code>
+                </div>
+              </div>
+              <div class="bg-red-900 bg-opacity-50 rounded-lg p-4 mt-3">
+                <p class="text-red-300 font-medium mb-2">✗ Poor Use</p>
+                <div class="code-block">
+                  <code
+                    >(age > 18) ? alert('Access granted') : alert('Access
+                    denied');</code
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Summary and Best Practices -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div class="max-w-4xl w-full glass-effect rounded-2xl p-8 md:p-12">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-white mb-6 slide-in-left"
+        >
+          Summary & Best Practices <span class="text-green-400">✨</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            class="bg-green-900 bg-opacity-30 rounded-xl p-6 shadow-md slide-in-left"
+          >
+            <h3 class="text-xl font-semibold text-white mb-4">
+              Best Practices
+            </h3>
+            <ul class="space-y-3 text-green-200">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                <span>Always use curly braces with if statements</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                <span>Use ternary operator for simple value assignments</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                <span>Keep conditions simple and readable</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                <span>Avoid nested ternary operators for complex logic</span>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="bg-red-900 bg-opacity-30 rounded-xl p-6 shadow-md slide-in-right"
+          >
+            <h3 class="text-xl font-semibold text-white mb-4">
+              Common Pitfalls
+            </h3>
+            <ul class="space-y-3 text-red-200">
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-400 mt-1 mr-2"></i>
+                <span>Forgetting that some values are truthy/falsy</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-400 mt-1 mr-2"></i>
+                <span>Using ternary operator for complex code execution</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-400 mt-1 mr-2"></i>
+                <span>Omitting curly braces for single statements</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-400 mt-1 mr-2"></i>
+                <span>Creating overly complex nested conditions</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-green-900 to-teal-900 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-white mb-3">
+            Summary <span class="text-green-400">📝</span>
+          </h3>
+          <ul class="space-y-2 text-green-200">
+            <li class="flex items-start">
+              <span class="text-green-400 mr-2">•</span>
+              <span>if statements execute code based on a condition</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-400 mr-2">•</span>
+              <span
+                >else provides an alternative path when the condition is
+                false</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-400 mr-2">•</span>
+              <span
+                >else if allows testing multiple conditions sequentially</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-400 mr-2">•</span>
+              <span
+                >The ternary operator (?) is best for simple value
+                assignments</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-400 mr-2">•</span>
+              <span>Use if-else for executing different code branches</span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-purple-900 to-indigo-900 rounded-xl p-6 shadow-md text-white scale-in"
+        >
+          <h3 class="text-xl font-semibold mb-3">
+            Keep Learning! <span class="text-yellow-300">🌟</span>
+          </h3>
+          <p class="mb-4">
+            Mastering conditional branching is essential for controlling program
+            flow. Practice these concepts to build more dynamic and responsive
+            applications!
+          </p>
+          <div class="flex space-x-4">
+            <button
+              class="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-purple-50 transition duration-300 interactive"
+            >
+              Try Examples
+            </button>
+            <button
+              class="bg-purple-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-900 transition duration-300 interactive"
+            >
+              More Resources
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Sound effects functionality
+      let soundEnabled = true;
+      let audioContext = null;
+
+      // Initialize audio context on first user interaction
+      function initAudioContext() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
+        }
+      }
+
+      function playClickSound() {
+        if (!soundEnabled) return;
+
+        initAudioContext();
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // Create a clean click sound
+        oscillator.type = "sine";
+        oscillator.frequency.value = 800;
+
+        // Quick attack and release for a clean click
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioContext.currentTime + 0.05
+        );
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.05);
+      }
+
+      function playSlideSound() {
+        if (!soundEnabled) return;
+
+        initAudioContext();
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // Create a soft slide transition sound
+        oscillator.type = "sine";
+        oscillator.frequency.value = 600;
+
+        // Smooth envelope for slide sound
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.01,
+          audioContext.currentTime + 0.1
+        );
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+      }
+
+      // Toggle sound
+      document
+        .getElementById("soundToggle")
+        .addEventListener("click", function () {
+          initAudioContext(); // Initialize on first click
+          soundEnabled = !soundEnabled;
+          const icon = this.querySelector("i");
+          if (soundEnabled) {
+            icon.classList.remove("fa-volume-mute");
+            icon.classList.add("fa-volume-up");
+            playClickSound();
+          } else {
+            icon.classList.remove("fa-volume-up");
+            icon.classList.add("fa-volume-mute");
+          }
+        });
+
+      // Slide navigation functionality
+      let currentSlide = 1;
+      const totalSlides = 9;
+
+      const slides = document.querySelectorAll(".slide");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const indicators = document.querySelectorAll(".slide-indicator");
+
+      function showSlide(n) {
+        // Hide all slides
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Update indicators
+        indicators.forEach((indicator) => {
+          indicator.classList.remove("bg-purple-500");
+          indicator.classList.add("bg-gray-600");
+        });
+
+        // Show current slide
+        if (n > totalSlides) currentSlide = 1;
+        if (n < 1) currentSlide = totalSlides;
+
+        slides[currentSlide - 1].classList.add("active");
+        indicators[currentSlide - 1].classList.remove("bg-gray-600");
+        indicators[currentSlide - 1].classList.add("bg-purple-500");
+
+        // Play slide transition sound
+        playSlideSound();
+
+        // Add animation classes
+        const activeSlide = slides[currentSlide - 1];
+        const elements = activeSlide.querySelectorAll(
+          ".slide-in-left, .slide-in-right, .scale-in, .fade-in"
+        );
+        elements.forEach((el, index) => {
+          setTimeout(() => {
+            el.style.opacity = "1";
+          }, index * 100);
+        });
+      }
+
+      // Next slide
+      function nextSlide() {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+
+      // Previous slide
+      function prevSlide() {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+
+      // Event listeners
+      nextBtn.addEventListener("click", () => {
+        playClickSound();
+        nextSlide();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        playClickSound();
+        prevSlide();
+      });
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          playClickSound();
+          nextSlide();
+        }
+        if (e.key === "ArrowLeft") {
+          playClickSound();
+          prevSlide();
+        }
+      });
+
+      // Add sound to interactive elements
+      document.querySelectorAll(".interactive").forEach((element) => {
+        element.addEventListener("click", () => {
+          playClickSound();
+        });
+      });
+
+      // Initialize the first slide
+      showSlide(currentSlide);
+    </script>
+  </body>
+</html>

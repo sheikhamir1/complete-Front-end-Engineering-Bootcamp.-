@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Logical Operators - Interactive Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        overflow: hidden;
+        background-color: #0f172a;
+        color: #ffffff;
+      }
+      .presentation-container {
+        width: 1280px;
+        min-height: 820px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        background-color: #0f172a;
+        margin-top: 10px;
+      }
+      .slide {
+        width: 100%;
+        min-height: 720px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+        background-color: #0f172a;
+      }
+      .slide.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .background-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(
+            circle at 10% 20%,
+            rgba(99, 102, 241, 0.1) 0%,
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(139, 92, 246, 0.1) 0%,
+            transparent 20%
+          );
+        z-index: -1;
+      }
+      .header {
+        padding: 2rem 3rem 1rem;
+        background: linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.9),
+          rgba(30, 41, 59, 0.9)
+        );
+        border-bottom: 2px solid rgba(99, 102, 241, 0.5);
+        backdrop-filter: blur(10px);
+      }
+      .title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, #a5b4fc, #c7d2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .content {
+        display: flex;
+        flex-grow: 1;
+        padding: 2rem 3rem;
+      }
+      .left-content {
+        flex: 1;
+        padding-right: 2rem;
+      }
+      .right-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #e2e8f0;
+      }
+      .key-point {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+      }
+      .key-point i {
+        color: #a5b4fc;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        margin-top: 0.25rem;
+      }
+      .key-point-text {
+        font-size: 1.1rem;
+        color: #e2e8f0;
+        line-height: 1.5;
+      }
+      .highlight {
+        color: #a5b4fc;
+        font-weight: 600;
+      }
+      .code-block {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-left: 4px solid #6366f1;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        color: #e2e8f0;
+        overflow-x: auto;
+      }
+      .code-comment {
+        color: #94a3b8;
+        font-style: italic;
+      }
+      .example-box {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .example-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+      }
+      .example-title i {
+        margin-right: 0.75rem;
+        color: #a5b4fc;
+      }
+      .navigation {
+        position: absolute;
+        bottom: 2rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        z-index: 10;
+      }
+      .nav-button {
+        background-color: rgba(99, 102, 241, 0.8);
+        border: none;
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .nav-button:hover {
+        background-color: rgba(129, 140, 248, 0.9);
+        transform: scale(1.05);
+      }
+      .nav-button i {
+        font-size: 1.2rem;
+        color: #ffffff;
+      }
+      .slide-indicator {
+        position: absolute;
+        bottom: 2rem;
+        right: 3rem;
+        display: flex;
+        gap: 0.5rem;
+        z-index: 10;
+      }
+      .indicator-dot {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        background-color: rgba(148, 163, 184, 0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .indicator-dot.active {
+        background-color: #a5b4fc;
+        transform: scale(1.2);
+      }
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        padding: 0 3rem;
+        text-align: center;
+      }
+      .main-title {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.025em;
+        background: linear-gradient(90deg, #a5b4fc, #c7d2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .subtitle {
+        font-size: 1.5rem;
+        font-weight: 400;
+        max-width: 80%;
+        color: #cbd5e1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .icon-container {
+        margin-bottom: 2rem;
+      }
+      .icon-container i {
+        font-size: 4rem;
+        color: #a5b4fc;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .operator-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+      .operator-card {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .operator-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
+      }
+      .operator-symbol {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #a5b4fc;
+      }
+      .operator-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #e2e8f0;
+      }
+      .operator-desc {
+        font-size: 0.9rem;
+        color: #cbd5e1;
+      }
+      .truth-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .truth-table th,
+      .truth-table td {
+        padding: 0.75rem;
+        text-align: center;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      }
+      .truth-table th {
+        background-color: rgba(99, 102, 241, 0.3);
+        color: #e2e8f0;
+        font-weight: 600;
+      }
+      .truth-table tr:last-child td {
+        border-bottom: none;
+      }
+      .truth-table td {
+        color: #cbd5e1;
+      }
+      .animated {
+        animation: fadeIn 1s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .delay-1 {
+        animation-delay: 0.2s;
+      }
+      .delay-2 {
+        animation-delay: 0.4s;
+      }
+      .delay-3 {
+        animation-delay: 0.6s;
+      }
+      .delay-4 {
+        animation-delay: 0.8s;
+      }
+      .emoji {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+      }
+      .code-output {
+        background-color: rgba(16, 185, 129, 0.1);
+        border-left: 4px solid #10b981;
+        padding: 0.75rem;
+        margin-top: 0.75rem;
+        border-radius: 0.25rem;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+        color: #6ee7b7;
+      }
+      .comparison-container {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .comparison-column {
+        flex: 1;
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .comparison-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        color: #e2e8f0;
+      }
+      .comparison-title i {
+        margin-right: 0.5rem;
+        font-size: 1rem;
+      }
+      .good-title {
+        color: #4ade80;
+      }
+      .bad-title {
+        color: #f87171;
+      }
+      .tip-box {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        border-left: 4px solid #f59e0b;
+      }
+      .tip-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+      }
+      .tip-title i {
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+        color: #f59e0b;
+      }
+      .footer {
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .footer-icon {
+        color: #a5b4fc;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+      }
+      .footer-text {
+        font-size: 1.1rem;
+        line-height: 1.4;
+        color: #e2e8f0;
+      }
+      .summary-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        flex-grow: 1;
+      }
+      .summary-box {
+        flex: 1 1 calc(50% - 1.5rem);
+        min-width: calc(50% - 1.5rem);
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+      }
+      .summary-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+      }
+      .summary-title i {
+        margin-right: 0.75rem;
+        font-size: 1.3rem;
+        color: #a5b4fc;
+      }
+      ul {
+        list-style-type: none;
+        margin-left: 0;
+      }
+      ul li {
+        position: relative;
+        padding-left: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: #e2e8f0;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      ul li:before {
+        content: "•";
+        color: #a5b4fc;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
+      }
+      .keyword {
+        display: inline-block;
+        background-color: rgba(99, 102, 241, 0.2);
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.25rem;
+        font-weight: 600;
+        color: #e2e8f0;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+      }
+      .precedence-chart {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.5rem;
+        background-color: rgba(30, 41, 59, 0.7);
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      .precedence-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 1rem;
+      }
+      .precedence-operator {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #a5b4fc;
+        margin-bottom: 0.5rem;
+      }
+      .precedence-level {
+        font-size: 0.9rem;
+        color: #cbd5e1;
+      }
+      .precedence-arrow {
+        color: #64748b;
+        font-size: 1.5rem;
+        margin: 0 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide active" id="slide1">
+        <div class="background-pattern"></div>
+        <div class="center-content">
+          <div class="icon-container">
+            <i class="fas fa-code-branch"></i>
+          </div>
+          <h1 class="main-title">JavaScript Logical Operators</h1>
+          <p class="subtitle">
+            Understanding || (OR), && (AND), and ! (NOT) operators
+          </p>
+
+          <div class="operator-grid animated">
+            <div class="operator-card delay-1">
+              <div class="operator-symbol">||</div>
+              <div class="operator-name">OR</div>
+              <div class="operator-desc">Returns first truthy value</div>
+            </div>
+            <div class="operator-card delay-2">
+              <div class="operator-symbol">&&</div>
+              <div class="operator-name">AND</div>
+              <div class="operator-desc">Returns first falsy value</div>
+            </div>
+            <div class="operator-card delay-3">
+              <div class="operator-symbol">!</div>
+              <div class="operator-name">NOT</div>
+              <div class="operator-desc">Inverts boolean value</div>
+            </div>
+            <div class="operator-card delay-4">
+              <div class="operator-symbol">??</div>
+              <div class="operator-name">Nullish Coalescing</div>
+              <div class="operator-desc">Returns defined value</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Overview of Logical Operators -->
+      <div class="slide" id="slide2">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">Overview of Logical Operators</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">What are Logical Operators?</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Operators that
+                <span class="highlight">evaluate expressions</span> to true or
+                false
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Can be applied to
+                <span class="highlight">values of any type</span>, not just
+                boolean
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Result can also be of <span class="highlight">any type</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Used in
+                <span class="highlight">conditional statements</span> and
+                expressions
+              </p>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Four Logical Operators in JavaScript</p>
+            <div class="operator-grid">
+              <div class="operator-card">
+                <div class="operator-symbol">||</div>
+                <div class="operator-name">OR</div>
+                <div class="operator-desc">Returns first truthy value</div>
+              </div>
+              <div class="operator-card">
+                <div class="operator-symbol">&&</div>
+                <div class="operator-name">AND</div>
+                <div class="operator-desc">Returns first falsy value</div>
+              </div>
+              <div class="operator-card">
+                <div class="operator-symbol">!</div>
+                <div class="operator-name">NOT</div>
+                <div class="operator-desc">Inverts boolean value</div>
+              </div>
+              <div class="operator-card">
+                <div class="operator-symbol">??</div>
+                <div class="operator-name">Nullish Coalescing</div>
+                <div class="operator-desc">Returns defined value</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: OR (||) Operator -->
+      <div class="slide" id="slide3">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">OR (||) Operator</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Basic OR Behavior</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                In classical programming, returns
+                <span class="highlight">true</span> if any operand is true
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Returns <span class="highlight">false</span> only if both
+                operands are false
+              </p>
+            </div>
+
+            <table class="truth-table">
+              <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>A || B</th>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>true</td>
+                <td>true</td>
+              </tr>
+              <tr>
+                <td>false</td>
+                <td>true</td>
+                <td>true</td>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>false</td>
+                <td>true</td>
+              </tr>
+              <tr>
+                <td>false</td>
+                <td>false</td>
+                <td>false</td>
+              </tr>
+            </table>
+          </div>
+          <div class="right-content">
+            <p class="section-title">OR in JavaScript</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Operands are
+                <span class="highlight">converted to boolean</span> for
+                evaluation
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Commonly used in <span class="highlight">if statements</span> to
+                test conditions
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">let</span> hour = 9;<br />
+              <span class="keyword">if</span> (hour < 10 || hour > 18) {<br />
+              &nbsp;&nbsp;alert( 'The office is closed.' );<br />
+              }
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">let</span> hour = 12;<br />
+              <span class="keyword">let</span> isWeekend =
+              <span class="keyword">true</span>;<br />
+              <span class="keyword">if</span> (hour < 10 || hour > 18 ||
+              isWeekend) {<br />
+              &nbsp;&nbsp;alert( 'The office is closed.' );<br />
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Short-circuit Evaluation of OR -->
+      <div class="slide" id="slide4">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">Short-circuit Evaluation of OR</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">How OR Works in JavaScript</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Evaluates operands from
+                <span class="highlight">left to right</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                For each operand, converts to
+                <span class="highlight">boolean</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                If result is <span class="highlight">true</span>, stops and
+                returns <span class="highlight">original value</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                If all are <span class="highlight">falsy</span>, returns the
+                <span class="highlight">last operand</span>
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="comment">// Returns the first truthy value</span
+              ><br />
+              alert( 1 || 0 ); <span class="comment">// 1</span><br />
+              alert( <span class="keyword">null</span> || 1 );
+              <span class="comment">// 1</span><br />
+              alert( <span class="keyword">null</span> || 0 || 1 );
+              <span class="comment">// 1</span><br />
+              alert( <span class="keyword">undefined</span> ||
+              <span class="keyword">null</span> || 0 );
+              <span class="comment">// 0</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Practical Uses</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                <span class="highlight">Getting the first truthy value</span>
+                from a list
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">let</span> firstName = "";<br />
+              <span class="keyword">let</span> lastName = "";<br />
+              <span class="keyword">let</span> nickName = "SuperCoder";<br />
+              alert( firstName || lastName || nickName || "Anonymous");
+              <span class="comment">// SuperCoder</span>
+            </div>
+
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                <span class="highlight">Short-circuit evaluation</span> for
+                performance
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">true</span> || alert("not printed");<br />
+              <span class="keyword">false</span> || alert("printed");
+            </div>
+
+            <div class="tip-box">
+              <div class="tip-title">
+                <i class="fas fa-lightbulb"></i>
+                Tip
+              </div>
+              <p class="key-point-text">
+                Use this feature to execute commands only if the condition on
+                the left is falsy
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: AND (&&) Operator -->
+      <div class="slide" id="slide5">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">AND (&&) Operator</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Basic AND Behavior</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Returns <span class="highlight">true</span> if both operands are
+                truthy
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Returns <span class="highlight">false</span> if any operand is
+                falsy
+              </p>
+            </div>
+
+            <table class="truth-table">
+              <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>A && B</th>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>true</td>
+                <td>true</td>
+              </tr>
+              <tr>
+                <td>false</td>
+                <td>true</td>
+                <td>false</td>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>false</td>
+                <td>false</td>
+              </tr>
+              <tr>
+                <td>false</td>
+                <td>false</td>
+                <td>false</td>
+              </tr>
+            </table>
+          </div>
+          <div class="right-content">
+            <p class="section-title">AND in JavaScript</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Commonly used to test
+                <span class="highlight">multiple conditions</span>
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">let</span> hour = 12;<br />
+              <span class="keyword">let</span> minute = 30;<br />
+              <span class="keyword">if</span> (hour == 12 && minute == 30) {<br />
+              &nbsp;&nbsp;alert( 'The time is 12:30' );<br />
+              }
+            </div>
+
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">Any value is allowed as an operand</p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">if</span> (1 && 0) {
+              <span class="comment">// evaluated as true && false</span><br />
+              &nbsp;&nbsp;alert( "won't work, because the result is falsy" );<br />
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Short-circuit Evaluation of AND -->
+      <div class="slide" id="slide6">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">Short-circuit Evaluation of AND</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">How AND Works in JavaScript</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Evaluates operands from
+                <span class="highlight">left to right</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                For each operand, converts to
+                <span class="highlight">boolean</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                If result is <span class="highlight">false</span>, stops and
+                returns <span class="highlight">original value</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                If all are <span class="highlight">truthy</span>, returns the
+                <span class="highlight">last operand</span>
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="comment">// If the first operand is truthy,</span
+              ><br />
+              <span class="comment">// AND returns the second operand:</span
+              ><br />
+              alert( 1 && 0 ); <span class="comment">// 0</span><br />
+              alert( 1 && 5 ); <span class="comment">// 5</span><br /><br />
+              <span class="comment">// If the first operand is falsy,</span
+              ><br />
+              <span class="comment"
+                >// AND returns it. The second operand is ignored</span
+              ><br />
+              alert( <span class="keyword">null</span> && 5 );
+              <span class="comment">// null</span><br />
+              alert( 0 && "no matter what" ); <span class="comment">// 0</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Multiple AND Operations</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Returns the <span class="highlight">first falsy value</span> or
+                the last value
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="comment">// Several values in a row</span><br />
+              alert( 1 && 2 && <span class="keyword">null</span> && 3 );
+              <span class="comment">// null</span><br /><br />
+              <span class="comment">// When all values are truthy</span><br />
+              alert( 1 && 2 && 3 );
+              <span class="comment">// 3, the last one</span>
+            </div>
+
+            <div class="comparison-container">
+              <div class="comparison-column">
+                <div class="comparison-title good-title">
+                  <i class="fas fa-check"></i>
+                  Recommended
+                </div>
+                <div class="code-block">
+                  <span class="keyword">let</span> x = 1;<br />
+                  <span class="keyword">if</span> (x > 0) {<br />
+                  &nbsp;&nbsp;alert( 'Greater than zero!' );<br />
+                  }
+                </div>
+              </div>
+              <div class="comparison-column">
+                <div class="comparison-title bad-title">
+                  <i class="fas fa-times"></i>
+                  Not Recommended
+                </div>
+                <div class="code-block">
+                  <span class="keyword">let</span> x = 1;<br />
+                  (x > 0) && alert( 'Greater than zero!' );
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: NOT (!) Operator -->
+      <div class="slide" id="slide7">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">NOT (!) Operator</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Basic NOT Behavior</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Accepts a <span class="highlight">single argument</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Converts operand to <span class="highlight">boolean type</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Returns the <span class="highlight">inverse value</span>
+              </p>
+            </div>
+
+            <div class="code-block">
+              alert( !<span class="keyword">true</span> );
+              <span class="comment">// false</span><br />
+              alert( !0 ); <span class="comment">// true</span><br />
+              alert( !"" ); <span class="comment">// true</span><br />
+              alert( !<span class="keyword">null</span> );
+              <span class="comment">// true</span>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Double NOT (!!)</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Used for <span class="highlight">converting to boolean</span>
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                First NOT converts to boolean and inverts
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">Second NOT inverts it back</p>
+            </div>
+
+            <div class="code-block">
+              alert( !!"non-empty string" ); <span class="comment">// true</span
+              ><br />
+              alert( !!<span class="keyword">null</span> );
+              <span class="comment">// false</span>
+            </div>
+
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                Alternative: <span class="keyword">Boolean()</span> function
+              </p>
+            </div>
+
+            <div class="code-block">
+              alert( Boolean("non-empty string") );
+              <span class="comment">// true</span><br />
+              alert( Boolean(<span class="keyword">null</span>) );
+              <span class="comment">// false</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Operator Precedence -->
+      <div class="slide" id="slide8">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">Operator Precedence</h1>
+        </div>
+        <div class="content">
+          <div class="left-content">
+            <p class="section-title">Precedence Order</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                <span class="highlight">NOT !</span> has the
+                <span class="highlight">highest</span> precedence
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                <span class="highlight">AND &&</span> has
+                <span class="highlight">higher</span> precedence than OR ||
+              </p>
+            </div>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                <span class="highlight">OR ||</span> has the
+                <span class="highlight">lowest</span> precedence
+              </p>
+            </div>
+
+            <div class="precedence-chart">
+              <div class="precedence-item">
+                <div class="precedence-operator">!</div>
+                <div class="precedence-level">Highest</div>
+              </div>
+              <div class="precedence-arrow">→</div>
+              <div class="precedence-item">
+                <div class="precedence-operator">&&</div>
+                <div class="precedence-level">Middle</div>
+              </div>
+              <div class="precedence-arrow">→</div>
+              <div class="precedence-item">
+                <div class="precedence-operator">||</div>
+                <div class="precedence-level">Lowest</div>
+              </div>
+            </div>
+          </div>
+          <div class="right-content">
+            <p class="section-title">Practical Examples</p>
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">
+                NOT always executes <span class="highlight">first</span>
+              </p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">let</span> x =
+              <span class="keyword">true</span>, y =
+              <span class="keyword">false</span>;<br />
+              alert( !x && y ); <span class="comment">// false</span><br />
+              <span class="comment"
+                >// Equivalent to: (false) && y = false</span
+              >
+            </div>
+
+            <div class="key-point">
+              <i class="fas fa-check-circle"></i>
+              <p class="key-point-text">AND has higher precedence than OR</p>
+            </div>
+
+            <div class="code-block">
+              <span class="keyword">let</span> a = 1, b = 2, c = 3;<br />
+              alert( a || b && c ); <span class="comment">// 1</span><br />
+              <span class="comment"
+                >// Equivalent to: a || (b && c) = 1 || (true) = 1</span
+              >
+            </div>
+
+            <div class="tip-box">
+              <div class="tip-title">
+                <i class="fas fa-lightbulb"></i>
+                Tip
+              </div>
+              <p class="key-point-text">
+                Use parentheses to make your intentions clear and control
+                evaluation order
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide" id="slide9">
+        <div class="background-pattern"></div>
+        <div class="header">
+          <h1 class="title">Summary</h1>
+        </div>
+        <div class="content">
+          <div class="summary-container">
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-code-branch"></i>
+                OR (||) Operator
+              </div>
+              <ul>
+                <li>
+                  Returns the <span class="highlight">first truthy value</span>
+                </li>
+                <li>
+                  Returns the <span class="highlight">last value</span> if all
+                  are falsy
+                </li>
+                <li>
+                  Uses <span class="highlight">short-circuit evaluation</span>
+                </li>
+                <li>
+                  Useful for <span class="highlight">fallback values</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-code-branch"></i>
+                AND (&&) Operator
+              </div>
+              <ul>
+                <li>
+                  Returns the <span class="highlight">first falsy value</span>
+                </li>
+                <li>
+                  Returns the <span class="highlight">last value</span> if all
+                  are truthy
+                </li>
+                <li>
+                  Uses <span class="highlight">short-circuit evaluation</span>
+                </li>
+                <li>
+                  Useful for <span class="highlight">multiple conditions</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-code-branch"></i>
+                NOT (!) Operator
+              </div>
+              <ul>
+                <li>
+                  <span class="highlight">Inverts</span> the boolean value
+                </li>
+                <li>
+                  Double NOT (!!) converts to
+                  <span class="highlight">boolean</span>
+                </li>
+                <li>
+                  Has the <span class="highlight">highest precedence</span>
+                </li>
+                <li>
+                  Accepts a <span class="highlight">single argument</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-title">
+                <i class="fas fa-code-branch"></i>
+                Key Takeaways
+              </div>
+              <ul>
+                <li>
+                  Logical operators work with
+                  <span class="highlight">any data type</span>
+                </li>
+                <li>
+                  They return the <span class="highlight">original value</span>,
+                  not just true/false
+                </li>
+                <li>
+                  <span class="highlight">Precedence order</span>: ! > && > ||
+                </li>
+                <li>
+                  Use <span class="highlight">parentheses</span> for clarity
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer">
+            <i class="fas fa-star footer-icon"></i>
+            <p class="footer-text">
+              Understanding logical operators is essential for writing effective
+              conditional logic in JavaScript.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="navigation">
+        <button class="nav-button" id="prevBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-button" id="nextBtn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Slide Indicators -->
+      <div class="slide-indicator">
+        <div class="indicator-dot active" data-slide="1"></div>
+        <div class="indicator-dot" data-slide="2"></div>
+        <div class="indicator-dot" data-slide="3"></div>
+        <div class="indicator-dot" data-slide="4"></div>
+        <div class="indicator-dot" data-slide="5"></div>
+        <div class="indicator-dot" data-slide="6"></div>
+        <div class="indicator-dot" data-slide="7"></div>
+        <div class="indicator-dot" data-slide="8"></div>
+        <div class="indicator-dot" data-slide="9"></div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicatorDots = document.querySelectorAll(".indicator-dot");
+
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+          // Hide all slides
+          slides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+
+          // Remove active class from all indicators
+          indicatorDots.forEach((dot) => {
+            dot.classList.remove("active");
+          });
+
+          // Handle boundaries
+          if (n > totalSlides) {
+            currentSlide = 1;
+          } else if (n < 1) {
+            currentSlide = totalSlides;
+          } else {
+            currentSlide = n;
+          }
+
+          // Show current slide
+          slides[currentSlide - 1].classList.add("active");
+
+          // Update indicator
+          indicatorDots[currentSlide - 1].classList.add("active");
+
+          // Add animation to elements
+          const animatedElements =
+            slides[currentSlide - 1].querySelectorAll(".animated");
+          animatedElements.forEach((el) => {
+            el.style.animation = "none";
+            setTimeout(() => {
+              el.style.animation = "";
+            }, 10);
+          });
+        }
+
+        // Next button
+        nextBtn.addEventListener("click", function () {
+          showSlide(currentSlide + 1);
+        });
+
+        // Previous button
+        prevBtn.addEventListener("click", function () {
+          showSlide(currentSlide - 1);
+        });
+
+        // Indicator dots
+        indicatorDots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const slideNum = parseInt(this.getAttribute("data-slide"));
+            showSlide(slideNum);
+          });
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") {
+            showSlide(currentSlide + 1);
+          } else if (e.key === "ArrowLeft") {
+            showSlide(currentSlide - 1);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

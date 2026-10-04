@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Core JavaScript: Adding Scripts to Web Pages</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      /* Animated background particles */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        animation: float 20s infinite linear;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) translateX(0) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) translateX(100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        position: relative;
+        z-index: 2;
+        backdrop-filter: blur(10px);
+      }
+
+      .slide {
+        display: none;
+        padding: 60px;
+        min-height: 70vh;
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .slide.active {
+        display: block;
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .slide-header {
+        margin-bottom: 40px;
+        text-align: center;
+      }
+
+      .slide-title {
+        font-size: 2.5rem;
+        color: #667eea;
+        margin-bottom: 10px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: titleGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes titleGlow {
+        0%,
+        100% {
+          filter: brightness(1);
+        }
+        50% {
+          filter: brightness(1.2);
+        }
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        font-weight: 300;
+      }
+
+      .slide-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #444;
+      }
+
+      /* Animation fixes - ensure elements stay visible */
+      .slide.active .slide-content > * {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .slide-content > * {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .slide.active .slide-content > *:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+      .slide.active .slide-content > *:nth-child(2) {
+        transition-delay: 0.2s;
+      }
+      .slide.active .slide-content > *:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+      .slide.active .slide-content > *:nth-child(4) {
+        transition-delay: 0.4s;
+      }
+      .slide.active .slide-content > *:nth-child(5) {
+        transition-delay: 0.5s;
+      }
+
+      .code-block {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        padding: 35px;
+        margin: 20px 0;
+        font-family: "Courier New", monospace;
+        font-size: 1rem;
+        position: relative;
+        overflow-x: auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .code-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .code-block pre {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+
+      .code-block::before {
+        content: "CODE";
+        position: absolute;
+        top: 5px;
+        left: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .highlight {
+        background: linear-gradient(
+          120deg,
+          rgba(102, 126, 234, 0.2) 0%,
+          rgba(118, 75, 162, 0.2) 100%
+        );
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+        animation: highlightPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes highlightPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.02);
+        }
+      }
+
+      .note {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+        opacity: 0;
+        transform: translateX(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .slide.active .note {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .note-title {
+        font-weight: bold;
+        color: #856404;
+        margin-bottom: 5px;
+      }
+
+      ul {
+        margin: 20px 0;
+        padding-left: 30px;
+      }
+
+      li {
+        margin-bottom: 12px;
+        position: relative;
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .slide.active li:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+      .slide.active li:nth-child(2) {
+        transition-delay: 0.2s;
+      }
+      .slide.active li:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+      .slide.active li:nth-child(4) {
+        transition-delay: 0.4s;
+      }
+      .slide.active li:nth-child(5) {
+        transition-delay: 0.5s;
+      }
+
+      .slide.active li {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      li::before {
+        content: "▶";
+        position: absolute;
+        left: -20px;
+        color: #667eea;
+        font-size: 0.8rem;
+        animation: bounce 1s ease-in-out infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(3px);
+        }
+      }
+
+      .navigation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding: 30px;
+        background: rgba(248, 249, 250, 0.9);
+        border-top: 1px solid #e9ecef;
+        backdrop-filter: blur(10px);
+      }
+
+      .nav-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-btn::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+
+      .nav-btn:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .nav-btn:active {
+        transform: translateY(-1px) scale(1.02);
+      }
+
+      .nav-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .nav-btn:disabled::before {
+        display: none;
+      }
+
+      .slide-indicators {
+        display: flex;
+        gap: 8px;
+      }
+
+      .indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ddd;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .indicator::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(102, 126, 234, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s;
+      }
+
+      .indicator:hover::before {
+        width: 20px;
+        height: 20px;
+      }
+
+      .indicator.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: scale(1.2);
+        animation: indicatorPulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes indicatorPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 8px rgba(102, 126, 234, 0);
+        }
+      }
+
+      .slide-counter {
+        font-size: 1rem;
+        color: #666;
+        font-weight: 500;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+      }
+
+      /* Progress bar */
+      .progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: rgba(102, 126, 234, 0.2);
+        width: 100%;
+        z-index: 10;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        width: 11.11%;
+        transition: width 0.5s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .progress-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 40px 30px;
+        }
+
+        .slide-title {
+          font-size: 2rem;
+        }
+
+        .slide-content {
+          font-size: 1rem;
+        }
+
+        .navigation {
+          flex-wrap: wrap;
+          gap: 15px;
+        }
+
+        .nav-btn {
+          padding: 10px 20px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction to Core JavaScript -->
+      <div class="slide active">
+        <div class="slide-header">
+          <h1 class="slide-title">🚀 Introduction to Core JavaScript</h1>
+          <p class="slide-subtitle">The language itself</p>
+        </div>
+        <div class="slide-content">
+          <p>
+            This tutorial focuses on
+            <span class="highlight">Core JavaScript</span> - the language
+            itself.
+          </p>
+          <ul>
+            <li>
+              <strong>Environment:</strong> Browser is ideal for online learning
+            </li>
+            <li>
+              <strong>Approach:</strong> Minimize browser-specific commands
+            </li>
+            <li>
+              <strong>Future Focus:</strong> JavaScript in the browser in later
+              tutorials
+            </li>
+          </ul>
+          <div class="note">
+            <div class="note-title">Note</div>
+            <p>
+              We'll use the browser as a convenient way to run JavaScript, but
+              remember it's just one of many environments!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The `<script>` Tag -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">📝 The &lt;script&gt; Tag</h1>
+          <p class="slide-subtitle">Adding JavaScript to HTML</p>
+        </div>
+
+        <div class="slide-content">
+          <p>
+            JavaScript programs can be inserted anywhere in HTML using the
+            <span class="highlight">&lt;script&gt;</span> tag.
+          </p>
+
+          <div class="code-block">
+            <pre><code>&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;p&gt;Before the script...&lt;/p&gt;
+  &lt;script&gt;
+    alert('Hello, world!');
+  &lt;/script&gt;
+  &lt;p&gt;...After the script.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          </div>
+
+          <p>Code executes automatically when the browser processes the tag.</p>
+        </div>
+      </div>
+
+      <!-- Slide 3: Modern Markup - Type Attribute -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">⚙️ Modern Markup - Type Attribute</h1>
+          <p class="slide-subtitle">Evolution of script attributes</p>
+        </div>
+        <div class="slide-content">
+          <ul>
+            <li>
+              <strong>Old Standard (HTML4):</strong> Required
+              <code>type="text/javascript"</code>
+            </li>
+            <li><strong>Current Status:</strong> No longer required</li>
+            <li>
+              <strong>Modern Usage:</strong> Now used for JavaScript modules
+            </li>
+          </ul>
+          <div class="note">
+            <div class="note-title">Advanced Topic</div>
+            <p>
+              We'll explore JavaScript modules in a later part of the tutorial.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Modern Markup - Language Attribute -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">🌐 Modern Markup - Language Attribute</h1>
+          <p class="slide-subtitle">Outdated attribute</p>
+        </div>
+        <div class="slide-content">
+          <ul>
+            <li>
+              <strong>Purpose:</strong> Originally meant to specify the script
+              language
+            </li>
+            <li><strong>Current Status:</strong> No longer necessary</li>
+            <li>
+              <strong>Reason:</strong> JavaScript is the default and standard
+              language
+            </li>
+          </ul>
+          <p class="highlight">
+            Recommendation: Avoid using this attribute in modern code
+          </p>
+        </div>
+      </div>
+
+      <!-- Slide 5: Modern Markup - Ancient Comments -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">🏺 Modern Markup - Ancient Comments</h1>
+          <p class="slide-subtitle">Historical JavaScript patterns</p>
+        </div>
+        <div class="slide-content">
+          <p>In really old code, you might find:</p>
+          <div class="code-block">
+            <pre><code>&lt;script type="text/javascript"&gt;&lt;!--
+    ...
+//--&gt;&lt;/script&gt;</code></pre>
+          </div>
+          <ul>
+            <li>
+              <strong>Purpose:</strong> Hide JavaScript from old browsers that
+              didn't understand <code>&lt;script&gt;</code>
+            </li>
+            <li>
+              <strong>Current Status:</strong> Not needed in modern JavaScript
+            </li>
+            <li><strong>Indicator:</strong> Helps identify really old code</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Slide 6: External Scripts -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">📁 External Scripts</h1>
+          <p class="slide-subtitle">Separating JavaScript code</p>
+        </div>
+        <div class="slide-content">
+          <p>
+            For larger JavaScript code, use separate files with the
+            <span class="highlight">src</span> attribute:
+          </p>
+          <div class="code-block">
+            <pre><code>&lt;script src="/path/to/script.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+          <p><strong>Path Options:</strong></p>
+          <ul>
+            <li>Absolute path: <code>src="/path/to/script.js"</code></li>
+            <li>
+              Relative path: <code>src="script.js"</code> or
+              <code>src="./script.js"</code>
+            </li>
+            <li>
+              Full URL:
+              <code>src="https://cdnjs.cloudflare.com/.../lodash.js"</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Slide 7: Multiple Scripts & Best Practices -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">📚 Multiple Scripts & Best Practices</h1>
+          <p class="slide-subtitle">Organizing your code</p>
+        </div>
+        <div class="slide-content">
+          <p>
+            <strong>Multiple Scripts:</strong> Use multiple
+            <code>&lt;script&gt;</code> tags
+          </p>
+          <div class="code-block">
+            <pre><code>&lt;script src="/js/script1.js"&gt;&lt;/script&gt;
+&lt;script src="/js/script2.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+          <p><strong>Best Practices:</strong></p>
+          <ul>
+            <li>Simple scripts in HTML, complex ones in separate files</li>
+            <li>Browser caches external files for better performance</li>
+            <li>Reduces traffic and makes pages faster</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Slide 8: Important Notes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">⚠️ Important Notes</h1>
+          <p class="slide-subtitle">Critical rules to remember</p>
+        </div>
+        <div class="slide-content">
+          <p>
+            <strong>Critical Rule:</strong> A single
+            <code>&lt;script&gt;</code> tag cannot have both
+            <code>src</code> attribute and internal code
+          </p>
+          <div class="code-block">
+            <pre><code>&lt;!-- This won't work --&gt;
+&lt;script src="file.js"&gt;
+  alert(1); // This content is ignored
+&lt;/script&gt;</code></pre>
+          </div>
+          <p><strong>Correct Approach:</strong></p>
+          <div class="code-block">
+            <pre><code>&lt;script src="file.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  alert(1);
+&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">✅ Summary</h1>
+          <p class="slide-subtitle">Key takeaways</p>
+        </div>
+        <div class="slide-content">
+          <ul>
+            <li>
+              <strong>Adding JavaScript:</strong> Use
+              <code>&lt;script&gt;</code> tag in HTML
+            </li>
+            <li>
+              <strong>Attributes:</strong> <code>type</code> and
+              <code>language</code> are no longer required
+            </li>
+            <li>
+              <strong>External Files:</strong> Use
+              <code>&lt;script src="path/to/script.js"&gt;&lt;/script&gt;</code>
+            </li>
+            <li>
+              <strong>Focus:</strong> This tutorial emphasizes the JavaScript
+              language itself
+            </li>
+            <li>
+              <strong>Environment:</strong> Browser is just one of many ways to
+              run JavaScript
+            </li>
+          </ul>
+          <div class="note">
+            <div class="note-title">Remember</div>
+            <p>
+              We're focusing on the core JavaScript language, not
+              browser-specific implementations!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="navigation">
+        <button class="nav-btn" id="prevBtn">← Previous</button>
+
+        <div class="slide-indicators">
+          <div class="indicator active" data-slide="0"></div>
+          <div class="indicator" data-slide="1"></div>
+          <div class="indicator" data-slide="2"></div>
+          <div class="indicator" data-slide="3"></div>
+          <div class="indicator" data-slide="4"></div>
+          <div class="indicator" data-slide="5"></div>
+          <div class="indicator" data-slide="6"></div>
+          <div class="indicator" data-slide="7"></div>
+          <div class="indicator" data-slide="8"></div>
+        </div>
+
+        <div class="slide-counter">
+          <span id="currentSlide">1</span> / <span id="totalSlides">9</span>
+        </div>
+
+        <button class="nav-btn" id="nextBtn">Next →</button>
+      </div>
+    </div>
+
+    <script>
+      // Generate animated particles
+      const particlesContainer = document.getElementById("particles");
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDelay = Math.random() * 20 + "s";
+        particle.style.animationDuration = 15 + Math.random() * 10 + "s";
+        particlesContainer.appendChild(particle);
+      }
+
+      // Wait for the DOM to be fully loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get all slides and navigation elements
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicators = document.querySelectorAll(".indicator");
+        const currentSlideSpan = document.getElementById("currentSlide");
+        const totalSlidesSpan = document.getElementById("totalSlides");
+        const progressFill = document.getElementById("progressFill");
+
+        // Set total slides count
+        totalSlidesSpan.textContent = slides.length;
+
+        let currentSlide = 0;
+
+        // Function to show a specific slide
+        function showSlide(index) {
+          // Remove active class from all slides
+          slides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+
+          // Add active class to current slide
+          slides[index].classList.add("active");
+
+          // Update indicators
+          indicators.forEach((indicator, i) => {
+            indicator.classList.toggle("active", i === index);
+          });
+
+          // Update slide counter
+          currentSlideSpan.textContent = index + 1;
+
+          // Update progress bar
+          const progress = ((index + 1) / slides.length) * 100;
+          progressFill.style.width = progress + "%";
+
+          // Update button states
+          prevBtn.disabled = index === 0;
+          nextBtn.disabled = index === slides.length - 1;
+        }
+
+        // Function to go to next slide
+        function nextSlide() {
+          if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+          }
+        }
+
+        // Function to go to previous slide
+        function prevSlide() {
+          if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+          }
+        }
+
+        // Function to go to a specific slide
+        function goToSlide(index) {
+          currentSlide = index;
+          showSlide(currentSlide);
+        }
+
+        // Event listeners for navigation buttons
+        nextBtn.addEventListener("click", nextSlide);
+        prevBtn.addEventListener("click", prevSlide);
+
+        // Event listeners for indicators
+        indicators.forEach((indicator, index) => {
+          indicator.addEventListener("click", () => goToSlide(index));
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowRight") {
+            nextSlide();
+          } else if (e.key === "ArrowLeft") {
+            prevSlide();
+          }
+        });
+
+        // Initialize the first slide
+        showSlide(0);
+      });
+    </script>
+  </body>
+</html>

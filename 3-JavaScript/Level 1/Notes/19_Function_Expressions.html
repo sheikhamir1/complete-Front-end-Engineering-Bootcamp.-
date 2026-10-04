@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Function Expressions - Complete Slide Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #f5f7fa;
+      }
+      .slide {
+        width: 1280px;
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+      }
+      .slide.active {
+        display: flex;
+      }
+      .slide-header {
+        padding: 2rem 4rem 1rem;
+      }
+      .slide-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0 4rem 5rem;
+      }
+      .slide-content::-webkit-scrollbar {
+        width: 8px;
+      }
+      .slide-content::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+      }
+      .slide-content::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+      }
+      .slide-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.5);
+      }
+      .fade-in {
+        animation: fadeIn 1s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .slide-in-left {
+        animation: slideInLeft 0.8s ease-out;
+      }
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .slide-in-right {
+        animation: slideInRight 0.8s ease-out;
+      }
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .scale-in {
+        animation: scaleIn 0.8s ease-out;
+      }
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .code-block {
+        font-family: "Consolas", "Monaco", monospace;
+      }
+      .highlight {
+        background-color: rgba(255, 235, 59, 0.3);
+        padding: 0 2px;
+        border-radius: 2px;
+      }
+      .slide-indicator {
+        transition: all 0.3s ease;
+      }
+      .slide-indicator.active {
+        background-color: #f59e0b;
+        transform: scale(1.2);
+      }
+      .nav-button {
+        transition: all 0.2s ease;
+      }
+      .nav-button:hover {
+        transform: scale(1.1);
+      }
+      .nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .nav-button:disabled:hover {
+        transform: scale(1);
+      }
+      .card {
+        transition: all 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .bg-decoration {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.3;
+        z-index: 0;
+      }
+      .bg-decoration-1 {
+        top: -5rem;
+        right: -5rem;
+        width: 24rem;
+        height: 24rem;
+        background-color: #fef3c7;
+      }
+      .bg-decoration-2 {
+        bottom: -5rem;
+        left: -5rem;
+        width: 24rem;
+        height: 24rem;
+        background-color: #dbeafe;
+      }
+      .content-wrapper {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .full-height {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex justify-center items-center min-h-screen">
+      <div class="slide-container">
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide1">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper full-height">
+            <div class="flex flex-col items-center justify-center flex-1">
+              <div class="text-center px-16 py-12 fade-in">
+                <!-- JavaScript Logo -->
+                <div class="mb-8">
+                  <i class="fab fa-js-square text-yellow-400 text-8xl"></i>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-6xl font-bold text-gray-800 mb-4">
+                  JavaScript Function Expressions
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                  Understanding the power and flexibility of functions as values
+                  in JavaScript
+                </p>
+
+                <!-- Decorative elements -->
+                <div class="flex justify-center space-x-4 mt-10">
+                  <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                  <div class="w-3 h-3 bg-blue-400 rounded-full"></div>
+                  <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Introduction -->
+        <div class="slide" id="slide2">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Introduction <span class="text-yellow-500">👋</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-8">
+                <!-- Left column -->
+                <div class="space-y-6 slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+                      What are Function Expressions?
+                    </h2>
+                    <p class="text-gray-600">
+                      A way to create functions as part of expressions rather
+                      than standalone statements
+                    </p>
+                  </div>
+
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+                      Why are they important?
+                    </h2>
+                    <ul class="text-gray-600 space-y-2">
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-yellow-500 mr-2 text-lg"
+                        ></i>
+                        <span>Functions as values</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-yellow-500 mr-2 text-lg"
+                        ></i>
+                        <span>Flexible code organization</span>
+                      </li>
+                      <li class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-yellow-500 mr-2 text-lg"
+                        ></i>
+                        <span>Essential for callbacks</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Right column -->
+                <div class="space-y-6 scale-in">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+                      What We'll Cover <span class="text-blue-500">📚</span>
+                    </h2>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div class="bg-blue-50 rounded-lg p-3">
+                        <h3 class="font-medium text-gray-800">
+                          Function Declaration vs Expression
+                        </h3>
+                      </div>
+                      <div class="bg-blue-50 rounded-lg p-3">
+                        <h3 class="font-medium text-gray-800">
+                          Functions as Values
+                        </h3>
+                      </div>
+                      <div class="bg-blue-50 rounded-lg p-3">
+                        <h3 class="font-medium text-gray-800">
+                          Callback Functions
+                        </h3>
+                      </div>
+                      <div class="bg-blue-50 rounded-lg p-3">
+                        <h3 class="font-medium text-gray-800">
+                          Best Practices
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-3">
+                      Key Takeaway
+                    </h2>
+                    <p class="text-gray-600 italic">
+                      "In JavaScript, functions are not just syntax - they're
+                      values that can be assigned, passed, and manipulated like
+                      any other value."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Function Declaration vs Expression -->
+        <div class="slide" id="slide3">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Function Declaration vs Expression
+                <span class="text-yellow-500">⚖️</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column - Function Declaration -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-blue-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Function Declaration
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        A function declared as a separate statement:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-purple-400">function</span>
+                        <span class="text-yellow-300">sayHi</span>() {<br />
+                          <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"Hello"</span
+                        >);<br />
+                        }
+                      </div>
+                    </div>
+
+                    <div class="space-y-3">
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Visible <span class="highlight">everywhere</span> in
+                          the block</span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Can be called
+                          <span class="highlight">before</span>
+                          declaration</span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span>More "eye-catching" in code</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column - Function Expression -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-yellow-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Function Expression
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        A function created inside an expression:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-purple-400">let</span>
+                        <span class="text-yellow-300">sayHi</span> =
+                        <span class="text-purple-400">function</span>() {<br />
+                          <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"Hello"</span
+                        >);<br />
+                        };
+                      </div>
+                    </div>
+
+                    <div class="space-y-3">
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-yellow-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Created when
+                          <span class="highlight">execution reaches</span>
+                          it</span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-yellow-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Can be
+                          <span class="highlight">conditional</span></span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-yellow-500 mr-2 text-lg"
+                        ></i>
+                        <span>Useful for callbacks</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comparison diagram -->
+              <div class="bg-white rounded-xl p-6 shadow-lg fade-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Key Differences
+                </h3>
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="text-blue-600 font-semibold mb-2">Syntax</div>
+                    <div class="text-gray-700">
+                      Declaration:
+                      <span class="font-mono">function name() {...}</span>
+                    </div>
+                    <div class="text-gray-700">
+                      Expression:
+                      <span class="font-mono">let name = function() {...}</span>
+                    </div>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="text-blue-600 font-semibold mb-2">
+                      Creation Time
+                    </div>
+                    <div class="text-gray-700">
+                      Declaration: Before code execution
+                    </div>
+                    <div class="text-gray-700">
+                      Expression: When execution reaches it
+                    </div>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="text-blue-600 font-semibold mb-2">Use Case</div>
+                    <div class="text-gray-700">
+                      Declaration: General purpose
+                    </div>
+                    <div class="text-gray-700">
+                      Expression: Conditional, callbacks
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Functions as Values -->
+        <div class="slide" id="slide4">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Functions as Values <span class="text-yellow-500">💎</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-blue-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Functions Are Special Values
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        Functions can be treated like any other value:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-purple-400">function</span>
+                        <span class="text-yellow-300">sayHi</span>() {<br />
+                          <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"Hello"</span
+                        >);<br />
+                        }<br /><br />
+                        <span class="text-gray-500"
+                          >// Display function code</span
+                        ><br />
+                        <span class="text-green-400">alert</span>(<span
+                          class="text-yellow-300"
+                          >sayHi</span
+                        >);
+                        <span class="text-gray-500">// No parentheses!</span>
+                      </div>
+                    </div>
+
+                    <div class="space-y-3">
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Can be <span class="highlight">assigned</span> to
+                          variables</span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Can be <span class="highlight">copied</span> to other
+                          variables</span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Can be <span class="highlight">passed</span> as
+                          arguments</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-exchange-alt text-yellow-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Copying Functions
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        Functions can be copied between variables:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-purple-400">function</span>
+                        <span class="text-yellow-300">sayHi</span>() {<br />
+                          <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"Hello"</span
+                        >);<br />
+                        }<br /><br />
+                        <span class="text-gray-500">// Copy the function</span
+                        ><br />
+                        <span class="text-purple-400">let</span>
+                        <span class="text-yellow-300">func</span> =
+                        <span class="text-yellow-300">sayHi</span>;<br /><br />
+                        <span class="text-gray-500"
+                          >// Both work identically</span
+                        ><br />
+                        <span class="text-yellow-300">func</span>();
+                        <span class="text-gray-500">// Hello</span><br />
+                        <span class="text-yellow-300">sayHi</span>();
+                        <span class="text-gray-500">// Hello</span>
+                      </div>
+                    </div>
+
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                      <div class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        <div>
+                          <div class="font-semibold text-gray-800">
+                            Key Insight
+                          </div>
+                          <div class="text-gray-700 text-sm">
+                            No parentheses = function as value
+                          </div>
+                          <div class="text-gray-700 text-sm">
+                            With parentheses = function execution
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom section -->
+              <div class="bg-white rounded-xl p-6 shadow-lg scale-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Functions as Actions <span class="text-blue-500">🚀</span>
+                </h3>
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="text-blue-600 font-semibold mb-2">
+                      Data Values
+                    </div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-database text-blue-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Strings, numbers, objects represent
+                      <span class="highlight">data</span>
+                    </div>
+                  </div>
+                  <div class="bg-yellow-50 rounded-lg p-4">
+                    <div class="text-yellow-600 font-semibold mb-2">
+                      Function Values
+                    </div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-code text-yellow-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Functions represent <span class="highlight">actions</span>
+                    </div>
+                  </div>
+                  <div class="bg-green-50 rounded-lg p-4">
+                    <div class="text-green-600 font-semibold mb-2">
+                      Powerful Combination
+                    </div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-bolt text-green-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Pass actions around like data for
+                      <span class="highlight">flexible code</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5: Callback Functions -->
+        <div class="slide" id="slide5">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Callback Functions <span class="text-yellow-500">🔄</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-exchange-alt text-blue-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        What Are Callbacks?
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        Functions passed as arguments to be called later:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-purple-400">function</span>
+                        <span class="text-yellow-300">ask</span>(question, yes,
+                        no) {<br />
+                          <span class="text-purple-400">if</span> (<span
+                          class="text-green-400"
+                          >confirm</span
+                        >(question))
+                        <span class="text-yellow-300">yes</span>()<br />
+                          <span class="text-purple-400">else</span>
+                        <span class="text-yellow-300">no</span>();<br />
+                        }
+                      </div>
+                    </div>
+
+                    <div class="space-y-3">
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Functions passed as
+                          <span class="highlight">arguments</span></span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          ><span class="highlight">"Called back"</span> when
+                          needed</span
+                        >
+                      </div>
+                      <div class="flex items-start">
+                        <i
+                          class="fas fa-check-circle text-blue-500 mr-2 text-lg"
+                        ></i>
+                        <span
+                          >Essential for
+                          <span class="highlight">async operations</span></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-yellow-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Using Callbacks
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        With Function Expressions:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-yellow-300">ask</span>(<br />
+                          <span class="text-orange-300">"Do you agree?"</span
+                        >,<br />
+                          <span class="text-purple-400">function</span>() {
+                        <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"You agreed."</span
+                        >); },<br />
+                          <span class="text-purple-400">function</span>() {
+                        <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"You canceled."</span
+                        >); }<br />
+                        );
+                      </div>
+                    </div>
+
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                      <div class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        <div>
+                          <div class="font-semibold text-gray-800">
+                            Anonymous Functions
+                          </div>
+                          <div class="text-gray-700 text-sm">
+                            Callbacks are often anonymous (no name)
+                          </div>
+                          <div class="text-gray-700 text-sm">
+                            Created where needed, not stored in variables
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom section -->
+              <div class="bg-white rounded-xl p-6 shadow-lg scale-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Callback Flow <span class="text-blue-500">📊</span>
+                </h3>
+                <div class="grid grid-cols-4 gap-4">
+                  <div
+                    class="bg-blue-50 rounded-lg p-4 flex flex-col items-center"
+                  >
+                    <div class="text-blue-600 font-semibold mb-2">
+                      1. Define
+                    </div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-edit text-blue-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Create function expressions
+                    </div>
+                  </div>
+                  <div
+                    class="bg-blue-50 rounded-lg p-4 flex flex-col items-center"
+                  >
+                    <div class="text-blue-600 font-semibold mb-2">2. Pass</div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-paper-plane text-blue-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Send as arguments
+                    </div>
+                  </div>
+                  <div
+                    class="bg-blue-50 rounded-lg p-4 flex flex-col items-center"
+                  >
+                    <div class="text-blue-600 font-semibold mb-2">3. Store</div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-save text-blue-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Function holds reference
+                    </div>
+                  </div>
+                  <div
+                    class="bg-blue-50 rounded-lg p-4 flex flex-col items-center"
+                  >
+                    <div class="text-blue-600 font-semibold mb-2">
+                      4. Execute
+                    </div>
+                    <div class="flex items-center justify-center text-3xl mb-2">
+                      <i class="fas fa-play text-blue-500"></i>
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Call when needed
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 6: When to Choose -->
+        <div class="slide" id="slide6">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                When to Choose <span class="text-yellow-500">🤔</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column - Function Declaration -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-blue-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Use Function Declaration When:
+                      </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i class="fas fa-eye text-blue-500 mr-3 text-xl"></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Need visibility before declaration
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Functions are hoisted and available throughout
+                              their scope
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i class="fas fa-eye text-blue-500 mr-3 text-xl"></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Better readability
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Easier to spot in code with
+                              <span class="highlight"
+                                >function name() {...}</span
+                              >
+                              syntax
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i class="fas fa-eye text-blue-500 mr-3 text-xl"></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              General purpose functions
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Utility functions used throughout your code
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="mt-4 bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                    >
+                      <span class="text-gray-500">// Good for:</span><br />
+                      <span class="text-purple-400">function</span>
+                      <span class="text-yellow-300">calculateTotal</span>(items)
+                      {<br />
+                        <span class="text-purple-400">return</span> items.<span
+                        class="text-green-400"
+                        >reduce</span
+                      >((sum, item) => sum + item.price, 0);<br />
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column - Function Expression -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-yellow-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Use Function Expression When:
+                      </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-code-branch text-yellow-500 mr-3 text-xl"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Conditional declaration
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Need to define different functions based on
+                              conditions
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-exchange-alt text-yellow-500 mr-3 text-xl"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Callbacks
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Passing functions as arguments to other functions
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-lock text-yellow-500 mr-3 text-xl"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Block scope needed
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Function should only exist within a specific block
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="mt-4 bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                    >
+                      <span class="text-gray-500">// Good for:</span><br />
+                      <span class="text-purple-400">let</span>
+                      <span class="text-yellow-300">welcome</span> = (age < 18)
+                      ?<br />
+                        <span class="text-purple-400">function</span>() {
+                      <span class="text-green-400">alert</span>(<span
+                        class="text-orange-300"
+                        >"Hello!"</span
+                      >); } :<br />
+                        <span class="text-purple-400">function</span>() {
+                      <span class="text-green-400">alert</span>(<span
+                        class="text-orange-300"
+                        >"Greetings!"</span
+                      >); };
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom section - Decision Guide -->
+              <div class="bg-white rounded-xl p-6 shadow-lg scale-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Decision Guide <span class="text-blue-500">📋</span>
+                </h3>
+                <div class="flex items-center justify-between">
+                  <div class="w-2/5 bg-blue-50 rounded-lg p-4">
+                    <div class="text-blue-600 font-semibold mb-2 text-center">
+                      Function Declaration
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Default choice for most functions
+                    </div>
+                    <div class="flex justify-center mt-2">
+                      <i class="fas fa-thumbs-up text-blue-500 text-3xl"></i>
+                    </div>
+                  </div>
+
+                  <div class="w-1/5 flex justify-center">
+                    <i class="fas fa-arrows-alt-h text-gray-400 text-4xl"></i>
+                  </div>
+
+                  <div class="w-2/5 bg-yellow-50 rounded-lg p-4">
+                    <div class="text-yellow-600 font-semibold mb-2 text-center">
+                      Function Expression
+                    </div>
+                    <div class="text-gray-700 text-center">
+                      Special cases: callbacks, conditionals
+                    </div>
+                    <div class="flex justify-center mt-2">
+                      <i class="fas fa-tools text-yellow-500 text-3xl"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 bg-green-50 rounded-lg p-3">
+                  <div class="flex items-center">
+                    <i class="fas fa-lightbulb text-green-500 mr-2"></i>
+                    <div class="text-gray-700">
+                      Rule of thumb: Start with Function Declaration, switch to
+                      Expression when needed
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 7: Code Examples -->
+        <div class="slide" id="slide7">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Code Examples <span class="text-yellow-500">💻</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column - Basic Function Expression -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code text-blue-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Basic Function Expression
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        Creating a function as a value:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-gray-500">// Function Expression</span
+                        ><br />
+                        <span class="text-purple-400">let</span>
+                        <span class="text-yellow-300">greet</span> =
+                        <span class="text-purple-400">function</span>(name) {<br />
+                          <span class="text-purple-400">return</span>
+                        <span class="text-orange-300">`Hello, ${name}!`</span
+                        >;<br />
+                        };<br /><br />
+                        <span class="text-gray-500">// Using the function</span
+                        ><br />
+                        <span class="text-green-400">console</span>.<span
+                          class="text-green-400"
+                          >log</span
+                        >(<span class="text-yellow-300">greet</span>(<span
+                          class="text-orange-300"
+                          >"John"</span
+                        >));
+                        <span class="text-gray-500">// "Hello, John!"</span>
+                      </div>
+                    </div>
+
+                    <div class="bg-blue-50 rounded-lg p-3">
+                      <div class="flex items-start">
+                        <i class="fas fa-lightbulb text-blue-500 mr-2"></i>
+                        <div class="text-gray-700 text-sm">
+                          The function is created at runtime when the execution
+                          reaches this line
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column - Conditional Function -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-code-branch text-yellow-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Conditional Function
+                      </h2>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="text-gray-600 mb-2">
+                        Creating functions based on conditions:
+                      </div>
+                      <div
+                        class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                      >
+                        <span class="text-purple-400">let</span>
+                        <span class="text-yellow-300">age</span> =
+                        <span class="text-orange-300">16</span>;<br />
+                        <span class="text-purple-400">let</span>
+                        <span class="text-yellow-300">welcome</span
+                        >;<br /><br />
+                        <span class="text-purple-400">if</span> (<span
+                          class="text-yellow-300"
+                          >age</span
+                        >
+                        < <span class="text-orange-300">18</span>) {<br />
+                          <span class="text-yellow-300">welcome</span> =
+                        <span class="text-purple-400">function</span>() {<br />
+                            <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"Hello!"</span
+                        >);<br />
+                          };<br />
+                        } <span class="text-purple-400">else</span> {<br />
+                          <span class="text-yellow-300">welcome</span> =
+                        <span class="text-purple-400">function</span>() {<br />
+                            <span class="text-green-400">alert</span>(<span
+                          class="text-orange-300"
+                          >"Greetings!"</span
+                        >);<br />
+                          };<br />
+                        }<br /><br />
+                        <span class="text-yellow-300">welcome</span>();
+                        <span class="text-gray-500">// "Hello!"</span>
+                      </div>
+                    </div>
+
+                    <div class="bg-yellow-50 rounded-lg p-3">
+                      <div class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        <div class="text-gray-700 text-sm">
+                          Function Expressions allow conditional function
+                          creation
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom section - Callback Example -->
+              <div class="bg-white rounded-xl p-6 shadow-lg scale-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Callback Function Example
+                  <span class="text-blue-500">🔄</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-6">
+                  <div>
+                    <div class="text-gray-600 mb-2">
+                      Function that accepts callbacks:
+                    </div>
+                    <div
+                      class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                    >
+                      <span class="text-purple-400">function</span>
+                      <span class="text-yellow-300">processArray</span>(arr,
+                      callback) {<br />
+                        <span class="text-purple-400">const</span>
+                      <span class="text-yellow-300">result</span> = [];<br /><br />
+                        <span class="text-purple-400">for</span> (<span
+                        class="text-purple-400"
+                        >let</span
+                      >
+                      i = <span class="text-orange-300">0</span>; i <
+                      arr.length; i++) {<br />
+                          <span class="text-yellow-300">result</span>.<span
+                        class="text-green-400"
+                        >push</span
+                      >(<span class="text-yellow-300">callback</span
+                      >(arr[i]));<br />
+                        }<br /><br />
+                        <span class="text-purple-400">return</span>
+                      <span class="text-yellow-300">result</span>;<br />
+                      }
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-gray-600 mb-2">
+                      Using the function with expressions:
+                    </div>
+                    <div
+                      class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                    >
+                      <span class="text-purple-400">const</span>
+                      <span class="text-yellow-300">numbers</span> = [<span
+                        class="text-orange-300"
+                        >1</span
+                      >, <span class="text-orange-300">2</span>,
+                      <span class="text-orange-300">3</span>,
+                      <span class="text-orange-300">4</span>];<br /><br />
+                      <span class="text-gray-500">// Double each number</span
+                      ><br />
+                      <span class="text-purple-400">const</span>
+                      <span class="text-yellow-300">doubled</span> =
+                      <span class="text-yellow-300">processArray</span>(<span
+                        class="text-yellow-300"
+                        >numbers</span
+                      >, <span class="text-purple-400">function</span>(num) {<br />
+                        <span class="text-purple-400">return</span> num *
+                      <span class="text-orange-300">2</span>;<br />
+                      });<br /><br />
+                      <span class="text-gray-500">// Square each number</span
+                      ><br />
+                      <span class="text-purple-400">const</span>
+                      <span class="text-yellow-300">squared</span> =
+                      <span class="text-yellow-300">processArray</span>(<span
+                        class="text-yellow-300"
+                        >numbers</span
+                      >, num => num * num);
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 bg-green-50 rounded-lg p-3">
+                  <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                    <div class="text-gray-700">
+                      Function Expressions are perfect for creating callbacks on
+                      the fly
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 8: Tips & Best Practices -->
+        <div class="slide" id="slide8">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Tips & Best Practices <span class="text-yellow-500">💡</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column - Best Practices -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-thumbs-up text-green-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Best Practices
+                      </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Use Function Declarations by default
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              They're hoisted and more readable
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Use Expressions for callbacks
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Perfect for anonymous functions
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Remember the semicolon
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Function Expressions are statements
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Name your expressions when debugging
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Improves stack traces
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column - Common Mistakes -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-times-circle text-red-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Common Mistakes
+                      </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="bg-red-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-times-circle text-red-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Calling before declaration
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Function Expressions aren't hoisted
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-red-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-times-circle text-red-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Forgetting semicolons
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Can cause unexpected behavior
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-red-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-times-circle text-red-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Using declarations conditionally
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Different behavior across browsers
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-red-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-times-circle text-red-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Confusing function vs function call
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Missing parentheses when needed
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom section - Code Examples -->
+              <div class="bg-white rounded-xl p-6 shadow-lg scale-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Examples <span class="text-blue-500">📝</span>
+                </h3>
+                <div class="grid grid-cols-2 gap-6">
+                  <div>
+                    <div class="text-gray-600 mb-2">✅ Good Practice:</div>
+                    <div
+                      class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                    >
+                      <span class="text-gray-500"
+                        >// Named expression for debugging</span
+                      ><br />
+                      <span class="text-purple-400">let</span>
+                      <span class="text-yellow-300">calculate</span> =
+                      <span class="text-purple-400">function</span>
+                      <span class="text-yellow-300">calculateTotal</span>(items)
+                      {<br />
+                        <span class="text-purple-400">return</span> items.<span
+                        class="text-green-400"
+                        >reduce</span
+                      >((sum, item) => sum + item.price,
+                      <span class="text-orange-300">0</span>);<br />
+                      };
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-gray-600 mb-2">❌ Common Mistake:</div>
+                    <div
+                      class="bg-gray-800 text-gray-100 p-4 rounded-lg code-block text-sm"
+                    >
+                      <span class="text-gray-500"
+                        >// Calling before expression is created</span
+                      ><br />
+                      <span class="text-yellow-300">sayHi</span>();
+                      <span class="text-gray-500">// Error!</span><br /><br />
+                      <span class="text-purple-400">let</span>
+                      <span class="text-yellow-300">sayHi</span> =
+                      <span class="text-purple-400">function</span>() {<br />
+                        <span class="text-green-400">alert</span>(<span
+                        class="text-orange-300"
+                        >"Hello"</span
+                      >);<br />
+                      };
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 9: Conclusion -->
+        <div class="slide" id="slide9">
+          <div class="bg-decoration bg-decoration-1"></div>
+          <div class="bg-decoration bg-decoration-2"></div>
+
+          <div class="content-wrapper">
+            <div class="slide-header">
+              <h1 class="text-4xl font-bold text-gray-800 fade-in">
+                Conclusion & Next Steps <span class="text-yellow-500">🚀</span>
+              </h1>
+              <div class="w-24 h-1 bg-yellow-400 mt-2"></div>
+            </div>
+
+            <div class="slide-content">
+              <div class="grid grid-cols-2 gap-8 mb-6">
+                <!-- Left column - Key Takeaways -->
+                <div class="slide-in-left">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-list-ul text-blue-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Key Takeaways
+                      </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-blue-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Functions are values
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Can be assigned, copied, and passed like any other
+                              value
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-blue-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Declaration vs Expression
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Different syntax, creation timing, and use cases
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-blue-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Expressions enable callbacks
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Essential for asynchronous programming
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-check-circle text-blue-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Choose wisely
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Default to declarations, use expressions for
+                              special cases
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column - Next Steps -->
+                <div class="slide-in-right">
+                  <div class="bg-white rounded-xl p-6 shadow-lg card">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3"
+                      >
+                        <i class="fas fa-chart-line text-green-600"></i>
+                      </div>
+                      <h2 class="text-2xl font-semibold text-gray-800">
+                        Next Steps
+                      </h2>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-graduation-cap text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Arrow Functions
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              More concise syntax for function expressions
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-graduation-cap text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Higher-Order Functions
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Functions that operate on other functions
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-graduation-cap text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Closures
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Functions that remember their environment
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                          <i
+                            class="fas fa-graduation-cap text-green-500 mr-3 text-lg"
+                          ></i>
+                          <div>
+                            <div class="font-semibold text-gray-800">
+                              Async/Await
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                              Modern approach to asynchronous JavaScript
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom section - Resources -->
+              <div class="bg-white rounded-xl p-6 shadow-lg scale-in card">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                  Learning Resources <span class="text-blue-500">📚</span>
+                </h3>
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="bg-blue-50 rounded-lg p-4 flex items-center">
+                    <i class="fas fa-book text-blue-500 mr-3 text-2xl"></i>
+                    <div>
+                      <div class="font-semibold text-gray-800">
+                        MDN Web Docs
+                      </div>
+                      <div class="text-gray-600 text-sm">
+                        Comprehensive JavaScript guide
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-4 flex items-center">
+                    <i
+                      class="fas fa-laptop-code text-blue-500 mr-3 text-2xl"
+                    ></i>
+                    <div>
+                      <div class="font-semibold text-gray-800">
+                        JavaScript.info
+                      </div>
+                      <div class="text-gray-600 text-sm">
+                        Modern JavaScript tutorial
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-4 flex items-center">
+                    <i class="fas fa-code text-blue-500 mr-3 text-2xl"></i>
+                    <div>
+                      <div class="font-semibold text-gray-800">
+                        Practice Projects
+                      </div>
+                      <div class="text-gray-600 text-sm">
+                        Apply what you've learned
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 bg-yellow-50 rounded-lg p-4">
+                  <div class="flex items-center">
+                    <i
+                      class="fas fa-lightbulb text-yellow-500 mr-3 text-2xl"
+                    ></i>
+                    <div>
+                      <div class="font-semibold text-gray-800">Remember</div>
+                      <div class="text-gray-600">
+                        Understanding function expressions is fundamental to
+                        mastering JavaScript's functional programming
+                        capabilities
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div
+          class="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 bg-white bg-opacity-80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg z-50"
+        >
+          <button
+            id="prevBtn"
+            class="nav-button bg-gray-200 hover:bg-gray-300 rounded-full p-2 disabled:opacity-50"
+            disabled
+          >
+            <i class="fas fa-chevron-left text-gray-700"></i>
+          </button>
+
+          <div class="flex space-x-2">
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer active"
+              data-slide="1"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="2"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="3"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="4"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="5"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="6"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="7"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="8"
+            ></div>
+            <div
+              class="slide-indicator w-3 h-3 bg-gray-300 rounded-full cursor-pointer"
+              data-slide="9"
+            ></div>
+          </div>
+
+          <button
+            id="nextBtn"
+            class="nav-button bg-gray-200 hover:bg-gray-300 rounded-full p-2"
+          >
+            <i class="fas fa-chevron-right text-gray-700"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const slideIndicators = document.querySelectorAll(".slide-indicator");
+
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        // Function to show a specific slide
+        function showSlide(slideNumber) {
+          // Hide all slides
+          slides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+
+          // Remove active class from all indicators
+          slideIndicators.forEach((indicator) => {
+            indicator.classList.remove("active");
+          });
+
+          // Show the current slide
+          document
+            .getElementById(`slide${slideNumber}`)
+            .classList.add("active");
+
+          // Add active class to current indicator
+          document
+            .querySelector(`.slide-indicator[data-slide="${slideNumber}"]`)
+            .classList.add("active");
+
+          // Update current slide number
+          currentSlide = slideNumber;
+
+          // Update navigation buttons
+          prevBtn.disabled = currentSlide === 1;
+          nextBtn.disabled = currentSlide === totalSlides;
+        }
+
+        // Event listeners for navigation buttons
+        prevBtn.addEventListener("click", () => {
+          if (currentSlide > 1) {
+            showSlide(currentSlide - 1);
+          }
+        });
+
+        nextBtn.addEventListener("click", () => {
+          if (currentSlide < totalSlides) {
+            showSlide(currentSlide + 1);
+          }
+        });
+
+        // Event listeners for slide indicators
+        slideIndicators.forEach((indicator) => {
+          indicator.addEventListener("click", () => {
+            const slideNumber = parseInt(indicator.getAttribute("data-slide"));
+            showSlide(slideNumber);
+          });
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft" && currentSlide > 1) {
+            showSlide(currentSlide - 1);
+          } else if (e.key === "ArrowRight" && currentSlide < totalSlides) {
+            showSlide(currentSlide + 1);
+          }
+        });
+
+        // Initialize first slide
+        showSlide(1);
+      });
+    </script>
+  </body>
+</html>

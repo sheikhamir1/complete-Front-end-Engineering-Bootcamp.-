@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Code Structure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide {
+            display: none;
+            padding: 60px;
+            min-height: 70vh;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .slide-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        /* Animation fixes - ensure elements stay visible */
+        .slide.active .slide-content > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide.active .slide-content > *:nth-child(1) { transition-delay: 0.1s; }
+        .slide.active .slide-content > *:nth-child(2) { transition-delay: 0.2s; }
+        .slide.active .slide-content > *:nth-child(3) { transition-delay: 0.3s; }
+        .slide.active .slide-content > *:nth-child(4) { transition-delay: 0.4s; }
+        .slide.active .slide-content > *:nth-child(5) { transition-delay: 0.5s; }
+
+        .code-block {
+            background: #2d2d2d;
+            border: 1px solid #3d3d3d;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            position: relative;
+            overflow-x: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .code-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            color: #f8f8f2;
+        }
+
+        .code-block::before {
+            content: 'JAVASCRIPT';
+            position: absolute;
+            top: 5px;
+            left: 20px;
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 100%);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(26, 42, 108, 0.2) 0%, rgba(178, 31, 31, 0.2) 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            animation: highlightPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide.active .note {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .note-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide.active .warning {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .warning-title {
+            font-weight: bold;
+            color: #721c24;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .slide.active li:nth-child(1) { transition-delay: 0.1s; }
+        .slide.active li:nth-child(2) { transition-delay: 0.2s; }
+        .slide.active li:nth-child(3) { transition-delay: 0.3s; }
+        .slide.active li:nth-child(4) { transition-delay: 0.4s; }
+        .slide.active li:nth-child(5) { transition-delay: 0.5s; }
+
+        .slide.active li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        li::before {
+            content: '▶';
+            position: absolute;
+            left: -20px;
+            color: #b21f1f;
+            font-size: 0.8rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(3px); }
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(248, 249, 250, 0.9);
+            border-top: 1px solid #e9ecef;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(26, 42, 108, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-btn:disabled::before {
+            display: none;
+        }
+
+        .slide-indicators {
+            display: flex;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(26, 42, 108, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .indicator:hover::before {
+            width: 20px;
+            height: 20px;
+        }
+
+        .indicator.active {
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 100%);
+            transform: scale(1.2);
+            animation: indicatorPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes indicatorPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(26, 42, 108, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(26, 42, 108, 0); }
+        }
+
+        .slide-counter {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: rgba(26, 42, 108, 0.2);
+            width: 100%;
+            z-index: 10;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a2a6c, #b21f1f);
+            width: 11.11%;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-content {
+                font-size: 1rem;
+            }
+            
+            .navigation {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="presentation-container">
+        <!-- Slide 1: Introduction to Code Structure -->
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">🏗️ Code Structure</h1>
+                <p class="slide-subtitle">The building blocks of JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <p>The first thing we'll study is the <span class="highlight">building blocks of code</span>.</p>
+                <ul>
+                    <li><strong>Statements:</strong> Syntax constructs and commands that perform actions</li>
+                    <li><strong>Semicolons:</strong> Separating statements in JavaScript</li>
+                    <li><strong>Comments:</strong> Describing what the code does and why</li>
+                    <li><strong>"use strict":</strong> Enabling modern JavaScript mode</li>
+                </ul>
+                <div class="note">
+                    <div class="note-title">💡 Why Code Structure Matters</div>
+                    <p>Understanding code structure is fundamental to writing clean, readable, and maintainable JavaScript code.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Statements -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">📝 Statements</h1>
+                <p class="slide-subtitle">Commands that perform actions</p>
+            </div>
+            <div class="slide-content">
+                <p>Statements are syntax constructs and commands that perform actions.</p>
+                <p>We've already seen a statement, <span class="highlight">alert('Hello, world!')</span>, which shows the message "Hello, world!".</p>
+                <p>We can have as many statements in our code as we want. Statements can be separated with a semicolon.</p>
+                <div class="code-block">
+                    <pre>alert('Hello'); alert('World');</pre>
+                </div>
+                <p>Usually, statements are written on separate lines to make the code more readable:</p>
+                <div class="code-block">
+                    <pre>alert('Hello');
+alert('World');</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Semicolons -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔣 Semicolons</h1>
+                <p class="slide-subtitle">When to use them</p>
+            </div>
+            <div class="slide-content">
+                <p>A semicolon may be omitted in most cases when a line break exists.</p>
+                <p>This would also work:</p>
+                <div class="code-block">
+                    <pre>alert('Hello')
+alert('World')</pre>
+                </div>
+                <p>Here, JavaScript interprets the line break as an "implicit" semicolon. This is called an <span class="highlight">automatic semicolon insertion</span>.</p>
+                <div class="note">
+                    <div class="note-title">⚠️ But Be Careful!</div>
+                    <p>In most cases, a newline implies a semicolon. But "in most cases" does not mean "always"!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: When Semicolons Are Not Inserted -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🚫 When Semicolons Are Not Inserted</h1>
+                <p class="slide-subtitle">Exceptions to the rule</p>
+            </div>
+            <div class="slide-content">
+                <p>There are cases when a newline does not mean a semicolon. For example:</p>
+                <div class="code-block">
+                    <pre>alert(3 +
+1
++ 2);</pre>
+                </div>
+                <p>The code outputs 6 because JavaScript does not insert semicolons here. It is intuitively obvious that if the line ends with a plus "+", then it is an "incomplete expression", so a semicolon there would be incorrect.</p>
+                <div class="note">
+                    <div class="note-title">✅ Working as Intended</div>
+                    <p>In this case, JavaScript correctly handles the multi-line expression without inserting semicolons.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Semicolon Errors -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">⚠️ Semicolon Errors</h1>
+                <p class="slide-subtitle">When JavaScript fails to assume a semicolon</p>
+            </div>
+            <div class="slide-content">
+                <p>But there are situations where JavaScript "fails" to assume a semicolon where it is really needed. Errors which occur in such cases are quite hard to find and fix.</p>
+                <div class="warning">
+                    <div class="warning-title">🔍 An Example of an Error</div>
+                    <p>If you're curious to see a concrete example of such an error, check this code out:</p>
+                </div>
+                <div class="code-block">
+                    <pre>alert("Hello");
+[1, 2].forEach(alert);</pre>
+                </div>
+                <p>No need to think about the meaning of the brackets [] and forEach yet. We'll study them later. For now, just remember the result of running the code: it shows Hello, then 1, then 2.</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: The Problem Without Semicolons -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">❌ The Problem Without Semicolons</h1>
+                <p class="slide-subtitle">What happens when we omit semicolons</p>
+            </div>
+            <div class="slide-content">
+                <p>Now let's remove the semicolon after the alert:</p>
+                <div class="code-block">
+                    <pre>alert("Hello")
+[1, 2].forEach(alert);</pre>
+                </div>
+                <p>The difference compared to the code above is only one character: the semicolon at the end of the first line is gone.</p>
+                <div class="warning">
+                    <div class="warning-title">🚨 Unexpected Result</div>
+                    <p>If we run this code, only the first Hello shows (and there's an error, you may need to open the console to see it). There are no numbers any more.</p>
+                </div>
+                <p>That's because JavaScript does not assume a semicolon before square brackets [...].</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: How JavaScript Sees It -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔍 How JavaScript Sees It</h1>
+                <p class="slide-subtitle">The merged statement</p>
+            </div>
+            <div class="slide-content">
+                <p>Here's how the engine sees the code without the semicolon:</p>
+                <div class="code-block">
+                    <pre>alert("Hello")[1, 2].forEach(alert);</pre>
+                </div>
+                <p>Looks weird, right? Such merging in this case is just wrong. We need to put a semicolon after alert for the code to work correctly.</p>
+                <div class="note">
+                    <div class="note-title">💡 Recommendation</div>
+                    <p>We recommend putting semicolons between statements even if they are separated by newlines. This rule is widely adopted by the community.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Comments -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">💬 Comments</h1>
+                <p class="slide-subtitle">Documenting your code</p>
+            </div>
+            <div class="slide-content">
+                <p>As time goes on, programs become more and more complex. It becomes necessary to add comments which describe what the code does and why.</p>
+                <p>Comments can be put into any place of a script. They don't affect its execution because the engine simply ignores them.</p>
+                <p><span class="highlight">One-line comments</span> start with two forward slash characters //.</p>
+                <div class="code-block">
+                    <pre>// This comment occupies a line of its own
+alert('Hello');
+alert('World'); // This comment follows the statement</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Multiline Comments -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">📄 Multiline Comments</h1>
+                <p class="slide-subtitle">Commenting multiple lines</p>
+            </div>
+            <div class="slide-content">
+                <p><span class="highlight">Multiline comments</span> start with a forward slash and an asterisk /* and end with an asterisk and a forward slash */.</p>
+                <div class="code-block">
+                    <pre>/* An example with two messages.
+This is a multiline comment.
+*/
+alert('Hello');
+alert('World');</pre>
+                </div>
+                <p>The content of comments is ignored, so if we put code inside /* … */, it won't execute.</p>
+                <p>Sometimes it can be handy to temporarily disable a part of code:</p>
+                <div class="code-block">
+                    <pre>/* Commenting out the code
+alert('Hello');
+*/
+alert('World');</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Comment Best Practices -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">✨ Comment Best Practices</h1>
+                <p class="slide-subtitle">Tips for effective commenting</p>
+            </div>
+            <div class="slide-content">
+                <div class="note">
+                    <div class="note-title">⌨️ Use Hotkeys!</div>
+                    <p>In most editors, a line of code can be commented out by pressing the Ctrl+/ hotkey for a single-line comment and something like Ctrl+Shift+/ – for multiline comments (select a piece of code and press the hotkey). For Mac, try Cmd instead of Ctrl and Option instead of Shift.</p>
+                </div>
+                <div class="warning">
+                    <div class="warning-title">⚠️ Nested Comments Are Not Supported!</div>
+                    <p>There may not be /*...*/ inside another /*...*/. Such code will die with an error.</p>
+                </div>
+                <div class="code-block">
+                    <pre>/*
+  /* nested comment ?!? */
+*/
+alert( 'World' );</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Benefits of Comments -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🌟 Benefits of Comments</h1>
+                <p class="slide-subtitle">Why you should comment your code</p>
+            </div>
+            <div class="slide-content">
+                <p>Please, don't hesitate to comment your code.</p>
+                <ul>
+                    <li>Comments increase the overall code footprint, but that's not a problem at all</li>
+                    <li>There are many tools which minify code before publishing to a production server</li>
+                    <li>They remove comments, so they don't appear in the working scripts</li>
+                    <li>Therefore, comments do not have negative effects on production at all</li>
+                </ul>
+                <div class="note">
+                    <div class="note-title">📚 Learn More</div>
+                    <p>Later in the tutorial there will be a chapter Code quality that also explains how to write better comments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: The Modern Mode, "use strict" -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🚀 The Modern Mode, "use strict"</h1>
+                <p class="slide-subtitle">Enabling strict mode in JavaScript</p>
+            </div>
+            <div class="slide-content">
+                <p>For a long time, JavaScript evolved without compatibility issues. New features were added to the language while old functionality didn't change.</p>
+                <p>That had the benefit of never breaking existing code. But the downside was that any mistake or an imperfect decision made by JavaScript's creators got stuck in the language forever.</p>
+                <p>This was the case until 2009 when ECMAScript 5 (ES5) appeared. It added new features to the language and modified some of the existing ones. To keep the old code working, most such modifications are off by default. You need to explicitly enable them with a special directive: <span class="highlight">"use strict"</span>.</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Using "use strict" -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔧 Using "use strict"</h1>
+                <p class="slide-subtitle">How to enable strict mode</p>
+            </div>
+            <div class="slide-content">
+                <p>The directive looks like a string: <span class="highlight">"use strict"</span> or <span class="highlight">'use strict'</span>. When it is located at the top of a script, the whole script works the "modern" way.</p>
+                <div class="code-block">
+                    <pre>"use strict";
+// this code works the modern way
+...</pre>
+                </div>
+                <p>Quite soon we're going to learn functions (a way to group commands), so let's note in advance that "use strict" can be put at the beginning of a function. Doing that enables strict mode in that function only. But usually people use it for the whole script.</p>
+                <div class="note">
+                    <div class="note-title">📍 Important</div>
+                    <p>Ensure that "use strict" is at the top of your scripts, otherwise strict mode may not be enabled.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: "use strict" Placement -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">📍 "use strict" Placement</h1>
+                <p class="slide-subtitle">Where to put the directive</p>
+            </div>
+            <div class="slide-content">
+                <p>Strict mode isn't enabled here:</p>
+                <div class="code-block">
+                    <pre>alert("some code");
+// "use strict" below is ignored--it must be at the top
+"use strict";
+// strict mode is not activated</pre>
+                </div>
+                <p>Only comments may appear above "use strict".</p>
+                <div class="warning">
+                    <div class="warning-title">⚠️ No Going Back</div>
+                    <p>There's no directive like "no use strict" that reverts the engine to old behavior. Once we enter strict mode, there's no going back.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Browser Console and "use strict" -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🖥️ Browser Console and "use strict"</h1>
+                <p class="slide-subtitle">Using strict mode in the console</p>
+            </div>
+            <div class="slide-content">
+                <p>When you use a developer console to run code, please note that it doesn't use strict by default.</p>
+                <p>Sometimes, when use strict makes a difference, you'll get incorrect results.</p>
+                <p>So, how to actually use strict in the console?</p>
+                <p>First, you can try to press Shift+Enter to input multiple lines, and put use strict on top, like this:</p>
+                <div class="code-block">
+                    <pre>'use strict'; <Shift+Enter for a newline>
+//  ...your code
+<Enter to run></pre>
+                </div>
+                <p>It works in most browsers, namely Firefox and Chrome.</p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Alternative for Browser Console -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">🔄 Alternative for Browser Console</h1>
+                <p class="slide-subtitle">When Shift+Enter doesn't work</p>
+            </div>
+            <div class="slide-content">
+                <p>If it doesn't work, e.g. in an old browser, there's an ugly, but reliable way to ensure use strict. Put it inside this kind of wrapper:</p>
+                <div class="code-block">
+                    <pre>(function() {
+  'use strict';
+  // ...your code here...
+})()</pre>
+                </div>
+                <div class="note">
+                    <div class="note-title">💡 What This Does</div>
+                    <p>This creates an immediately-invoked function expression (IIFE) that runs in strict mode. It's a bit more complex, but it guarantees strict mode is enabled.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Should We "use strict"? -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">❓ Should We "use strict"?</h1>
+                <p class="slide-subtitle">Is it necessary today?</p>
+            </div>
+            <div class="slide-content">
+                <p>The question may sound obvious, but it's not so.</p>
+                <p>One could recommend to start scripts with "use strict"… But you know what's cool?</p>
+                <p>Modern JavaScript supports "classes" and "modules" – advanced language structures (we'll surely get to them), that enable use strict automatically. So we don't need to add the "use strict" directive, if we use them.</p>
+                <div class="note">
+                    <div class="note-title">🎯 Recommendation</div>
+                    <p>So, for now "use strict"; is a welcome guest at the top of your scripts. Later, when your code is all in classes and modules, you may omit it.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Summary -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">✅ Summary</h1>
+                <p class="slide-subtitle">Key takeaways</p>
+            </div>
+            <div class="slide-content">
+                <ul>
+                    <li><strong>Statements:</strong> Commands that perform actions, separated by semicolons</li>
+                    <li><strong>Semicolons:</strong> Recommended to use them explicitly to avoid errors</li>
+                    <li><strong>Comments:</strong> Use // for single-line and /* */ for multiline comments</li>
+                    <li><strong>"use strict":</strong> Enables modern JavaScript mode with better error checking</li>
+                    <li><strong>Placement:</strong> Put "use strict" at the top of your script or function</li>
+                    <li><strong>Future:</strong> Modern JavaScript features like classes and modules enable strict mode automatically</li>
+                </ul>
+                <div class="note">
+                    <div class="note-title">🚀 Next Steps</div>
+                    <p>In the next chapters, as we learn language features, we'll see the differences between the strict and old modes. Luckily, there aren't many and they actually make our lives better.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn">
+                ← Previous
+            </button>
+            
+            <div class="slide-indicators">
+                <div class="indicator active" data-slide="0"></div>
+                <div class="indicator" data-slide="1"></div>
+                <div class="indicator" data-slide="2"></div>
+                <div class="indicator" data-slide="3"></div>
+                <div class="indicator" data-slide="4"></div>
+                <div class="indicator" data-slide="5"></div>
+                <div class="indicator" data-slide="6"></div>
+                <div class="indicator" data-slide="7"></div>
+                <div class="indicator" data-slide="8"></div>
+                <div class="indicator" data-slide="9"></div>
+                <div class="indicator" data-slide="10"></div>
+                <div class="indicator" data-slide="11"></div>
+                <div class="indicator" data-slide="12"></div>
+                <div class="indicator" data-slide="13"></div>
+                <div class="indicator" data-slide="14"></div>
+                <div class="indicator" data-slide="15"></div>
+                <div class="indicator" data-slide="16"></div>
+                <div class="indicator" data-slide="17"></div>
+            </div>
+            
+            <div class="slide-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">18</span>
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">
+                Next →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Generate animated particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all slides and navigation elements
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.querySelectorAll('.indicator');
+            const currentSlideSpan = document.getElementById('currentSlide');
+            const totalSlidesSpan = document.getElementById('totalSlides');
+            const progressFill = document.getElementById('progressFill');
+            
+            // Set total slides count
+            totalSlidesSpan.textContent = slides.length;
+            
+            let currentSlide = 0;
+            
+            // Function to show a specific slide
+            function showSlide(index) {
+                // Remove active class from all slides
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Add active class to current slide
+                slides[index].classList.add('active');
+                
+                // Update indicators
+                indicators.forEach((indicator, i) => {
+                    indicator.classList.toggle('active', i === index);
+                });
+                
+                // Update slide counter
+                currentSlideSpan.textContent = index + 1;
+                
+                // Update progress bar
+                const progress = ((index + 1) / slides.length) * 100;
+                progressFill.style.width = progress + '%';
+                
+                // Update button states
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Function to go to next slide
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            }
+            
+            // Function to go to previous slide
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            }
+            
+            // Function to go to a specific slide
+            function goToSlide(index) {
+                currentSlide = index;
+                showSlide(currentSlide);
+            }
+            
+            // Event listeners for navigation buttons
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+            
+            // Event listeners for indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => goToSlide(index));
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+            
+            // Initialize the first slide
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>

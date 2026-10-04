@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comparisons in JavaScript</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+          font-family: 'Quicksand', sans-serif;
+      }
+      .slide {
+          display: none;
+          min-height: 100vh;
+      }
+      .slide.active {
+          display: flex;
+      }
+      .fade-in {
+          animation: fadeIn 0.6s ease-in-out;
+      }
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+      .slide-in-left {
+          animation: slideInLeft 0.6s ease-out;
+      }
+      @keyframes slideInLeft {
+          from { transform: translateX(-100px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+      }
+      .slide-in-right {
+          animation: slideInRight 0.6s ease-out;
+      }
+          to { transform: translateX(0); opacity: 1; }
+      }
+      .scale-in {
+          animation: scaleIn 0.6s ease-out;
+      }
+      @keyframes scaleIn {
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+      }
+      .code-block {
+          background-color: #f0f9ff;
+          border-radius: 8px;
+          padding: 16px;
+          font-family: 'Courier New', monospace;
+          overflow-x: auto;
+          border-left: 4px solid #0ea5e9;
+      }
+      .nav-button {
+          transition: all 0.3s ease;
+      }
+      .nav-button:hover {
+          transform: translateY(-2px);
+      }
+      .gradient-bg {
+          background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      }
+      .card-shadow {
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .interactive {
+          transition: all 0.2s ease;
+          cursor: pointer;
+      }
+      .interactive:hover {
+          transform: scale(1.05);
+      }
+      .sound-toggle {
+          position: fixed;
+          bottom: 6rem;
+          right: 6rem;
+          z-50
+      }
+    </style>
+  </head>
+  <body class="gradient-bg">
+    <!-- Sound Toggle Button -->
+    <div class="sound-toggle">
+      <button
+        id="soundToggle"
+        class="bg-white rounded-full p-3 shadow-lg hover:shadow-xl"
+      >
+        <i class="fas fa-volume-up text-orange-500 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-6 right-6 z-50 flex space-x-3">
+      <button
+        id="prevBtn"
+        class="nav-button bg-white rounded-full p-3 shadow-lg hover:shadow-xl interactive"
+      >
+        <i class="fas fa-chevron-left text-orange-500 text-xl"></i>
+      </button>
+      <button
+        id="nextBtn"
+        class="nav-button bg-white rounded-full p-3 shadow-lg hover:shadow-xl interactive"
+      >
+        <i class="fas fa-chevron-right text-orange-500 text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Slide Progress Indicator -->
+    <div
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white bg-opacity-80 rounded-full px-4 py-2 shadow-md"
+    >
+      <div class="flex space-x-2">
+        <div
+          class="w-3 h-3 rounded-full bg-orange-500 slide-indicator"
+          data-slide="1"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="2"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="3"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="4"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="5"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="6"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="7"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="8"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="9"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Cover / Title Slide -->
+    <div class="slide active flex-col justify-center items-center p-8 fade-in">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12 text-center"
+      >
+        <div class="flex justify-center mb-8">
+          <div
+            class="bg-gradient-to-r from-orange-400 to-pink-500 rounded-full p-5 animate__animated animate__pulse animate__infinite"
+          >
+            <i class="fas fa-balance-scale text-white text-5xl"></i>
+          </div>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+          Comparisons in JavaScript
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Understanding equality and relational operators
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition duration-300 transform hover:scale-105 interactive"
+          >
+            Start Learning
+          </button>
+          <button
+            class="bg-white text-orange-500 border border-orange-500 px-6 py-3 rounded-lg font-medium hover:bg-orange-50 transition duration-300 transform hover:scale-105 interactive"
+          >
+            View Examples
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction / Summary -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Introduction <span class="text-orange-500">🔍</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-orange-50 rounded-xl p-6 shadow-md slide-in-left">
+            <div class="flex items-center mb-4">
+              <div class="bg-orange-100 p-2 rounded-lg mr-4">
+                <i class="fas fa-equals text-orange-500 text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">
+                Comparison Operators
+              </h3>
+            </div>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start">
+                <span class="text-orange-500 mr-2">•</span>
+                <span>Greater/less than: a > b, a < b</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-orange-500 mr-2">•</span>
+                <span>Greater/less than or equals: a >= b, a <= b</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-orange-500 mr-2">•</span>
+                <span>Equals: a == b (double equals)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-orange-500 mr-2">•</span>
+                <span>Not equals: a != b</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-pink-50 rounded-xl p-6 shadow-md slide-in-right">
+            <div class="flex items-center mb-4">
+              <div class="bg-pink-100 p-2 rounded-lg mr-4">
+                <i class="fas fa-lightbulb text-pink-500 text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">Key Concepts</h3>
+            </div>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start">
+                <span class="text-pink-500 mr-2">•</span>
+                <span>Boolean results (true or false)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-pink-500 mr-2">•</span>
+                <span>String comparison (lexicographical order)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-pink-500 mr-2">•</span>
+                <span>Type conversion in comparisons</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-pink-500 mr-2">•</span>
+                <span>Strict equality (===) vs loose equality (==)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-orange-100 to-pink-100 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">
+            Why This Matters <span class="text-orange-500">💡</span>
+          </h3>
+          <p class="text-gray-600">
+            Understanding comparison operators is essential for controlling
+            program flow and making decisions in JavaScript. They form the
+            foundation of conditional statements and loops.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Boolean Results -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Boolean Results <span class="text-blue-500">✅</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-blue-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                True or False
+              </h3>
+              <p class="text-gray-600 mb-4">
+                All comparison operators return a boolean value:
+              </p>
+              <div class="flex justify-center mb-4">
+                <div class="flex space-x-8">
+                  <div class="bg-green-100 rounded-lg p-4 text-center">
+                    <i
+                      class="fas fa-check-circle text-green-500 text-3xl mb-2"
+                    ></i>
+                    <p class="font-semibold text-gray-800">true</p>
+                    <p class="text-sm text-gray-600">"yes", "correct"</p>
+                  </div>
+                  <div class="bg-red-100 rounded-lg p-4 text-center">
+                    <i
+                      class="fas fa-times-circle text-red-500 text-3xl mb-2"
+                    ></i>
+                    <p class="font-semibold text-gray-800">false</p>
+                    <p class="text-sm text-gray-600">"no", "wrong"</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-indigo-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Assignment to Variables
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Comparison results can be assigned to variables:
+              </p>
+              <div class="code-block">
+                <code
+                  >let result = 5 > 4; // true<br />alert(result); // true</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">Examples</h3>
+              <div class="space-y-4">
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">2 > 1</span>
+                    <span
+                      class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                      >true</span
+                    >
+                  </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">2 == 1</span>
+                    <span
+                      class="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium"
+                      >false</span
+                    >
+                  </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">2 != 1</span>
+                    <span
+                      class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                      >true</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Use Cases
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                  <span>Conditional statements (if/else)</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                  <span>Loop conditions</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                  <span>Filtering data</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: String Comparison -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          String Comparison <span class="text-purple-500">🔤</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-purple-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Lexicographical Order
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Strings are compared letter-by-letter using "dictionary" order:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert('Z' > 'A'); // true<br />alert('Glow' > 'Glee'); //
+                  true<br />alert('Bee' > 'Be'); // true</code
+                >
+              </div>
+            </div>
+            <div class="bg-indigo-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Comparison Algorithm
+              </h3>
+              <ol class="space-y-2 text-gray-600 list-decimal pl-5">
+                <li>Compare first characters of both strings</li>
+                <li>
+                  If different, the string with the greater character is greater
+                </li>
+                <li>If same, move to next character and repeat</li>
+                <li>If one string ends, it's considered smaller</li>
+                <li>If both end at same length, they're equal</li>
+              </ol>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Case Sensitivity
+              </h3>
+              <p class="text-gray-600 mb-4">
+                String comparison is case-sensitive due to Unicode encoding:
+              </p>
+              <div class="bg-white rounded-lg p-4 mb-4">
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-gray-700 font-medium">'a' > 'Z'</span>
+                  <span
+                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                    >true</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium">'A' > 'a'</span>
+                  <span
+                    class="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium"
+                    >false</span
+                  >
+                </div>
+              </div>
+              <p class="text-gray-600 text-sm">
+                Lowercase letters have higher Unicode values than uppercase
+                letters.
+              </p>
+            </div>
+            <div class="bg-yellow-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Practical Example
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Step-by-step comparison of 'Glow' vs 'Glee':
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <div class="bg-gray-200 rounded px-2 py-1 mr-2">G</div>
+                  <span class="text-gray-600">=</span>
+                  <div class="bg-gray-200 rounded px-2 py-1 ml-2">G</div>
+                  <span class="text-gray-600 ml-2">→ continue</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="bg-gray-200 rounded px-2 py-1 mr-2">l</div>
+                  <span class="text-gray-600">=</span>
+                  <div class="bg-gray-200 rounded px-2 py-1 ml-2">l</div>
+                  <span class="text-gray-600 ml-2">→ continue</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="bg-green-200 rounded px-2 py-1 mr-2">o</div>
+                  <span class="text-gray-600">></span>
+                  <div class="bg-red-200 rounded px-2 py-1 ml-2">e</div>
+                  <span class="text-gray-600 ml-2">→ 'Glow' > 'Glee'</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Comparison of Different Types -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Different Types Comparison <span class="text-green-500">🔄</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-green-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Type Conversion
+              </h3>
+              <p class="text-gray-600 mb-4">
+                When comparing different types, JavaScript converts values to
+                numbers:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert('2' > 1); // true<br />alert('01' == 1); // true</code
+                >
+              </div>
+            </div>
+            <div class="bg-teal-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Boolean Conversion
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Booleans are converted to numbers in comparisons:
+              </p>
+              <div class="bg-white rounded-lg p-4 mb-4">
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-gray-700 font-medium">true == 1</span>
+                  <span
+                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                    >true</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium">false == 0</span>
+                  <span
+                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                    >true</span
+                  >
+                </div>
+              </div>
+              <p class="text-gray-600 text-sm">
+                true becomes 1, false becomes 0
+              </p>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Funny Consequence
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Two values can be equal in comparison but have different boolean
+                values:
+              </p>
+              <div class="code-block mb-4">
+                <code
+                  >let a = 0;<br />alert(Boolean(a)); // false<br /><br />let b
+                  = "0";<br />alert(Boolean(b)); // true<br /><br />alert(a ==
+                  b); // true!</code
+                >
+              </div>
+              <div class="bg-yellow-100 p-4 rounded-lg">
+                <p class="text-gray-700">
+                  <i
+                    class="fas fa-exclamation-triangle text-yellow-500 mr-2"
+                  ></i
+                  >This happens because equality check uses numeric conversion,
+                  while explicit Boolean conversion uses different rules.
+                </p>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Conversion Rules
+              </h3>
+              <div class="overflow-x-auto">
+                <table class="min-w-full text-gray-600">
+                  <thead>
+                    <tr class="bg-blue-100">
+                      <th class="py-2 px-3 text-left">Value</th>
+                      <th class="py-2 px-3 text-left">Numeric</th>
+                      <th class="py-2 px-3 text-left">Boolean</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-3">"0"</td>
+                      <td class="py-2 px-3">0</td>
+                      <td class="py-2 px-3">true</td>
+                    </tr>
+                    <tr class="bg-blue-50">
+                      <td class="py-2 px-3">""</td>
+                      <td class="py-2 px-3">0</td>
+                      <td class="py-2 px-3">false</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3">true</td>
+                      <td class="py-2 px-3">1</td>
+                      <td class="py-2 px-3">true</td>
+                    </tr>
+                    <tr class="bg-blue-50">
+                      <td class="py-2 px-3">false</td>
+                      <td class="py-2 px-3">0</td>
+                      <td class="py-2 px-3">false</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Strict Equality -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Strict Equality <span class="text-red-500">⚖️</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-red-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Problem with ==
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Regular equality == can't differentiate between different types:
+              </p>
+              <div class="bg-white rounded-lg p-4 mb-4">
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-gray-700 font-medium">0 == false</span>
+                  <span
+                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                    >true</span
+                  >
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium">'' == false</span>
+                  <span
+                    class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                    >true</span
+                  >
+                </div>
+              </div>
+              <p class="text-gray-600 text-sm">
+                This happens because operands are converted to numbers before
+                comparison.
+              </p>
+            </div>
+            <div class="bg-orange-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Strict Equality ===
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Strict equality checks both value and type without conversion:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(0 === false); // false<br />alert('' === false); //
+                  false</code
+                >
+              </div>
+              <p class="text-gray-600 mt-3">
+                If types are different, === immediately returns false.
+              </p>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Strict Non-Equality !==
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Similar to === but checks for non-equality:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(0 !== false); // true<br />alert('' !== false); //
+                  true</code
+                >
+              </div>
+              <div class="bg-blue-100 p-4 rounded-lg mt-4">
+                <p class="text-gray-700">
+                  <i class="fas fa-info-circle text-blue-500 mr-2"></i>Use
+                  strict operators to avoid unexpected type coercion issues.
+                </p>
+              </div>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Comparison Table
+              </h3>
+              <div class="overflow-x-auto">
+                <table class="min-w-full text-gray-600">
+                  <thead>
+                    <tr class="bg-purple-100">
+                      <th class="py-2 px-3 text-left">Expression</th>
+                      <th class="py-2 px-3 text-left">== Result</th>
+                      <th class="py-2 px-3 text-left">=== Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-3">0 == false</td>
+                      <td class="py-2 px-3">true</td>
+                      <td class="py-2 px-3">false</td>
+                    </tr>
+                    <tr class="bg-purple-50">
+                      <td class="py-2 px-3">'' == false</td>
+                      <td class="py-2 px-3">true</td>
+                      <td class="py-2 px-3">false</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3">null == undefined</td>
+                      <td class="py-2 px-3">true</td>
+                      <td class="py-2 px-3">false</td>
+                    </tr>
+                    <tr class="bg-purple-50">
+                      <td class="py-2 px-3">'5' == 5</td>
+                      <td class="py-2 px-3">true</td>
+                      <td class="py-2 px-3">false</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Comparison with null and undefined -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Null & Undefined Comparison <span class="text-yellow-500">❓</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-yellow-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Strict Equality ===
+              </h3>
+              <p class="text-gray-600 mb-4">
+                null and undefined are different types:
+              </p>
+              <div class="code-block">
+                <code>alert(null === undefined); // false</code>
+              </div>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Non-Strict Equality ==
+              </h3>
+              <p class="text-gray-600 mb-4">
+                null and undefined equal each other but nothing else:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(null == undefined); // true<br />alert(null == 0); //
+                  false<br />alert(undefined == 0); // false</code
+                >
+              </div>
+            </div>
+            <div class="bg-orange-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Mathematical Comparisons
+              </h3>
+              <p class="text-gray-600 mb-4">
+                In comparisons, null becomes 0 and undefined becomes NaN:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(null > 0); // false<br />alert(null == 0); // false<br />alert(null
+                  >= 0); // true</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                The null vs 0 Paradox
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Why these results seem contradictory:
+              </p>
+              <div class="space-y-3">
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">null > 0</span>
+                    <span
+                      class="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium"
+                      >false</span
+                    >
+                  </div>
+                  <p class="text-gray-600 text-sm mt-2">
+                    null converts to 0, which is not > 0
+                  </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">null == 0</span>
+                    <span
+                      class="bg-red-100 text-red-800 px-3 py-1 rounded-full font-medium"
+                      >false</span
+                    >
+                  </div>
+                  <p class="text-gray-600 text-sm mt-2">
+                    Special rule: null only equals undefined
+                  </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-700 font-medium">null >= 0</span>
+                    <span
+                      class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium"
+                      >true</span
+                    >
+                  </div>
+                  <p class="text-gray-600 text-sm mt-2">
+                    null converts to 0, which is >= 0
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-red-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Incomparable undefined
+              </h3>
+              <p class="text-gray-600 mb-4">
+                undefined converts to NaN in comparisons:
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(undefined > 0); // false<br />alert(undefined < 0); //
+                  false<br />alert(undefined == 0); // false</code
+                >
+              </div>
+              <div class="bg-red-100 p-4 rounded-lg mt-4">
+                <p class="text-gray-700">
+                  <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i
+                  >NaN returns false for all comparisons, including with itself!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Code Example(s) -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Code Examples <span class="text-blue-500">💻</span>
+        </h2>
+        <div class="space-y-6">
+          <div class="bg-blue-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Basic Comparisons
+            </h3>
+            <div class="code-block">
+              <pre><code>// Numeric comparisons
+alert(5 > 3);        // true
+alert(10 >= 10);     // true
+alert(7 < 2);        // false
+
+// String comparisons
+alert('Apple' < 'Banana');  // true
+alert('apple' > 'Banana');  // true (case-sensitive)
+
+// Mixed type comparisons
+alert('5' == 5);     // true
+alert('5' === 5);    // false</code></pre>
+            </div>
+          </div>
+          <div class="bg-green-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Boolean Comparisons
+            </h3>
+            <div class="code-block">
+              <pre><code>// Boolean to number conversion
+alert(true == 1);    // true
+alert(false == 0);   // true
+alert(true === 1);   // false (different types)
+
+// Boolean in expressions
+let isActive = true;
+alert(isActive == 1); // true
+alert(isActive === 1); // false</code></pre>
+            </div>
+          </div>
+          <div class="bg-yellow-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Null & Undefined Comparisons
+            </h3>
+            <div class="code-block">
+              <pre><code>// Null comparisons
+alert(null == undefined);  // true
+alert(null === undefined); // false
+alert(null == 0);          // false
+alert(null >= 0);          // true
+
+// Undefined comparisons
+alert(undefined == null);   // true
+alert(undefined === null);  // false
+alert(undefined > 0);       // false
+alert(undefined < 0);       // false</code></pre>
+            </div>
+          </div>
+          <div class="bg-purple-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              Practical Example
+            </h3>
+            <div class="code-block">
+              <pre><code>// Function to check if a value is "empty"
+function isEmpty(value) {
+  // Check for null, undefined, empty string, 0, false
+  return value == null || value === '' || value === 0 || value === false;
+}
+
+// Test cases
+alert(isEmpty(null));        // true
+alert(isEmpty(undefined));   // true
+alert(isEmpty(''));          // true
+alert(isEmpty(0));           // true
+alert(isEmpty(false));       // true
+alert(isEmpty('hello'));     // false
+alert(isEmpty(42));          // false</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Tips, Best Practices, Summary -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white bg-opacity-90 rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Best Practices & Summary <span class="text-green-500">✨</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-green-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Best Practices
+            </h3>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Use strict equality (===) and strict inequality (!==) by
+                  default</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Be cautious when comparing with null/undefined</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Remember that string comparison is case-sensitive</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span>Check for null/undefined separately when needed</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-red-50 rounded-xl p-6 shadow-md slide-in-right">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Common Pitfalls
+            </h3>
+            <ul class="space-y-3 text-gray-600">
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                <span>Forgetting that == converts types before comparison</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                <span
+                  >Using > or < with variables that might be
+                  null/undefined</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                <span
+                  >Assuming '0' is falsy in boolean context (it's truthy)</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i>
+                <span
+                  >Forgetting that undefined converts to NaN in
+                  comparisons</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-green-100 to-teal-100 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">
+            Summary <span class="text-green-500">📝</span>
+          </h3>
+          <ul class="space-y-2 text-gray-600">
+            <li class="flex items-start">
+              <span class="text-green-500 mr-2">•</span>
+              <span
+                >Comparison operators return boolean values (true/false)</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-2">•</span>
+              <span
+                >Strings are compared lexicographically (dictionary order)</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-2">•</span>
+              <span
+                >Different types are converted to numbers in comparisons (except
+                strict equality)</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-2">•</span>
+              <span
+                >null and undefined equal each other (==) but not other
+                values</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-green-500 mr-2">•</span>
+              <span>Be cautious with comparisons involving null/undefined</span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl p-6 shadow-md text-white scale-in"
+        >
+          <h3 class="text-xl font-semibold mb-3">
+            Keep Learning! <span class="text-yellow-300">🌟</span>
+          </h3>
+          <p class="mb-4">
+            Mastering JavaScript comparisons will help you write more robust and
+            bug-free code. Practice these concepts to build a strong foundation!
+          </p>
+          <div class="flex space-x-4">
+            <button
+              class="bg-white text-orange-500 px-4 py-2 rounded-lg font-medium hover:bg-orange-50 transition duration-300 interactive"
+            >
+              Try Examples
+            </button>
+            <button
+              class="bg-orange-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-900 transition duration-300 interactive"
+            >
+              More Resources
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Sound effects functionality
+      let soundEnabled = true;
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+
+      function playSound(frequency, duration) {
+        if (!soundEnabled) return;
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        gainNode.gain.value = 0.1;
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + duration * 0.001);
+      }
+
+      // Toggle sound
+      document
+        .getElementById("soundToggle")
+        .addEventListener("click", function () {
+          soundEnabled = !soundEnabled;
+          const icon = this.querySelector("i");
+          if (soundEnabled) {
+            icon.classList.remove("fa-volume-mute");
+            icon.classList.add("fa-volume-up");
+            playSound(800, 100);
+          } else {
+            icon.classList.remove("fa-volume-up");
+            icon.classList.add("fa-volume-mute");
+          }
+        });
+
+      // Slide navigation functionality
+      let currentSlide = 1;
+      const totalSlides = 9;
+
+      const slides = document.querySelectorAll(".slide");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const indicators = document.querySelectorAll(".slide-indicator");
+
+      function showSlide(n) {
+        // Hide all slides
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Update indicators
+        indicators.forEach((indicator) => {
+          indicator.classList.remove("bg-orange-500");
+          indicator.classList.add("bg-gray-300");
+        });
+
+        // Show current slide
+        if (n > totalSlides) currentSlide = 1;
+        if (n < 1) currentSlide = totalSlides;
+
+        slides[currentSlide - 1].classList.add("active");
+        indicators[currentSlide - 1].classList.remove("bg-gray-300");
+        indicators[currentSlide - 1].classList.add("bg-orange-500");
+
+        // Play slide transition sound
+        playSound(600, 150);
+
+        // Add animation classes
+        const activeSlide = slides[currentSlide - 1];
+        const elements = activeSlide.querySelectorAll(
+          ".slide-in-left, .slide-in-right, .scale-in, .fade-in"
+        );
+        elements.forEach((el, index) => {
+          setTimeout(() => {
+            el.style.opacity = "1";
+          }, index * 100);
+        });
+      }
+
+      // Next slide
+      function nextSlide() {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+
+      // Previous slide
+      function prevSlide() {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+
+      // Event listeners
+      nextBtn.addEventListener("click", () => {
+        playSound(800, 100);
+        nextSlide();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        playSound(800, 100);
+        prevSlide();
+      });
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          playSound(800, 100);
+          nextSlide();
+        }
+        if (e.key === "ArrowLeft") {
+          playSound(800, 100);
+          prevSlide();
+        }
+      });
+
+      // Add sound to interactive elements
+      document.querySelectorAll(".interactive").forEach((element) => {
+        element.addEventListener("click", () => {
+          playSound(1000, 50);
+        });
+      });
+
+      // Initialize the first slide
+      showSlide(currentSlide);
+    </script>
+  </body>
+</html>

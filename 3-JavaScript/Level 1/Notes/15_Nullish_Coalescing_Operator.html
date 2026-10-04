@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Nullish Coalescing Operator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+        color: #1e293b;
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+      }
+
+      .slide-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        z-index: 1;
+        background-color: #f8fafc;
+      }
+
+      .slide.active {
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+      }
+
+      .slide-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.07;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      .slide-content {
+        max-width: 1200px;
+        width: 100%;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .navigation {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1rem;
+        z-index: 100;
+      }
+
+      .nav-button {
+        background-color: #6366f1;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-button:hover {
+        background-color: #4f46e5;
+        transform: scale(1.05);
+      }
+
+      .slide-indicator {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        display: flex;
+        gap: 0.5rem;
+        z-index: 100;
+      }
+
+      .indicator-dot {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        background-color: #cbd5e1;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .indicator-dot.active {
+        background-color: #6366f1;
+        transform: scale(1.2);
+      }
+
+      .code-block {
+        background-color: #f1f5f9;
+        border-left: 4px solid #6366f1;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        font-family: "Courier New", monospace;
+        font-size: 1rem;
+        line-height: 1.5;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+
+      .keyword {
+        color: #6366f1;
+        font-weight: 600;
+      }
+
+      .comment {
+        color: #94a3b8;
+        font-style: italic;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .comparison-table th {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-weight: 600;
+      }
+
+      .comparison-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .gradient-text {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      .feature-card {
+        background-color: white;
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .feature-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #4f46e5;
+      }
+
+      .feature-description {
+        color: #64748b;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .code-example {
+        background-color: #f8fafc;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+        border: 1px solid #e2e8f0;
+      }
+
+      .code-example-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #4f46e5;
+      }
+
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      .example-card {
+        background-color: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-left: 3px solid;
+      }
+
+      .example-card.good {
+        border-left-color: #10b981;
+      }
+
+      .example-card.bad {
+        border-left-color: #ef4444;
+      }
+
+      .example-card-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .example-card-title i {
+        margin-right: 0.5rem;
+      }
+
+      .good-title {
+        color: #10b981;
+      }
+
+      .bad-title {
+        color: #ef4444;
+      }
+
+      .tips-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      .tip-card {
+        background-color: white;
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .tip-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .tip-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .tip-list {
+        list-style-type: none;
+      }
+
+      .tip-list li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .tip-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0.5rem;
+        color: #6366f1;
+      }
+
+      .next-steps {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      .next-step-card {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        border-radius: 2rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease;
+      }
+
+      .next-step-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .next-step-card i {
+        margin-right: 0.5rem;
+      }
+
+      .key-takeaways {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      .takeaway-card {
+        background-color: #f8fafc;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        border-left: 4px solid;
+      }
+
+      .takeaway-card.indigo {
+        border-left-color: #6366f1;
+      }
+
+      .takeaway-card.purple {
+        border-left-color: #8b5cf6;
+      }
+
+      .takeaway-card.green {
+        border-left-color: #10b981;
+      }
+
+      .takeaway-card.yellow {
+        border-left-color: #f59e0b;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 1rem;
+        }
+
+        .slide-content {
+          padding: 0;
+        }
+
+        .navigation {
+          bottom: 1rem;
+        }
+
+        .slide-indicator {
+          bottom: 1rem;
+          right: 1rem;
+        }
+
+        .nav-button {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+
+        .indicator-dot {
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+      }
+      .new {
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide-container">
+      <!-- Slide 1: Cover / Title Slide -->
+      <div class="slide active" id="slide1">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="text-center animate__animated animate__fadeInDown">
+            <div class="mb-8">
+              <i class="fab fa-js-square text-8xl text-yellow-400"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 gradient-text">
+              Nullish Coalescing Operator
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8">
+              The ?? operator in JavaScript
+            </p>
+            <div class="flex justify-center items-center gap-4 flex-wrap">
+              <div
+                class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-lg font-medium"
+              >
+                <i class="fas fa-code mr-2"></i>ES2020
+              </div>
+              <div
+                class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-lg font-medium"
+              >
+                <i class="fas fa-star mr-2"></i>Recent Addition
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Introduction / Summary -->
+      <div class="slide" id="slide2">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeIn">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center">
+              Introduction <span class="text-4xl">👋</span>
+            </h2>
+            <div class="grid-container">
+              <div class="card">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-600">
+                  What is it? <span class="text-2xl">❓</span>
+                </h3>
+                <p class="text-lg mb-4">
+                  The nullish coalescing operator is written as
+                  <span class="keyword">??</span>
+                </p>
+                <p class="text-lg">
+                  It returns the first argument if it's not
+                  <span class="keyword">null</span> or
+                  <span class="keyword">undefined</span>, otherwise the second
+                  one.
+                </p>
+              </div>
+              <div class="card">
+                <h3 class="text-2xl font-bold mb-4 text-purple-600">
+                  Why use it? <span class="text-2xl">🤔</span>
+                </h3>
+                <p class="text-lg mb-4">
+                  Provides a clean syntax to choose the first "defined" value
+                </p>
+                <p class="text-lg">
+                  Perfect for setting default values when a variable might be
+                  <span class="keyword">null</span> or
+                  <span class="keyword">undefined</span>
+                </p>
+              </div>
+            </div>
+            <div class="text-center mt-8">
+              <div
+                class="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-full text-xl font-bold shadow-lg"
+              >
+                result = a ?? b
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Key Concept 1 -->
+      <div class="slide" id="slide3">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeInLeft">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+              How It Works <span class="text-4xl">⚙️</span>
+            </h2>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-indigo-600">
+                The Basic Rule
+              </h3>
+              <p class="text-lg mb-4">
+                The result of <span class="keyword">a ?? b</span> is:
+              </p>
+              <ul class="text-lg space-y-2 ml-6">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  If <span class="keyword">a</span> is defined (not
+                  null/undefined), then <span class="keyword">a</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-times-circle text-red-500 mt-1 mr-2"></i> If
+                  <span class="keyword">a</span> isn't defined, then
+                  <span class="keyword">b</span>
+                </li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-purple-600">
+                Equivalent Code
+              </h3>
+              <p class="text-lg mb-4">
+                We can rewrite
+                <span class="keyword">result = a ?? b</span> using existing
+                operators:
+              </p>
+              <div class="code-block">
+                <span class="keyword">result</span> = (a !== null && a !==
+                undefined) ? a : b;
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Key Concept 2 -->
+      <div class="slide" id="slide4">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeInRight">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+              Common Use Case <span class="text-4xl">🎯</span>
+            </h2>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-indigo-600">
+                Default Values
+              </h3>
+              <p class="text-lg mb-4">
+                The most common use case for <span class="keyword">??</span> is
+                to provide a default value:
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> user;<br />
+                alert(user ?? "Anonymous");
+                <span class="comment">// Anonymous (user is undefined)</span>
+              </div>
+              <div class="code-block">
+                <span class="keyword">let</span> user = "John";<br />
+                alert(user ?? "Anonymous");
+                <span class="comment">// John (user is defined)</span>
+              </div>
+            </div>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-purple-600">
+                Real-World Example <span class="text-2xl">🌍</span>
+              </h3>
+              <p class="text-lg mb-4">
+                Display user information with fallbacks:
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> firstName = null;<br />
+                <span class="keyword">let</span> lastName = null;<br />
+                <span class="keyword">let</span> nickName = "Supercoder";<br />
+                <br />
+                <span class="comment">// shows the first defined value:</span
+                ><br />
+                alert(firstName ?? lastName ?? nickName ?? "Anonymous");
+                <span class="comment">// Supercoder</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Key Concept 3 -->
+      <div class="slide" id="slide5">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeInUp">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+              Comparison with || <span class="text-4xl">🔄</span>
+            </h2>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-indigo-600">
+                Key Difference
+              </h3>
+              <p class="text-lg mb-4">
+                The important difference between
+                <span class="keyword">||</span> and
+                <span class="keyword">??</span> is:
+              </p>
+              <ul class="text-lg space-y-2 ml-6">
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right text-indigo-500 mt-1 mr-2"></i>
+                  <span class="keyword">||</span> returns the first
+                  <span class="text-green-600 font-semibold">truthy</span> value
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right text-purple-500 mt-1 mr-2"></i>
+                  <span class="keyword">??</span> returns the first
+                  <span class="text-green-600 font-semibold">defined</span>
+                  value
+                </li>
+              </ul>
+            </div>
+            <div class="example-grid">
+              <div class="example-card bad">
+                <div class="example-card-title bad-title">
+                  <i class="fas fa-exclamation-circle"></i>Problem with ||
+                </div>
+                <div class="code-block">
+                  <span class="keyword">let</span> height = 0;<br />
+                  alert(height || 100); <span class="comment">// 100</span>
+                </div>
+                <p class="text-lg mt-3">
+                  <span class="keyword">||</span> treats 0 as falsy, so it
+                  returns 100
+                </p>
+              </div>
+              <div class="example-card good">
+                <div class="example-card-title good-title">
+                  <i class="fas fa-check-circle"></i>Solution with ??
+                </div>
+                <div class="code-block">
+                  <span class="keyword">let</span> height = 0;<br />
+                  alert(height ?? 100); <span class="comment">// 0</span>
+                </div>
+                <p class="text-lg mt-3">
+                  <span class="keyword">??</span> checks if height is defined,
+                  and it is!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Key Concept 4 -->
+      <div class="slide" id="slide6">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeInLeft">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+              Operator Precedence <span class="text-4xl">📊</span>
+            </h2>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-indigo-600">
+                Precedence Level
+              </h3>
+              <p class="text-lg mb-4">
+                The precedence of <span class="keyword">??</span> is the same as
+                <span class="keyword">||</span>
+              </p>
+              <p class="text-lg mb-4">
+                It's evaluated before <span class="keyword">=</span> and
+                <span class="keyword">?</span>, but after most other operations
+              </p>
+              <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                <p class="text-lg font-semibold text-indigo-800">
+                  Precedence: 3 (same as ||)
+                </p>
+              </div>
+            </div>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-purple-600">
+                Use Parentheses!
+              </h3>
+              <div class="code-block">
+                <span class="keyword">let</span> height = null;<br />
+                <span class="keyword">let</span> width = null;<br />
+                <br />
+                <span class="comment">// important: use parentheses</span><br />
+                <span class="keyword">let</span> area = (height ?? 100) * (width
+                ?? 50);<br />
+                alert(area); <span class="comment">// 5000</span>
+              </div>
+              <p class="text-lg mt-3 text-red-600 font-semibold">
+                Without parentheses, it would evaluate incorrectly!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Code Examples -->
+      <div class="slide" id="slide7">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeInRight">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+              Code Examples <span class="text-4xl">💻</span>
+            </h2>
+            <div class="code-example new">
+              <div class="code-example-title">Basic Usage</div>
+              <div class="code-block">
+                <span class="keyword">let</span> user = {<br />
+                  name: "John",<br />
+                  age: 30<br />
+                };<br />
+                <br />
+                <span class="keyword">let</span> city = user.city ??
+                "Unknown";<br />
+                alert(city); <span class="comment">// "Unknown"</span>
+              </div>
+            </div>
+            <div class="code-example new">
+              <div class="code-example-title">With Functions</div>
+              <div class="code-block">
+                <span class="keyword">function</span> getName(user) {<br />
+                  <span class="keyword">return</span> user?.name ??
+                "Anonymous";<br />
+                }<br />
+                <br />
+                alert(getName({ name: "Alice" }));
+                <span class="comment">// "Alice"</span><br />
+                alert(getName({ age: 25 }));
+                <span class="comment">// "Anonymous"</span>
+              </div>
+            </div>
+            <div class="code-example new">
+              <div class="code-example-title">Chaining</div>
+              <div class="code-block">
+                <span class="keyword">let</span> settings = {<br />
+                  theme: null,<br />
+                  language: null<br />
+                };<br />
+                <br />
+                <span class="keyword">const</span> theme = settings.theme ??
+                settings.language ?? "default";<br />
+                alert(theme); <span class="comment">// "default"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Tips, Best Practices, Common Mistakes -->
+      <div class="slide" id="slide8">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeInUp">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+              Tips & Best Practices <span class="text-4xl">💡</span>
+            </h2>
+            <div class="tips-container">
+              <div class="tip-card">
+                <div class="tip-icon text-green-500">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 class="tip-title text-green-600">Best Practices</h3>
+                <ul class="tip-list">
+                  <li>
+                    Use <span class="keyword">??</span> when you need to check
+                    specifically for <span class="keyword">null</span> or
+                    <span class="keyword">undefined</span>
+                  </li>
+                  <li>
+                    Use parentheses in complex expressions to ensure correct
+                    precedence
+                  </li>
+                  <li>
+                    Combine with optional chaining
+                    <span class="keyword">?.</span> for safe property access
+                  </li>
+                </ul>
+              </div>
+              <div class="tip-card">
+                <div class="tip-icon text-red-500">
+                  <i class="fas fa-times-circle"></i>
+                </div>
+                <h3 class="tip-title text-red-600">Common Mistakes</h3>
+                <ul class="tip-list">
+                  <li>
+                    Using <span class="keyword">??</span> with
+                    <span class="keyword">&&</span> or
+                    <span class="keyword">||</span> without parentheses
+                  </li>
+                  <li>
+                    Forgetting that <span class="keyword">??</span> has lower
+                    precedence than arithmetic operations
+                  </li>
+                  <li>
+                    Using <span class="keyword">||</span> when you specifically
+                    need to check for <span class="keyword">null</span>/<span
+                      class="keyword"
+                      >undefined</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="code-example">
+              <div class="code-example-title text-yellow-600">
+                Syntax Error Example
+              </div>
+              <div class="code-block">
+                <span class="comment">// This causes a syntax error!</span
+                ><br />
+                <span class="keyword">let</span> x = 1 && 2 ?? 3;
+                <span class="comment">// Syntax error</span><br />
+                <br />
+                <span class="comment">// Use explicit parentheses to fix:</span
+                ><br />
+                <span class="keyword">let</span> x = (1 && 2) ?? 3;
+                <span class="comment">// Works!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Conclusion / Next Steps -->
+      <div class="slide" id="slide9">
+        <div class="slide-background"></div>
+        <div class="slide-content">
+          <div class="animate__animated animate__fadeIn">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center">
+              Conclusion <span class="text-4xl">🏁</span>
+            </h2>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-indigo-600">
+                Key Takeaways
+              </h3>
+              <div class="key-takeaways">
+                <div class="takeaway-card indigo">
+                  <p>
+                    <i class="fas fa-star text-yellow-500 mr-2"></i
+                    ><span class="keyword">??</span> provides a short way to
+                    choose the first "defined" value
+                  </p>
+                </div>
+                <div class="takeaway-card purple">
+                  <p>
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>Perfect for
+                    assigning default values to variables
+                  </p>
+                </div>
+                <div class="takeaway-card green">
+                  <p>
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>Has low
+                    precedence - use parentheses in expressions
+                  </p>
+                </div>
+                <div class="takeaway-card yellow">
+                  <p>
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>Can't be
+                    used with <span class="keyword">&&</span> or
+                    <span class="keyword">||</span> without parentheses
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <h3 class="text-2xl font-bold mb-4 text-purple-600">
+                Next Steps <span class="text-2xl">🚀</span>
+              </h3>
+              <div class="next-steps">
+                <div class="next-step-card">
+                  <i class="fas fa-book"></i>Optional Chaining
+                </div>
+                <div class="next-step-card">
+                  <i class="fas fa-code-branch"></i>Advanced Operators
+                </div>
+                <div class="next-step-card">
+                  <i class="fas fa-project-diagram"></i>JavaScript Patterns
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-8">
+              <p class="text-xl text-gray-600">
+                Thank you! <span class="text-2xl">🙏</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+      <button class="nav-button" id="prevBtn">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="nav-button" id="nextBtn">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="slide-indicator">
+      <div class="indicator-dot active" data-slide="1"></div>
+      <div class="indicator-dot" data-slide="2"></div>
+      <div class="indicator-dot" data-slide="3"></div>
+      <div class="indicator-dot" data-slide="4"></div>
+      <div class="indicator-dot" data-slide="5"></div>
+      <div class="indicator-dot" data-slide="6"></div>
+      <div class="indicator-dot" data-slide="7"></div>
+      <div class="indicator-dot" data-slide="8"></div>
+      <div class="indicator-dot" data-slide="9"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicatorDots = document.querySelectorAll(".indicator-dot");
+
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+          // Hide all slides
+          slides.forEach((slide) => {
+            slide.classList.remove("active");
+          });
+
+          // Remove active class from all indicators
+          indicatorDots.forEach((dot) => {
+            dot.classList.remove("active");
+          });
+
+          // Handle boundaries
+          if (n > totalSlides) {
+            currentSlide = 1;
+          } else if (n < 1) {
+            currentSlide = totalSlides;
+          } else {
+            currentSlide = n;
+          }
+
+          // Show current slide
+          slides[currentSlide - 1].classList.add("active");
+
+          // Update indicator
+          indicatorDots[currentSlide - 1].classList.add("active");
+
+          // Add animation to elements
+          const animatedElements =
+            slides[currentSlide - 1].querySelectorAll(".animate__animated");
+          animatedElements.forEach((el) => {
+            el.style.animation = "none";
+            setTimeout(() => {
+              el.style.animation = "";
+            }, 10);
+          });
+        }
+
+        // Next button
+        nextBtn.addEventListener("click", function () {
+          showSlide(currentSlide + 1);
+        });
+
+        // Previous button
+        prevBtn.addEventListener("click", function () {
+          showSlide(currentSlide - 1);
+        });
+
+        // Indicator dots
+        indicatorDots.forEach((dot) => {
+          dot.addEventListener("click", function () {
+            const slideNum = parseInt(this.getAttribute("data-slide"));
+            showSlide(slideNum);
+          });
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") {
+            showSlide(currentSlide + 1);
+          } else if (e.key === "ArrowLeft") {
+            showSlide(currentSlide - 1);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Switch Statement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        overflow: hidden;
+      }
+      .slide {
+        display: none;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      .light-gradient-bg {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      }
+      .teal-gradient-bg {
+        background: linear-gradient(135deg, #4fd1c5 0%, #06b6d4 100%);
+      }
+      .code-block {
+        background-color: #2d3748;
+        color: #e2e8f0;
+        border-radius: 0.5rem;
+        font-family: "Courier New", monospace;
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .pulse-animation {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .slide-indicator {
+        transition: all 0.3s ease;
+      }
+      .slide-indicator.active {
+        background-color: #06b6d4;
+        transform: scale(1.2);
+      }
+      .nav-button {
+        transition: all 0.2s ease;
+      }
+      .nav-button:hover {
+        transform: scale(1.1);
+      }
+      .nav-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .highlight-text {
+        background: linear-gradient(120deg, #06b6d4 0%, #4fd1c5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+      .flow-arrow {
+        position: relative;
+      }
+      .flow-arrow::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        width: 2px;
+        height: 15px;
+        background-color: #06b6d4;
+        transform: translateX(-50%);
+      }
+      .flow-arrow::before {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        border-bottom: 2px solid #06b6d4;
+        border-right: 2px solid #06b6d4;
+        transform: translateX(-50%) rotate(45deg);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Slide 1: Cover/Title Slide -->
+    <div class="slide active teal-gradient-bg text-white">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center items-center h-full"
+      >
+        <div class="text-center mb-8 animate__animated animate__fadeInDown">
+          <i
+            class="fab fa-js-square text-8xl mb-6 animate__animated animate__pulse animate__infinite"
+          ></i>
+          <h1 class="text-7xl font-bold mb-4">JavaScript Switch</h1>
+          <h2 class="text-4xl font-light mb-8">Statement</h2>
+          <p class="text-2xl opacity-90">
+            A Powerful Alternative to Multiple If Checks
+          </p>
+        </div>
+
+        <div
+          class="flex justify-center space-x-8 mt-12 animate__animated animate__fadeInUp"
+        >
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center card-hover"
+          >
+            <i class="fas fa-code-branch text-4xl mb-3"></i>
+            <p class="text-xl font-semibold">Control Flow</p>
+          </div>
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center card-hover"
+          >
+            <i class="fas fa-tasks text-4xl mb-3"></i>
+            <p class="text-xl font-semibold">Multiple Cases</p>
+          </div>
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 text-center card-hover"
+          >
+            <i class="fas fa-bolt text-4xl mb-3"></i>
+            <p class="text-xl font-semibold">Efficiency</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction/Summary -->
+    <div class="slide light-gradient-bg">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Introduction to Switch 🔀
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-code-branch text-3xl text-teal-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">What is Switch?</h2>
+            </div>
+            <ul class="space-y-3 text-lg">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Replaces multiple
+                  <span class="font-semibold text-teal-600">if</span>
+                  checks</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >More
+                  <span class="font-semibold text-teal-600">descriptive</span>
+                  way to compare values</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  >Uses
+                  <span class="font-semibold text-teal-600"
+                    >strict equality</span
+                  >
+                  (===) for comparison</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Why Use Switch?</h2>
+            </div>
+            <ul class="space-y-3 text-lg">
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-teal-600">Cleaner</span> code
+                  structure</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-teal-600">Easier</span> to
+                  read and maintain</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-teal-600">Better</span> for
+                  multiple value comparisons</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            When to Use Switch
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-teal-50 rounded-lg p-4 text-center card-hover">
+              <i class="fas fa-equals text-3xl text-teal-600 mb-2"></i>
+              <h3 class="font-semibold text-lg">Multiple Equality Checks</h3>
+              <p class="text-sm">When comparing one value to many others</p>
+            </div>
+            <div class="bg-cyan-50 rounded-lg p-4 text-center card-hover">
+              <i class="fas fa-list-ol text-3xl text-cyan-600 mb-2"></i>
+              <h3 class="font-semibold text-lg">Menu Selection</h3>
+              <p class="text-sm">For handling different user choices</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 text-center card-hover">
+              <i class="fas fa-random text-3xl text-blue-600 mb-2"></i>
+              <h3 class="font-semibold text-lg">State Machines</h3>
+              <p class="text-sm">For managing different application states</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Switch Syntax -->
+    <div class="slide bg-gradient-to-br from-teal-50 to-cyan-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Switch Syntax 📝
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-code text-3xl text-teal-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Basic Structure</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>switch(x) {
+  case 'value1':  // if (x === 'value1')
+    ...
+    [break]
+  case 'value2':  // if (x === 'value2')
+    ...
+    [break]
+  default:
+    ...
+    [break]
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">switch(x)</span> - expression to
+                  evaluate</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">case</span> - possible values to
+                  match</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">default</span> - executed if no
+                  match found</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-play-circle text-3xl text-cyan-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">How It Works</h2>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div
+                  class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center mr-3 pulse-animation"
+                >
+                  <span class="text-lg font-bold text-teal-600">1</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-lg">Evaluate Expression</h3>
+                  <p class="text-gray-600">
+                    The value in switch() is evaluated once
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center mr-3 pulse-animation"
+                >
+                  <span class="text-lg font-bold text-teal-600">2</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-lg">Compare Cases</h3>
+                  <p class="text-gray-600">
+                    Value is compared to each case using strict equality (===)
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div
+                  class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center mr-3 pulse-animation"
+                >
+                  <span class="text-lg font-bold text-teal-600">3</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-lg">Execute Code</h3>
+                  <p class="text-gray-600">
+                    When a match is found, code executes until break or end of
+                    switch
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">Key Points</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-teal-50 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <i
+                  class="fas fa-exclamation-triangle text-xl text-yellow-500 mr-2"
+                ></i>
+                <h3 class="font-semibold">Break is Important</h3>
+              </div>
+              <p class="text-gray-700">
+                Without break, execution continues to the next case
+              </p>
+            </div>
+            <div class="bg-cyan-50 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-equals text-xl text-cyan-600 mr-2"></i>
+                <h3 class="font-semibold">Strict Equality</h3>
+              </div>
+              <p class="text-gray-700">
+                Uses === comparison, so types must match
+              </p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <i class="fas fa-code text-xl text-blue-600 mr-2"></i>
+                <h3 class="font-semibold">Any Expression</h3>
+              </div>
+              <p class="text-gray-700">
+                Both switch and case allow any valid expression
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Switch Example -->
+    <div class="slide bg-gradient-to-br from-cyan-50 to-blue-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Switch Example 💻
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-code text-3xl text-cyan-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">With Break</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let a = 2 + 2;
+switch (a) {
+  case 3:
+    alert( 'Too small' );
+    break;
+  case 4:
+    alert( 'Exactly!' );
+    break;
+  case 5:
+    alert( 'Too big' );
+    break;
+  default:
+    alert( "I don't know such values" );
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >a = 4, so it matches
+                  <span class="font-semibold text-cyan-600">case 4</span></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >Only
+                  <span class="font-semibold text-cyan-600">'Exactly!'</span> is
+                  displayed</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >Execution stops at
+                  <span class="font-semibold text-cyan-600">break</span></span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i
+                class="fas fa-exclamation-triangle text-3xl text-yellow-500 mr-4"
+              ></i>
+              <h2 class="text-2xl font-semibold">Without Break</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let a = 2 + 2;
+switch (a) {
+  case 3:
+    alert( 'Too small' );
+  case 4:
+    alert( 'Exactly!' );
+  case 5:
+    alert( 'Too big' );
+  default:
+    alert( "I don't know such values" );
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >a = 4, matches
+                  <span class="font-semibold text-yellow-600"
+                    >case 4</span
+                  ></span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span>All three alerts are shown:</span>
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-yellow-600">'Exactly!'</span
+                  >,
+                  <span class="font-semibold text-yellow-600">'Too big'</span>,
+                  <span class="font-semibold text-yellow-600"
+                    >'I don't know...'</span
+                  ></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Execution Flow
+          </h2>
+          <div class="flex flex-col md:flex-row justify-around items-center">
+            <div class="flex flex-col items-center mb-6 md:mb-0">
+              <div
+                class="w-16 h-16 rounded-full bg-cyan-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-cyan-600">1</span>
+              </div>
+              <p class="text-center font-medium">Match Found</p>
+              <p class="text-center text-sm text-gray-600">
+                Start executing code
+              </p>
+            </div>
+
+            <i
+              class="fas fa-arrow-right text-cyan-500 text-2xl mb-6 md:mb-0"
+            ></i>
+
+            <div class="flex flex-col items-center mb-6 md:mb-0">
+              <div
+                class="w-16 h-16 rounded-full bg-cyan-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-cyan-600">2</span>
+              </div>
+              <p class="text-center font-medium">Continue Until Break</p>
+              <p class="text-center text-sm text-gray-600">Or end of switch</p>
+            </div>
+
+            <i
+              class="fas fa-arrow-right text-cyan-500 text-2xl mb-6 md:mb-0"
+            ></i>
+
+            <div class="flex flex-col items-center">
+              <div
+                class="w-16 h-16 rounded-full bg-cyan-100 flex items-center justify-center mb-2 pulse-animation"
+              >
+                <span class="text-2xl font-bold text-cyan-600">3</span>
+              </div>
+              <p class="text-center font-medium">Exit Switch</p>
+              <p class="text-center text-sm text-gray-600">
+                Continue with rest of code
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Expressions in Switch -->
+    <div class="slide bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Expressions in Switch 🧮
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-calculator text-3xl text-blue-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Any Expression</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let a = "1";
+let b = 0;
+switch (+a) {
+  case b + 1:
+    alert("this runs, because +a is 1, exactly equals b+1");
+    break;
+  default:
+    alert("this doesn't run");
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-blue-600">+a</span> converts
+                  string to number</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-blue-600">b + 1</span>
+                  evaluates to 1</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span>Both expressions match, so case executes</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-layer-group text-3xl text-indigo-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Grouping Cases</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let a = 3;
+switch (a) {
+  case 4:
+    alert('Right!');
+    break;
+  case 3: // (*) grouped two cases
+  case 5:
+    alert('Wrong!');
+    alert("Why don't you take a math class?");
+    break;
+  default:
+    alert('The result is strange. Really.');
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >Both <span class="font-semibold text-indigo-600">3</span> and
+                  <span class="font-semibold text-indigo-600">5</span> execute
+                  same code</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  >No
+                  <span class="font-semibold text-indigo-600">break</span> after
+                  case 3</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span>Execution "falls through" to case 5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Advanced Techniques
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-blue-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-function text-2xl text-blue-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Function Calls</h3>
+              </div>
+              <p class="text-gray-700">
+                You can use function calls in both switch and case expressions
+              </p>
+              <div class="code-block p-3 rounded-lg mt-2 text-sm">
+                <pre><code>switch(getValue()) {
+  case calculateResult():
+    // code
+}</code></pre>
+              </div>
+            </div>
+
+            <div class="bg-indigo-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-code-branch text-2xl text-indigo-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Complex Logic</h3>
+              </div>
+              <p class="text-gray-700">
+                Combine multiple conditions using logical operators
+              </p>
+              <div class="code-block p-3 rounded-lg mt-2 text-sm">
+                <pre><code>switch(true) {
+  case x > 0 && x < 10:
+    // code
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Type Matters -->
+    <div class="slide bg-gradient-to-br from-indigo-50 to-purple-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Type Matters 🔍
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-equals text-3xl text-indigo-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Strict Equality</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let arg = prompt("Enter a value?");
+switch (arg) {
+  case '0':
+  case '1':
+    alert( 'One or zero' );
+    break;
+  case '2':
+    alert( 'Two' );
+    break;
+  case 3:
+    alert( 'Never executes!' );
+    break;
+  default:
+    alert( 'An unknown value' );
+}</code></pre>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-indigo-600">prompt</span>
+                  returns a string</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold text-indigo-600">case 3</span> is
+                  a number</span
+                >
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-2"
+                ></i>
+                <span
+                  >String
+                  <span class="font-semibold text-yellow-600">"3"</span> ≠
+                  number
+                  <span class="font-semibold text-yellow-600">3</span></span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-exchange-alt text-3xl text-purple-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Type Conversion</h2>
+            </div>
+            <div class="space-y-4">
+              <div class="bg-purple-50 rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2">To Make Types Match</h3>
+                <div class="code-block p-3 rounded-lg text-sm">
+                  <pre><code>// Convert to number
+switch (+arg) {
+  case 3:
+    alert('Now it works!');
+    break;
+}</code></pre>
+                </div>
+              </div>
+
+              <div class="bg-indigo-50 rounded-lg p-4">
+                <h3 class="font-semibold text-lg mb-2">Or Convert in Cases</h3>
+                <div class="code-block p-3 rounded-lg text-sm">
+                  <pre><code>// Keep string, compare to strings
+switch (arg) {
+  case "3":
+    alert('This works too!');
+    break;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Common Type Pitfalls
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-indigo-50 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <i
+                  class="fas fa-exclamation-triangle text-xl text-yellow-500 mr-2"
+                ></i>
+                <h3 class="font-semibold">String vs Number</h3>
+              </div>
+              <p class="text-gray-700">"5" ≠ 5 in strict comparison</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <i
+                  class="fas fa-exclamation-triangle text-xl text-yellow-500 mr-2"
+                ></i>
+                <h3 class="font-semibold">Boolean vs String</h3>
+              </div>
+              <p class="text-gray-700">"true" ≠ true in strict comparison</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4">
+              <div class="flex items-center mb-2">
+                <i
+                  class="fas fa-exclamation-triangle text-xl text-yellow-500 mr-2"
+                ></i>
+                <h3 class="font-semibold">Null vs Undefined</h3>
+              </div>
+              <p class="text-gray-700">null ≠ undefined in strict comparison</p>
+            </div>
+          </div>
+
+          <div class="mt-6 bg-yellow-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-2xl text-yellow-500 mr-3"></i>
+              <p class="text-lg">
+                <span class="font-semibold">Pro Tip:</span> Always be mindful of
+                data types when using switch. Convert values explicitly if
+                needed to ensure proper matching.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Code Examples -->
+    <div class="slide bg-gradient-to-br from-purple-50 to-pink-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Practical Examples 💡
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-calendar-day text-3xl text-purple-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Day of Week</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre class="text-lg"><code>let day = new Date().getDay();
+let dayName;
+
+switch (day) {
+  case 0:
+    dayName = 'Sunday';
+    break;
+  case 1:
+    dayName = 'Monday';
+    break;
+  case 2:
+    dayName = 'Tuesday';
+    break;
+  case 3:
+    dayName = 'Wednesday';
+    break;
+  case 4:
+    dayName = 'Thursday';
+    break;
+  case 5:
+    dayName = 'Friday';
+    break;
+  case 6:
+    dayName = 'Saturday';
+    break;
+}
+
+console.log(dayName);</code></pre>
+            </div>
+            <div class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+              Converting day number to day name
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-calculator text-3xl text-pink-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Simple Calculator</h2>
+            </div>
+            <div class="code-block p-4 rounded-lg mb-4">
+              <pre
+                class="text-lg"
+              ><code>function calculate(num1, num2, operator) {
+  let result;
+  
+  switch (operator) {
+    case '+':
+      result = num1 + num2;
+      break;
+    case '-':
+      result = num1 - num2;
+      break;
+    case '*':
+      result = num1 * num2;
+      break;
+    case '/':
+      result = num1 / num2;
+      break;
+    default:
+      result = 'Invalid operator';
+  }
+  
+  return result;
+}
+
+console.log(calculate(5, 3, '*')); // 15</code></pre>
+            </div>
+            <div class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+              Performing different operations based on operator
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">
+            Real-World Use Cases
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-purple-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-gamepad text-2xl text-purple-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Game Controls</h3>
+              </div>
+              <p class="text-gray-700">
+                Handling different key presses for player movement and actions
+              </p>
+            </div>
+
+            <div class="bg-pink-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-palette text-2xl text-pink-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Theme Switcher</h3>
+              </div>
+              <p class="text-gray-700">
+                Changing UI themes based on user selection
+              </p>
+            </div>
+
+            <div class="bg-indigo-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-language text-2xl text-indigo-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Localization</h3>
+              </div>
+              <p class="text-gray-700">
+                Displaying content in different languages
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 bg-purple-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-lightbulb text-2xl text-yellow-500 mr-3"></i>
+              <p class="text-lg">
+                <span class="font-semibold">Best Practice:</span> Use switch
+                when you have multiple discrete values to compare against. For
+                complex conditions, consider using if-else statements instead.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Tips, Best Practices, and Common Mistakes -->
+    <div class="slide bg-gradient-to-br from-pink-50 to-rose-50">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center text-gray-800 animate__animated animate__fadeInDown"
+        >
+          Tips & Best Practices 💡
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-lightbulb text-3xl text-yellow-500 mr-4"></i>
+              <h2 class="text-2xl font-semibold">Best Practices</h2>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-green-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Always Use Break</h3>
+                  <p class="text-gray-600">
+                    Unless you intentionally want fall-through behavior
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-green-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Include Default Case</h3>
+                  <p class="text-gray-600">
+                    Handle unexpected values gracefully
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-check-circle text-green-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Group Similar Cases</h3>
+                  <p class="text-gray-600">When they share the same code</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i
+                class="fas fa-exclamation-triangle text-3xl text-red-500 mr-4"
+              ></i>
+              <h2 class="text-2xl font-semibold">Common Mistakes</h2>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <i
+                  class="fas fa-times-circle text-red-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Forgetting Break</h3>
+                  <p class="text-gray-600">
+                    Causing unintended fall-through behavior
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-times-circle text-red-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Type Mismatch</h3>
+                  <p class="text-gray-600">
+                    Not accounting for strict equality comparison
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <i
+                  class="fas fa-times-circle text-red-500 mt-1 mr-3 text-xl"
+                ></i>
+                <div>
+                  <h3 class="font-semibold text-lg">Overusing Switch</h3>
+                  <p class="text-gray-600">
+                    When if-else or objects would be more appropriate
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-6 text-center">
+            Performance Tips
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-pink-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i
+                  class="fas fa-tachometer-alt text-2xl text-pink-600 mr-3"
+                ></i>
+                <h3 class="text-lg font-semibold">Order Cases by Frequency</h3>
+              </div>
+              <p class="text-gray-700">
+                Put most common cases first for minor performance gain
+              </p>
+            </div>
+
+            <div class="bg-rose-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-bolt text-2xl text-rose-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">
+                  Use for Simple Comparisons
+                </h3>
+              </div>
+              <p class="text-gray-700">
+                Switch is optimized for simple value comparisons
+              </p>
+            </div>
+
+            <div class="bg-purple-50 rounded-lg p-4">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-code-branch text-2xl text-purple-600 mr-3"></i>
+                <h3 class="text-lg font-semibold">Consider Alternatives</h3>
+              </div>
+              <p class="text-gray-700">
+                Objects or maps might be better for dynamic cases
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 bg-yellow-50 rounded-lg p-4">
+            <div class="flex items-center">
+              <i class="fas fa-code text-2xl text-yellow-600 mr-3"></i>
+              <div>
+                <p class="text-lg font-semibold mb-1">Switch vs If-Else</p>
+                <div class="code-block p-3 rounded-lg text-sm">
+                  <pre><code>// Switch: better for discrete values
+switch (day) {
+  case 0: // Sunday
+    // code
+}
+
+// If-Else: better for ranges
+if (score >= 90) {
+  // A grade
+} else if (score >= 80) {
+  // B grade
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Conclusion / Next Steps -->
+    <div class="slide teal-gradient-bg text-white">
+      <div
+        class="container mx-auto px-8 py-12 flex flex-col justify-center h-full"
+      >
+        <h1
+          class="text-5xl font-bold mb-8 text-center animate__animated animate__fadeInDown"
+        >
+          Conclusion & Next Steps 🚀
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInLeft"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-check-circle text-3xl mr-3"></i>
+              <h2 class="text-xl font-semibold">Key Takeaways</h2>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Switch replaces multiple
+                  <span class="font-semibold">if</span> checks</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Uses
+                  <span class="font-semibold">strict equality</span> (===)</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">break</span> prevents
+                  fall-through</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  ><span class="font-semibold">default</span> handles unmatched
+                  cases</span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInUp"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-lightbulb text-3xl mr-3"></i>
+              <h2 class="text-xl font-semibold">Best Practices</h2>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Always include
+                  <span class="font-semibold">default</span> case</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Use
+                  <span class="font-semibold">break</span> intentionally</span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Group similar <span class="font-semibold">cases</span></span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Be mindful of <span class="font-semibold">types</span></span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg card-hover animate__animated animate__fadeInRight"
+          >
+            <div class="flex items-center mb-4">
+              <i class="fas fa-arrow-right text-3xl mr-3"></i>
+              <h2 class="text-xl font-semibold">Next Steps</h2>
+            </div>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Practice with
+                  <span class="font-semibold">real examples</span></span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Compare with <span class="font-semibold">if-else</span></span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Explore
+                  <span class="font-semibold">ternary operator</span></span
+                >
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-check mt-1 mr-2"></i>
+                <span
+                  >Learn about <span class="font-semibold">objects</span> as
+                  alternatives</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg animate__animated animate__fadeInUp"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-center">Resources</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-lg font-semibold mb-3 flex items-center">
+                <i class="fas fa-book mr-2"></i>
+                Further Learning
+              </h3>
+              <ul class="space-y-2">
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">MDN Web Docs</span> - Switch
+                    Statement</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">JavaScript.info</span> - Switch
+                    Statement</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">FreeCodeCamp</span> -
+                    JavaScript Algorithms</span
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold mb-3 flex items-center">
+                <i class="fas fa-code mr-2"></i>
+                Practice Projects
+              </h3>
+              <ul class="space-y-2">
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">Calculator App</span> - Using
+                    switch for operations</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">Day Planner</span> - Using
+                    switch for days</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-arrow-right mt-1 mr-2"></i>
+                  <span
+                    ><span class="font-semibold">Theme Switcher</span> - Using
+                    switch for themes</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-2xl font-semibold mb-4">
+              Master the switch statement to write cleaner, more readable code!
+              💪
+            </p>
+            <p class="text-xl opacity-90">
+              Remember: choose the right tool for the right job
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="fixed bottom-6 right-6 flex space-x-2 z-50">
+      <button
+        id="prevBtn"
+        class="bg-white rounded-full p-3 shadow-md hover:bg-gray-100 transition-colors nav-button disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <i class="fas fa-chevron-left text-gray-600"></i>
+      </button>
+      <button
+        id="nextBtn"
+        class="bg-teal-600 rounded-full p-3 shadow-md hover:bg-teal-700 transition-colors nav-button"
+      >
+        <i class="fas fa-chevron-right text-white"></i>
+      </button>
+    </div>
+
+    <!-- Slide Indicator -->
+    <div class="fixed bottom-6 left-6 flex space-x-2 z-50">
+      <div
+        class="w-3 h-3 rounded-full bg-teal-600 slide-indicator active"
+        data-slide="1"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="2"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="3"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="4"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="5"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="6"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="7"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="8"
+      ></div>
+      <div
+        class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+        data-slide="9"
+      ></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const indicators = document.querySelectorAll(".slide-indicator");
+        let currentSlide = 1;
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+          if (n < 1) currentSlide = 1;
+          if (n > totalSlides) currentSlide = totalSlides;
+
+          slides.forEach((slide) => slide.classList.remove("active"));
+          slides[currentSlide - 1].classList.add("active");
+
+          indicators.forEach((indicator) => {
+            if (parseInt(indicator.dataset.slide) === currentSlide) {
+              indicator.classList.add("active");
+              indicator.classList.remove("bg-gray-300");
+            } else {
+              indicator.classList.remove("active");
+              indicator.classList.add("bg-gray-300");
+            }
+          });
+
+          prevBtn.disabled = currentSlide === 1;
+          nextBtn.disabled = currentSlide === totalSlides;
+        }
+
+        prevBtn.addEventListener("click", () => {
+          currentSlide--;
+          showSlide(currentSlide);
+        });
+
+        nextBtn.addEventListener("click", () => {
+          currentSlide++;
+          showSlide(currentSlide);
+        });
+
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") {
+            currentSlide--;
+            showSlide(currentSlide);
+          } else if (e.key === "ArrowRight") {
+            currentSlide++;
+            showSlide(currentSlide);
+          }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+      });
+    </script>
+  </body>
+</html>

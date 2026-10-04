@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class 05</title>
+  </head>
+  <body>
+    <h2>Approch 5 : Module Script</h2>
+
+    <p id="demo"></p>
+
+    <script type="module">
+      import { greet } from "./module.js";
+      document.getElementById("demo").innerHTML = greet("world");
+    </script>
+  </body>
+</html>

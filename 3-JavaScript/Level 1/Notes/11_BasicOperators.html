@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic Operators & Maths in JavaScript</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .slide {
+        display: none;
+        min-height: 100vh;
+      }
+      .slide.active {
+        display: flex;
+      }
+      .fade-in {
+        animation: fadeIn 0.6s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .slide-in-left {
+        animation: slideInLeft 0.6s ease-out;
+      }
+      @keyframes slideInLeft {
+        from {
+          transform: translateX(-100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .slide-in-right {
+        animation: slideInRight 0.6s ease-out;
+      }
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      .scale-in {
+        animation: scaleIn 0.6s ease-out;
+      }
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .code-block {
+        background-color: #f0fdfa;
+        border-radius: 8px;
+        padding: 16px;
+        font-family: "Courier New", monospace;
+        overflow-x: auto;
+        border-left: 4px solid #0d9488;
+      }
+      .nav-button {
+        transition: all 0.3s ease;
+      }
+      .nav-button:hover {
+        transform: translateY(-2px);
+      }
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          #ccfbf1 0%,
+          #99f6e4 50%,
+          #5eead4 100%
+        );
+      }
+      .card-shadow {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body class="gradient-bg">
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-6 right-6 z-50 flex space-x-3">
+      <button
+        id="prevBtn"
+        class="nav-button bg-white rounded-full p-3 shadow-lg hover:shadow-xl"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-teal-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+      <button
+        id="nextBtn"
+        class="nav-button bg-white rounded-full p-3 shadow-lg hover:shadow-xl"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-teal-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Slide Progress Indicator -->
+    <div
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white bg-opacity-80 rounded-full px-4 py-2 shadow-md"
+    >
+      <div class="flex space-x-2">
+        <div
+          class="w-3 h-3 rounded-full bg-teal-500 slide-indicator"
+          data-slide="1"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="2"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="3"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="4"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="5"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="6"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="7"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="8"
+        ></div>
+        <div
+          class="w-3 h-3 rounded-full bg-gray-300 slide-indicator"
+          data-slide="9"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Slide 1: Cover / Title Slide -->
+    <div class="slide active flex-col justify-center items-center p-8 fade-in">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12 text-center"
+      >
+        <div class="flex justify-center mb-8">
+          <div
+            class="bg-gradient-to-r from-teal-400 to-cyan-600 rounded-full p-5 animate__animated animate__pulse animate__infinite"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-20 w-20 text-white"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"
+              />
+            </svg>
+          </div>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+          Basic Operators & Maths
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          Understanding JavaScript operators and mathematical operations
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            class="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition duration-300 transform hover:scale-105"
+          >
+            Start Learning
+          </button>
+          <button
+            class="bg-white text-teal-600 border border-teal-600 px-6 py-3 rounded-lg font-medium hover:bg-teal-50 transition duration-300 transform hover:scale-105"
+          >
+            View Examples
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Introduction / Summary -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Introduction <span class="text-teal-500">🔢</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-teal-50 rounded-xl p-6 shadow-md slide-in-left">
+            <div class="flex items-center mb-4">
+              <div class="bg-teal-100 p-2 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-teal-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">
+                Operators Overview
+              </h3>
+            </div>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start">
+                <span class="text-teal-500 mr-2">•</span>
+                <span>Mathematical operators (+, -, *, /, %, **)</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-teal-500 mr-2">•</span>
+                <span>String concatenation with binary +</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-teal-500 mr-2">•</span>
+                <span>Assignment and modify-in-place operators</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-cyan-50 rounded-xl p-6 shadow-md slide-in-right">
+            <div class="flex items-center mb-4">
+              <div class="bg-cyan-100 p-2 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-cyan-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800">Key Concepts</h3>
+            </div>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-start">
+                <span class="text-cyan-500 mr-2">•</span>
+                <span>Unary vs. binary operators</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-cyan-500 mr-2">•</span>
+                <span>Operator precedence</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-cyan-500 mr-2">•</span>
+                <span>Increment/decrement operators</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="mt-8 bg-gradient-to-r from-teal-100 to-cyan-100 rounded-xl p-6 shadow-md scale-in"
+        >
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">
+            Why This Matters <span class="text-teal-500">💡</span>
+          </h3>
+          <p class="text-gray-600">
+            Understanding operators is fundamental to writing effective
+            JavaScript code. They form the building blocks of expressions and
+            control how values are manipulated and compared.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Terms: "unary", "binary", "operand" -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Operator Terminology <span class="text-indigo-500">📚</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-indigo-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">Operand</h3>
+              <p class="text-gray-600 mb-4">
+                What operators are applied to. Also called "arguments".
+              </p>
+              <div class="code-block">
+                <code>5 * 2 // 5 and 2 are operands</code>
+              </div>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Unary Operator
+              </h3>
+              <p class="text-gray-600 mb-4">
+                An operator with a single operand.
+              </p>
+              <div class="code-block">
+                <code
+                  >let x = 1;<br />x = -x; // unary negation<br />alert(x); //
+                  -1</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-teal-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Binary Operator
+              </h3>
+              <p class="text-gray-600 mb-4">An operator with two operands.</p>
+              <div class="code-block">
+                <code
+                  >let x = 1, y = 3;<br />alert(y - x); // 2, binary minus</code
+                >
+              </div>
+            </div>
+            <div class="bg-cyan-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Same Symbol, Different Operators
+              </h3>
+              <p class="text-gray-600 mb-4">
+                The minus symbol (-) can be both unary and binary.
+              </p>
+              <div class="code-block">
+                <code
+                  >// Unary negation<br />let x = -5;<br /><br />// Binary
+                  subtraction<br />let y = 10 - 5;</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Maths -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Mathematical Operations <span class="text-green-500">➕</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-green-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Basic Operations
+            </h3>
+            <div class="space-y-4">
+              <div class="bg-white p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium">Addition (+)</span>
+                  <span class="text-green-600 font-bold">a + b</span>
+                </div>
+              </div>
+              <div class="bg-white p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium">Subtraction (-)</span>
+                  <span class="text-green-600 font-bold">a - b</span>
+                </div>
+              </div>
+              <div class="bg-white p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium"
+                    >Multiplication (*)</span
+                  >
+                  <span class="text-green-600 font-bold">a * b</span>
+                </div>
+              </div>
+              <div class="bg-white p-4 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700 font-medium">Division (/)</span>
+                  <span class="text-green-600 font-bold">a / b</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-6 shadow-md slide-in-right">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Advanced Operations
+            </h3>
+            <div class="mb-6">
+              <h4 class="font-semibold text-gray-800 mb-2">Remainder (%)</h4>
+              <p class="text-gray-600 mb-3">
+                Returns the remainder of integer division
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(5 % 2); // 1<br />alert(8 % 3); // 2<br />alert(8 % 4);
+                  // 0</code
+                >
+              </div>
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800 mb-2">
+                Exponentiation (**)
+              </h4>
+              <p class="text-gray-600 mb-3">Raises a to the power of b</p>
+              <div class="code-block">
+                <code
+                  >alert(2 ** 2); // 4<br />alert(2 ** 3); // 8<br />alert(4 **
+                  (1/2)); // 2</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: String concatenation with binary + -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          String Concatenation <span class="text-purple-500">🔗</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-purple-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Binary + with Strings
+              </h3>
+              <p class="text-gray-600 mb-4">
+                When the binary + is applied to strings, it merges
+                (concatenates) them.
+              </p>
+              <div class="code-block">
+                <code>let s = "my" + "string";<br />alert(s); // mystring</code>
+              </div>
+            </div>
+            <div class="bg-indigo-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Type Conversion
+              </h3>
+              <p class="text-gray-600 mb-4">
+                If any operand is a string, the other is converted to a string
+                too.
+              </p>
+              <div class="code-block">
+                <code
+                  >alert('1' + 2); // "12"<br />alert(2 + '1'); // "21"</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Complex Examples
+              </h3>
+              <div class="code-block mb-4">
+                <code>alert(2 + 2 + '1'); // "41"</code>
+              </div>
+              <p class="text-gray-600 text-sm mb-4">
+                Operators work left to right. First 2+2=4, then 4+'1'="41"
+              </p>
+              <div class="code-block">
+                <code>alert('1' + 2 + 2); // "122"</code>
+              </div>
+              <p class="text-gray-600 text-sm">
+                First operand is a string, so all are treated as strings
+              </p>
+            </div>
+            <div class="bg-teal-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Other Operators
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Other arithmetic operators only work with numbers and convert
+                their operands to numbers.
+              </p>
+              <div class="code-block">
+                <code>alert(6 - '2'); // 4<br />alert('6' / '2'); // 3</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Numeric conversion, unary + -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Numeric Conversion <span class="text-blue-500">🔄</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-blue-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Unary Plus Operator
+              </h3>
+              <p class="text-gray-600 mb-4">
+                The unary + converts its operand to a number if it isn't
+                already.
+              </p>
+              <div class="code-block">
+                <code
+                  >// No effect on numbers<br />let x = 1;<br />alert(+x); //
+                  1<br /><br />// Converts non-numbers<br />alert(+true); //
+                  1<br />alert(+""); // 0</code
+                >
+              </div>
+            </div>
+            <div class="bg-indigo-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Comparison with Number()
+              </h3>
+              <p class="text-gray-600 mb-4">
+                The unary + does the same thing as Number(), but is shorter.
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(+"123"); // 123<br />alert(Number("123")); // 123</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Practical Example
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Converting string inputs from forms to numbers for calculations.
+              </p>
+              <div class="code-block mb-4">
+                <code
+                  >let apples = "2";<br />let oranges = "3";<br /><br />//
+                  Binary plus concatenates<br />alert(apples + oranges); //
+                  "23"</code
+                >
+              </div>
+              <div class="code-block">
+                <code
+                  >// Convert to numbers first<br />alert(+apples + +oranges);
+                  // 5</code
+                >
+              </div>
+            </div>
+            <div class="bg-green-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Why It Works
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Unary operators have higher precedence than binary operators, so
+                they are evaluated first.
+              </p>
+              <div class="code-block">
+                <code
+                  >+apples + +oranges<br /><br />// Becomes<br />2 + 3<br /><br />//
+                  Which equals<br />5</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Operator precedence -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Operator Precedence <span class="text-yellow-500">⚖️</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-yellow-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                What is Precedence?
+              </h3>
+              <p class="text-gray-600 mb-4">
+                The order in which operators are executed when an expression has
+                multiple operators.
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(1 + 2 * 2); // 5<br />// Multiplication has higher
+                  precedence</code
+                >
+              </div>
+            </div>
+            <div class="bg-orange-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Overriding with Parentheses
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Parentheses can override the default precedence order.
+              </p>
+              <div class="code-block">
+                <code
+                  >alert((1 + 2) * 2); // 6<br />// Addition is performed
+                  first</code
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Precedence Table (Extract)
+              </h3>
+              <div class="overflow-x-auto">
+                <table class="min-w-full text-gray-600">
+                  <thead>
+                    <tr class="bg-gray-200">
+                      <th class="py-2 px-3 text-left">Precedence</th>
+                      <th class="py-2 px-3 text-left">Name</th>
+                      <th class="py-2 px-3 text-left">Sign</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="py-2 px-3">14</td>
+                      <td class="py-2 px-3">unary plus</td>
+                      <td class="py-2 px-3">+</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                      <td class="py-2 px-3">13</td>
+                      <td class="py-2 px-3">exponentiation</td>
+                      <td class="py-2 px-3">**</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3">12</td>
+                      <td class="py-2 px-3">multiplication</td>
+                      <td class="py-2 px-3">*</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                      <td class="py-2 px-3">11</td>
+                      <td class="py-2 px-3">addition</td>
+                      <td class="py-2 px-3">+</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-3">2</td>
+                      <td class="py-2 px-3">assignment</td>
+                      <td class="py-2 px-3">=</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="bg-teal-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Example with Unary +
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Unary plus (precedence 14) is higher than binary plus
+                (precedence 11).
+              </p>
+              <div class="code-block">
+                <code
+                  >alert(+apples + +oranges);<br /><br />// Unary + first<br />alert((+apples)
+                  + (+oranges));</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Assignment and chaining assignments -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Assignment Operations <span class="text-red-500">📝</span>
+        </h2>
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="md:w-1/2 slide-in-left">
+            <div class="bg-red-50 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Assignment as an Operator
+              </h3>
+              <p class="text-gray-600 mb-4">
+                The assignment = operator returns the assigned value.
+              </p>
+              <div class="code-block">
+                <code
+                  >let a = 1;<br />let b = 2;<br />let c = 3 - (a = b + 1);<br />alert(a);
+                  // 3<br />alert(c); // 0</code
+                >
+              </div>
+            </div>
+            <div class="bg-orange-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Chaining Assignments
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Multiple assignments can be chained together.
+              </p>
+              <div class="code-block">
+                <code
+                  >let a, b, c;<br />a = b = c = 2 + 2;<br />alert(a); // 4<br />alert(b);
+                  // 4<br />alert(c); // 4</code
+                >
+              </div>
+              <p class="text-gray-600 text-sm mt-2">
+                Chained assignments evaluate from right to left.
+              </p>
+            </div>
+          </div>
+          <div class="md:w-1/2 slide-in-right">
+            <div class="bg-gray-100 rounded-xl p-6 shadow-md mb-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Modify-in-Place Operators
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Operators that modify a variable and store the result in it.
+              </p>
+              <div class="code-block mb-4">
+                <code
+                  >let n = 2;<br />n += 5; // n = n + 5<br />n *= 2; // n = n *
+                  2<br />alert(n); // 14</code
+                >
+              </div>
+              <p class="text-gray-600 text-sm">
+                Available for all arithmetic operators: +=, -=, *=, /=, %=, **=
+              </p>
+            </div>
+            <div class="bg-green-50 rounded-xl p-6 shadow-md">
+              <h3 class="text-xl font-semibold text-gray-800 mb-3">
+                Precedence of Modify Operators
+              </h3>
+              <p class="text-gray-600 mb-4">
+                Modify operators have the same precedence as normal assignment.
+              </p>
+              <div class="code-block">
+                <code
+                  >let n = 2;<br />n *= 3 + 5;<br />alert(n); // 16<br /><br />//
+                  Same as<br />n = n * (3 + 5);</code
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Increment/decrement, bitwise operators, comma -->
+    <div class="slide flex-col justify-center items-center p-8">
+      <div
+        class="max-w-4xl w-full bg-white rounded-2xl card-shadow p-8 md:p-12"
+      >
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 slide-in-left"
+        >
+          Advanced Operators <span class="text-indigo-500">🚀</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-indigo-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Increment/Decrement
+            </h3>
+            <div class="space-y-3 text-gray-600">
+              <div>
+                <p class="font-medium">Prefix Form (++counter)</p>
+                <p>Returns the new value</p>
+                <div class="code-block mt-2">
+                  <code>let counter = 1;<br />alert(++counter); // 2</code>
+                </div>
+              </div>
+              <div>
+                <p class="font-medium">Postfix Form (counter++)</p>
+                <p>Returns the old value</p>
+                <div class="code-block mt-2">
+                  <code>let counter = 1;<br />alert(counter++); // 1</code>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-purple-50 rounded-xl p-6 shadow-md slide-in-left">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Bitwise Operators
+            </h3>
+            <p class="text-gray-600 mb-3">Treat numbers as 32-bit integers</p>
+            <ul class="space-y-1 text-gray-600">
+              <li>AND ( & )</li>
+              <li>OR ( | )</li>
+              <li>XOR ( ^ )</li>
+              <li>NOT ( ~ )</li>
+              <li>LEFT SHIFT ( << )</li>
+              <li>RIGHT SHIFT ( >> )</li>
+              <li>ZERO-FILL RIGHT SHIFT ( >>> )</li>
+            </ul>
+            <p class="text-sm text-gray-500 mt-3">
+              Rarely used in web development
+            </p>
+          </div>
+          <div class="bg-teal-50 rounded-xl p-6 shadow-md slide-in-right">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">
+              Comma Operator
+            </h3>
+            <p class="text-gray-600 mb-3">
+              Evaluates multiple expressions, returns the last one
+            </p>
+            <div class="code-block">
+              <code>let a = (1 + 2, 3 + 4);<br />alert(a); // 7</code>
+            </div>
+            <p class="text-sm text-gray-600 mt-3">
+              Very low precedence, often used in for loops:
+            </p>
+            <div class="code-block mt-2">
+              <code
+                >for (a = 1, b = 3, c = a * b; a < 10; a++) {<br />
+                ...<br />}</code
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 shadow-md text-white scale-in"
+        >
+          <h3 class="text-xl font-semibold mb-3">
+            Best Practices <span class="text-yellow-300">💡</span>
+          </h3>
+          <ul class="space-y-2 mb-4">
+            <li class="flex items-start">
+              <span class="mr-2">•</span>
+              <span>Use increment/decrement on separate lines for clarity</span>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2">•</span>
+              <span>Avoid complex expressions with multiple operators</span>
+            </li>
+            <li class="flex items-start">
+              <span class="mr-2">•</span>
+              <span>Use parentheses to make precedence explicit</span>
+            </li>
+          </ul>
+          <p>
+            Understanding these operators will help you write more concise and
+            efficient JavaScript code.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Slide navigation functionality
+      let currentSlide = 1;
+      const totalSlides = 9;
+
+      const slides = document.querySelectorAll(".slide");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const indicators = document.querySelectorAll(".slide-indicator");
+
+      function showSlide(n) {
+        // Hide all slides
+        slides.forEach((slide) => {
+          slide.classList.remove("active");
+        });
+
+        // Update indicators
+        indicators.forEach((indicator) => {
+          indicator.classList.remove("bg-teal-500");
+          indicator.classList.add("bg-gray-300");
+        });
+
+        // Show current slide
+        if (n > totalSlides) currentSlide = 1;
+        if (n < 1) currentSlide = totalSlides;
+
+        slides[currentSlide - 1].classList.add("active");
+        indicators[currentSlide - 1].classList.remove("bg-gray-300");
+        indicators[currentSlide - 1].classList.add("bg-teal-500");
+
+        // Add animation classes
+        const activeSlide = slides[currentSlide - 1];
+        const elements = activeSlide.querySelectorAll(
+          ".slide-in-left, .slide-in-right, .scale-in, .fade-in"
+        );
+        elements.forEach((el, index) => {
+          setTimeout(() => {
+            el.style.opacity = "1";
+          }, index * 100);
+        });
+      }
+
+      // Next slide
+      function nextSlide() {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+
+      // Previous slide
+      function prevSlide() {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+
+      // Event listeners
+      nextBtn.addEventListener("click", nextSlide);
+      prevBtn.addEventListener("click", prevSlide);
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") nextSlide();
+        if (e.key === "ArrowLeft") prevSlide();
+      });
+
+      // Initialize the first slide
+      showSlide(currentSlide);
+    </script>
+  </body>
+</html>
