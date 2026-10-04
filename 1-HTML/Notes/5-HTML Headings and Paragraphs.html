@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Headings and Paragraphs</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Headings and Paragraphs</h1>
+          <p class="slide-subtitle">
+            Structuring web content with proper hierarchy
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="HTML headings and paragraphs"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              HTML headings and paragraphs are fundamental elements for
+              structuring content on web pages. Headings create a visual
+              hierarchy and help organize information, while paragraphs group
+              related text into readable blocks.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Proper use of headings and paragraphs improves readability,
+              accessibility, and SEO for your web pages.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: HTML Headings -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Headings</h1>
+          <p class="slide-subtitle">Creating structure with heading tags</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The HTML heading or the &lt;h&gt; tag marks the main or subtitle
+              of each webpage part. It shows the structure of the content to
+              users and to search engines by highlighting what is main and
+              subordinate on the page.
+            </p>
+            <p>
+              When text is put inside heading tags such as
+              &lt;h1&gt;...&lt;/h1&gt;, it is shown in bold by browsers, and its
+              font size is set according to the level of the heading.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Note: The h1 heading tag should display the main keyword of the
+              whole content of a webpage.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Six Levels of HTML Headings -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Six Levels of HTML Headings</h1>
+          <p class="slide-subtitle">Understanding heading hierarchy</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>HTML supports six levels of headings:</p>
+          </div>
+          <div class="code-block">
+            &lt;h1&gt;Heading no. 1&lt;/h1&gt;<br />
+            &lt;h2&gt;Heading no. 2&lt;/h2&gt;<br />
+            &lt;h3&gt;Heading no. 3&lt;/h3&gt;<br />
+            &lt;h4&gt;Heading no. 4&lt;/h4&gt;<br />
+            &lt;h5&gt;Heading no. 5&lt;/h5&gt;<br />
+            &lt;h6&gt;Heading no. 6&lt;/h6&gt;
+          </div>
+          <div class="text-section">
+            <h3>Heading Hierarchy</h3>
+            <ul>
+              <li>&lt;h1&gt; - The unique main heading for the page</li>
+              <li>&lt;h2&gt; - Major sections</li>
+              <li>&lt;h3&gt; - Subsections under &lt;h2&gt;</li>
+              <li>&lt;h4&gt; - Sub-subsections under &lt;h3&gt;</li>
+              <li>&lt;h5&gt; - Less significant sections</li>
+              <li>&lt;h6&gt; - Headings that are considered least important</li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Note: Heading elements (h1....h6) should be used for headings
+              only. They should not be used just to make text bold or big.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: HTML Headings Example -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Headings Example</h1>
+          <p class="slide-subtitle">Implementing headings in practice</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              &lt;!DOCTYPE html&gt;<br />
+              &lt;html&gt;<br />
+              &nbsp;&nbsp;&lt;head&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Heading
+              elements&lt;/title&gt;<br />
+              &nbsp;&nbsp;&lt;/head&gt;<br />
+              &nbsp;&nbsp;&lt;body&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;This is main heading of
+              page.&lt;/h1&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;h1 is the most important heading,
+              which is used to display the keyword of page&lt;/p&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;This is first
+              sub-heading&lt;/h2&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;h2 describes the first sub
+              heading of page.&lt;/p&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;This is Second
+              sub-heading&lt;/h3&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;h3 describes the second sub
+              heading of page.&lt;/p&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;We can use h1 to h6 tag to use
+              the different sub-heading with their paragraphs if
+              required.&lt;/p&gt;<br />
+              &nbsp;&nbsp;&lt;/body&gt;<br />
+              &lt;/html&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Using proper heading hierarchy helps both users and search engines
+              understand the structure and importance of your content.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Importance of Using Headings -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Importance of Using Headings</h1>
+          <p class="slide-subtitle">
+            Why headings matter for SEO and accessibility
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>For SEO (Search Engine Optimization)</h3>
+            <p>
+              When SEO is used, headings help search engines learn about a
+              page's structure and content.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>For Users</h3>
+            <p>
+              A sequenced hierarchy of headings makes it simpler and faster for
+              users to go through a website and navigate it.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>For Structure</h3>
+            <p>
+              Headings make it easier for people using accessibility tools to
+              access the information, thanks to their added structure.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Note: Headings should not just be used to make your text bold or
+              big. Don't use them as decoration if they are meant to support the
+              structure.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Styling Headings with CSS -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Styling Headings with CSS</h1>
+          <p class="slide-subtitle">Customizing heading appearance</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Though headings come in standard sizes, you have the option to
+              make them larger or smaller using the style attribute or CSS.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Inline Style</h3>
+            <div class="code-block">
+              &lt;h1 style="font-size: 60px;"&gt;Custom H1 Size&lt;/h1&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Internal CSS</h3>
+            <div class="code-block">
+              &lt;style&gt;<br />
+              &nbsp;&nbsp;h1, h2, h3, h4, h5, h6 {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;font-family: Verdana;<br />
+              &nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;h1 {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;font-size: 32px;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;color: red;<br />
+              &nbsp;&nbsp;}<br />
+              &nbsp;&nbsp;h2 {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;font-size: 30px;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;color: green;<br />
+              &nbsp;&nbsp;}<br />
+              &lt;/style&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              CSS provides much more flexibility for styling headings than
+              deprecated HTML attributes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Enhancing Headings with HTML Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Enhancing Headings with HTML Tags</h1>
+          <p class="slide-subtitle">Adding more meaning to headings</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You can add other HTML tags within heading tags to make the
+              content both more readable and more meaningful.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Highlight Text with &lt;mark&gt;</h3>
+            <div class="code-block">
+              &lt;h1&gt;Important &lt;mark&gt;Notice&lt;/mark&gt;&lt;/h1&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Add Links with &lt;a&gt;</h3>
+            <div class="code-block">
+              &lt;h2&gt;&lt;a href="https://tpointtech.com"&gt;Visit
+              Section&lt;/a&gt;&lt;/h2&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Emphasize with &lt;em&gt; and &lt;strong&gt;</h3>
+            <div class="code-block">
+              &lt;h3&gt;This is &lt;em&gt;emphasized&lt;/em&gt; and
+              &lt;strong&gt;important&lt;/strong&gt;&lt;/h3&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These semantic tags add meaning to your content while providing
+              visual styling.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Best Practices for HTML Headings -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Best Practices for HTML Headings</h1>
+          <p class="slide-subtitle">Guidelines for proper heading usage</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Heading Best Practices</h3>
+            <ul>
+              <li>
+                Put no more than one &lt;h1&gt; tag on each page so everyone -
+                people and search engines - can easily see what the page is
+                about.
+              </li>
+              <li>
+                Titles in a document need to have a logical sequence. Make sure
+                to go from &lt;h1&gt; to &lt;h2&gt;, and then add &lt;h3&gt;,
+                not skipping those levels.
+              </li>
+              <li>
+                Headings ought to briefly explain what you are writing about
+                next.
+              </li>
+              <li>
+                Heading tags should mainly be used to arrange sections of the
+                web page, not just for style.
+              </li>
+              <li>
+                Creating headings randomly or applying too many of them can be
+                confusing for people using your site and may also reduce your
+                ranking in search engines.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Both readability and meaning are improved when the heading
+              structure is kept in mind.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: HTML Paragraphs -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Paragraphs</h1>
+          <p class="slide-subtitle">Organizing text content</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              HTML paragraphs are tags that are necessary for the organization
+              and presentation of the text on a webpage and are defined with the
+              &lt;p&gt; tag. They enable developers to break content into
+              senseful readable blocks that enhance clarity and arrangement.
+            </p>
+            <p>
+              As block-level elements, paragraphs already automatically begin on
+              a new line and, by default, add space above and below.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Syntax</h3>
+            <div class="code-block">
+              &lt;p&gt;This is a paragraph.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The content between the tags, which is supposed to be a paragraph,
+              is enclosed in the &lt;p&gt; element. It is a paired tag, which
+              implies that it has opening &lt;p&gt; and closing &lt;/p&gt; tags.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Space Inside HTML Paragraphs -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Space Inside HTML Paragraphs</h1>
+          <p class="slide-subtitle">How browsers handle whitespace</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If you put a lot of spaces inside the HTML p tag, browser removes
+              extra spaces and extra line while displaying the page. The browser
+              counts number of spaces and lines as a single one.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              &lt;p&gt;<br />
+              I am<br />
+              going to provide<br />
+              you a tutorial on HTML<br />
+              and hope that it will<br />
+              be very beneficial for you.<br />
+              &lt;/p&gt;<br /><br />
+              &lt;p&gt;<br />
+              Look, I put here a lot<br />
+              of spaces but I know, Browser will ignore it.<br />
+              &lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              As you can see, all the extra lines and unnecessary spaces are
+              removed by the browser.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Using &lt;br&gt; and &lt;hr&gt; with Paragraphs -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">
+            Using &lt;br&gt; and &lt;hr&gt; with Paragraphs
+          </h1>
+          <p class="slide-subtitle">Adding breaks and horizontal rules</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              An HTML &lt;br&gt; tag is used for line break and it can be used
+              with paragraph elements.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example using &lt;br&gt; tag</h3>
+            <div class="code-block">
+              &lt;h2&gt; Use of line break with paragraph tag&lt;/h2&gt;<br />
+              &lt;p&gt;&lt;br&gt;Papa and mama, and baby and Dot,<br />
+              &lt;br&gt;Willie and me?the whole of the lot<br />
+              &lt;br&gt;Of us all went over in Bimberlie's sleigh,<br />
+              &lt;br&gt;To grandmama's house on Christmas day.<br />
+              &lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Example using &lt;hr&gt; tag</h3>
+            <div class="code-block">
+              &lt;h2&gt; Example to show a horizontal line with
+              paragraphs&lt;/h2&gt;<br />
+              &lt;p&gt; An HTML hr tag draw a horizontal line and separate two
+              paragraphs with that line &lt;hr&gt; it will start a new
+              paragraph.<br />
+              &lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The &lt;pre&gt; tag preserves the literal layout of the text,
+              spaces and line breaks. It works best with poetry, code blocks, or
+              any other content that needs to maintain a specific format.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Paragraph Alignment and Styling -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Paragraph Alignment and Styling</h1>
+          <p class="slide-subtitle">Formatting paragraphs with CSS</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Text alignment defines the position of the content in the
+              paragraph horizontally. In older versions of HTML, the align
+              attribute was used, but in modern HTML, this has been replaced
+              with CSS to allow more flexibility and to produce cleaner code.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Preferred CSS Method</h3>
+            <div class="code-block">
+              &lt;p style="text-align: center;"&gt;Centered text&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Internal CSS</h3>
+            <div class="code-block">
+              &lt;style&gt;<br />
+              &nbsp;&nbsp;p {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;font-size: 18px;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;color: navy;<br />
+              &nbsp;&nbsp;}<br />
+              &lt;/style&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              CSS provides much more control over paragraph formatting than
+              deprecated HTML attributes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 13: Embedding Elements Within Paragraphs -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Embedding Elements Within Paragraphs</h1>
+          <p class="slide-subtitle">Adding inline elements to paragraphs</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Inline elements may be used within HTML paragraphs to add content.
+              You may add formatting tags, links, pictures or even highlight
+              some words without destroying the paragraph structure.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Emphasis Tags</h3>
+            <div class="code-block">
+              &lt;p&gt;This is a &lt;em&gt;paragraph&lt;/em&gt; with
+              &lt;strong&gt;emphasized&lt;/strong&gt; text.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Links and Images</h3>
+            <div class="code-block">
+              &lt;p&gt;Visit &lt;a href="https://tpointtech.com"&gt;our
+              website&lt;/a&gt;.&lt;/p&gt;<br />
+              &lt;p&gt;Here is an image: &lt;img src="tpointlogo.png"
+              alt="Logo"&gt;&lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These inline elements add meaning and functionality to your
+              paragraphs while maintaining the paragraph structure.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 14: Best Practices and Conclusion -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Best Practices and Conclusion</h1>
+          <p class="slide-subtitle">
+            Key takeaways for headings and paragraphs
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Paragraph Best Practices</h3>
+            <ul>
+              <li>
+                Nesting paragraphs should not be nested inside other paragraphs
+                because HTML does not permit one &lt;p&gt; tag to be contained
+                within another.
+              </li>
+              <li>
+                Paragraphs may consist of text or inline elements such as
+                &lt;span&gt;, &lt;a&gt; or &lt;em&gt;, but not block elements
+                such as &lt;div&gt; or &lt;table&gt;.
+              </li>
+              <li>
+                Avoid enclosing non-textual content that includes images or
+                forms in &lt;p&gt; tags.
+              </li>
+              <li>
+                Use CSS for positioning and arranging, rather than deprecated
+                attributes such as align.
+              </li>
+            </ul>
+          </div>
+          <div class="text-section">
+            <h3>Conclusion</h3>
+            <p>
+              HTML heading tags are important for arranging web content visually
+              and according to meaning. Proper usage of &lt;h1&gt; to &lt;h6&gt;
+              tags allows developers to display content logically and improve
+              the website for users, reduce barriers to accessibility, and raise
+              its chances with search engines.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML &lt;p&gt; tag is an essential device used to structure text
+              information on a web page. Knowing the paragraph behavior in HTML
+              can make your content organized, easy to read and pleasurable to
+              the eye.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>HTML Headings and Paragraphs Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

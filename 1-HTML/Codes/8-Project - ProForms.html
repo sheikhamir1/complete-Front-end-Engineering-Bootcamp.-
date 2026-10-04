@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProForms | Professional Application Portal</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f4f6f9;
+    "
+  >
+    <!-- HEADER -->
+
+    <header
+      style="
+        background-color: #1e293b;
+        color: white;
+        padding: 30px;
+        text-align: center;
+      "
+    >
+      <h1>ProForms Portal</h1>
+      <p>
+        <em> Professional Multi-Section Application System </em>
+      </p>
+
+      <nav style="margin-top: 15px">
+        <a href="#register" style="color: white; margin: 0px 15px">Register</a>
+        <a href="#login" style="color: white; margin: 0px 15px">login</a>
+        <a href="#application Form" style="color: white; margin: 0px 15px"
+          >Application Form</a
+        >
+        <a href="#feedback" style="color: white; margin: 0px 15px">Feedback</a>
+      </nav>
+    </header>
+
+    <main style="max-width: 1000px; margin: auto; padding: 50px">
+      <!-- Registration Form -->
+
+      <section id="register">
+        <h2>Account Registration</h2>
+
+        <form
+          action="#"
+          method="post"
+          autocomplete="on"
+          style="background-color: white; padding: 30px; border-radius: 8px"
+        >
+          <label>Full Name *</label><br />
+          <input
+            type="text"
+            name="fullname"
+            required
+            minlength="3"
+            maxlength="50"
+            placeholder="Enter full name"
+          />
+          <br /><br />
+
+          <label>Email Address *</label><br />
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="example@email.com"
+          />
+          <br /><br />
+
+          <label>Password *</label><br />
+          <input
+            type="password"
+            name="password"
+            required
+            minlength="8"
+            placeholder="********"
+          />
+          <br /><br />
+
+          <label>Confirm Password *</label><br />
+          <input
+            type="password"
+            name="confrim_password"
+            required
+            minlength="8"
+            placeholder="********"
+          />
+          <br /><br />
+
+          <label>Date of birth *</label><br />
+          <input type="date" name="dob" required />
+          <br /><br />
+
+          <label>Upload Profile Photo</label><br />
+          <input type="file" name="profile_photo" accept="image/*" />
+          <br /><br />
+
+          <input
+            type="submit"
+            value="Create Account"
+            style="
+              padding: 10px 20px;
+              background-color: #1e293b;
+              color: white;
+              border: none;
+            "
+          />
+          <br /><br />
+
+          <input type="reset" value="Reset" style="padding: 10px 20px" />
+        </form>
+      </section>
+
+      <!-- Login FORM -->
+
+      <section id="login">
+        <h2>User Login</h2>
+
+        <form
+          action="#"
+          method="post"
+          style="background: white; padding: 30px; border-radius: 8px"
+        >
+          <label>Email *</label><br />
+          <input type="email" name="login_email" required /><br /><br />
+
+          <label>Password *</label><br />
+          <input type="password" name="login_password" required /><br /><br />
+
+          <label> <input type="checkbox" name="remember" /> Remember Me </label
+          ><br /><br />
+
+          <input
+            type="submit"
+            value="Login"
+            style="
+              padding: 10px 20px;
+              background: #1e293b;
+              color: white;
+              border: none;
+            "
+          />
+        </form>
+      </section>
+
+      <hr style="margin: 60px 0" />
+
+      <!-- Professional Application Form -->
+
+      <section id="application">
+        <h2>Professional Application Form</h2>
+
+        <form
+          action="#"
+          method="post"
+          enctype="multipart/form-data"
+          style="background: white; padding: 30px; border-radius: 8px"
+        >
+          <h3>Personal Information</h3>
+
+          <label>Phone Number *</label><br />
+          <input
+            type="tel"
+            name="phone"
+            pattern="[0-9]{10}"
+            required
+            placeholder="10 digit number"
+          /><br /><br />
+
+          <label>Website / Portfolio</label><br />
+          <input
+            type="url"
+            name="portfolio"
+            placeholder="https://example.com"
+          /><br /><br />
+
+          <label>Years of Experience *</label><br />
+          <input
+            type="number"
+            name="experience"
+            min="0"
+            max="50"
+            required
+          /><br /><br />
+
+          <label>Preferred Interview Time</label><br />
+          <input type="time" name="interview_time" /><br /><br />
+
+          <label>Available From</label><br />
+          <input type="datetime-local" name="available_from" /><br /><br />
+
+          <label>Skill Level</label><br />
+          <input type="range" name="skill_level" min="1" max="10" /><br /><br />
+
+          <h3>Position Selection</h3>
+
+          <label>
+            <input type="radio" name="position" value="frontend" required />
+            Frontend Developer </label
+          ><br />
+
+          <label>
+            <input type="radio" name="position" value="backend" /> Backend
+            Developer </label
+          ><br />
+
+          <label>
+            <input type="radio" name="position" value="data" /> Data Scientist </label
+          ><br /><br />
+
+          <h3>Technical Skills</h3>
+
+          <label>
+            <input type="checkbox" name="skills" value="html" /> HTML </label
+          ><br />
+
+          <label>
+            <input type="checkbox" name="skills" value="css" /> CSS </label
+          ><br />
+
+          <label>
+            <input type="checkbox" name="skills" value="javascript" />
+            JavaScript </label
+          ><br /><br />
+
+          <label>Resume Upload *</label><br />
+          <input type="file" name="resume" required /><br /><br />
+
+          <label>Cover Letter *</label><br />
+          <textarea
+            name="cover_letter"
+            rows="5"
+            cols="50"
+            required
+            placeholder="Write your cover letter here..."
+          ></textarea
+          ><br /><br />
+
+          <input
+            type="submit"
+            value="Submit Application"
+            style="
+              padding: 10px 20px;
+              background: #1e293b;
+              color: white;
+              border: none;
+            "
+          />
+        </form>
+      </section>
+
+      <hr style="margin: 60px 0" />
+
+      <!-- ================= FEEDBACK FORM ================= -->
+
+      <section id="feedback">
+        <h2>Website Feedback</h2>
+
+        <form
+          action="#"
+          method="post"
+          style="background: white; padding: 30px; border-radius: 8px"
+        >
+          <label>Your Name *</label><br />
+          <input
+            type="text"
+            name="feedback_name"
+            required
+            placeholder="Enter Your name"
+          /><br /><br />
+
+          <label>Email</label><br />
+          <input
+            type="email"
+            name="feedback_email"
+            placeholder="example@email.com"
+          /><br /><br />
+
+          <label>Rate Our Platform</label><br />
+          <input type="range" name="rating" min="1" max="5" /><br /><br />
+
+          <label>Your Feedback *</label><br />
+          <textarea
+            name="feedback_message"
+            rows="5"
+            cols="50"
+            required
+            placeholder="Write your feedback here..."
+          ></textarea
+          ><br /><br />
+
+          <input
+            type="submit"
+            value="Send Feedback"
+            style="
+              padding: 10px 20px;
+              background: #1e293b;
+              color: white;
+              border: none;
+            "
+          />
+        </form>
+      </section>
+    </main>
+
+    <footer
+      style="
+        background: #1e293b;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      "
+    >
+      <p>© 2026 ProForms Portal | Professional HTML Forms System</p>
+    </footer>
+  </body>
+</html>

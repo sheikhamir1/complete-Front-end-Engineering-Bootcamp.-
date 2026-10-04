@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Building Blocks of HTML</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Building Blocks of HTML</h1>
+          <p class="slide-subtitle">The fundamental components of web pages</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="HTML code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              HTML is necessary for creating any webpage that you find on the
+              internet. It presents text, images, links, forms and similar items
+              using tags in a special system. For either beginners or those who
+              plan to become web developers, it's important to learn how HTML
+              forms the base of web pages.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The most important components of an HTML document are: Tags,
+              Attributes, and Elements. It's important to understand how these
+              work together to affect a webpage's design and content.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: HTML Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Tags</h1>
+          <p class="slide-subtitle">The foundation of HTML structure</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Tags make HTML possible. They set out the way content should
+              behave or look when displayed on the internet. Most of the time,
+              the tags used in HTML pair a start tag and an end tag.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Syntax</h3>
+            <div class="code-block">
+              &lt;tagname&gt;Content goes here&lt;/tagname&gt;
+            </div>
+            <p>
+              The tag at the start of a content section, such as &lt;p&gt;,
+              marks the beginning of its layout or purpose. This tag indicates
+              the ending of a paragraph: &lt;/p&gt;. What's inside the tags is
+              the content that gets altered.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Self-closing Tags</h3>
+            <p>
+              Some tags are self-closing or do not need content - they have
+              functions, even without any content inside. These are tags, for
+              example, &lt;br&gt; for new lines and &lt;img&gt; for photos.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Tags are the fundamental building blocks of HTML. They define the
+              structure and meaning of your content.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Common HTML Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Common HTML Tags</h1>
+          <p class="slide-subtitle">Frequently used tags in HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="comparison-table">
+            <table>
+              <tr>
+                <th>Tags</th>
+                <th>Meaning</th>
+              </tr>
+              <tr>
+                <td>&lt;h1&gt; to &lt;h6&gt;</td>
+                <td>Headings from most to least important</td>
+              </tr>
+              <tr>
+                <td>&lt;p&gt;</td>
+                <td>Paragraph</td>
+              </tr>
+              <tr>
+                <td>&lt;a&gt;</td>
+                <td>Anchor (hyperlink)</td>
+              </tr>
+              <tr>
+                <td>&lt;div&gt;</td>
+                <td>Division or section</td>
+              </tr>
+              <tr>
+                <td>&lt;img&gt;</td>
+                <td>Image</td>
+              </tr>
+              <tr>
+                <td>&lt;br&gt;</td>
+                <td>Line break</td>
+              </tr>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags form the foundation of most web pages. Understanding
+              how to use them properly is essential for creating well-structured
+              and accessible websites.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: HTML Attributes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Attributes</h1>
+          <p class="slide-subtitle">Adding extra information to elements</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Attributes add additional information to elements and should be
+              set up in the tag where the element is first mentioned. Each pair
+              consists of a name and a value, where the name describes the
+              value.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Syntax</h3>
+            <div class="code-block">
+              &lt;tagname attribute="value"&gt;Content&lt;/tagname&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Examples</h3>
+            <div class="code-block">
+              &lt;p style="color:blue;"&gt;This paragraph is styled
+              blue.&lt;/p&gt;<br />
+              &lt;img src="photo.jpg" alt="A scenic view" width="400"
+              height="300" /&gt;<br />
+              &lt;a href="https://www.tpointtech.com"&gt;Visit
+              TPointTech&lt;/a&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML behaviour and look are greatly improved by attributes such as
+              style, src, href, alt and class.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: HTML Elements -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Elements</h1>
+          <p class="slide-subtitle">The complete structure of HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The structure of an HTML element is a tag, the content you place
+              and another tag. Browsers turn various elements into the content
+              you see, such as headings, lists, links, images and paragraphs. A
+              tag surrounds any time content, and an element is formed.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              &lt;!DOCTYPE html&gt;<br />
+              &lt;html&gt;<br />
+              &nbsp;&nbsp;&lt;head&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;The basic building blocks of
+              HTML&lt;/title&gt;<br />
+              &nbsp;&nbsp;&lt;/head&gt;<br />
+              &nbsp;&nbsp;&lt;body&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;The building
+              blocks&lt;/h2&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;This is a paragraph
+              tag&lt;/p&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p style="color: red"&gt;The style is
+              attribute of paragraph tag&lt;/p&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;span&gt;The element contains tag,
+              attribute and content&lt;/span&gt;<br />
+              &nbsp;&nbsp;&lt;/body&gt;<br />
+              &lt;/html&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML elements are the complete packages that include tags,
+              attributes, and content. They are the building blocks of web
+              pages.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Structure of an HTML Document -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Structure of an HTML Document</h1>
+          <p class="slide-subtitle">The basic skeleton of HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              All HTML documents use certain structural elements in a basic way.
+              An HTML skeleton is ready for you below:
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Example</h3>
+            <div class="code-block">
+              &lt;!DOCTYPE html&gt;<br />
+              &lt;html&gt;<br />
+              &nbsp;&nbsp;&lt;head&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;HTML Page&lt;/title&gt;<br />
+              &nbsp;&nbsp;&lt;/head&gt;<br />
+              &nbsp;&nbsp;&lt;body&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Hello, World!&lt;/h1&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;This is a simple
+              webpage.&lt;/p&gt;<br />
+              &nbsp;&nbsp;&lt;/body&gt;<br />
+              &lt;/html&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>What Every Structure Tag Means:</h3>
+            <ul>
+              <li>
+                <strong>&lt;!DOCTYPE html&gt;:</strong> Defines that this
+                document is HTML5.
+              </li>
+              <li>
+                <strong>&lt;html&gt;:</strong> Holds together the entire HTML
+                document.
+              </li>
+              <li>
+                <strong>&lt;head&gt;:</strong> Has data known as metadata
+                inside, which covers the page title and links to related
+                resources.
+              </li>
+              <li>
+                <strong>&lt;title&gt;:</strong> It sets the headline seen above
+                the page when you open your browser.
+              </li>
+              <li>
+                <strong>&lt;body&gt;:</strong> Includes everything that can be
+                seen on the screen, like text, images, buttons and links.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Nested Elements and Empty Elements -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Nested Elements and Empty Elements</h1>
+          <p class="slide-subtitle">How elements relate to each other</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Nested Elements</h3>
+            <p>
+              In HTML, you are able to put elements within other elements.
+              People call this nesting and it's very important for keeping
+              things orderly.
+            </p>
+            <div class="code-block">
+              &lt;body&gt;<br />
+              &nbsp;&nbsp;&lt;div&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2&gt;Nested Structure&lt;/h2&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;This paragraph is nested within a
+              div.&lt;/p&gt;<br />
+              &nbsp;&nbsp;&lt;/div&gt;<br />
+              &lt;/body&gt;
+            </div>
+            <p>
+              Note: Above, you can see that the parent of &lt;p&gt; and
+              &lt;h2&gt; within the &lt;div&gt; element.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Empty / Void Elements</h3>
+            <p>
+              A number of elements in HTML can be open or closed, as they do not
+              include content. We call these elements empty or void for this
+              reason.
+            </p>
+            <div class="comparison-table">
+              <table>
+                <tr>
+                  <th>Tag</th>
+                  <th>Description</th>
+                </tr>
+                <tr>
+                  <td>&lt;br&gt;</td>
+                  <td>Inserts a line break</td>
+                </tr>
+                <tr>
+                  <td>&lt;hr&gt;</td>
+                  <td>Horizontal rule (line)</td>
+                </tr>
+                <tr>
+                  <td>&lt;img&gt;</td>
+                  <td>Embeds an image</td>
+                </tr>
+                <tr>
+                  <td>&lt;input&gt;</td>
+                  <td>Input field in forms</td>
+                </tr>
+                <tr>
+                  <td>&lt;link&gt;</td>
+                  <td>Used in the &lt;head&gt; for stylesheets</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Block-Level vs Inline Elements -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Block-Level vs Inline Elements</h1>
+          <p class="slide-subtitle">How elements behave on the page</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Block-Level Elements</h3>
+            <p>
+              Each block-level element is separated into its line and spans the
+              entire width of the container. Most of these elements additionally
+              contain other elements such as &lt;p&gt;, &lt;h1&gt; to
+              &lt;h6&gt;, &lt;section&gt;, &lt;article&gt; and &lt;table&gt;.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;This is a block-level paragraph.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Inline Elements</h3>
+            <p>
+              Meanwhile, inline elements run along with the adjacent content and
+              only grab as much space as needed. &lt;span&gt;, &lt;a&gt;,
+              &lt;img&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;input&gt; are
+              considered as inline elements.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;This is &lt;strong&gt;bold text&lt;/strong&gt; in a
+              paragraph.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Understanding the difference between block-level and inline
+              elements is crucial for proper HTML layout and design. Block
+              elements create structure, while inline elements flow within that
+              structure.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Text Formatting and List Elements -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Text Formatting and List Elements</h1>
+          <p class="slide-subtitle">Organizing and styling text content</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Text Formatting Tags</h3>
+            <p>HTML allows you to use text formatting without CSS.</p>
+            <div class="comparison-table">
+              <table>
+                <tr>
+                  <th>Tag</th>
+                  <th>Description</th>
+                </tr>
+                <tr>
+                  <td>&lt;strong&gt;</td>
+                  <td>Bold</td>
+                </tr>
+                <tr>
+                  <td>&lt;em&gt;</td>
+                  <td>Italic</td>
+                </tr>
+                <tr>
+                  <td>&lt;u&gt;</td>
+                  <td>Underlined</td>
+                </tr>
+                <tr>
+                  <td>&lt;mark&gt;</td>
+                  <td>Highlighted</td>
+                </tr>
+                <tr>
+                  <td>&lt;del&gt;</td>
+                  <td>Strikethrough</td>
+                </tr>
+                <tr>
+                  <td>&lt;small&gt;</td>
+                  <td>Smaller text</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>List Elements</h3>
+            <p>
+              HTML allows users to organise things into lists with three types:
+            </p>
+            <ul>
+              <li>
+                <strong>Unordered List:</strong> Applied when order does not
+                play any role. Most of the time, each item is shown with bullet
+                points.
+              </li>
+              <li>
+                <strong>Ordered List:</strong> Helps to convey meaning when
+                order matters. The process automatically numbers your items for
+                you.
+              </li>
+              <li>
+                <strong>Definition List:</strong> Designed to present terms and
+                what they mean. It is convenient for creating glossaries or
+                metadata.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Hyperlinks and Images -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Hyperlinks and Images</h1>
+          <p class="slide-subtitle">
+            Connecting pages and adding visual content
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Hyperlinks</h3>
+            <p>
+              Users are taken to other websites by clicking on the hyperlinks
+              within the text.
+            </p>
+            <div class="code-block">
+              &lt;a href="https://example.com"&gt;Visit Example&lt;/a&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Images</h3>
+            <p>
+              You need the &lt;img&gt; tag to embed images on a webpage. Don't
+              forget to mention the source attribute (src) and the optional
+              alternate text (alt).
+            </p>
+            <div class="code-block">
+              &lt;img src="logo.png" alt="TPointTech Logo" width="200" /&gt;
+            </div>
+            <div class="highlight-box">
+              <p>
+                Having alt text in the &lt;img&gt; tag makes a website more
+                accessible and easier to find for search engines.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Tables and Forms -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Tables and Forms</h1>
+          <p class="slide-subtitle">
+            Organizing data and collecting user input
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Tables</h3>
+            <p>
+              Tables in HTML are helpful because they line up data in both rows
+              and columns, making it clear to the viewer.
+            </p>
+            <div class="code-block">
+              &lt;table&gt;<br />
+              &nbsp;&nbsp;&lt;thead&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;<br />
+              &nbsp;&nbsp;&lt;/thead&gt;<br />
+              &nbsp;&nbsp;&lt;tbody&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Alice&lt;/td&gt;&lt;td&gt;28&lt;/td&gt;&lt;/tr&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Bob&lt;/td&gt;&lt;td&gt;32&lt;/td&gt;&lt;/tr&gt;<br />
+              &nbsp;&nbsp;&lt;/tbody&gt;<br />
+              &lt;/table&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Forms</h3>
+            <p>
+              Forms allow users to input data, such as names or comments, which
+              can be submitted to a server for processing.
+            </p>
+            <div class="code-block">
+              &lt;form&gt;<br />
+              &nbsp;&nbsp;&lt;label&gt;Name:&lt;/label&gt;<br />
+              &nbsp;&nbsp;&lt;input type="text" name="username" /&gt;<br />
+              &nbsp;&nbsp;&lt;button type="submit"&gt;Submit&lt;/button&gt;<br />
+              &lt;/form&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Semantic Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Semantic Tags</h1>
+          <p class="slide-subtitle">Making HTML more meaningful</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              HTML5 introduced semantic elements to clearly describe the meaning
+              and role of different parts of a webpage. Because of these
+              elements, web content becomes easier for browsers, search engines
+              and assistive technologies to interpret and understand.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Common Semantic Elements</h3>
+            <div class="two-column">
+              <div class="column">
+                <div class="info-card">
+                  <h4>&lt;header&gt;</h4>
+                  <p>
+                    Represents introductory content, typically a group of
+                    introductory or navigational aids.
+                  </p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;nav&gt;</h4>
+                  <p>
+                    Represents a section of a page whose purpose is to provide
+                    navigation links.
+                  </p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;main&gt;</h4>
+                  <p>Specifies the main, dominant content of a document.</p>
+                </div>
+              </div>
+              <div class="column">
+                <div class="info-card">
+                  <h4>&lt;article&gt;</h4>
+                  <p>
+                    Represents a self-contained composition in a document, page,
+                    application, or site.
+                  </p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;section&gt;</h4>
+                  <p>Represents a standalone section of a document.</p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;footer&gt;</h4>
+                  <p>
+                    Represents the footer for its nearest sectioning content or
+                    sectioning root element.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The use of semantic tags ensures accessibility is improved, SEO
+              becomes enhanced, and your code is organised and easy to handle by
+              developers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 13: Conclusion -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Conclusion</h1>
+          <p class="slide-subtitle">The importance of HTML building blocks</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You have to know about tags, attributes and elements when creating
+              any webpage. They are the key elements behind how web content is
+              put together and shown on websites.
+            </p>
+            <p>
+              With HTML, visitors can enjoy web pages that have proper structure
+              thanks to headings, paragraphs, photos, forms and connections
+              between pages.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              When you learn these essential concepts thoroughly, you can create
+              useful web pages. HTML provides the foundation for all web
+              development, and understanding its building blocks is the first
+              step toward becoming a proficient web developer.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Next Steps</h3>
+            <ul>
+              <li>Practice creating HTML pages with different elements</li>
+              <li>Learn CSS to style your HTML pages</li>
+              <li>Explore JavaScript to add interactivity</li>
+              <li>Study responsive design principles</li>
+              <li>Learn about accessibility and semantic HTML</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Building Blocks of HTML Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

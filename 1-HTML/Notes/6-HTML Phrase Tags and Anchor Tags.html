@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Phrase Tags and Anchor Tags</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Phrase Tags and Anchor Tags</h1>
+          <p class="slide-subtitle">
+            Adding meaning and navigation to web content
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="HTML phrase and anchor tags"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              HTML phrase tags are special purpose tags that define the
+              structural meaning of a block of text or the semantics of text.
+              Anchor tags create hyperlinks that allow navigation between web
+              pages and content.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide semantic meaning to content and enable the
+              interconnected nature of the web through links.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: HTML Phrase Tags Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Phrase Tags Overview</h1>
+          <p class="slide-subtitle">Adding semantic meaning to text</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              HTML phrase tags provide semantic meaning to text content.
+              Following is the list of phrase tags:
+            </p>
+          </div>
+          <div class="list-section">
+            <ul>
+              <li>Abbreviation tag: &lt;abbr&gt;</li>
+              <li>Marked tag: &lt;mark&gt;</li>
+              <li>Strong tag: &lt;strong&gt;</li>
+              <li>Emphasized tag: &lt;em&gt;</li>
+              <li>Definition tag: &lt;dfn&gt;</li>
+              <li>Quoting tag: &lt;blockquote&gt;</li>
+              <li>Short quote tag: &lt;q&gt;</li>
+              <li>Code tag: &lt;code&gt;</li>
+              <li>Keyboard tag: &lt;kbd&gt;</li>
+              <li>Address tag: &lt;address&gt;</li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide both visual formatting and semantic meaning,
+              making content more accessible and SEO-friendly.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Abbreviation and Marked Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Abbreviation and Marked Tags</h1>
+          <p class="slide-subtitle">Highlighting and defining terms</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Abbreviation Tag: &lt;abbr&gt;</h3>
+            <p>
+              This tag is used to abbreviate a text. To abbreviate a text, write
+              text between &lt;abbr&gt; and &lt;/abbr&gt; tags.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;<br />
+              An &lt;abbr title="Hypertext Markup Language"&gt;HTML&lt;/abbr&gt;
+              language is used to create web pages.<br />
+              &lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Marked Tag: &lt;mark&gt;</h3>
+            <p>
+              The content written between &lt;mark&gt; and &lt;/mark&gt; tag
+              will show as a yellow mark on the browser. This tag is used to
+              highlight a particular text.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;This tag will &lt;mark&gt;highlight&lt;/mark&gt; the
+              text.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide both visual emphasis and semantic meaning to
+              text content.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Strong and Emphasized Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Strong and Emphasized Tags</h1>
+          <p class="slide-subtitle">Adding importance and emphasis</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Strong Tag: &lt;strong&gt;</h3>
+            <p>
+              This tag is used to display the important text of the content. The
+              text written between &lt;strong&gt; and &lt;/strong&gt; will be
+              displayed as important text.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;In HTML it is recommended to use
+              &lt;strong&gt;lower-case&lt;/strong&gt;, while writing a
+              code.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Emphasized Tag: &lt;em&gt;</h3>
+            <p>
+              This tag is used to emphasize the text and display the text in
+              italic form. The text written between &lt;em&gt; and &lt;/em&gt;
+              tags will italicized the text.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;HTML is an &lt;em&gt;easy &lt;/em&gt;to learn
+              language.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide semantic meaning beyond just visual formatting,
+              making content more accessible.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Definition and Quoting Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Definition and Quoting Tags</h1>
+          <p class="slide-subtitle">Defining terms and quoting sources</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Definition Tag: &lt;dfn&gt;</h3>
+            <p>
+              When you use the &lt;dfn&gt; and &lt;/dfn&gt; tags, it allows you
+              to specify the keyword of the content.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;&lt;dfn&gt;HTML &lt;/dfn&gt; is a markup
+              language.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Quoting Tag: &lt;blockquote&gt;</h3>
+            <p>
+              The HTML &lt;blockquote&gt; element shows that the enclosed
+              content is quoted from another source.
+            </p>
+            <div class="code-block">
+              &lt;blockquote
+              cite="https://www.keepinspiring.me/famous-quotes/"&gt;<br />
+              &nbsp;&nbsp;&lt;p&gt;The first step toward success is taken when
+              you refuse to be a captive of the environment in which you first
+              find yourself.&lt;/p&gt;<br />
+              &lt;/blockquote&gt;<br />
+              &lt;cite&gt;-Mark Caine&lt;/cite&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide semantic meaning to definitions and quotations,
+              improving accessibility and SEO.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Short Quotations and Code Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Short Quotations and Code Tags</h1>
+          <p class="slide-subtitle">Inline quotes and code snippets</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Short Quotations: &lt;q&gt;</h3>
+            <p>
+              An HTML &lt;q&gt; ....... &lt;/q&gt; element defines a short
+              quotation. If you will put any content between &lt;q&gt; .......
+              &lt;/q&gt;, then it will enclose the text in double quotes.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;Steve Jobs said: &lt;q&gt;If You Are Working On Something
+              That You Really Care About, You Don't Have To Be Pushed. The
+              Vision Pulls You.&lt;/q&gt;&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Code Tag: &lt;code&gt;</h3>
+            <p>
+              The HTML &lt;code&gt; &lt;/code&gt; element is used to display the
+              part of computer code. It will display the content in monospaced
+              font.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;First Java program&lt;/p&gt;<br />
+              &lt;p&gt;&lt;code&gt;class Simple{ public static void main(String
+              args[]){ System.out.println("Hello Java");
+              }}&lt;/code&gt;&lt;/p&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide semantic meaning to inline quotes and code
+              snippets.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Keyboard and Address Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Keyboard and Address Tags</h1>
+          <p class="slide-subtitle">User input and contact information</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Keyboard Tag: &lt;kbd&gt;</h3>
+            <p>
+              In HTML, the keyboard tag &lt;kbd&gt; indicates that a section of
+              content is a user input from the keyboard.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;Please press &lt;kbd&gt;Ctrl&lt;/kbd&gt; +
+              &lt;kbd&gt;Shift&lt;/kbd&gt; + &lt;kbd&gt;t&lt;/kbd&gt; to restore
+              page on chrome.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Address Tag: &lt;address&gt;</h3>
+            <p>
+              An HTML &lt;address&gt; tag defines the contact information of the
+              author of the content. The content is written between
+              &lt;address&gt; and &lt;/address&gt; tags, and then it will be
+              displayed in italic font.
+            </p>
+            <div class="code-block">
+              &lt;address&gt;<br />
+              You can ask your queries by contact us on &lt;a
+              href=""&gt;example123@newdomain.com&lt;/a&gt;<br />
+              &lt;br&gt; You can also visit at: &lt;br&gt;58 S. Garfield Street.
+              Villa Rica, GA 30187.<br />
+              &lt;/address&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These tags provide semantic meaning to user input and contact
+              information.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: HTML Anchor Tag Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Anchor Tag</h1>
+          <p class="slide-subtitle">Creating hyperlinks</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The anchor tag &lt;a&gt; is an essential HTML element that
+              constitutes a hyperlink, allowing people to navigate among various
+              web pages, files, or parts of a webpage.
+            </p>
+            <p>
+              It is among the pillars of the web that offer a means of relating
+              content and enables ease of browsing.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>What Is Hypertext and a Hyperlink?</h3>
+            <p>
+              It is always beneficial to understand the concept of hypertext,
+              which is the text displayed in a browser that contains hyperlinks,
+              before we delve into the anchor tag itself.
+            </p>
+            <p>
+              There are hyperlinks, also known as links, which enable users to
+              skip between pages, documents, or even within a single page.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The href attribute is the most important attribute of this tag
+              because it contains the destination of the URL or path.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: href Attribute and Linking to Pages -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">href Attribute and Linking to Pages</h1>
+          <p class="slide-subtitle">Creating links between pages</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>href Attribute</h3>
+            <p>
+              The href attribute is used to define the address of the file to be
+              linked. In other words, it directs the user to the destination
+              page.
+            </p>
+            <div class="code-block">
+              &lt;a href = "..........."&gt; Link Text &lt;/a&gt;
+            </div>
+            <p>
+              where href represents the attribute that contains the destination
+              address, and Link Text represents the clickable text visible to
+              users.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Linking to another HTML page</h3>
+            <div class="code-block">
+              &lt;!DOCTYPE html&gt;<br />
+              &lt;html lang="en"&gt;<br />
+              &lt;head&gt;<br />
+              &nbsp;&nbsp;&lt;title&gt;Main Page&lt;/title&gt;<br />
+              &lt;/head&gt;<br />
+              &lt;body&gt;<br />
+              &nbsp;&nbsp;&lt;h1&gt;Welcome to the Main Page&lt;/h1&gt;<br />
+              &nbsp;&nbsp;&lt;p&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href="second.html"&gt;Click for
+              Second Page&lt;/a&gt;<br />
+              &nbsp;&nbsp;&lt;/p&gt;<br />
+              &lt;/body&gt;<br />
+              &lt;/html&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              This forms a hyperlink that, when activated, opens the given file
+              (second.html) in the same tab by default.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Target Attribute and Link Appearance -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Target Attribute and Link Appearance</h1>
+          <p class="slide-subtitle">Controlling how links open</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Target Attribute</h3>
+            <p>
+              If we want to open that link to another page, then we can use the
+              target attribute of &lt;a&gt; tag. With the help of this link, you
+              will be directed to the next page.
+            </p>
+            <div class="code-block">
+              &lt;p&gt;Click on &lt;a href="https://www.tpointtech.com/"
+              target="_blank"&gt; this-link &lt;/a&gt;to go on home page of
+              Tpoint Tech.&lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Link Appearance</h3>
+            <ul>
+              <li>An unvisited link is displayed in blue and underlined.</li>
+              <li>A visited link is displayed underlined and purple.</li>
+              <li>An active link is underlined and red.</li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Target="_blank" is an instruction that informs the browser to open
+              the link in a new tab without affecting the original one.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Image Links and Email/Phone Links -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Image Links and Email/Phone Links</h1>
+          <p class="slide-subtitle">Creating different types of links</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Anchor Tag with Images</h3>
+            <p>
+              Anchor tags do not work only with text; they can also be used to
+              create image links.
+            </p>
+            <div class="code-block">
+              &lt;a href="https://www.tpointtech.com/"&gt;<br />
+              &nbsp;&nbsp;&lt;img src="/tpt-logo.png" alt="main logo of
+              tpointtech" width="170" height="57"&gt;<br />
+              &lt;/a&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Email and Telephone Links</h3>
+            <p>
+              Email and phone links can also be an anchor tag, making it easier
+              for your users to reach you personally.
+            </p>
+            <div class="code-block">
+              &lt;a href="mailto:prachet@tpointtech.com"&gt;Send
+              Email&lt;/a&gt;<br /><br />
+              &lt;a href="tel:+910000000"&gt;Call Us&lt;/a&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The mailto: scheme opens a mail client and inserts the destination
+              in the address field. The tel: initiates a call through
+              smartphones.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Internal Page Linking and JavaScript -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Internal Page Linking and JavaScript</h1>
+          <p class="slide-subtitle">Advanced link techniques</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Internal Page Linking</h3>
+            <p>
+              Internal anchors can also be used on the same web page using
+              anchor tags elsewhere on the site.
+            </p>
+            <div class="code-block">
+              &lt;a href="#section1"&gt;Go to Section 1&lt;/a&gt;<br />
+              ...<br />
+              &lt;h2 id="section1"&gt;Welcome to Section 1&lt;/h2&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Executing JavaScript with Anchor Tag</h3>
+            <p>
+              With the javascript: protocol, JavaScript code can be executed
+              through anchor tags.
+            </p>
+            <div class="code-block">
+              &lt;a href="javascript:alert('Hello, user!');"&gt;Click
+              Me&lt;/a&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              The href="#id" format is used to refer to an element that is
+              located on the same page and has the same id.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 13: Additional Anchor Tag Attributes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Additional Anchor Tag Attributes</h1>
+          <p class="slide-subtitle">More control over link behavior</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              There are several additional attributes that can be used with
+              anchor tags to control their behavior:
+            </p>
+          </div>
+          <div class="comparison-table">
+            <table>
+              <tr>
+                <th>Attribute</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>href</td>
+                <td>Defines where in a link to go</td>
+              </tr>
+              <tr>
+                <td>target</td>
+                <td>States where the link has to be opened</td>
+              </tr>
+              <tr>
+                <td>download</td>
+                <td>Triggers download instead of navigating</td>
+              </tr>
+              <tr>
+                <td>hreflang</td>
+                <td>Declares the language of the referred document</td>
+              </tr>
+              <tr>
+                <td>rel</td>
+                <td>
+                  Describes the connection between related and source document
+                </td>
+              </tr>
+              <tr>
+                <td>media</td>
+                <td>
+                  Mentions the device/media to which the resource is optimized
+                </td>
+              </tr>
+              <tr>
+                <td>type</td>
+                <td>Defines the type of MIME of the linked content</td>
+              </tr>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These attributes provide more control over how links behave and
+              are processed by browsers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 14: Conclusion -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Conclusion</h1>
+          <p class="slide-subtitle">Key takeaways</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Phrase Tags</h3>
+            <p>
+              HTML phrase tags are very important in providing semantic luster
+              and precision to web content. They provide both the browser and
+              assistive technologies with the intended meaning and context of
+              the text.
+            </p>
+            <p>
+              Not only does this enhance accessibility to users with
+              disabilities, but it also makes search engines comprehend the
+              arrangement and importance of the content, thus boosting SEO
+              performance.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Anchor Tags</h3>
+            <p>
+              The HTML anchor tag is a useful tag that enables you to link web
+              pages together, download files with links, and link to emails,
+              phone numbers, or even JavaScript.
+            </p>
+            <p>
+              Whether it is plain text links, clickable images, or primary
+              internal navigation, the anchor tag is one of the key skills that
+              a web developer needs to master.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Understanding and properly using phrase tags and anchor tags is
+              essential for creating accessible, semantic, and well-connected
+              web content.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>HTML Phrase Tags and Anchor Tags Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

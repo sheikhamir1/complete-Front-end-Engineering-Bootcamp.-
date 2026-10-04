@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Tutorial</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .code-block {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-family: monospace;
+        overflow-x: auto;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .code-comment {
+        color: #008000;
+      }
+
+      .code-keyword {
+        color: #0000ff;
+        font-weight: bold;
+      }
+
+      .code-string {
+        color: #a31515;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      .frame-structure {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .frame-field {
+        background-color: #e8f0fe;
+        border: 1px solid #1a73e8;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: center;
+        flex-grow: 1;
+        min-width: 100px;
+      }
+
+      .frame-field.primary {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .process-step {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        width: 150px;
+      }
+
+      .process-arrow {
+        color: #1a73e8;
+        font-size: 1.5rem;
+        margin: 0 10px;
+      }
+
+      .bit-position {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+
+      .bit-position-number {
+        width: 30px;
+        height: 30px;
+        background-color: #1a73e8;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .bit-position-value {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 5px 10px;
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .bit-position.parity {
+        background-color: #e8f0fe;
+      }
+
+      .bit-position.data {
+        background-color: #f8f9fa;
+      }
+
+      .byte-stuffing-example {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .byte {
+        background-color: #f8f9fa;
+        border: 1px solid #e1e8ed;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 0 5px;
+        min-width: 40px;
+        text-align: center;
+      }
+
+      .byte.flag {
+        background-color: #1a73e8;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.esc {
+        background-color: #f1c40f;
+        color: white;
+        font-weight: bold;
+      }
+
+      .byte.stuffed {
+        background-color: #e8f0fe;
+        border: 1px dashed #1a73e8;
+      }
+
+      .error-types {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .error-type {
+        text-align: center;
+        width: 200px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .error-type img {
+        max-width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+      }
+
+      .error-type h4 {
+        color: #1a73e8;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Tutorial</h1>
+          <p class="slide-subtitle">The foundation of web development</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="HTML code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              This HTML tutorial is designed for both beginners and expert
+              developers to understand it well and in a step-by-step way. It
+              explains every key topic of HTML, including Introduction, HTML
+              tags and elements, attributes, formatting, forms, tables, lists,
+              media types, HTML5 Semantics, Canvas, SVG, Responsive Layout and
+              many other topics.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML stands for HyperText Markup Language. It is a standard markup
+              language used to create and design web pages by structuring and
+              organizing content on the web.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: What is HTML? -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">What is HTML?</h1>
+          <p class="slide-subtitle">Understanding the basics of HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              HTML stands for HyperText Markup Language. It is a standard markup
+              language used to create and design web pages by structuring and
+              organizing content on the web. It uses elements and tags to define
+              headings, paragraphs, links, images, tables, forms, and other
+              parts of a web page, allowing browsers to display content
+              correctly.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Key points about HTML include:</h3>
+            <ul>
+              <li>HTML stands for HyperText Markup Language.</li>
+              <li>It is used to create web pages and web applications.</li>
+              <li>HTML is the most commonly used language on the web.</li>
+              <li>HTML is capable of creating static web pages.</li>
+              <li>It is a markup language and not a programming language.</li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML is a markup language, not a programming language, because it
+              does not contain logic, conditions, or loops. It's main purpose is
+              to define the structure and layout of web content rather than to
+              perform computations or decision-making.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: HTML History and Why Learn HTML -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML History and Why Learn HTML</h1>
+          <p class="slide-subtitle">The evolution of HTML and its importance</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>HTML History</h3>
+            <p>
+              HTML (HyperText Markup Language) was created by Tim Berners-Lee in
+              1991 to help people create and share web pages on the internet.
+              Over time, HTML was improved again and again to support new web
+              needs. This development finally led to HTML5, which added features
+              like audio and video playback, better graphics, and support for
+              responsive and interactive websites on different devices.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Why Learn HTML?</h3>
+            <p>
+              Every website starts with HTML. If you hope to be a web developer
+              or designer, you must first understand HTML. Building a basic or
+              more advanced website always requires knowing HTML.
+            </p>
+            <ul>
+              <li>It is easy to figure out and work with HTML.</li>
+              <li>It is essential for structuring web pages.</li>
+              <li>
+                HTML works seamlessly with CSS and JavaScript to build dynamic
+                and interactive websites.
+              </li>
+              <li>
+                You can add images, audio, videos and canvases to your
+                programming.
+              </li>
+              <li>
+                HTML works the same way on any computer (platform-independent)
+                and is supported by every web browser.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: How HTML Works and Key Terms -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">How HTML Works and Key Terms</h1>
+          <p class="slide-subtitle">Understanding HTML terminology</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>How HTML Works?</h3>
+            <p>
+              An HTML file is a text file that ends in .html. In these
+              documents, we find tags and attributes that give the meaning and
+              structure to what we see on a webpage. A web browser loads HTML
+              markup and displays the page to the user according to its code.
+            </p>
+            <p>
+              To understand HTML, think of its role as the backbone of a website
+              that helps display each webpage's various components, such as
+              text, pictures and links, correctly. If HTML didn't exist, web
+              browsers would not be able to present web pages.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Important Terms</h3>
+            <ul>
+              <li>
+                <strong>Web Page:</strong> A web page is a document that is
+                commonly written in HTML and translated by a web browser.
+              </li>
+              <li>
+                <strong>Website:</strong> A website links a collection of
+                similar web pages under a single domain name.
+              </li>
+              <li>
+                <strong>Web Browser:</strong> Web browsers like Chrome, Firefox
+                and Safari are programs that gather, read and display web pages.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Structure of an HTML Document -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Structure of an HTML Document</h1>
+          <p class="slide-subtitle">The basic structure of HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              An HTML document consists of content organized by elements and
+              tags. This example in HTML is very basic:
+            </p>
+            <div class="code-block">
+              &lt;!DOCTYPE html&gt;<br />
+              &lt;html&gt;<br />
+              &nbsp;&nbsp;&lt;head&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Web page
+              title&lt;/title&gt;<br />
+              &nbsp;&nbsp;&lt;/head&gt;<br />
+              &nbsp;&nbsp;&lt;body&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Write Your First
+              Heading&lt;/h1&gt;<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Write Your First
+              Paragraph.&lt;/p&gt;<br />
+              &nbsp;&nbsp;&lt;/body&gt;<br />
+              &lt;/html&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Description of HTML Example</h3>
+            <ul>
+              <li>
+                <strong>&lt;!DOCTYPE&gt;:</strong> It defines the document type,
+                or it instructs the browser about the version of HTML.
+              </li>
+              <li>
+                <strong>&lt;html&gt;:</strong> This tag informs the browser that
+                it is an HTML document.
+              </li>
+              <li>
+                <strong>&lt;head&gt;:</strong> It should be the first element
+                inside the &lt;html&gt; element, which contains the metadata.
+              </li>
+              <li>
+                <strong>&lt;title&gt;:</strong> It is used to add the title of
+                that HTML page, which appears at the top of the browser window.
+              </li>
+              <li>
+                <strong>&lt;body&gt;:</strong> Text between body tags describes
+                the body content of the page that is visible to the end user.
+              </li>
+              <li>
+                <strong>&lt;h1&gt;:</strong> Text between &lt;h1&gt; tag
+                describes the first level heading of the webpage.
+              </li>
+              <li>
+                <strong>&lt;p&gt;:</strong> Text between &lt;p&gt; tag describes
+                the paragraph of the webpage.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: HTML Tags, Elements, and Attributes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Tags, Elements, and Attributes</h1>
+          <p class="slide-subtitle">Building blocks of HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Tags</h3>
+            <p>
+              Tags are keywords enclosed in angular brackets (&lt; and &gt;).
+            </p>
+            <p>Examples include &lt;p&gt;, &lt;h1&gt;, or &lt;a&gt;.</p>
+            <p>
+              Note: Tags like &lt;br&gt; and &lt;hr&gt; are considered empty
+              elements as they have no closing tag.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Elements</h3>
+            <p>
+              An element is made up of an opening tag, some content and a
+              closing tag.
+            </p>
+            <div class="code-block">
+              &lt;p&gt; This is a paragraph &lt;/p&gt;
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Attributes</h3>
+            <p>
+              Attributes help to change how a tag works or what it looks like by
+              adding extra properties like behavior and styling.
+            </p>
+            <div class="code-block">
+              &lt;a href="https://www.tpointtech.com"&gt; Visit Site &lt;/a&gt;
+            </div>
+            <p>
+              Here, "href" is the attribute having the value
+              "https://www.tpointtech.com".
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Empty Elements</h3>
+            <p>
+              Some elements like &lt;img&gt; and &lt;meta&gt; don't need a
+              closing tag since they are not intended to contain information
+              between the tags.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Common HTML Elements -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Common HTML Elements</h1>
+          <p class="slide-subtitle">Frequently used HTML elements</p>
+        </div>
+        <div class="slide-content">
+          <div class="comparison-table">
+            <table>
+              <tr>
+                <th>Element</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td>&lt;h1&gt; to &lt;h6&gt;</td>
+                <td>
+                  Headings from most important (&lt;h1&gt;) to least
+                  (&lt;h6&gt;). Helps with SEO and accessibility.
+                </td>
+              </tr>
+              <tr>
+                <td>&lt;p&gt;</td>
+                <td>Paragraph element used for blocks of text.</td>
+              </tr>
+              <tr>
+                <td>&lt;a&gt;</td>
+                <td>The anchor tag is used for hyperlinks.</td>
+              </tr>
+              <tr>
+                <td>&lt;img&gt;</td>
+                <td>Embeds images.</td>
+              </tr>
+              <tr>
+                <td>&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;</td>
+                <td>Lists: unordered, ordered, and list items.</td>
+              </tr>
+              <tr>
+                <td>&lt;table&gt;</td>
+                <td>Organizes data in rows and columns.</td>
+              </tr>
+              <tr>
+                <td>&lt;button&gt;</td>
+                <td>Creates clickable buttons.</td>
+              </tr>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <p>
+              These elements form the foundation of most web pages.
+              Understanding how to use them properly is essential for creating
+              well-structured and accessible websites.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Semantic HTML -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Semantic HTML</h1>
+          <p class="slide-subtitle">Making HTML more meaningful</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Nowadays, HTML5 uses tags called &lt;header&gt;, &lt;footer&gt;,
+              &lt;section&gt;, &lt;article&gt; and &lt;nav&gt; to help explain
+              the page's structure. They help search engines and devices for the
+              visually impaired to read and understand your web content.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Common Semantic Elements</h3>
+            <div class="two-column">
+              <div class="column">
+                <div class="info-card">
+                  <h4>&lt;header&gt;</h4>
+                  <p>
+                    Represents introductory content, typically a group of
+                    introductory or navigational aids.
+                  </p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;nav&gt;</h4>
+                  <p>
+                    Represents a section of a page whose purpose is to provide
+                    navigation links.
+                  </p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;main&gt;</h4>
+                  <p>Specifies the main, dominant content of a document.</p>
+                </div>
+              </div>
+              <div class="column">
+                <div class="info-card">
+                  <h4>&lt;article&gt;</h4>
+                  <p>
+                    Represents a self-contained composition in a document, page,
+                    application, or site.
+                  </p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;section&gt;</h4>
+                  <p>Represents a standalone section of a document.</p>
+                </div>
+                <div class="info-card">
+                  <h4>&lt;footer&gt;</h4>
+                  <p>
+                    Represents the footer for its nearest sectioning content or
+                    sectioning root element.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Semantic HTML elements clearly describe their meaning to both the
+              browser and the developer. They make your code more readable and
+              improve accessibility for screen readers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Features of HTML -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Features of HTML</h1>
+          <p class="slide-subtitle">Key characteristics of HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="list-section">
+            <ul>
+              <li>
+                It is a very easy and simple language. It can be easily
+                understood and modified.
+              </li>
+              <li>
+                It is very easy to make an effective presentation with HTML
+                because it has a lot of formatting tags.
+              </li>
+              <li>
+                It is a markup language, so it provides a flexible way to design
+                web pages along with the text.
+              </li>
+              <li>
+                It facilitates programmers in adding a link to the web pages (by
+                html anchor tag), so it enhances the user's interest in
+                browsing.
+              </li>
+              <li>
+                It is platform-independent because it can be displayed on any
+                platform, such as Windows, Linux, Macintosh, etc.
+              </li>
+              <li>
+                It facilitates the programmer in adding graphics, videos, and
+                sound to the web pages, which makes them more attractive and
+                interactive.
+              </li>
+              <li>
+                HTML is a case-insensitive language, which means we can use tags
+                either in lower-case or upper-case.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Note: It is recommended to write all tags in lower-case for
+              consistency, readability, etc.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: HTML Versions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">HTML Versions</h1>
+          <p class="slide-subtitle">Evolution of HTML over time</p>
+        </div>
+        <div class="slide-content">
+          <div class="comparison-table">
+            <table>
+              <tr>
+                <th>Version</th>
+                <th>Year</th>
+                <th>Highlights</th>
+              </tr>
+              <tr>
+                <td>HTML 1.0</td>
+                <td>1991</td>
+                <td>The first version is simple and straightforward.</td>
+              </tr>
+              <tr>
+                <td>HTML 2.0</td>
+                <td>1995</td>
+                <td>
+                  Introduced features such as checkboxes and buttons to the
+                  page.
+                </td>
+              </tr>
+              <tr>
+                <td>HTML 3.2</td>
+                <td>1997</td>
+                <td>
+                  Tables, scripting features and basic style tools have been
+                  included.
+                </td>
+              </tr>
+              <tr>
+                <td>HTML 4.01</td>
+                <td>1999</td>
+                <td>
+                  More robust, improved ability to support stylesheets (CSS) and
+                  scripting.
+                </td>
+              </tr>
+              <tr>
+                <td>HTML5</td>
+                <td>2008 till present</td>
+                <td>
+                  Features like semantic elements, the ability to play audio and
+                  video, and mobile compatibility in current tags were
+                  introduced.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML5 is the newest version of HyperText Markup language. The
+              first draft of this version was announced in January 2008. There
+              are two major organizations: one is W3C (World Wide Web
+              Consortium), and another one is WHATWG( Web Hypertext Application
+              Technology Working Group), which is involved in the development of
+              the HTML 5 version and is still under development.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Advantages and Disadvantages of HTML -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Advantages and Disadvantages of HTML</h1>
+          <p class="slide-subtitle">Pros and cons of using HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="text-section">
+                <h3>Advantages</h3>
+                <ul>
+                  <li>Works in all modern web browsers.</li>
+                  <li>Supported by many tools and editors.</li>
+                  <li>A strong foundation for web development.</li>
+                  <li>The key to the organization of any web project.</li>
+                  <li>Helps search engines better index and rank web pages.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column">
+              <div class="text-section">
+                <h3>Disadvantages</h3>
+                <ul>
+                  <li>
+                    Can only create static pages; dynamic functionality needs
+                    JavaScript or server-side languages.
+                  </li>
+                  <li>
+                    With plenty of HTML files, it becomes difficult to handle
+                    big projects.
+                  </li>
+                  <li>
+                    A few small mistakes can cause pages to take a long time to
+                    load.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>
+              Despite its limitations, HTML remains the foundation of web
+              development. When combined with CSS for styling and JavaScript for
+              interactivity, it becomes a powerful tool for creating modern web
+              applications.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 12: Conclusion -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Conclusion</h1>
+          <p class="slide-subtitle">
+            The importance of HTML in web development
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              No web page can exist without HTML. Without HTML, websites would
+              be empty and disorganized. Although HTML is simple, it becomes
+              stronger when combined with CSS and JavaScript. Anyone interested
+              in web design, development or digital communication should learn
+              HTML because it is a core part of the web's evolution.
+            </p>
+          </div>
+          <div class="text-section">
+            <p>
+              No matter if you are making a blog, a business page or an entire
+              web application, HTML is the starting point.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <p>
+              HTML is the foundation of web development. Mastering HTML is the
+              first step toward becoming a proficient web developer or designer.
+              While it may seem simple, understanding HTML thoroughly will make
+              your websites more accessible, SEO-friendly, and maintainable.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Next Steps</h3>
+            <ul>
+              <li>Practice creating HTML pages with different elements</li>
+              <li>Learn CSS to style your HTML pages</li>
+              <li>Explore JavaScript to add interactivity</li>
+              <li>Study responsive design principles</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>HTML Tutorial Presentation</p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>
