@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Eval, Currying, & Reference Type</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Advanced JS Concepts</h1>
+          <p class="slide-subtitle">Eval, Currying, & Reference Type</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+              alt="Code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              In this presentation, we'll explore three advanced JavaScript
+              concepts. We'll learn how to execute code from a string, how to
+              transform functions to make them more flexible, and peek under the
+              hood to see how JavaScript keeps track of <code>this</code>.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>⚡ Eval</h4>
+              <p>Running dynamic code strings. Powerful, but dangerous!</p>
+            </div>
+            <div class="column info-card">
+              <h4>🛠️ Currying</h4>
+              <p>Transforming functions to accept arguments one at a time.</p>
+            </div>
+            <div class="column info-card">
+              <h4>🔍 Reference Type</h4>
+              <p>
+                The hidden mechanics behind how <code>this</code> works in
+                method calls.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Eval Basics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Eval: Running Code Strings</h2>
+          <p class="slide-subtitle">Executing text as JavaScript</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>What is eval?</h3>
+            <p>
+              The built-in <code>eval(code)</code> function takes a string of
+              JavaScript code and executes it. It returns the result of the last
+              statement in that string.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine a restaurant where
+              instead of ordering from a menu, you hand the chef a handwritten
+              recipe on a napkin. <code>eval</code> is that chef. It will cook
+              whatever is written on that napkin!
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Basic Examples</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> code =
+              <span class="string">'alert("Hello")'</span>; eval(code);
+              <span class="comment">// Hello</span>
+
+              <span class="keyword">let</span> value = eval(<span class="string"
+                >'1+1'</span
+              >); alert(value); <span class="comment">// 2</span>
+
+              <span class="keyword">let</span> result = eval(<span
+                class="string"
+                >'let i = 0; ++i'</span
+              >); alert(result);
+              <span class="comment">// 1 (returns last statement)</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Access to Local Variables</h3>
+            <p>
+              <code>eval</code> runs in the current scope, meaning it can read
+              and modify variables around it.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> x = 5; eval(<span class="string"
+                >"x = 10"</span
+              >); alert(x); <span class="comment">// 10, value modified!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Eval is Evil -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Dangers of Eval</h2>
+          <p class="slide-subtitle">Why modern developers avoid it</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>"Eval is Evil"</h3>
+            <p>
+              In modern programming, <code>eval</code> is used very sparingly.
+              Here is why you should avoid it:
+            </p>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>Security Risks:</strong> If you <code>eval</code> user
+                  input, a malicious user could inject harmful code.
+                </li>
+                <li>
+                  <strong>Breaks Minifiers:</strong> Tools that shrink code
+                  (minifiers) rename variables to save space (e.g.,
+                  <code>myLongVar</code> → <code>a</code>). But if
+                  <code>eval</code> uses <code>myLongVar</code>, the minifier
+                  can't rename it, breaking the compression.
+                </li>
+                <li>
+                  <strong>Hard to Debug:</strong> Code inside a string is
+                  invisible to debuggers and syntax checkers.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Strict Mode Saves the Day</h4>
+            <p>
+              In strict mode (<code>"use strict"</code>), <code>eval</code> gets
+              its own isolated scope. Variables created inside the string won't
+              leak out.
+            </p>
+            <div class="code-block">
+              <span class="string">"use strict"</span>; eval(<span
+                class="string"
+                >"let x = 5; function f() {}"</span
+              >); alert(<span class="keyword">typeof</span> x);
+              <span class="comment">// undefined (doesn't leak out)</span>
+              alert(<span class="keyword">typeof</span> f);
+              <span class="comment">// undefined</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>What to use instead?</h3>
+            <p>
+              If you must execute code dynamically, there are safer
+              alternatives.
+            </p>
+            <div class="two-column">
+              <div class="column info-card">
+                <h4>1. window.eval()</h4>
+                <p>
+                  Forces the code to run in the global scope, so it can't mess
+                  with local variables.
+                </p>
+                <div class="code-block">
+                  <span class="keyword">let</span> x = 1; {
+                  <span class="keyword">let</span> x = 5; window.eval(<span
+                    class="string"
+                    >'alert(x)'</span
+                  >); <span class="comment">// 1 (Global)</span> }
+                </div>
+              </div>
+              <div class="column info-card">
+                <h4>2. new Function()</h4>
+                <p>
+                  Creates a function from a string. It runs in the global scope
+                  and forces you to pass data explicitly as arguments, which is
+                  much safer.
+                </p>
+                <div class="code-block">
+                  <span class="keyword">let</span> f =
+                  <span class="keyword">new</span> Function(<span class="string"
+                    >'a'</span
+                  >, <span class="string">'alert(a)'</span>); f(5);
+                  <span class="comment">// 5</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Currying Basics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Currying</h2>
+          <p class="slide-subtitle">Functions one argument at a time</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>What is Currying?</h3>
+            <p>
+              Currying is a technique where a function with multiple
+              arguments—like <code>f(a, b, c)</code>—is transformed into a
+              sequence of functions that take one argument at a time:
+              <code>f(a)(b)(c)</code>.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Ordering a custom car.
+              Instead of giving the factory a massive list of specs all at once,
+              you first pick the model, then the color, then the interior. Each
+              step narrows it down until you get the final product.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Basic Currying Implementation</h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">curry</span>(f) {
+              <span class="keyword">return function</span>(a) {
+              <span class="keyword">return function</span>(b) {
+              <span class="keyword">return</span> f(a, b); }; }; }
+
+              <span class="keyword">function</span>
+              <span class="function">sum</span>(a, b) {
+              <span class="keyword">return</span> a + b; }
+
+              <span class="keyword">let</span> curriedSum = curry(sum); alert(
+              curriedSum(1)(2) ); <span class="comment">// 3</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              Currying doesn't call the function immediately. It just transforms
+              it so it can be called step-by-step.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Why use Currying? -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Why Use Currying?</h2>
+          <p class="slide-subtitle">Creating convenient "Partial" functions</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Logging Example</h3>
+            <p>
+              Let's say we have a logging function:
+              <code>log(date, importance, message)</code>. Using advanced
+              currying (like Lodash's <code>_.curry</code>), we can create
+              highly reusable, pre-configured functions.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Step-by-Step Specialization</h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">log</span>(date, importance, message) {
+              alert(<span class="string"
+                >`[${date.getHours()}:${date.getMinutes()}] [${importance}]
+                ${message}`</span
+              >); }
+
+              <span class="comment"
+                >// Curry it (e.g., using lodash _.curry)</span
+              >
+              log = _.curry(log);
+
+              <span class="comment">// 1. Normal call still works</span>
+              log(<span class="keyword">new</span> Date(),
+              <span class="string">"DEBUG"</span>,
+              <span class="string">"some debug"</span>);
+
+              <span class="comment"
+                >// 2. Create a partial for TODAY's logs</span
+              >
+              <span class="keyword">let</span> logNow = log(<span
+                class="keyword"
+                >new</span
+              >
+              Date());
+
+              <span class="comment"
+                >// Now we only need importance and message!</span
+              >
+              logNow(<span class="string">"INFO"</span>,
+              <span class="string">"message"</span>);
+              <span class="comment">// [10:15] INFO message</span>
+
+              <span class="comment"
+                >// 3. Create a partial for TODAY's DEBUG logs</span
+              >
+              <span class="keyword">let</span> debugNow = logNow(<span
+                class="string"
+                >"DEBUG"</span
+              >);
+
+              <span class="comment">// Now we only need the message!</span>
+              debugNow(<span class="string">"message"</span>);
+              <span class="comment">// [10:15] DEBUG message</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>The Benefit:</strong> Instead of passing
+            <code>new Date()</code> and <code>"DEBUG"</code> every single time
+            you log something, currying lets you lock in those repeating
+            arguments and create a quick, custom shortcut function.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Advanced Currying -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Advanced Currying Implementation</h2>
+          <p class="slide-subtitle">Handling multiple arguments dynamically</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The simple <code>curry</code> wrapper only works for 2 arguments.
+              Here is a multi-argument version. It checks: "Do I have enough
+              arguments yet?" If yes, it runs. If no, it waits for more.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">curry</span>(func) {
+              <span class="keyword">return function</span>
+              <span class="function">curried</span>(...args) {
+              <span class="keyword">if</span> (args.length >= func.length) {
+              <span class="comment"
+                >// If we have enough arguments, call the original
+                function</span
+              >
+              <span class="keyword">return</span> func.apply(<span
+                class="keyword"
+                >this</span
+              >, args); } <span class="keyword">else</span> {
+              <span class="comment"
+                >// Otherwise, return a partial function waiting for more
+                args</span
+              >
+              <span class="keyword">return function</span>(...args2) {
+              <span class="keyword">return</span> curried.apply(<span
+                class="keyword"
+                >this</span
+              >, args.concat(args2)); } } }; }
+
+              <span class="keyword">function</span>
+              <span class="function">sum</span>(a, b, c) {
+              <span class="keyword">return</span> a + b + c; }
+
+              <span class="keyword">let</span> curriedSum = curry(sum); alert(
+              curriedSum(1, 2, 3) );
+              <span class="comment">// 6, normal call</span> alert(
+              curriedSum(1)(2,3) );
+              <span class="comment">// 6, currying first arg</span> alert(
+              curriedSum(1)(2)(3) );
+              <span class="comment">// 6, full currying</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Limitations</h3>
+            <p>
+              This only works for functions with a fixed, known number of
+              arguments (<code>func.length</code>). It won't work for functions
+              that use rest parameters like <code>function f(...args)</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Reference Type Problem -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Reference Type</h2>
+          <p class="slide-subtitle">Why do we lose <code>this</code>?</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Mystery of the Missing <code>this</code></h3>
+            <p>
+              Have you ever tried to call a method dynamically and gotten an
+              error because <code>this</code> became <code>undefined</code>?
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Broken Code</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { name:
+              <span class="string">"John"</span>,
+              <span class="function">hi</span>() { alert(<span class="keyword"
+                >this</span
+              >.name); }, <span class="function">bye</span>() { alert(<span
+                class="string"
+                >"Bye"</span
+              >); } }; user.hi(); <span class="comment">// Works! "John"</span>
+
+              <span class="comment">// Dynamically choose the method:</span>
+              (user.name == <span class="string">"John"</span> ? user.hi :
+              user.bye)();
+              <span class="comment">// Error! this is undefined</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              Why does <code>user.hi()</code> work, but extracting it and
+              calling it breaks? It seems like the same function! The answer
+              lies in how JavaScript passes information from the dot
+              <code>.</code> to the parentheses <code>()</code>.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine a sealed envelope
+              with a return address (the object). When you write
+              <code>user.hi()</code>, the dot <code>.</code> hands the envelope
+              directly to the parentheses <code>()</code>. But when you extract
+              it like <code>let hi = user.hi</code> or use a ternary operator,
+              you throw the envelope away and just hand over the letter inside.
+              The parentheses no longer know who sent it!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Reference Type Explained -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Reference Type Under the Hood</h2>
+          <p class="slide-subtitle">The invisible "envelope" of data</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Internal Type</h3>
+            <p>
+              JavaScript uses a hidden "Reference Type" to keep track of where a
+              method came from. It's not something you can touch in code; it's
+              strictly used by the engine under the hood.
+            </p>
+            <p>A Reference Type value consists of three pieces of data:</p>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>base:</strong> The object (e.g., <code>user</code>)
+                </li>
+                <li>
+                  <strong>name:</strong> The property name (e.g.,
+                  <code>"hi"</code>)
+                </li>
+                <li><strong>strict:</strong> Is strict mode on?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>How the Dot Operator Works</h4>
+            <p>
+              When you write <code>user.hi</code>, the dot doesn't just return
+              the function. It returns a Reference Type value:
+              <code>(user, "hi", true)</code>.
+            </p>
+            <p>
+              When the parentheses <code>()</code> see this Reference Type, they
+              say: "Ah, the base is <code>user</code>, so I will set
+              <code>this = user</code>!"
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>How Extraction Breaks It</h4>
+            <p>
+              When you assign <code>let hi = user.hi</code> or use
+              <code>( ... ? user.hi : user.bye)</code>, JavaScript throws away
+              the Reference Type envelope. It only keeps the raw function. When
+              the parentheses <code>()</code> run, they just see a raw function
+              with no return address, so <code>this</code> becomes
+              <code>undefined</code>.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// Method extracted from object = loses Reference Type
+                envelope</span
+              >
+              <span class="keyword">let</span> hi = user.hi; hi();
+              <span class="comment">// Error! Just a raw function now.</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              This is why methods like <code>func.bind()</code> exist—they
+              manually lock in the <code>this</code> value so it doesn't get
+              lost when you pass functions around!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        JavaScript Eval, Currying, & Reference Type | Scroll down to continue
+        &uarr; or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

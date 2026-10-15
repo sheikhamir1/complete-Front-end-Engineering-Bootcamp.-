@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Proxy & Reflect</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Proxy & Reflect</h1>
+          <p class="slide-subtitle">Controlling Objects at the Lowest Level</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+              alt="Code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              A <code>Proxy</code> is an object that wraps around another object
+              and intercepts its operations—like reading or writing properties.
+              You can handle these operations yourself or pass them along to the
+              original object.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of a Proxy as a
+            <strong>Security Receptionist</strong> at a building. You don't talk
+            directly to the employees (the target object); you talk to the
+            receptionist. The receptionist can log your visit, deny you access,
+            or call the employee for you.
+          </div>
+          <div class="text-section">
+            <p>
+              Alongside Proxy, JavaScript introduced <code>Reflect</code>, a
+              built-in tool that makes writing proxies easier and safer. We'll
+              explore both!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The Basics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Basics of Proxy</h2>
+          <p class="slide-subtitle">Wrapping an Object</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Creating a Proxy</h3>
+            <p>
+              The syntax is simple:
+              <code>let proxy = new Proxy(target, handler)</code>
+            </p>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>target:</strong> The original object you want to wrap.
+                </li>
+                <li>
+                  <strong>handler:</strong> An object containing "traps" —
+                  methods that intercept specific operations.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>An Empty Wrapper (Transparent Proxy)</h4>
+            <p>
+              If you provide an empty handler, the proxy just passes everything
+              through to the target.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> target = {};
+              <span class="keyword">let</span> proxy =
+              <span class="keyword">new</span> Proxy(target, {});
+              <span class="comment">// No traps</span>
+
+              proxy.test = 5;
+              <span class="comment">// Writing to proxy</span>
+              alert(target.test);
+              <span class="comment">// 5 (Appeared in target!)</span>
+
+              alert(proxy.test);
+              <span class="comment">// 5 (We can read it too)</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>What are Traps?</h3>
+            <p>
+              Under the hood, JavaScript uses "internal methods" (like
+              <code>[[Get]]</code> or <code>[[Set]]</code>) to read/write
+              objects. A <strong>trap</strong> is a function in your handler
+              that intercepts these internal methods.
+            </p>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Internal Method</th>
+                  <th>Trap Name</th>
+                  <th>Triggers when...</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>[[Get]]</code></td>
+                  <td><code>get</code></td>
+                  <td>Reading a property</td>
+                </tr>
+                <tr>
+                  <td><code>[[Set]]</code></td>
+                  <td><code>set</code></td>
+                  <td>Writing to a property</td>
+                </tr>
+                <tr>
+                  <td><code>[[HasProperty]]</code></td>
+                  <td><code>has</code></td>
+                  <td>Using the <code>in</code> operator</td>
+                </tr>
+                <tr>
+                  <td><code>[[Delete]]</code></td>
+                  <td><code>deleteProperty</code></td>
+                  <td>Using <code>delete</code></td>
+                </tr>
+                <tr>
+                  <td><code>[[Call]]</code></td>
+                  <td><code>apply</code></td>
+                  <td>Calling a function</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: The "get" Trap -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The "get" Trap</h2>
+          <p class="slide-subtitle">Intercepting Reads & Default Values</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>How it works</h3>
+            <p>
+              When you read a property, the
+              <code>get(target, property, receiver)</code> trap fires. You can
+              return whatever you want, or look it up in the original target.
+            </p>
+            <div class="highlight-box">
+              <strong>Use Case:</strong> Have you ever tried to read an array
+              index that doesn't exist? You get <code>undefined</code>. Let's
+              use a Proxy to return <strong>0</strong> instead for missing
+              numbers.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Array with Default Value 0</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> numbers = [0, 1, 2]; numbers =
+              <span class="keyword">new</span> Proxy(numbers, {
+              <span class="function">get</span>(target, prop) {
+              <span class="keyword">if</span> (prop
+              <span class="keyword">in</span> target) {
+              <span class="keyword">return</span> target[prop];
+              <span class="comment">// Exists? Return it.</span> }
+              <span class="keyword">else</span> {
+              <span class="keyword">return</span> 0;
+              <span class="comment">// Doesn't exist? Return 0.</span> } } });
+              alert( numbers[1] ); <span class="comment">// 1</span> alert(
+              numbers[123] ); <span class="comment">// 0 (No undefined!)</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Smart Dictionary</h4>
+            <p>
+              Another great use case: a translation dictionary that returns the
+              original phrase if it hasn't been translated yet, instead of
+              <code>undefined</code>.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> dictionary = {
+              <span class="string">"Hello"</span>:
+              <span class="string">"Hola"</span> }; dictionary =
+              <span class="keyword">new</span> Proxy(dictionary, {
+              <span class="function">get</span>(target, phrase) {
+              <span class="keyword">if</span> (phrase
+              <span class="keyword">in</span> target)
+              <span class="keyword">return</span> target[phrase];
+              <span class="keyword">else</span>
+              <span class="keyword">return</span> phrase;
+              <span class="comment">// Return the untranslated phrase</span> }
+              }); alert(dictionary[<span class="string">"Hello"</span>]);
+              <span class="comment">// Hola</span> alert(dictionary[<span
+                class="string"
+                >"Welcome"</span
+              >]); <span class="comment">// Welcome</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: The "set" Trap -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The "set" Trap</h2>
+          <p class="slide-subtitle">Validation & Protecting Writes</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Validating Data Types</h3>
+            <p>
+              The <code>set(target, property, value, receiver)</code> trap fires
+              when a property is changed. This is perfect for validation. If the
+              new value is invalid, you can reject it.
+            </p>
+            <div class="highlight-box">
+              <strong>Important Rule (Invariant):</strong> The
+              <code>set</code> trap must return <code>true</code> if the write
+              was successful, and <code>false</code> if it failed. If you return
+              <code>false</code>, JavaScript will throw a TypeError!
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Numbers-Only Array</h4>
+            <p>
+              Let's create an array that <em>only</em> accepts numbers. If you
+              try to push a string, it fails.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> numbers = []; numbers =
+              <span class="keyword">new</span> Proxy(numbers, {
+              <span class="function">set</span>(target, prop, val) {
+              <span class="keyword">if</span> (<span class="keyword"
+                >typeof</span
+              >
+              val == <span class="string">"number"</span>) { target[prop] = val;
+              <span class="keyword">return true</span>;
+              <span class="comment">// Success!</span> }
+              <span class="keyword">else</span> {
+              <span class="keyword">return false</span>;
+              <span class="comment">// Reject! Triggers TypeError</span> } } });
+              numbers.push(1);
+              <span class="comment">// Works</span> numbers.push(2);
+              <span class="comment">// Works</span> numbers.push(<span
+                class="string"
+                >"test"</span
+              >);
+              <span class="comment"
+                >// TypeError: 'set' on proxy returned false</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              Notice how elegant this is? We didn't have to override array
+              methods like <code>.push()</code> or <code>.unshift()</code>.
+              Under the hood, they all use the basic
+              <code>[[Set]]</code> operation, so our proxy catches them
+              automatically!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Protecting Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Protecting Properties</h2>
+          <p class="slide-subtitle">
+            Hiding Internal Data (Underscore convention)
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Developers use an underscore (e.g., <code>_password</code>) to
+              mean "don't touch this!" But it's just a polite request;
+              JavaScript doesn't enforce it. Let's use a Proxy to
+              <em>actually</em> block access.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Fortress Proxy</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { name:
+              <span class="string">"John"</span>, _password:
+              <span class="string">"***"</span> }; user =
+              <span class="keyword">new</span> Proxy(user, {
+              <span class="function">get</span>(target, prop) {
+              <span class="keyword">if</span> (prop.startsWith(<span
+                class="string"
+                >'_'</span
+              >)) <span class="keyword">throw new</span> Error(<span
+                class="string"
+                >"Access denied"</span
+              >); <span class="keyword">let</span> value = target[prop];
+              <span class="comment"
+                >// Bind methods to the original target so they can see
+                _password</span
+              >
+              <span class="keyword">return</span> (<span class="keyword"
+                >typeof</span
+              >
+              value === <span class="string">'function'</span>) ?
+              value.bind(target) : value; },
+              <span class="function">set</span>(target, prop, val) {
+              <span class="keyword">if</span> (prop.startsWith(<span
+                class="string"
+                >'_'</span
+              >)) <span class="keyword">throw new</span> Error(<span
+                class="string"
+                >"Access denied"</span
+              >); target[prop] = val; <span class="keyword">return true</span>;
+              }, <span class="function">deleteProperty</span>(target, prop) {
+              <span class="keyword">if</span> (prop.startsWith(<span
+                class="string"
+                >'_'</span
+              >)) <span class="keyword">throw new</span> Error(<span
+                class="string"
+                >"Access denied"</span
+              >); delete target[prop]; <span class="keyword">return true</span>;
+              }, <span class="function">ownKeys</span>(target) {
+              <span class="comment">// Hide from for..in and Object.keys</span>
+              <span class="keyword">return</span> Object.keys(target).filter(key
+              => !key.startsWith(<span class="string">'_'</span>)); } });
+              alert(user._password);
+              <span class="comment">// Error: Access denied</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Why <code>value.bind(target)</code>?</strong> If your object
+            has a method like <code>checkPassword()</code>, it needs to read
+            <code>this._password</code>. But <code>this</code> would be the
+            Proxy, which blocks access! Binding the method to the
+            <code>target</code> gives it a "backstage pass" to read private
+            properties safely.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: "has" & "apply" Traps -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Other Useful Traps</h2>
+          <p class="slide-subtitle">"has" for Ranges & "apply" for Functions</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>The "has" Trap</h3>
+              <p>
+                Intercepts the <code>in</code> operator. Let's make an object
+                that checks if a number is in a specific range.
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> range = { start: 1, end: 10 };
+                range = <span class="keyword">new</span> Proxy(range, {
+                <span class="function">has</span>(target, prop) {
+                <span class="keyword">return</span> prop >= target.start && prop
+                <= target.end; } }); alert(5
+                <span class="keyword">in</span> range);
+                <span class="comment">// true</span> alert(50
+                <span class="keyword">in</span> range);
+                <span class="comment">// false</span>
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>The "apply" Trap</h3>
+              <p>
+                Proxies can wrap functions too! The <code>apply</code> trap
+                intercepts function calls. It's perfect for creating
+                "decorators" that add behavior (like a delay) to a function.
+              </p>
+              <div class="code-block">
+                <span class="keyword">function</span>
+                <span class="function">delay</span>(f, ms) {
+                <span class="keyword">return new</span> Proxy(f, {
+                <span class="function">apply</span>(target, thisArg, args) {
+                setTimeout(() => target.apply(thisArg, args), ms); } }); }
+
+                <span class="keyword">function</span>
+                <span class="function">sayHi</span>(user) { alert(<span
+                  class="string"
+                  >`Hello, ${user}!`</span
+                >); } sayHi = delay(sayHi, 3000); sayHi(<span class="string"
+                  >"John"</span
+                >); <span class="comment">// Runs after 3 secs</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Why Proxy over normal wrapper?</strong> A normal function
+            wrapper loses the original function's properties (like
+            <code>name</code> or <code>length</code>). A Proxy forwards
+            <em>everything</em> to the target, so
+            <code>sayHi.length</code> still works perfectly!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Introducing Reflect -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Introducing Reflect</h2>
+          <p class="slide-subtitle">The Perfect Partner for Proxy</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>What is Reflect?</h3>
+            <p>
+              <code>Reflect</code> is a built-in object that provides methods
+              for calling JavaScript internal methods. For every Proxy trap,
+              there is a matching <code>Reflect</code> method with the exact
+              same arguments.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> If the Proxy is the
+              Receptionist, <code>Reflect</code> is the
+              <strong>Walkie-Talkie</strong>. When the receptionist decides a
+              request is okay, they use the walkie-talkie to patch the call
+              through to the employee exactly as it was dialed.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Reflect vs Normal Operations</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Normal Operation</th>
+                  <th>Reflect Call</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>obj[prop]</code></td>
+                  <td><code>Reflect.get(obj, prop)</code></td>
+                </tr>
+                <tr>
+                  <td><code>obj[prop] = val</code></td>
+                  <td><code>Reflect.set(obj, prop, val)</code></td>
+                </tr>
+                <tr>
+                  <td><code>delete obj[prop]</code></td>
+                  <td><code>Reflect.deleteProperty(obj, prop)</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="info-card">
+            <h4>Forwarding Operations Safely</h4>
+            <p>
+              Instead of manually writing <code>target[prop] = val</code>, use
+              Reflect. It ensures nothing is forgotten (like returning
+              <code>true</code> for the <code>set</code> trap).
+            </p>
+            <div class="code-block">
+              user = <span class="keyword">new</span> Proxy(user, {
+              <span class="function">get</span>(target, prop, receiver) {
+              alert(<span class="string">`GET ${prop}`</span>);
+              <span class="keyword">return</span> Reflect.get(target, prop,
+              receiver); <span class="comment">// Forward it!</span>
+              },
+              <span class="function">set</span>(target, prop, val, receiver) {
+              alert(<span class="string">`SET ${prop}=${val}`</span>);
+              <span class="keyword">return</span> Reflect.set(target, prop, val,
+              receiver); <span class="comment">// Forward it!</span> } });
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: The "receiver" Problem -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Why Reflect.get is Essential</h2>
+          <p class="slide-subtitle">The "receiver" argument and Getters</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Inheritance Problem</h3>
+            <p>
+              If an object has a getter (e.g., <code>get name()</code>), and we
+              use a simple <code>target[prop]</code> in our proxy, the getter's
+              <code>this</code> context gets lost when inheritance is involved.
+              It points to the original target, not the inheriting object.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Broken Way (Without Reflect)</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { _name:
+              <span class="string">"Guest"</span>,
+              <span class="keyword">get</span> name() {
+              <span class="keyword">return this</span>._name; } };
+
+              <span class="keyword">let</span> userProxy =
+              <span class="keyword">new</span> Proxy(user, {
+              <span class="function">get</span>(target, prop) {
+              <span class="keyword">return</span> target[prop];
+              <span class="comment"
+                >// "this" is forced to be "target" (user)</span
+              >
+              } });
+
+              <span class="keyword">let</span> admin = { __proto__: userProxy,
+              _name: <span class="string">"Admin"</span> }; alert(admin.name);
+              <span class="comment"
+                >// Outputs: Guest (Wrong! Should be Admin)</span
+              >
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>The Fixed Way (With Reflect)</h4>
+            <p>
+              <code>Reflect.get</code> takes a 3rd argument:
+              <code>receiver</code>. This correctly preserves the
+              <code>this</code> context for getters.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> userProxy =
+              <span class="keyword">new</span> Proxy(user, {
+              <span class="function">get</span>(target, prop, receiver) {
+              <span class="comment">// receiver = admin</span>
+              <span class="keyword">return</span> Reflect.get(target, prop,
+              receiver);
+              <span class="comment">// Passes the correct "this"</span>
+              } });
+
+              <span class="keyword">let</span> admin = { __proto__: userProxy,
+              _name: <span class="string">"Admin"</span> }; alert(admin.name);
+              <span class="comment">// Outputs: Admin (Correct!)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Proxy Limitations -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Proxy Limitations</h2>
+          <p class="slide-subtitle">What Proxies CAN'T do</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>1. Built-in Objects & "Internal Slots"</h3>
+            <p>
+              Some built-in objects like <code>Map</code>, <code>Set</code>,
+              <code>Date</code>, and <code>Promise</code> have "internal slots"
+              (like <code>[[MapData]]</code>). Proxies don't have these slots,
+              so built-in methods fail when they try to access them on the
+              Proxy.
+            </p>
+            <div class="highlight-box">
+              <strong>The Fix:</strong> Bind the method to the target object!
+              <code
+                >typeof value == 'function' ? value.bind(target) : value</code
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>2. Private Class Fields</h3>
+            <p>
+              Private fields (like <code>#name</code>) also use internal slots.
+              A proxy cannot access them. The fix is the same: bind the method
+              that uses the private field to the original target object.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>3. Proxy is NOT the Target (Strict Equality)</h3>
+            <p>
+              A proxy is a <em>different</em> object than its target.
+              <code>proxy === target</code> is <code>false</code>. If you use
+              the original object as a key in a <code>Set</code> or
+              <code>Map</code>, the proxy won't be able to find it!
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> allUsers =
+              <span class="keyword">new</span> Set();
+              <span class="keyword">let</span> user =
+              <span class="keyword">new</span> User(<span class="string"
+                >"John"</span
+              >); allUsers.add(user); user =
+              <span class="keyword">new</span> Proxy(user, {});
+              <span class="comment">// Wrap in proxy</span>
+
+              alert(allUsers.has(user));
+              <span class="comment"
+                >// false! The proxy is not the original user.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Revocable Proxies -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Revocable Proxies</h2>
+          <p class="slide-subtitle">The Self-Destructing Wrapper</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Turning off Access</h3>
+            <p>
+              Sometimes you want to give someone temporary access to an object,
+              and then take it away. A <strong>Revocable Proxy</strong> can be
+              "revoked" or disabled at any moment.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> A temporary ID badge. You can
+              use it to get into the building, but HR can deactivate your badge
+              instantly. After that, the badge doesn't work anymore.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Creating a Revocable Proxy</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> object = { data:
+              <span class="string">"Valuable data"</span> };
+
+              <span class="comment"
+                >// Destructure to get both proxy and the revoke function</span
+              >
+              <span class="keyword">let</span> {proxy, revoke} =
+              Proxy.revocable(object, {});
+
+              <span class="comment">// Pass the proxy somewhere else</span>
+              alert(proxy.data); <span class="comment">// Valuable data</span>
+
+              <span class="comment">// Later... time's up!</span>
+              revoke();
+              <span class="comment">// Destroys the proxy connection</span>
+
+              alert(proxy.data);
+              <span class="comment">// Error! Proxy is revoked.</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Clean up with WeakMap</h3>
+            <p>
+              A good practice is to store the <code>revoke</code> function in a
+              <code>WeakMap</code> using the proxy as a key. That way, if the
+              proxy is deleted from memory, the revoke function is too.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> revokes =
+              <span class="keyword">new</span> WeakMap();
+
+              <span class="keyword">let</span> {proxy, revoke} =
+              Proxy.revocable(object, {}); revokes.set(proxy, revoke);
+
+              <span class="comment">// Later, find and revoke</span>
+              revokes.get(proxy)();
+              <span class="comment">// Revokes instantly!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        JavaScript Proxy & Reflect Presentation | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

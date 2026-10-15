@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Inheritance - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .text-section {
+        margin-bottom: 20px;
+      }
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+      .column {
+        flex: 1;
+      }
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+      }
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+      .warning-box strong {
+        color: #e65100;
+      }
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Class Inheritance</div>
+            <div class="hero-subtitle">
+              Building new classes on top of existing ones to reuse and extend
+              functionality.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                A basic <strong>House</strong> has walls and a roof. A
+                <strong>SmartHouse</strong> extends House — it keeps all the
+                basic features but adds smart lights and security. You don't
+                rebuild the walls from scratch; you build on top of the existing
+                blueprint.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-expand"></i> extends</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-level-up-alt"></i> super</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-home"></i> HomeObject</span
+              >
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://miro.medium.com/0*7VyEZgzwUhQMeBqb"
+                alt="Building and Architecture concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 9</span>
+      </div>
+
+      <!-- SLIDE 2: The "extends" Keyword -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>extends</code> Keyword</div>
+          <div class="slide-subtitle">
+            Creating a child class from a parent class
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-code-branch" style="margin-right: 8px"></i
+              >Inheriting Features
+            </h3>
+            <p>
+              Use <code>class Child extends Parent</code> to create a new class
+              that inherits all methods from the parent. The child gets
+              everything the parent has, plus its own unique features.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">Animal</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">constructor</span>(name) {
+            <span class="keyword">this</span>.name = name; }<br />
+            &nbsp;&nbsp;<span class="function-name">run</span>(speed) {
+            <span class="builtin">alert</span>(<span class="string"
+              >`${this.name} runs at ${speed}.`</span
+            >); }<br />
+            }<br /><br />
+            <span class="keyword">class</span>
+            <span class="function-name">Rabbit</span>
+            <span class="keyword">extends</span>
+            <span class="function-name">Animal</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">hide</span>() {
+            <span class="builtin">alert</span>(<span class="string"
+              >`${this.name} hides!`</span
+            >); }<br />
+            }<br /><br />
+            <span class="keyword">let</span> rabbit =
+            <span class="keyword">new</span>
+            <span class="function-name">Rabbit</span>(<span class="string"
+              >"White Rabbit"</span
+            >);<br />
+            rabbit.<span class="function-name">run</span>(<span class="number"
+              >5</span
+            >); <span class="comment">// Inherited from Animal ✅</span><br />
+            rabbit.<span class="function-name">hide</span>();
+            <span class="comment">// Own method ✅</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Under the Hood:</strong> <code>extends</code> sets
+            <code>Rabbit.prototype.[[Prototype]]</code> to
+            <code>Animal.prototype</code>. If a method isn't found on Rabbit,
+            JavaScript automatically looks at Animal.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Vehicle Inheritance:</strong> A <code>Car</code> class
+              extends <code>Vehicle</code>. All vehicles can
+              <code>startEngine()</code> (inherited), but only cars might have
+              <code>openTrunk()</code> (own method).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 9</span>
+      </div>
+
+      <!-- SLIDE 3: Overriding Methods & super -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Overriding Methods & <code>super</code></div>
+          <div class="slide-subtitle">
+            Customizing inherited behavior while keeping the parent's logic
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-exchange-alt" style="margin-right: 8px"></i
+              >Replacing and Enhancing
+            </h3>
+            <p>
+              If you define a method in the child with the same name as the
+              parent, the child's version is used. But often you want to
+              <em>add</em> to the parent's logic, not erase it. That's what
+              <code>super</code> is for.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">Rabbit</span>
+            <span class="keyword">extends</span>
+            <span class="function-name">Animal</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">hide</span>() {
+            <span class="builtin">alert</span>(<span class="string"
+              >`${this.name} hides!`</span
+            >); }<br /><br />
+            &nbsp;&nbsp;<span class="function-name">stop</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>.<span
+              class="function-name"
+              >stop</span
+            >(); <span class="comment">// Call parent's stop()</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.<span
+              class="function-name"
+              >hide</span
+            >(); <span class="comment">// Then add child's behavior</span><br />
+            &nbsp;&nbsp;}<br />
+            }
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #34a853">
+            <h4>
+              <i
+                class="fas fa-arrow-up"
+                style="margin-right: 5px; color: #34a853"
+              ></i
+              >The <code>super</code> Keyword
+            </h4>
+            <ul style="padding-left: 20px; line-height: 2">
+              <li><code>super.method()</code> — calls the parent's method.</li>
+              <li>
+                <code>super()</code> — calls the parent's constructor (inside
+                child constructor only).
+              </li>
+              <li>
+                Arrow functions don't have their own <code>super</code>; they
+                borrow it from the surrounding scope.
+              </li>
+            </ul>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Asking Parents for Advice:</strong> When you override a
+              method, it's like saying "I'll handle this my way." But with
+              <code>super</code>, you're saying "I'll handle it my way, but
+              first, let me ask my parents how they did it."
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">3 / 9</span>
+      </div>
+
+      <!-- SLIDE 4: Overriding Constructor -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Overriding the Constructor</div>
+          <div class="slide-subtitle">
+            The golden rule: <code>super()</code> must be called before using
+            <code>this</code>
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-times-circle"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i
+                  >Broken (No super)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">class</span>
+                  <span class="function-name">Rabbit</span>
+                  <span class="keyword">extends</span>
+                  <span class="function-name">Animal</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">constructor</span
+                  >(name, earLength) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.name
+                  = name; <span class="error">// Error!</span><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span
+                  >.earLength = earLength;<br />
+                  &nbsp;&nbsp;}<br />
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-check-circle"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i
+                  >Fixed (super first!)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">class</span>
+                  <span class="function-name">Rabbit</span>
+                  <span class="keyword">extends</span>
+                  <span class="function-name">Animal</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">constructor</span
+                  >(name, earLength) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span
+                  >(name); <span class="comment">// ✅ Must be first!</span
+                  ><br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span
+                  >.earLength = earLength;<br />
+                  &nbsp;&nbsp;}<br />
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Why?</strong
+            >
+            A derived class (one that extends another) does NOT create the
+            <code>this</code> object itself. It relies on the parent constructor
+            to build it. Calling <code>super()</code> tells the parent to set up
+            <code>this</code>. Until <code>super()</code> runs,
+            <code>this</code> doesn't exist!
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Building a House:</strong> The parent class pours the
+              concrete foundation (<code>super()</code>). The child class adds
+              the walls and roof (<code>this.field = ...</code>). You can't
+              paint the walls before the foundation is poured!
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 9</span>
+      </div>
+
+      <!-- SLIDE 5: Class Fields Gotcha -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Class Fields: A Tricky Note</div>
+          <div class="slide-subtitle">
+            Why parent constructors don't see overridden child fields
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-exclamation-circle"
+                style="margin-right: 8px; color: #e65100"
+              ></i
+              >The Surprise
+            </h3>
+            <p>
+              When a parent constructor runs, it uses its OWN class fields, not
+              the child's overridden ones. But for methods, it uses the child's
+              overridden version. This is different from Java/C++!
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>Fields (Parent wins)</h4>
+                <div class="code-block">
+                  <span class="keyword">class</span>
+                  <span class="function-name">Animal</span> {<br />
+                  &nbsp;&nbsp;name = <span class="string">'animal'</span>;<br />
+                  &nbsp;&nbsp;<span class="function-name">constructor</span>()
+                  {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(<span class="keyword">this</span>.name);<br />
+                  &nbsp;&nbsp;}<br />
+                  }<br /><br />
+                  <span class="keyword">class</span>
+                  <span class="function-name">Rabbit</span>
+                  <span class="keyword">extends</span>
+                  <span class="function-name">Animal</span> {<br />
+                  &nbsp;&nbsp;name = <span class="string">'rabbit'</span>;<br />
+                  }<br /><br />
+                  <span class="keyword">new</span>
+                  <span class="function-name">Rabbit</span>();
+                  <span class="comment">// "animal" (!)</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>Methods (Child wins)</h4>
+                <div class="code-block">
+                  <span class="keyword">class</span>
+                  <span class="function-name">Animal</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">showName</span>() {
+                  <span class="builtin">alert</span>(<span class="string"
+                    >'animal'</span
+                  >); }<br />
+                  &nbsp;&nbsp;<span class="function-name">constructor</span>()
+                  {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span
+                  >.<span class="function-name">showName</span>();<br />
+                  &nbsp;&nbsp;}<br />
+                  }<br /><br />
+                  <span class="keyword">class</span>
+                  <span class="function-name">Rabbit</span>
+                  <span class="keyword">extends</span>
+                  <span class="function-name">Animal</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">showName</span>() {
+                  <span class="builtin">alert</span>(<span class="string"
+                    >'rabbit'</span
+                  >); }<br />
+                  }<br /><br />
+                  <span class="keyword">new</span>
+                  <span class="function-name">Rabbit</span>();
+                  <span class="comment">// "rabbit" ✅</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="highlight-box">
+            <strong>Why?</strong> Initialization order! Child class fields are
+            set <em>after</em> <code>super()</code> (the parent constructor)
+            finishes. So during the parent constructor, the child field doesn't
+            exist yet. But methods exist on the prototype immediately.
+          </div>
+        </div>
+        <span class="slide-number">5 / 9</span>
+      </div>
+
+      <!-- SLIDE 6: The Problem with Super -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The Problem with <code>super</code></div>
+          <div class="slide-subtitle">
+            Why <code>this.__proto__.method()</code> causes infinite loops
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-infinity"
+                style="margin-right: 8px; color: #e53935"
+              ></i
+              >The Infinite Loop Bug
+            </h3>
+            <p>
+              You might think <code>super.method()</code> just does
+              <code>this.__proto__.method()</code>. But with multiple levels of
+              inheritance, that breaks horribly!
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> animal = {
+            <span class="function-name">eat</span>() {
+            <span class="builtin">alert</span>(<span class="string"
+              >"Animal eats"</span
+            >); } };<br />
+            <span class="keyword">let</span> rabbit = {
+            <span class="keyword">__proto__</span>: animal,
+            <span class="function-name">eat</span>() {
+            <span class="keyword">this</span>.__proto__.<span
+              class="function-name"
+              >eat</span
+            >.<span class="function-name">call</span>(<span class="keyword"
+              >this</span
+            >); } };<br />
+            <span class="keyword">let</span> longEar = {
+            <span class="keyword">__proto__</span>: rabbit,
+            <span class="function-name">eat</span>() {
+            <span class="keyword">this</span>.__proto__.<span
+              class="function-name"
+              >eat</span
+            >.<span class="function-name">call</span>(<span class="keyword"
+              >this</span
+            >); } };<br /><br />
+            longEar.<span class="function-name">eat</span>();
+            <span class="error">// Maximum call stack size exceeded!</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #e53935">
+            <h4>
+              <i
+                class="fas fa-search"
+                style="margin-right: 5px; color: #e53935"
+              ></i
+              >What Happens?
+            </h4>
+            <p>
+              When <code>longEar.eat()</code> runs, <code>this</code> is
+              <code>longEar</code>. So <code>this.__proto__</code> is
+              <code>rabbit</code>. It calls <code>rabbit.eat()</code>.
+            </p>
+            <p style="margin-top: 10px">
+              Inside <code>rabbit.eat()</code>, <code>this</code> is STILL
+              <code>longEar</code>! So <code>this.__proto__</code> is STILL
+              <code>rabbit</code>. It calls <code>rabbit.eat()</code> again.
+              Loop forever!
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">6 / 9</span>
+      </div>
+
+      <!-- SLIDE 7: [[HomeObject]] -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">
+            <code>[[HomeObject]]</code> Saves the Day
+          </div>
+          <div class="slide-subtitle">
+            How JavaScript actually makes <code>super</code> work correctly
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-map-marker-alt" style="margin-right: 8px"></i>The
+              Solution
+            </h3>
+            <p>
+              JavaScript gives every method a special hidden property called
+              <code>[[HomeObject]]</code>. It permanently remembers which object
+              the method belongs to — regardless of <code>this</code>.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> rabbit = {<br />
+            &nbsp;&nbsp;<span class="function-name">eat</span>() {
+            <span class="comment">// rabbit.eat.[[HomeObject]] = rabbit</span
+            ><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>.<span
+              class="function-name"
+              >eat</span
+            >();<br />
+            &nbsp;&nbsp;}<br />
+            };<br /><br />
+            <span class="keyword">let</span> longEar = {<br />
+            &nbsp;&nbsp;<span class="keyword">__proto__</span>: rabbit,<br />
+            &nbsp;&nbsp;<span class="function-name">eat</span>() {
+            <span class="comment">// longEar.eat.[[HomeObject]] = longEar</span
+            ><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>.<span
+              class="function-name"
+              >eat</span
+            >();<br />
+            &nbsp;&nbsp;}<br />
+            };<br /><br />
+            longEar.<span class="function-name">eat</span>();
+            <span class="comment">// Works! ✅</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>How it works:</strong> <code>super</code> uses
+            <code>[[HomeObject]]</code> to find the parent, NOT
+            <code>this.__proto__</code>. <code>longEar.eat</code> knows its
+            HomeObject is <code>longEar</code>, so it looks at
+            <code>longEar.__proto__</code> (which is <code>rabbit</code>). Then
+            <code>rabbit.eat</code> knows its HomeObject is <code>rabbit</code>,
+            so it looks at <code>rabbit.__proto__</code> (which is
+            <code>animal</code>). Chain works perfectly!
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>GPS Bracelet:</strong> Think of
+              <code>[[HomeObject]]</code> as a GPS bracelet that a method wears.
+              It always knows its "home address" (where it was born), not just
+              its current location (<code>this</code>). <code>super</code> uses
+              this home address to find the parent.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 9</span>
+      </div>
+
+      <!-- SLIDE 8: Methods Are Not Free -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Methods Are Not "Free"</div>
+          <div class="slide-subtitle">
+            Why copying methods with <code>super</code> can break
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i
+                class="fas fa-cut"
+                style="margin-right: 8px; color: #e65100"
+              ></i
+              >The Copy Problem
+            </h3>
+            <p>
+              Because methods remember their <code>[[HomeObject]]</code>, they
+              are tied to their original object. If you copy a method with
+              <code>super</code> to a different object, the
+              <code>super</code> still points to the old parent!
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> rabbit = {<br />
+            &nbsp;&nbsp;<span class="keyword">__proto__</span>: animal,<br />
+            &nbsp;&nbsp;<span class="function-name">sayHi</span>() {
+            <span class="keyword">super</span>.<span class="function-name"
+              >sayHi</span
+            >(); } <span class="comment">// HomeObject = rabbit</span><br />
+            };<br /><br />
+            <span class="keyword">let</span> tree = {<br />
+            &nbsp;&nbsp;<span class="keyword">__proto__</span>: plant,<br />
+            &nbsp;&nbsp;sayHi: rabbit.sayHi
+            <span class="comment">// Copied method!</span><br />
+            };<br /><br />
+            tree.<span class="function-name">sayHi</span>();
+            <span class="comment">// Says "I'm an animal" (?!)</span><br />
+            <span class="comment">// It should say "I'm a plant"!</span>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Syntax Matters!</strong
+            >
+            <code>[[HomeObject]]</code> only works for methods defined as
+            <code>method() {}</code>, not <code>method: function() {}</code>.
+            The latter is treated as a "free function" and gets no
+            <code>[[HomeObject]]</code> or <code>super</code> access.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Company Keycard:</strong> A method's
+              <code>[[HomeObject]]</code> is like a keycard programmed for one
+              specific building. If you borrow the keycard and use it at a
+              different building, it still tries to open doors at the original
+              building. It doesn't adapt to the new location.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">8 / 9</span>
+      </div>
+
+      <!-- SLIDE 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Class Inheritance
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-code-branch" style="margin-right: 8px"></i
+                  >Basic Rules
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>extends</code> links child prototype to parent
+                    prototype
+                  </li>
+                  <li>Override methods by defining same name in child</li>
+                  <li>
+                    <code>super.method()</code> calls the parent's version
+                  </li>
+                  <li>
+                    <code>super()</code> in constructor must run before
+                    <code>this</code>
+                  </li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-cogs" style="margin-right: 8px"></i>Under the
+                  Hood
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>
+                    <code>[[HomeObject]]</code> remembers method's birthplace
+                  </li>
+                  <li>
+                    <code>super</code> uses HomeObject, not <code>this</code>
+                  </li>
+                  <li>Don't copy methods that use <code>super</code></li>
+                  <li>Parent constructor uses parent fields, child methods</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>extends</strong></td>
+                  <td>Child inherits parent features</td>
+                  <td>SmartHouse extends House</td>
+                </tr>
+                <tr>
+                  <td><strong>super()</strong></td>
+                  <td>Call parent constructor before using this</td>
+                  <td>Pour foundation before walls</td>
+                </tr>
+                <tr>
+                  <td><strong>super.method()</strong></td>
+                  <td>Call parent's version of a method</td>
+                  <td>Asking parents for advice first</td>
+                </tr>
+                <tr>
+                  <td><strong>[[HomeObject]]</strong></td>
+                  <td>Method's permanent home address</td>
+                  <td>GPS bracelet / Company keycard</td>
+                </tr>
+                <tr>
+                  <td><strong>Constructor Rule</strong></td>
+                  <td>super() before this in derived classes</td>
+                  <td>No walls before foundation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Rule of
+              Thumb:</strong
+            >
+            Always call <code>super()</code> before using <code>this</code> in a
+            derived constructor. Use <code>super.method()</code> to build on
+            parent logic. And never copy methods that use <code>super</code> —
+            they're permanently tied to their birth object.
+          </div>
+        </div>
+        <span class="slide-number">9 / 9</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Class Inheritance — Presentation &copy; 2024 | Built with ❤️ for learning
+    </div>
+
+    <script>
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        document.getElementById("progressBar").style.width =
+          (winScroll / height) * 100 + "%";
+      });
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        },
+        { root: null, rootMargin: "0px", threshold: 0.1 },
+      );
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

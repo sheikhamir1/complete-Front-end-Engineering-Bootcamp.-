@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Advanced OOP</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Advanced OOP in JavaScript</h1>
+          <p class="slide-subtitle">
+            Extending Classes, Type Checking, & Mixins
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="data:image/jpeg;base64,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"
+              alt="JavaScript Code Abstract"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              As we build more complex applications, we need tools to extend
+              existing blueprints, verify object types, and share behaviors
+              across different classes. In this presentation, we'll explore how
+              to supercharge JavaScript's built-in classes, check exactly what
+              an object is, and break the single-inheritance rule using Mixins.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>🛠️ Extending & Checking</h4>
+              <p>
+                Learn how to add custom features to built-in classes like
+                Arrays, and how to use <code>instanceof</code> to verify an
+                object's family tree.
+              </p>
+            </div>
+            <div class="column info-card">
+              <h4>🧩 Mixins</h4>
+              <p>
+                JavaScript only allows one parent class. Mixins are like
+                "plug-ins" that let us add extra abilities to any class without
+                changing its family tree.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Extending Built-in Classes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Extending Built-in Classes</h2>
+          <p class="slide-subtitle">Supercharging Native Objects</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Adding Features to Arrays</h3>
+            <p>
+              Just like you can extend your own classes, you can extend
+              JavaScript's built-in classes like <code>Array</code>,
+              <code>Map</code>, etc. This lets you create "enhanced" versions of
+              native objects.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine buying a standard car
+              (Array) and upgrading it to a "SuperCar" (PowerArray). You add a
+              new button (method) like <code>isEmpty()</code>, but it still
+              drives and functions exactly like a normal car.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Creating a PowerArray</h4>
+            <div class="code-block">
+              <span class="keyword">class</span> PowerArray
+              <span class="keyword">extends</span> Array {
+              <span class="function">isEmpty</span>() {
+              <span class="keyword">return this</span>.length === 0; } }
+
+              <span class="keyword">let</span> arr =
+              <span class="keyword">new</span> PowerArray(1, 2, 5, 10, 50);
+              alert(arr.isEmpty()); <span class="comment">// false</span>
+
+              <span class="comment"
+                >// filter is a built-in method, but it's smart!</span
+              >
+              <span class="keyword">let</span> filteredArr = arr.filter(item =>
+              item >= 10); alert(filteredArr);
+              <span class="comment">// 10, 50</span>
+
+              <span class="comment">// The result is STILL a PowerArray!</span>
+              alert(filteredArr.isEmpty());
+              <span class="comment">// false (works!)</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>Why does <code>filter</code> return a PowerArray?</strong>
+              Built-in methods like <code>filter</code> and
+              <code>map</code> look at the object's
+              <code>constructor</code> property. Since
+              <code>filteredArr</code> was created from a
+              <code>PowerArray</code>, it uses <code>PowerArray</code> as the
+              constructor for the new result. This keeps your custom methods
+              available down the line!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Symbol.species -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Symbol.species</h2>
+          <p class="slide-subtitle">Controlling What Built-in Methods Return</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Changing the Factory Setting</h3>
+            <p>
+              Sometimes, you <strong>don't</strong> want methods like
+              <code>filter</code> to return your custom class. You might want
+              them to return the basic, plain Array instead. JavaScript provides
+              a special static getter called <code>Symbol.species</code> for
+              this.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Your SuperCar factory
+              normally produces SuperCars. By setting
+              <code>Symbol.species</code>, you're telling the factory: "When you
+              do internal repairs (like filter), give me back a standard basic
+              Car, not a SuperCar."
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Forcing filter to return a normal Array</h4>
+            <div class="code-block">
+              <span class="keyword">class</span> PowerArray
+              <span class="keyword">extends</span> Array {
+              <span class="function">isEmpty</span>() {
+              <span class="keyword">return this</span>.length === 0; }
+
+              <span class="comment"
+                >// Tell built-in methods to use the plain Array
+                constructor</span
+              >
+              <span class="keyword">static get</span> [Symbol.species]() {
+              <span class="keyword">return</span> Array; } }
+
+              <span class="keyword">let</span> arr =
+              <span class="keyword">new</span> PowerArray(1, 2, 5, 10, 50);
+              <span class="keyword">let</span> filteredArr = arr.filter(item =>
+              item >= 10);
+
+              <span class="comment"
+                >// filteredArr is now a plain Array, NOT PowerArray</span
+              >
+              alert(filteredArr.isEmpty());
+              <span class="comment"
+                >// Error: filteredArr.isEmpty is not a function</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>No Static Inheritance in Built-ins</h3>
+            <p>
+              There is one quirk with built-in classes: they do
+              <strong>not</strong> inherit static methods from each other. For
+              example, <code>Array</code> extends <code>Object</code>, but
+              <code>Array</code> does not have <code>Object.keys()</code>. They
+              are independent at the static level. This is different from your
+              custom classes, where statics are normally inherited.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: The instanceof Operator -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Class Checking: "instanceof"</h2>
+          <p class="slide-subtitle">Verifying an Object's Family Tree</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>How to check an object's type</h3>
+            <p>
+              The <code>instanceof</code> operator checks if an object belongs
+              to a certain class (or any class in its inheritance chain). It
+              returns a boolean.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Think of it like checking
+              someone's passport. Is this person (object) a citizen of France
+              (Class)? Or are they a citizen of Europe (Parent Class)?
+              <code>instanceof</code> checks the whole family tree.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Basic Usage</h4>
+            <div class="code-block">
+              <span class="keyword">class</span> Rabbit {}
+              <span class="keyword">let</span> rabbit =
+              <span class="keyword">new</span> Rabbit(); alert(rabbit
+              <span class="keyword">instanceof</span> Rabbit);
+              <span class="comment">// true</span>
+
+              <span class="comment">// Also works with built-in classes</span>
+              <span class="keyword">let</span> arr = [1, 2, 3]; alert(arr
+              <span class="keyword">instanceof</span> Array);
+              <span class="comment">// true</span> alert(arr
+              <span class="keyword">instanceof</span> Object);
+              <span class="comment">// true (Array inherits from Object)</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>How it works under the hood</h3>
+            <p>
+              <code>instanceof</code> walks up the prototype chain. It asks: "Is
+              <code>Rabbit.prototype</code> anywhere in <code>rabbit</code>'s
+              chain of prototypes?"
+            </p>
+            <p>
+              It also checks a static method called
+              <code>Symbol.hasInstance</code> if you want to write custom logic
+              for how a class verifies its instances.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Custom instanceof & toString -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Custom Type Checking</h2>
+          <p class="slide-subtitle">
+            Symbol.hasInstance & Object.prototype.toString
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>Custom Logic with <code>Symbol.hasInstance</code></h3>
+              <p>
+                You can define your own rules for what makes an object an
+                "instance" of your class.
+              </p>
+              <div class="code-block">
+                <span class="keyword">class</span> Animal {
+                <span class="keyword">static</span> [Symbol.hasInstance](obj) {
+                <span class="comment"
+                  >// Custom rule: if it canEat, it's an Animal</span
+                >
+                <span class="keyword">if</span> (obj.canEat)
+                <span class="keyword">return true</span>; } }
+
+                <span class="keyword">let</span> obj = { canEat:
+                <span class="keyword">true</span> }; alert(obj
+                <span class="keyword">instanceof</span> Animal);
+                <span class="comment">// true!</span>
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>The Secret Type Tagger: <code>toString</code></h3>
+              <p>
+                Plain objects print as <code>[object Object]</code>. But if you
+                borrow the built-in
+                <code>Object.prototype.toString</code> method and use
+                <code>.call()</code>, it acts like a super-powered
+                <code>typeof</code> that tells you exactly what something is.
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> s = Object.prototype.toString;
+                alert( s.call(123) );
+                <span class="comment">// [object Number]</span> alert(
+                s.call(null) );
+                <span class="comment">// [object Null]</span> alert( s.call([])
+                ); <span class="comment">// [object Array]</span> alert(
+                s.call(alert) );
+                <span class="comment">// [object Function]</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Customizing the toString Tag</h3>
+            <p>
+              You can use <code>Symbol.toStringTag</code> to customize what the
+              secret type tag says for your own objects.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { [Symbol.toStringTag]:
+              <span class="string">"User"</span> }; alert(
+              {}.toString.call(user) );
+              <span class="comment">// [object User]</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Type Checking Summary</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>What it works for</th>
+                  <th>What it returns</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>typeof</code></td>
+                  <td>Primitives (strings, numbers)</td>
+                  <td>String (<code>"number"</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>{}.toString</code></td>
+                  <td>Primitives, Built-ins, Custom Objects</td>
+                  <td>String (<code>"[object Array]"</code>)</td>
+                </tr>
+                <tr>
+                  <td><code>instanceof</code></td>
+                  <td>Objects</td>
+                  <td>Boolean (<code>true/false</code>)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Mixins Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Mixins</h2>
+          <p class="slide-subtitle">Breaking the Single-Inheritance Rule</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Problem with Single Inheritance</h3>
+            <p>
+              In JavaScript, a class can only extend <strong>one</strong> parent
+              class. You can't have <code>class B extends A, C</code>. But what
+              if you have a class <code>User</code> and you want to add
+              event-handling capabilities from an
+              <code>EventEmitter</code> class?
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Think of a class as a person.
+              You can only be born from one set of parents (Single Inheritance).
+              <strong>Mixins</strong> are like taking a class or getting a
+              certification. You're still you, but you've "mixed in" new skills
+              (like learning to fly a plane) without changing your parents.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>How Mixins Work</h4>
+            <p>
+              A Mixin is simply an object full of useful methods. We can copy
+              those methods into a class's <code>prototype</code> using
+              <code>Object.assign()</code>.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// 1. Define the mixin (the "power-up")</span
+              >
+              <span class="keyword">let</span> sayHiMixin = {
+              <span class="function">sayHi</span>() { alert(<span class="string"
+                >`Hello ${this.name}`</span
+              >); }, <span class="function">sayBye</span>() { alert(<span
+                class="string"
+                >`Bye ${this.name}`</span
+              >); } };
+
+              <span class="comment">// 2. Define the class</span>
+              <span class="keyword">class</span> User {
+              <span class="function">constructor</span>(name) {
+              <span class="keyword">this</span>.name = name; } }
+
+              <span class="comment"
+                >// 3. Mix the methods into the User prototype</span
+              >
+              Object.assign(User.prototype, sayHiMixin);
+
+              <span class="comment">// Now User can say hi!</span>
+              <span class="keyword">new</span> User(<span class="string"
+                >"Dude"</span
+              >).sayHi(); <span class="comment">// Hello Dude!</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              Now, <code>User</code> can still extend <code>Person</code>, and
+              also include <code>sayHiMixin</code>. Mixins can even inherit from
+              other mixins internally using <code>super</code>!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: EventMixin Real-World Example -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The EventMixin</h2>
+          <p class="slide-subtitle">A Practical Mixin for Real Apps</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Adding Walkie-Talkie Abilities to Any Object</h3>
+            <p>
+              Many objects in programming need to "broadcast" events when things
+              happen (like a user logging in, or a menu item being clicked). An
+              <code>EventMixin</code> adds a walkie-talkie to any class so it
+              can trigger events and let others listen to them.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>EventMixin Code</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> eventMixin = {
+              <span class="comment">// 1. Subscribe to an event</span>
+              <span class="function">on</span>(eventName, handler) {
+              <span class="keyword">if</span> (!this._eventHandlers)
+              <span class="keyword">this</span>._eventHandlers = {};
+              <span class="keyword">if</span> (!this._eventHandlers[eventName])
+              { <span class="keyword">this</span>._eventHandlers[eventName] =
+              []; }
+              <span class="keyword">this</span
+              >._eventHandlers[eventName].push(handler); },
+
+              <span class="comment">// 2. Unsubscribe from an event</span>
+              <span class="function">off</span>(eventName, handler) {
+              <span class="keyword">let</span> handlers =
+              <span class="keyword">this</span>._eventHandlers?.[eventName];
+              <span class="keyword">if</span> (!handlers)
+              <span class="keyword">return</span>;
+              <span class="keyword">for</span> (<span class="keyword">let</span>
+              i = 0; i < handlers.length; i++) {
+              <span class="keyword">if</span> (handlers[i] === handler) {
+              handlers.splice(i--, 1); } } },
+
+              <span class="comment">// 3. Generate (trigger) an event</span>
+              <span class="function">trigger</span>(eventName, ...args) {
+              <span class="keyword">if</span> (!<span class="keyword">this</span
+              >._eventHandlers?.[eventName]) {
+              <span class="keyword">return</span>;
+              <span class="comment">// no handlers for that event</span>
+              }
+              <span class="keyword">this</span
+              >._eventHandlers[eventName].forEach(handler => handler.apply(<span
+                class="keyword"
+                >this</span
+              >, args)); } };
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Using EventMixin -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Using the EventMixin</h2>
+          <p class="slide-subtitle">Putting the Walkie-Talkie to Work</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Creating a Reactive Menu</h3>
+            <p>
+              Let's say we have a <code>Menu</code> class. When a user selects
+              an item, the menu needs to tell the rest of the app about it.
+              Instead of hardcoding connections, we mix in the event system.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Menu Implementation</h4>
+            <div class="code-block">
+              <span class="comment">// The Class</span>
+              <span class="keyword">class</span> Menu {
+              <span class="function">choose</span>(value) {
+              <span class="keyword">this</span>.trigger(<span class="string"
+                >"select"</span
+              >, value); } }
+
+              <span class="comment">// Plug in the Mixin!</span>
+              Object.assign(Menu.prototype, eventMixin);
+
+              <span class="keyword">let</span> menu =
+              <span class="keyword">new</span> Menu();
+
+              <span class="comment"
+                >// Add a listener (someone turns on their walkie-talkie)</span
+              >
+              menu.on(<span class="string">"select"</span>, value => alert(<span
+                class="string"
+                >`Value selected: ${value}`</span
+              >));
+
+              <span class="comment"
+                >// Trigger the event (the menu broadcasts)</span
+              >
+              menu.choose(<span class="string">"123"</span>);
+              <span class="comment">// Alerts: "Value selected: 123"</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Summary of Mixins</h3>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>What is it?</strong> A way to add methods to classes
+                  without using inheritance.
+                </li>
+                <li>
+                  <strong>How does it work?</strong> By copying methods from a
+                  mixin object into a class's <code>prototype</code> using
+                  <code>Object.assign()</code>.
+                </li>
+                <li>
+                  <strong>When to use it?</strong> When multiple unrelated
+                  classes need the same behavior (like event handling, logging,
+                  or formatting), but they don't share a common parent class.
+                </li>
+                <li>
+                  <strong>Watch out!</strong> Be careful with naming. If a mixin
+                  has a method with the same name as the class, it will
+                  overwrite it, which can cause bugs.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        JavaScript Advanced OOP Presentation | Scroll down to continue &uarr; or
+        &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

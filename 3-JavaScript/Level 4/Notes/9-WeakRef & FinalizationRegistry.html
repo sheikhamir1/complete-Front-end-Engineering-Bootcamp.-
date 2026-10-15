@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript WeakRef & FinalizationRegistry</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">WeakRef & FinalizationRegistry</h1>
+          <p class="slide-subtitle">
+            Managing Memory at the Edge of JavaScript
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+              alt="Abstract Code"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              JavaScript automatically cleans up memory using a Garbage
+              Collector. It deletes objects that are no longer reachable. But
+              what if we want to hold onto an object <em>without</em> forcing it
+              to stay in memory? That's where <code>WeakRef</code> and
+              <code>FinalizationRegistry</code> come in.
+            </p>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Advanced Feature Warning:</strong> These are "hidden"
+            features used very rarely. Most developers never need them. However,
+            understanding them helps you grasp how JavaScript memory really
+            works under the hood!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Strong vs. Weak References -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Strong vs. Weak References</h2>
+          <p class="slide-subtitle">The difference that controls memory</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Strong References (The Default)</h3>
+            <p>
+              When you assign an object to a variable, you create a strong
+              reference. As long as that variable exists, the Garbage Collector
+              (GC) will <strong>never</strong> delete the object.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { name:
+              <span class="string">"John"</span> };
+              <span class="comment">// Strong reference</span>
+
+              user = <span class="keyword">null</span>;
+              <span class="comment"
+                >// Reference lost. Object is deleted from memory.</span
+              >
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Weak References (WeakRef)</h3>
+            <p>
+              A weak reference points to an object, but
+              <strong>does not prevent</strong> the Garbage Collector from
+              deleting it. If the only things left pointing to an object are
+              weak references, the GC is free to destroy it.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine a balloon. A
+              <strong>strong reference</strong> is like holding the balloon's
+              string tightly—it won't fly away. A
+              <strong>weak reference</strong> is like just pointing at the
+              balloon. If the person holding the string lets go, the balloon
+              flies away (gets deleted), regardless of who is pointing at it!
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Creating a WeakRef</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { name:
+              <span class="string">"John"</span> };
+
+              <span class="comment"
+                >// Create a weak reference to the user object</span
+              >
+              <span class="keyword">let</span> admin =
+              <span class="keyword">new</span> WeakRef(user);
+
+              <span class="comment"
+                >// Now, if we remove the strong reference...</span
+              >
+              user = <span class="keyword">null</span>;
+
+              <span class="comment"
+                >// The object can now be deleted by the GC, even though 'admin'
+                still exists.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: The deref() Method -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Reading WeakRefs with deref()</h2>
+          <p class="slide-subtitle">Schrödinger's Object</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Is it alive or dead?</h3>
+            <p>
+              Because the Garbage Collector runs unpredictably, we never know
+              exactly when a WeakRef's object will be deleted. It becomes like
+              "Schrödinger's cat"—it might be in memory, or it might be gone.
+            </p>
+            <p>
+              To check if the object still exists and access it, we use the
+              <code>deref()</code> method.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Using deref()</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> user = { name:
+              <span class="string">"John"</span> };
+              <span class="keyword">let</span> weakUser =
+              <span class="keyword">new</span> WeakRef(user);
+
+              <span class="comment">// Try to get the object</span>
+              <span class="keyword">let</span> ref = weakUser.deref();
+
+              <span class="keyword">if</span> (ref) { alert(ref.name);
+              <span class="comment">// "John" (Object is still alive!)</span> }
+              <span class="keyword">else</span> { alert(<span class="string"
+                >"Object has been garbage collected."</span
+              >); <span class="comment">// It's dead.</span> }
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Rule of Thumb:</strong> If <code>deref()</code> returns the
+            object, it's safe to use for that moment. If it returns
+            <code>undefined</code>, the GC ate it, and you must recreate the
+            object (e.g., fetch it from a server again).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: WeakRef Use Case - Caching -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Use Case: Smart Caching</h2>
+          <p class="slide-subtitle">Saving memory without leaks</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Imagine we download massive images (as Blobs or ArrayBuffers). We
+              want to cache them so we don't re-download them, but we don't want
+              the cache to crash the browser by eating all the RAM.
+            </p>
+            <p>
+              <code>Map</code> keeps objects alive forever (memory leak!).
+              <code>WeakMap</code> doesn't let us use strings as keys. The
+              solution? A <code>Map</code> with <code>WeakRef</code> values!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The WeakRef Cache</h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">weakRefCache</span>(fetchImg) {
+              <span class="keyword">const</span> imgCache =
+              <span class="keyword">new</span> Map();
+              <span class="comment"
+                >// Keys are strings, values are WeakRefs</span
+              >
+
+              <span class="keyword">return</span> (imgName) => {
+              <span class="keyword">const</span> cachedImg =
+              imgCache.get(imgName);
+
+              <span class="comment"
+                >// If it exists in cache AND hasn't been garbage
+                collected...</span
+              >
+              <span class="keyword">if</span> (cachedImg?.deref()) {
+              <span class="keyword">return</span> cachedImg.deref();
+              <span class="comment">// Cache hit!</span>
+              }
+
+              <span class="comment">// Otherwise, download it fresh</span>
+              <span class="keyword">const</span> newImg = fetchImg(imgName);
+
+              <span class="comment"
+                >// Store it in cache wrapped in a WeakRef</span
+              >
+              imgCache.set(imgName,
+              <span class="keyword">new</span> WeakRef(newImg));
+
+              <span class="keyword">return</span> newImg; }; }
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>The Problem:</strong> Over time, the
+              <code>Map</code> fills up with string keys pointing to "dead"
+              <code>WeakRef</code>s whose objects were deleted. We need a way to
+              clean up the keys too!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: FinalizationRegistry -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">FinalizationRegistry</h2>
+          <p class="slide-subtitle">The Cleanup Callback</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>What is a Finalizer?</h3>
+            <p>
+              A <code>FinalizationRegistry</code> lets you register a
+              <strong>cleanup callback</strong> (a finalizer) that runs
+              automatically when an object is finally destroyed by the Garbage
+              Collector.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Think of it like an
+              <strong>Executor of a Will</strong>. When the person (the object)
+              passes away (gets garbage collected), the executor automatically
+              steps in to fulfill their final wishes (run the cleanup callback).
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Creating a Registry</h4>
+            <div class="code-block">
+              <span class="comment"
+                >// 1. Create the registry with a cleanup callback</span
+              >
+              <span class="keyword">const</span> registry =
+              <span class="keyword">new</span> FinalizationRegistry((heldValue)
+              => { console.log(<span class="string"
+                >`${heldValue} was deleted by the Garbage Collector.`</span
+              >); });
+
+              <span class="comment"
+                >// 2. Create an object and register it</span
+              >
+              <span class="keyword">let</span> user = { name:
+              <span class="string">"John"</span> };
+
+              <span class="comment">// register(target, heldValue)</span>
+              <span class="comment"
+                >// When 'user' is deleted, it will pass "John" to the
+                callback.</span
+              >
+              registry.register(user, user.name);
+
+              <span class="comment">// 3. Remove the strong reference</span>
+              user = <span class="keyword">null</span>;
+
+              <span class="comment"
+                >// Sometime later... GC runs, and the console logs:</span
+              >
+              <span class="comment"
+                >// "John was deleted by the Garbage Collector."</span
+              >
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Timing is not guaranteed:</strong> You don't control the
+            GC. The callback might run much later, or not at all if the browser
+            tab closes first.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Fixing the Cache with FinalizationRegistry -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Perfect Cache</h2>
+          <p class="slide-subtitle">Combining WeakRef & FinalizationRegistry</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Let's fix our earlier cache problem. We will use
+              <code>FinalizationRegistry</code> to automatically delete the
+              "dead" string keys from the <code>Map</code> when their
+              <code>WeakRef</code> values are garbage collected.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Upgraded Cache Code</h4>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">weakRefCache</span>(fetchImg) {
+              <span class="keyword">const</span> imgCache =
+              <span class="keyword">new</span> Map();
+
+              <span class="comment"
+                >// 1. Create a registry to clean up dead keys</span
+              >
+              <span class="keyword">const</span> registry =
+              <span class="keyword">new</span> FinalizationRegistry((imgName) =>
+              { <span class="keyword">const</span> cachedImg =
+              imgCache.get(imgName);
+              <span class="comment"
+                >// Make sure it hasn't been re-added before deleting!</span
+              >
+              <span class="keyword">if</span> (cachedImg && !cachedImg.deref())
+              imgCache.delete(imgName); });
+
+              <span class="keyword">return</span> (imgName) => {
+              <span class="keyword">const</span> cachedImg =
+              imgCache.get(imgName);
+
+              <span class="keyword">if</span> (cachedImg?.deref())
+              <span class="keyword">return</span> cachedImg.deref();
+
+              <span class="keyword">const</span> newImg = fetchImg(imgName);
+              imgCache.set(imgName,
+              <span class="keyword">new</span> WeakRef(newImg));
+
+              <span class="comment"
+                >// 2. Register the new image so its key is cleaned up
+                later</span
+              >
+              registry.register(newImg, imgName);
+
+              <span class="keyword">return</span> newImg; }; }
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong
+              >Why check <code>!cachedImg.deref()</code> in the
+              callback?</strong
+            >
+            Because the main program and the cleanup callback run in parallel.
+            You might delete an object, but right before the callback runs, the
+            main program fetches and adds a new object under the exact same key.
+            We must ensure we don't accidentally delete a fresh, "live" object!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Real-World Scenario - Photo App -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Real-World Scenario: Photo App</h2>
+          <p class="slide-subtitle">Saving network requests & RAM</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Imagine a cloud photo app (like iCloud). You see tiny thumbnails,
+              but when you click "Create Collage", the app needs the full-size,
+              high-res images.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>The Process</h4>
+              <div class="list-section">
+                <ul>
+                  <li>
+                    <strong>1. First Collage:</strong> App fetches 4 high-res
+                    images. It caches them using our <code>weakRefCache</code>.
+                    Memory usage goes up.
+                  </li>
+                  <li>
+                    <strong>2. Idle Time:</strong> User browses other photos.
+                    The GC notices the 4 high-res images aren't strongly
+                    referenced and deletes them to free up RAM. The registry
+                    cleans the cache keys.
+                  </li>
+                  <li>
+                    <strong>3. Second Collage:</strong> User makes another
+                    collage. 1 image is still in RAM (cache hit!). 3 were
+                    deleted by GC and must be re-fetched from the cloud.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>The Result</h3>
+              <p>
+                Using this approach, we balance <strong>speed</strong> and
+                <strong>memory</strong>:
+              </p>
+              <div class="highlight-box">
+                If the user makes collages quickly, the images are still in the
+                cache (super fast!). If they wait a while, the GC cleans up the
+                massive images so the browser doesn't crash (safe!).
+              </div>
+              <p>
+                This prevents the browser from holding onto hundreds of
+                megabytes of high-res images just in case the user wants them
+                again.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">When to use, and when NOT to</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>WeakRef</h4>
+            <p>
+              Allows you to point to an object <strong>without</strong> keeping
+              it alive. Use <code>deref()</code> to check if it still exists.
+              Great for caching heavy objects where memory is a concern.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>FinalizationRegistry</h4>
+            <p>
+              Lets you register a cleanup callback that runs
+              <strong>after</strong> the Garbage Collector deletes an object.
+              Perfect for cleaning up "dead" keys in a cache or closing file
+              handles.
+            </p>
+          </div>
+          <div class="text-section">
+            <h3>Why not use them everywhere?</h3>
+            <p>
+              Most of the time, you don't need them! Normal caching logic (like
+              LRU caches) is predictable and reliable. <code>WeakRef</code> and
+              <code>FinalizationRegistry</code> rely on the Garbage Collector,
+              which is <strong>unpredictable</strong>. You never know exactly
+              when memory will be freed or when a callback will run.
+            </p>
+          </div>
+          <div class="warning-box">
+            <strong>Golden Rule:</strong> Only use these advanced features when
+            you have strict memory constraints with heavy objects, and always
+            ensure your code works correctly even if the Garbage Collector
+            deletes the objects immediately!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        JavaScript WeakRef & FinalizationRegistry | Scroll down to continue
+        &uarr; or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

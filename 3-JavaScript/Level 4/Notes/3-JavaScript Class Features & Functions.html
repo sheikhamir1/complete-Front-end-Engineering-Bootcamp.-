@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Advanced Concepts</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">JavaScript Class Features & Functions</h1>
+          <p class="slide-subtitle">
+            Static Methods, Encapsulation, Rest Parameters & Spread Syntax
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+              alt="JavaScript Code"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              As our code gets more complex, we need better ways to organize,
+              protect, and manipulate our data. In this presentation, we will
+              explore how to write cleaner, more professional JavaScript.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>🛡️ Class Features</h4>
+              <p>
+                Learn how to attach methods to the whole class (Static) and how
+                to hide internal details (Private/Protected).
+              </p>
+            </div>
+            <div class="column info-card">
+              <h4>⚡ Function Tricks</h4>
+              <p>
+                Master the <code>...</code> syntax to gather endless arguments
+                (Rest) and explode arrays into individual items (Spread).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Static Properties & Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Static Properties & Methods</h2>
+          <p class="slide-subtitle">Belonging to the Class, Not the Object</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>What does "Static" mean?</h3>
+            <p>
+              Normally, methods are called on an <strong>instance</strong> of a
+              class (an object). <strong>Static methods</strong> are called on
+              the <strong>class itself</strong>.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Think of a Car Factory vs. a
+              specific Car. The factory (Class) can <code>buildCar()</code>, but
+              a specific car (Instance) can <code>drive()</code>. You don't ask
+              your car to build another car; you ask the factory!
+            </div>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>Static Method</h4>
+                <div class="code-block">
+                  <span class="keyword">class</span> User {
+                  <span class="keyword">static</span>
+                  <span class="function">staticMethod</span>() { alert(<span
+                    class="keyword"
+                    >this</span
+                  >
+                  === User); } }
+
+                  <span class="comment"
+                    >// Called on the Class, not an instance</span
+                  >
+                  User.staticMethod(); <span class="comment">// true</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>Static Property</h4>
+                <div class="code-block">
+                  <span class="keyword">class</span> Article {
+                  <span class="keyword">static</span> publisher =
+                  <span class="string">"Ilya Kantor"</span>; }
+                  alert(Article.publisher);
+                  <span class="comment">// Ilya Kantor</span>
+
+                  <span class="comment"
+                    >// Same as: Article.publisher = "Ilya Kantor";</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>Important:</strong> Static methods are
+              <strong>NOT</strong> available on individual objects.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> article =
+              <span class="keyword">new</span> Article();
+              article.staticMethod();
+              <span class="comment">// Error: not a function</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Static Use Cases -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Static Use Cases</h2>
+          <p class="slide-subtitle">Comparing & Factory Methods</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>1. Comparing Objects</h3>
+              <p>
+                Sometimes we need a function that compares two instances of a
+                class. It logically belongs to the class, but doesn't belong to
+                a single object.
+              </p>
+              <div class="code-block">
+                <span class="keyword">class</span> Article {
+                <span class="function">constructor</span>(title, date) {
+                <span class="keyword">this</span>.title = title;
+                <span class="keyword">this</span>.date = date; }
+
+                <span class="keyword">static</span>
+                <span class="function">compare</span>(articleA, articleB) {
+                <span class="keyword">return</span> articleA.date -
+                articleB.date; } }
+
+                <span class="keyword">let</span> articles = [
+                <span class="keyword">new</span> Article(<span class="string"
+                  >"HTML"</span
+                >, <span class="keyword">new</span> Date(2019, 1, 1)),
+                <span class="keyword">new</span> Article(<span class="string"
+                  >"CSS"</span
+                >, <span class="keyword">new</span> Date(2019, 0, 1)) ];
+                articles.sort(Article.compare); alert(articles[0].title);
+                <span class="comment">// CSS</span>
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>2. Factory Methods</h3>
+              <p>
+                Need multiple ways to create an object? A constructor only
+                handles one way. Static methods can create objects with specific
+                defaults.
+              </p>
+              <div class="code-block">
+                <span class="keyword">class</span> Article {
+                <span class="function">constructor</span>(title, date) {
+                <span class="keyword">this</span>.title = title;
+                <span class="keyword">this</span>.date = date; }
+
+                <span class="keyword">static</span>
+                <span class="function">createTodays</span>() {
+                <span class="comment">// remember, this = Article</span>
+                <span class="keyword">return new this</span>(<span
+                  class="string"
+                  >"Today's digest"</span
+                >, <span class="keyword">new</span> Date()); } }
+
+                <span class="keyword">let</span> article =
+                Article.createTodays(); alert(article.title);
+                <span class="comment">// Today's digest</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Database Analogy:</strong> Static methods are often used for
+            database operations like <code>Article.remove({id: 12345})</code> or
+            <code>User.findById(1)</code>. You ask the whole class to
+            find/remove something, not one specific user.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Inheritance of Statics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Inheritance of Statics</h2>
+          <p class="slide-subtitle">
+            Static properties & methods pass down to children
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>How it works</h3>
+            <p>
+              When we use <code>extends</code>, static methods and properties
+              are also inherited. Under the hood, the child class's prototype
+              points to the parent class.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="code-block">
+              <span class="keyword">class</span> Animal {
+              <span class="keyword">static</span> planet =
+              <span class="string">"Earth"</span>;
+
+              <span class="function">constructor</span>(name, speed) {
+              <span class="keyword">this</span>.speed = speed;
+              <span class="keyword">this</span>.name = name; }
+
+              <span class="keyword">static</span>
+              <span class="function">compare</span>(animalA, animalB) {
+              <span class="keyword">return</span> animalA.speed - animalB.speed;
+              } }
+
+              <span class="keyword">class</span> Rabbit
+              <span class="keyword">extends</span> Animal {
+              <span class="function">hide</span>() { alert(<span class="string"
+                >`${this.name} hides!`</span
+              >); } }
+
+              <span class="keyword">let</span> rabbits = [
+              <span class="keyword">new</span> Rabbit(<span class="string"
+                >"White Rabbit"</span
+              >, 10), <span class="keyword">new</span> Rabbit(<span
+                class="string"
+                >"Black Rabbit"</span
+              >, 5) ];
+
+              <span class="comment">// Rabbit inherits Animal.compare</span>
+              rabbits.sort(Rabbit.compare);
+
+              <span class="comment">// Rabbit inherits Animal.planet</span>
+              alert(Rabbit.planet); <span class="comment">// Earth</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>The Prototype Chain:</strong><br />
+            <code>Rabbit.__proto__ === Animal</code> (For static methods)<br />
+            <code>Rabbit.prototype.__proto__ === Animal.prototype</code> (For
+            instance methods)
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Encapsulation -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Private & Protected Properties</h2>
+          <p class="slide-subtitle">
+            Encapsulation: Hiding the Internal Interface
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Coffee Machine Analogy</h3>
+            <p>
+              Think of a coffee machine. From the outside, you see buttons
+              (External Interface). Inside, there are tubes and heaters
+              (Internal Interface).
+            </p>
+            <p>
+              If the protective cover is removed, it becomes dangerous and
+              confusing. In programming, we want to
+              <strong>hide the complex/dangerous parts</strong> so others can
+              use our code safely.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>External Interface (Public)</h4>
+              <p>
+                Methods and properties that anyone can use from outside. Like
+                the "Brew Coffee" button.
+              </p>
+            </div>
+            <div class="column info-card">
+              <h4>Internal Interface (Private/Protected)</h4>
+              <p>
+                Methods and properties only accessible from inside the class.
+                Like the heating element.
+              </p>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Why hide the internals? (Benefits of Encapsulation)</h3>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>Protection:</strong> Prevents users from breaking
+                  things they shouldn't touch (e.g., setting water amount to
+                  negative).
+                </li>
+                <li>
+                  <strong>Supportable:</strong> You can rewrite the internal
+                  code without breaking everyone's code, as long as the external
+                  buttons still work.
+                </li>
+                <li>
+                  <strong>Hiding Complexity:</strong> Users don't need to
+                  understand how the heater works to make coffee.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Protected Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Protected Properties</h2>
+          <p class="slide-subtitle">Using the Underscore Convention (_)</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Underscore <code>_</code> Convention</h3>
+            <p>
+              JavaScript doesn't have a native "protected" keyword. Instead,
+              developers use an underscore <code>_</code> in front of the
+              property name. This is a polite way of saying:
+              <em>"Please don't touch this from outside the class!"</em>
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> A "Staff Only" sign on a
+              door. It's not a locked door (you can still open it if you want),
+              but you know you shouldn't.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Controlling Access with Getters/Setters</h4>
+            <div class="code-block">
+              <span class="keyword">class</span> CoffeeMachine { _waterAmount =
+              0; <span class="comment">// Protected property</span>
+
+              <span class="keyword">set</span> waterAmount(value) {
+              <span class="keyword">if</span> (value < 0) value = 0;
+              <span class="comment">// Protection logic!</span>
+              <span class="keyword">this</span>._waterAmount = value; }
+
+              <span class="keyword">get</span> waterAmount() {
+              <span class="keyword">return this</span>._waterAmount; } }
+
+              <span class="keyword">let</span> machine =
+              <span class="keyword">new</span> CoffeeMachine();
+              machine.waterAmount = -10;
+              <span class="comment">// _waterAmount becomes 0, not -10!</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Read-Only Properties</h3>
+            <p>
+              If you only provide a <code>get</code> and no <code>set</code>,
+              the property becomes read-only. For example, a coffee machine's
+              <code>power</code> shouldn't change after it's built.
+            </p>
+            <div class="code-block">
+              <span class="keyword">class</span> CoffeeMachine {
+              <span class="function">constructor</span>(power) {
+              <span class="keyword">this</span>._power = power; }
+              <span class="keyword">get</span> power() {
+              <span class="keyword">return this</span>._power; } }
+
+              <span class="keyword">let</span> coffeeMachine =
+              <span class="keyword">new</span> CoffeeMachine(100);
+              coffeeMachine.power = 25;
+              <span class="comment">// Error (no setter)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Private Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Private Properties</h2>
+          <p class="slide-subtitle">Enforced Privacy with the Hash (#)</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Hash <code>#</code> Syntax</h3>
+            <p>
+              Unlike the underscore, the <code>#</code> prefix is
+              <strong>enforced by the JavaScript engine</strong>. Nobody can
+              access it from outside.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> A locked safe. It is
+              physically impossible to open it without the key. The language
+              itself blocks access.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Creating Private Fields</h4>
+            <div class="code-block">
+              <span class="keyword">class</span> CoffeeMachine { #waterLimit =
+              200; <span class="comment">// Private property</span>
+
+              #fixWaterAmount(value) {
+              <span class="comment">// Private method</span>
+              <span class="keyword">if</span> (value < 0)
+              <span class="keyword">return</span> 0;
+              <span class="keyword">if</span> (value >
+              <span class="keyword">this</span>.#waterLimit)
+              <span class="keyword">return this</span>.#waterLimit; }
+              setWaterAmount(value) {
+              <span class="keyword">this</span>._waterAmount =
+              <span class="keyword">this</span>.#fixWaterAmount(value); } }
+
+              <span class="keyword">let</span> machine =
+              <span class="keyword">new</span> CoffeeMachine();
+              machine.#fixWaterAmount(123);
+              <span class="comment">// Error! Can't access from outside</span>
+              machine.#waterLimit = 1000; <span class="comment">// Error!</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Private vs Protected</h3>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Protected (<code>_</code>)</th>
+                  <th>Private (<code>#</code>)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Enforced by JS engine?</td>
+                  <td>No (Gentleman's agreement)</td>
+                  <td>Yes (Hard error if violated)</td>
+                </tr>
+                <tr>
+                  <td>Accessible in child classes?</td>
+                  <td>Yes</td>
+                  <td>No</td>
+                </tr>
+                <tr>
+                  <td>Can have same public name?</td>
+                  <td>No (conflict)</td>
+                  <td>
+                    Yes (e.g., <code>#water</code> and <code>water</code>)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Rest Parameters -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Rest Parameters & Spread Syntax</h2>
+          <p class="slide-subtitle">Mastering the ... Operator</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Rest Parameters <code>...</code></h3>
+            <p>
+              Sometimes you don't know how many arguments a function will
+              receive. Rest parameters gather the
+              <strong>remaining</strong> arguments into a real Array.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Packing a suitcase. You have
+              specific items on top, and then you pack <em>the rest</em> of your
+              clothes into the remaining space.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Gathering Arguments</h4>
+            <div class="code-block">
+              <span class="comment"
+                >// Gather ALL arguments into an array called 'args'</span
+              >
+              <span class="keyword">function</span>
+              <span class="function">sumAll</span>(...args) {
+              <span class="keyword">let</span> sum = 0;
+              <span class="keyword">for</span> (<span class="keyword">let</span>
+              arg <span class="keyword">of</span> args) sum += arg;
+              <span class="keyword">return</span> sum; } alert( sumAll(1, 2, 3)
+              ); <span class="comment">// 6</span>
+
+              <span class="comment"
+                >// First arguments as variables, the REST in an array</span
+              >
+              <span class="keyword">function</span>
+              <span class="function">showName</span>(firstName, lastName,
+              ...titles) { alert( firstName + <span class="string">' '</span> +
+              lastName ); <span class="comment">// Julius Caesar</span> alert(
+              titles[0] ); <span class="comment">// Consul</span> alert(
+              titles[1] ); <span class="comment">// Imperator</span> }
+              showName(<span class="string">"Julius"</span>,
+              <span class="string">"Caesar"</span>,
+              <span class="string">"Consul"</span>,
+              <span class="string">"Imperator"</span>);
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>The <code>arguments</code> Object</h3>
+            <p>
+              In old JavaScript, there was no <code>...</code> syntax. People
+              used the <code>arguments</code> object. It still works, but it's
+              <strong>array-like, not a real array</strong> (no
+              <code>.map()</code> or <code>.filter()</code>). Also, arrow
+              functions don't have their own <code>arguments</code>.
+              <strong>Always prefer Rest Parameters!</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Spread Syntax -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Spread Syntax</h2>
+          <p class="slide-subtitle">Unpacking Arrays & Iterables</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>From Array to List of Arguments</h3>
+            <p>
+              Spread syntax does the exact <strong>opposite</strong> of Rest. It
+              takes an array and <strong>expands (unpacks)</strong> it into
+              individual items.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Unpacking a suitcase. You
+              take the tightly packed bag and explode its contents out onto the
+              bed as individual items.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Using Spread to Pass Arrays</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> arr = [3, 5, 1];
+
+              <span class="comment"
+                >// Math.max needs individual numbers: (3, 5, 1)</span
+              >
+              <span class="comment">// Not an array: ([3, 5, 1])</span>
+              alert( Math.max(arr) );
+              <span class="comment">// NaN (fails)</span>
+
+              <span class="comment">// Spread unpacks the array!</span>
+              alert( Math.max(...arr) );
+              <span class="comment">// 5 (works!)</span>
+
+              <span class="comment"
+                >// You can even combine multiple arrays</span
+              >
+              <span class="keyword">let</span> arr1 = [1, -2, 3, 4];
+              <span class="keyword">let</span> arr2 = [8, 3, -8, 1]; alert(
+              Math.max(...arr1, ...arr2) ); <span class="comment">// 8</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Merging Arrays & Strings</h4>
+            <div class="code-block">
+              <span class="comment">// Merge arrays</span>
+              <span class="keyword">let</span> merged = [0, ...arr, 2, ...arr2];
+              <span class="comment">// [0, 3, 5, 1, 2, 8, 3, -8, 1]</span>
+
+              <span class="comment"
+                >// Turn string into array of characters</span
+              >
+              <span class="keyword">let</span> str =
+              <span class="string">"Hello"</span>; alert( [...str] );
+              <span class="comment">// H,e,l,l,o</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Array.from vs Spread:</strong>
+            <code>Array.from(obj)</code> works on both array-likes and
+            iterables. Spread <code>[...obj]</code> only works on iterables.
+            When in doubt, <code>Array.from</code> is safer.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Copying with Spread -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Copying Objects & Arrays</h2>
+          <p class="slide-subtitle">A cleaner way to clone data</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Shallow Copying with Spread</h3>
+            <p>
+              Spread provides a very clean shorthand for making copies of arrays
+              and objects. It does the same thing as
+              <code>Object.assign()</code>, but is shorter to write.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>Copying Arrays</h4>
+              <div class="code-block">
+                <span class="keyword">let</span> arr = [1, 2, 3];
+
+                <span class="comment">// Spread into a new array</span>
+                <span class="keyword">let</span> arrCopy = [...arr]; alert(arr
+                === arrCopy);
+                <span class="comment">// false (new reference)</span>
+
+                arr.push(4); alert(arrCopy);
+                <span class="comment">// 1, 2, 3 (unaffected)</span>
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>Copying Objects</h4>
+              <div class="code-block">
+                <span class="keyword">let</span> obj = { a: 1, b: 2, c: 3 };
+
+                <span class="comment">// Spread into a new object</span>
+                <span class="keyword">let</span> objCopy = { ...obj }; alert(obj
+                === objCopy);
+                <span class="comment">// false (new reference)</span>
+
+                obj.d = 4; alert(JSON.stringify(objCopy));
+                <span class="comment">// {"a":1,"b":2,"c":3}</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Summary: Rest vs Spread</h3>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Rest Parameters <code>...</code></th>
+                  <th>Spread Syntax <code>...</code></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Purpose</td>
+                  <td>Gather items <strong>into an array</strong></td>
+                  <td>Expand array <strong>into items</strong></td>
+                </tr>
+                <tr>
+                  <td>Location</td>
+                  <td>Function definition (parameters)</td>
+                  <td>Function call or literals (arrays/objects)</td>
+                </tr>
+                <tr>
+                  <td>Analogy</td>
+                  <td>Packing a suitcase</td>
+                  <td>Unpacking a suitcase</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        JavaScript Advanced Concepts Presentation | Scroll down to continue
+        &uarr; or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

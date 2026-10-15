@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Basic Syntax - Presentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .text-section {
+        margin-bottom: 20px;
+      }
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+      .column {
+        flex: 1;
+      }
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+      .code-block {
+        background-color: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 0.95rem;
+        overflow-x: auto;
+        line-height: 1.7;
+      }
+      .code-block .keyword {
+        color: #cba6f7;
+      }
+      .code-block .function-name {
+        color: #89b4fa;
+      }
+      .code-block .number {
+        color: #fab387;
+      }
+      .code-block .string {
+        color: #a6e3a1;
+      }
+      .code-block .comment {
+        color: #6c7086;
+        font-style: italic;
+      }
+      .code-block .operator {
+        color: #89dceb;
+      }
+      .code-block .builtin {
+        color: #f9e2af;
+      }
+      .code-block .error {
+        color: #f38ba8;
+        font-weight: bold;
+      }
+      .analogy-box {
+        background: linear-gradient(135deg, #e8f0fe 0%, #fce4ec 100%);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #ff6f00;
+      }
+      .analogy-box .analogy-label {
+        font-weight: 700;
+        color: #ff6f00;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .analogy-box p {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+      }
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff6f00;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+      .warning-box strong {
+        color: #e65100;
+      }
+      .slide:first-child {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #ffffff 0%, #e8f0fe 100%);
+      }
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.2rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+      .hero-subtitle {
+        font-size: 1.3rem;
+        color: #5f6368;
+        margin-bottom: 30px;
+        max-width: 600px;
+      }
+      .hero-tags {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      .hero-tag {
+        background-color: #1a73e8;
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .slide-number {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+        color: #adb5bd;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+        .slide-title {
+          font-size: 1.8rem;
+        }
+        .hero-title {
+          font-size: 2.2rem;
+        }
+        .two-column {
+          flex-direction: column;
+        }
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- SLIDE 1: Title -->
+      <div class="slide">
+        <div
+          class="slide-content"
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="flex: 1; min-width: 300px">
+            <div class="hero-title">Class Basic Syntax</div>
+            <div class="hero-subtitle">
+              The modern, clean way to create object blueprints in JavaScript.
+            </div>
+            <div class="analogy-box">
+              <div class="analogy-label">
+                <i class="fas fa-lightbulb"></i> Real-World Analogy
+              </div>
+              <p>
+                A class is like an <strong>architectural blueprint</strong> for
+                a house. The blueprint itself isn't a house — it's the template.
+                You use the blueprint to build actual houses (objects). Every
+                house built from the same blueprint has the same structure, but
+                different families (data) living inside.
+              </p>
+            </div>
+            <div class="hero-tags">
+              <span class="hero-tag"
+                ><i class="fas fa-drafting-compass"></i> Blueprint</span
+              >
+              <span class="hero-tag"
+                ><i class="fas fa-hammer"></i> Constructor</span
+              >
+              <span class="hero-tag"><i class="fas fa-cogs"></i> Methods</span>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 300px">
+            <div class="image-container">
+              <img
+                src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&h=400&fit=crop"
+                alt="Code and Architecture concept"
+              />
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">1 / 9</span>
+      </div>
+
+      <!-- SLIDE 2: The Syntax -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">The <code>class</code> Syntax</div>
+          <div class="slide-subtitle">Defining a blueprint for objects</div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-code" style="margin-right: 8px"></i>Basic
+              Structure
+            </h3>
+            <p>
+              The <code>class</code> keyword provides a clean syntax to define
+              object templates. The <code>constructor()</code> method runs
+              automatically when you create a new object.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">User</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">constructor</span>(name)
+            {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.name =
+            name; <span class="comment">// Initialize state</span><br />
+            &nbsp;&nbsp;}<br /><br />
+            &nbsp;&nbsp;<span class="function-name">sayHi</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+              class="keyword"
+              >this</span
+            >.name); <span class="comment">// Define behavior</span><br />
+            &nbsp;&nbsp;}<br />
+            }<br /><br />
+            <span class="keyword">let</span> user =
+            <span class="keyword">new</span>
+            <span class="function-name">User</span>(<span class="string"
+              >"John"</span
+            >);<br />
+            user.<span class="function-name">sayHi</span>();
+            <span class="comment">// John</span>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              No Commas Between Methods!</strong
+            >
+            A common mistake is adding commas between methods like in object
+            literals. In classes, commas are <strong>not</strong> allowed and
+            will cause a syntax error.
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Building a House:</strong> The <code>constructor</code> is
+              the foundation-laying ceremony — it happens once when the house is
+              first built. <code>sayHi</code> is like the doorbell — a feature
+              every house has that can be used anytime.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">2 / 9</span>
+      </div>
+
+      <!-- SLIDE 3: What is a Class, Really? -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">What is a Class, Really?</div>
+          <div class="slide-subtitle">
+            Under the hood, it's not magic — it's just a function
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-mask" style="margin-right: 8px"></i>Unveiling the
+              Magic
+            </h3>
+            <p>
+              A class in JavaScript is not a completely new entity. It's a
+              special kind of <strong>function</strong>. When you write
+              <code>class User</code>, JavaScript does two things behind the
+              scenes.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">User</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">constructor</span>(name) {
+            <span class="keyword">this</span>.name = name; }<br />
+            &nbsp;&nbsp;<span class="function-name">sayHi</span>() {
+            <span class="builtin">alert</span>(<span class="keyword">this</span
+            >.name); }<br />
+            }<br /><br />
+            <span class="comment">// Proof: User is a function</span><br />
+            <span class="builtin">alert</span>(<span class="keyword"
+              >typeof</span
+            >
+            User); <span class="comment">// function</span><br /><br />
+            <span class="comment"
+              >// The constructor is the function itself</span
+            ><br />
+            <span class="builtin">alert</span>(User ===
+            User.prototype.constructor); <span class="comment">// true</span
+            ><br /><br />
+            <span class="comment">// Methods live in User.prototype</span><br />
+            <span class="builtin">alert</span>(User.prototype.sayHi);
+            <span class="comment">// code of sayHi</span>
+          </div>
+
+          <div class="highlight-box">
+            <strong>What <code>class User</code> actually does:</strong><br />
+            1. Creates a function named <code>User</code> from the
+            <code>constructor</code> method.<br />
+            2. Stores all other methods (like <code>sayHi</code>) in
+            <code>User.prototype</code>.<br />
+            When you call <code>user.sayHi()</code>, it's found in the prototype
+            — exactly like we learned before!
+          </div>
+        </div>
+        <span class="slide-number">3 / 9</span>
+      </div>
+
+      <!-- SLIDE 4: Not Just Syntactic Sugar -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Not Just Syntactic Sugar</div>
+          <div class="slide-subtitle">
+            Important differences between <code>class</code> and plain functions
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-balance-scale" style="margin-right: 8px"></i>Why
+              Classes Are Different
+            </h3>
+            <p>
+              You could write the same thing using old-style constructor
+              functions. But <code>class</code> adds important safety features
+              that plain functions don't have.
+            </p>
+          </div>
+
+          <div class="comparison-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Plain Function</th>
+                  <th><code>class</code></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Call without <code>new</code></strong>
+                  </td>
+                  <td>Works (but breaks <code>this</code>)</td>
+                  <td style="color: #e53935">❌ Throws Error</td>
+                </tr>
+                <tr>
+                  <td><strong>Strict mode</strong></td>
+                  <td>Optional</td>
+                  <td style="color: #34a853">✅ Always strict</td>
+                </tr>
+                <tr>
+                  <td><strong>Methods enumerable</strong></td>
+                  <td>Yes (shows in <code>for..in</code>)</td>
+                  <td style="color: #34a853">
+                    No (hidden from <code>for..in</code>)
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong><code>toString()</code></strong>
+                  </td>
+                  <td><code>"function User..."</code></td>
+                  <td><code>"class User..."</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">User</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">constructor</span>() {}<br />
+            }<br /><br />
+            User();
+            <span class="error"
+              >// Error: Class constructor User cannot be invoked without
+              'new'</span
+            >
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Microwave vs Stove:</strong> You can cook the same meal on
+              a stove (plain function) or in a microwave (class). The result is
+              similar, but the microwave has built-in safety features — it won't
+              start with the door open (<code>new</code> requirement) and has
+              automatic shut-off (strict mode).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">4 / 9</span>
+      </div>
+
+      <!-- SLIDE 5: Class Expressions -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Class Expressions</div>
+          <div class="slide-subtitle">
+            Classes can be assigned, passed around, and created dynamically
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-exchange-alt" style="margin-right: 8px"></i>Just
+              Like Functions
+            </h3>
+            <p>
+              Classes don't have to be declared at the top level. They can be
+              expressions — assigned to variables, passed as arguments, or even
+              returned from functions.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #1a73e8">
+                <h4>Named Class Expression</h4>
+                <div class="code-block">
+                  <span class="keyword">let</span> User =
+                  <span class="keyword">class</span>
+                  <span class="function-name">MyClass</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">sayHi</span>() {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(MyClass); <span class="comment">// Visible inside</span
+                  ><br />
+                  &nbsp;&nbsp;}<br />
+                  };<br /><br />
+                  <span class="keyword">new</span>
+                  <span class="function-name">User</span>().sayHi();
+                  <span class="comment">// Works</span><br />
+                  <span class="builtin">alert</span>(MyClass);
+                  <span class="error">// Error! Not visible outside</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>Dynamic Class Creation</h4>
+                <div class="code-block">
+                  <span class="keyword">function</span>
+                  <span class="function-name">makeClass</span>(phrase) {<br />
+                  &nbsp;&nbsp;<span class="keyword">return class</span> {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="function-name"
+                    >sayHi</span
+                  >() {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin"
+                    >alert</span
+                  >(phrase);<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                  &nbsp;&nbsp;};<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> User =
+                  <span class="function-name">makeClass</span>(<span
+                    class="string"
+                    >"Hello"</span
+                  >);<br />
+                  <span class="keyword">new</span>
+                  <span class="function-name">User</span>().sayHi();
+                  <span class="comment">// Hello</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Custom Factory:</strong> A dynamic class is like a factory
+              that can reconfigure its assembly line based on your order. You
+              tell it "Hello" and it produces a machine that says "Hello".
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">5 / 9</span>
+      </div>
+
+      <!-- SLIDE 6: Getters & Setters -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Getters, Setters & Computed Names</div>
+          <div class="slide-subtitle">
+            Adding smart properties and dynamic method names
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-shield-alt" style="margin-right: 8px"></i
+              >Validation with Getters/Setters
+            </h3>
+            <p>
+              Just like in object literals, classes support <code>get</code> and
+              <code>set</code>. They allow you to control how properties are
+              read and written — perfect for validation.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">User</span> {<br />
+            &nbsp;&nbsp;<span class="function-name">constructor</span>(name)
+            {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.name =
+            name; <span class="comment">// Invokes the setter!</span><br />
+            &nbsp;&nbsp;}<br /><br />
+            &nbsp;&nbsp;<span class="keyword">get</span>
+            <span class="function-name">name</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span>
+            <span class="keyword">this</span>._name;<br />
+            &nbsp;&nbsp;}<br /><br />
+            &nbsp;&nbsp;<span class="keyword">set</span>
+            <span class="function-name">name</span>(value) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>
+            (value.length &lt; <span class="number">4</span>) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin"
+              >alert</span
+            >(<span class="string">"Name is too short."</span>);<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword"
+              >return</span
+            >;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>._name =
+            value;<br />
+            &nbsp;&nbsp;}<br />
+            }<br /><br />
+            <span class="keyword">let</span> user =
+            <span class="keyword">new</span>
+            <span class="function-name">User</span>(<span class="string"
+              >"John"</span
+            >);<br />
+            <span class="builtin">alert</span>(user.name);
+            <span class="comment">// John</span><br /><br />
+            user = <span class="keyword">new</span>
+            <span class="function-name">User</span>(<span class="string"
+              >""</span
+            >); <span class="comment">// "Name is too short."</span>
+          </div>
+
+          <div class="info-card" style="border-left: 4px solid #7c3aed">
+            <h4>
+              <i
+                class="fas fa-calculator"
+                style="margin-right: 5px; color: #7c3aed"
+              ></i
+              >Computed Method Names
+            </h4>
+            <p>
+              You can also use square brackets to compute method names
+              dynamically:
+            </p>
+            <div class="code-block">
+              <span class="keyword">class</span>
+              <span class="function-name">User</span> {<br />
+              &nbsp;&nbsp;[<span class="string">'say'</span> +
+              <span class="string">'Hi'</span>]() {<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+                class="string"
+                >"Hello"</span
+              >);<br />
+              &nbsp;&nbsp;}<br />
+              }<br /><br />
+              <span class="keyword">new</span>
+              <span class="function-name">User</span>().sayHi();
+              <span class="comment">// Hello</span>
+            </div>
+          </div>
+        </div>
+        <span class="slide-number">6 / 9</span>
+      </div>
+
+      <!-- SLIDE 7: Class Fields -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Class Fields</div>
+          <div class="slide-subtitle">
+            Adding properties directly in the class body
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-database" style="margin-right: 8px"></i
+              >Properties, Not Just Methods
+            </h3>
+            <p>
+              Previously, classes only had methods.
+              <strong>Class fields</strong> let you add properties right in the
+              class body with a simple <code>=</code> assignment.
+            </p>
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">class</span>
+            <span class="function-name">User</span> {<br />
+            &nbsp;&nbsp;name = <span class="string">"John"</span>;
+            <span class="comment">// Class field</span><br /><br />
+            &nbsp;&nbsp;<span class="function-name">sayHi</span>() {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span>(<span
+              class="string"
+              >`Hello, ${this.name}!`</span
+            >);<br />
+            &nbsp;&nbsp;}<br />
+            }<br /><br />
+            <span class="keyword">new</span>
+            <span class="function-name">User</span>().sayHi();
+            <span class="comment">// Hello, John!</span>
+          </div>
+
+          <div class="warning-box">
+            <strong
+              ><i
+                class="fas fa-exclamation-triangle"
+                style="margin-right: 5px"
+              ></i>
+              Important: On the Object, Not the Prototype!</strong
+            >
+            Class fields are set on <em>each individual object</em>, not on
+            <code>User.prototype</code>. This means every instance gets its own
+            separate copy.
+          </div>
+
+          <div class="code-block">
+            <span class="keyword">let</span> user =
+            <span class="keyword">new</span>
+            <span class="function-name">User</span>();<br />
+            <span class="builtin">alert</span>(user.name);
+            <span class="comment">// John (on the object)</span><br />
+            <span class="builtin">alert</span>(User.prototype.name);
+            <span class="comment">// undefined (NOT on prototype)</span>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Personal Locker vs Shared Gym:</strong> Methods are like
+              shared gym equipment — everyone uses the same treadmill
+              (<code>prototype</code>). Class fields are like personal lockers —
+              each member gets their own locker with their own stuff (<code
+                >individual object</code
+              >).
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">7 / 9</span>
+      </div>
+
+      <!-- SLIDE 8: Bound Methods with Class Fields -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Bound Methods with Class Fields</div>
+          <div class="slide-subtitle">
+            The elegant solution to the "losing <code>this</code>" problem
+          </div>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>
+              <i class="fas fa-plug" style="margin-right: 8px"></i>The "Losing
+              <code>this</code>" Problem
+            </h3>
+            <p>
+              When you pass an object method as a callback (like to
+              <code>setTimeout</code>), <code>this</code> is lost. Class fields
+              provide an elegant fix using arrow functions.
+            </p>
+          </div>
+
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e53935">
+                <h4>
+                  <i
+                    class="fas fa-unlink"
+                    style="margin-right: 5px; color: #e53935"
+                  ></i
+                  >Broken (loses <code>this</code>)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">class</span>
+                  <span class="function-name">Button</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">constructor</span
+                  >(value) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span
+                  >.value = value;<br />
+                  &nbsp;&nbsp;}<br />
+                  &nbsp;&nbsp;<span class="function-name">click</span>() {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(<span class="keyword">this</span>.value);<br />
+                  &nbsp;&nbsp;}<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> button =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Button</span>(<span class="string"
+                    >"hello"</span
+                  >);<br />
+                  <span class="function-name">setTimeout</span>(button.click,
+                  <span class="number">1000</span>);<br />
+                  <span class="error">// undefined</span>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #34a853">
+                <h4>
+                  <i
+                    class="fas fa-link"
+                    style="margin-right: 5px; color: #34a853"
+                  ></i
+                  >Fixed (Arrow Function Field)
+                </h4>
+                <div class="code-block">
+                  <span class="keyword">class</span>
+                  <span class="function-name">Button</span> {<br />
+                  &nbsp;&nbsp;<span class="function-name">constructor</span
+                  >(value) {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span
+                  >.value = value;<br />
+                  &nbsp;&nbsp;}<br />
+                  &nbsp;&nbsp;click = ()
+                  <span class="operator">=></span> {<br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span class="builtin">alert</span
+                  >(<span class="keyword">this</span>.value);<br />
+                  &nbsp;&nbsp;}<br />
+                  }<br /><br />
+                  <span class="keyword">let</span> button =
+                  <span class="keyword">new</span>
+                  <span class="function-name">Button</span>(<span class="string"
+                    >"hello"</span
+                  >);<br />
+                  <span class="function-name">setTimeout</span>(button.click,
+                  <span class="number">1000</span>);<br />
+                  <span class="comment">// hello ✅</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="analogy-box">
+            <div class="analogy-label">
+              <i class="fas fa-lightbulb"></i> Real-World Analogy
+            </div>
+            <p>
+              <strong>Pre-programmed Remote:</strong> A regular method is like a
+              universal remote — it might control any TV depending on where you
+              point it. An arrow function class field is like a remote
+              permanently paired to YOUR TV. No matter who borrows it, it always
+              controls your TV.
+            </p>
+          </div>
+        </div>
+        <span class="slide-number">8 / 9</span>
+      </div>
+
+      <!-- SLIDE 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <div class="slide-title">Summary</div>
+          <div class="slide-subtitle">
+            Everything you need to remember about Class Basic Syntax
+          </div>
+        </div>
+        <div class="slide-content">
+          <div
+            class="info-card"
+            style="
+              background: linear-gradient(135deg, #e8f0fe 0%, #e6f4ea 100%);
+              padding: 25px;
+            "
+          >
+            <div style="display: flex; flex-wrap: wrap; gap: 20px">
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i
+                    class="fas fa-drafting-compass"
+                    style="margin-right: 8px"
+                  ></i
+                  >Core Concepts
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>Classes are blueprints for creating objects</li>
+                  <li>Under the hood, a class is a special function</li>
+                  <li><code>constructor()</code> initializes new objects</li>
+                  <li>Methods go to <code>Class.prototype</code></li>
+                  <li>Class fields go on individual objects</li>
+                </ul>
+              </div>
+              <div style="flex: 1; min-width: 280px">
+                <h4
+                  style="color: #1a73e8; font-size: 1.3rem; margin-bottom: 12px"
+                >
+                  <i class="fas fa-shield-alt" style="margin-right: 8px"></i
+                  >Safety Features
+                </h4>
+                <ul style="padding-left: 20px; line-height: 2">
+                  <li>Must be called with <code>new</code></li>
+                  <li>Always in strict mode</li>
+                  <li>Methods are non-enumerable</li>
+                  <li>No commas between methods</li>
+                  <li>Arrow function fields auto-bind <code>this</code></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-table" style="margin-top: 25px">
+            <table>
+              <thead>
+                <tr>
+                  <th>Concept</th>
+                  <th>One-Liner</th>
+                  <th>Real-World Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Class</strong></td>
+                  <td>Blueprint for creating objects</td>
+                  <td>Architectural blueprint</td>
+                </tr>
+                <tr>
+                  <td><strong>Constructor</strong></td>
+                  <td>Sets up initial state</td>
+                  <td>Foundation-laying ceremony</td>
+                </tr>
+                <tr>
+                  <td><strong>Class vs Function</strong></td>
+                  <td>Safer, stricter function</td>
+                  <td>Microwave vs Stove</td>
+                </tr>
+                <tr>
+                  <td><strong>Class Fields</strong></td>
+                  <td>Properties on individual objects</td>
+                  <td>Personal locker vs shared gym</td>
+                </tr>
+                <tr>
+                  <td><strong>Arrow Field Binding</strong></td>
+                  <td>Permanently binds <code>this</code></td>
+                  <td>Pre-paired TV remote</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 20px">
+            <strong
+              ><i class="fas fa-star" style="margin-right: 5px"></i> Rule of
+              Thumb:</strong
+            >
+            Use <code>class</code> for cleaner, safer object templates. The
+            <code>constructor</code> sets up data, methods define behavior, and
+            arrow function fields ensure <code>this</code> never gets lost when
+            methods are passed around.
+          </div>
+        </div>
+        <span class="slide-number">9 / 9</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      Class Basic Syntax — Presentation &copy; 2024 | Built with ❤️ for learning
+    </div>
+
+    <script>
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        document.getElementById("progressBar").style.width =
+          (winScroll / height) * 100 + "%";
+      });
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        },
+        { root: null, rootMargin: "0px", threshold: 0.1 },
+      );
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

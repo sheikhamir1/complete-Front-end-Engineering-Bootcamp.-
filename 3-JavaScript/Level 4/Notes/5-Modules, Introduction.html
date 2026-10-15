@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Modules Introduction</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Modules, Introduction</h1>
+          <p class="slide-subtitle">Splitting Code for Scalable Apps</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+              alt="Code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              As our application grows, keeping everything in one file becomes a
+              nightmare. We need to split it into multiple files called
+              <strong>"modules"</strong>. A module may contain a class or a
+              library of functions for a specific purpose.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of a kitchen. Instead of
+            throwing all your utensils, ingredients, and appliances into one
+            massive drawer (one big file), you organize them. Cutlery in one
+            drawer, spices in the cabinet, pots under the stove. Each drawer is
+            a <strong>module</strong>.
+          </div>
+          <div class="text-section">
+            <p>
+              For a long time, JavaScript didn't have a built-in module system,
+              so the community invented workarounds like AMD, CommonJS, and UMD.
+              But in 2015, JavaScript finally got a native, language-level
+              module system. We will focus on this modern standard.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: What is a Module? -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">What is a Module?</h2>
+          <p class="slide-subtitle">Exporting & Importing</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>A Module is Just a File</h3>
+            <p>
+              As simple as that. One script is one module. Modules can load each
+              other and use special directives to interchange functionality:
+            </p>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong><code>export</code>:</strong> Labels variables and
+                  functions that should be accessible from outside the current
+                  module.
+                </li>
+                <li>
+                  <strong><code>import</code>:</strong> Allows the import of
+                  functionality from other modules.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>📁 sayHi.js (Exporting)</h4>
+              <div class="code-block">
+                <span class="keyword">export function</span>
+                <span class="function">sayHi</span>(user) { alert(<span
+                  class="string"
+                  >`Hello, ${user}!`</span
+                >); }
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>📁 main.js (Importing)</h4>
+              <div class="code-block">
+                <span class="keyword">import</span> {sayHi}
+                <span class="keyword">from</span>
+                <span class="string">'./sayHi.js'</span>; alert(sayHi);
+                <span class="comment">// function...</span> sayHi(<span
+                  class="string"
+                  >'John'</span
+                >); <span class="comment">// Hello, John!</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>HTML Setup</h4>
+            <p>
+              We must tell the browser that a script should be treated as a
+              module by using the attribute <code>type="module"</code>.
+            </p>
+            <div class="code-block">
+              &lt;script <span class="keyword">type="module"</span>&gt;
+              <span class="keyword">import</span> {sayHi}
+              <span class="keyword">from</span>
+              <span class="string">'./say.js'</span>; document.body.innerHTML =
+              sayHi(<span class="string">'John'</span>); &lt;/script&gt;
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Important:</strong> Modules work only via HTTP(s), not
+            locally. If you try to open a web-page locally via
+            <code>file://</code>, <code>import/export</code> won't work. Use a
+            local web-server (like VS Code Live Server).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Core Features - Strict & Scope -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Core Module Features</h2>
+          <p class="slide-subtitle">Strict Mode & Local Scope</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>1. Always "use strict"</h3>
+              <p>
+                Modules always work in strict mode automatically. You can't turn
+                it off. E.g., assigning to an undeclared variable will throw an
+                error.
+              </p>
+              <div class="code-block">
+                <span class="keyword">&lt;script type="module"&gt;</span> a = 5;
+                <span class="comment">// Error: undeclared variable</span>
+                <span class="keyword">&lt;/script&gt;</span>
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>2. Module-Level Scope</h3>
+              <p>
+                Each module has its own top-level scope. Top-level variables
+                from a module are <strong>not seen</strong> in other scripts.
+              </p>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> Variables in one module are like
+                private thoughts. They stay in your head unless you speak them
+                out loud (<code>export</code>).
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>The Wrong Way vs. The Right Way</h4>
+            <div class="code-block">
+              <span class="comment">// 📁 user.js</span>
+              <span class="keyword">let</span> user =
+              <span class="string">"John"</span>;
+              <span class="comment">// NOT exported</span>
+
+              <span class="comment">// 📁 hello.js</span>
+              <span class="keyword">import</span> {user}
+              <span class="keyword">from</span>
+              <span class="string">'./user.js'</span>;
+              <span class="comment">// Error! user is hidden.</span>
+
+              <span class="comment">// --- THE CORRECT WAY ---</span>
+
+              <span class="comment">// 📁 user.js</span>
+              <span class="keyword">export let</span> user =
+              <span class="string">"John"</span>;
+              <span class="comment">// Exported!</span>
+
+              <span class="comment">// 📁 hello.js</span>
+              <span class="keyword">import</span> {user}
+              <span class="keyword">from</span>
+              <span class="string">'./user.js'</span>;
+              <span class="comment">// Works!</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>Note:</strong> We should avoid making global variables
+              like <code>window.user = "John"</code>. Modules are designed to
+              eliminate global scope pollution. Use
+              <code>import/export</code> instead!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Evaluated Only Once -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Evaluated Only Once</h2>
+          <p class="slide-subtitle">Sharing the Same Instance</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Single Execution Rule</h3>
+            <p>
+              If the same module is imported into multiple other modules, its
+              code is executed <strong>only once</strong>, upon the first
+              import. Then its exports are given to all further importers.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine starting a car
+              engine. You turn the key once. Even if multiple passengers
+              (importers) want to use the AC or radio (exports), the engine
+              (module code) doesn't restart for each one. It runs once, and
+              everyone shares its power.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Sharing the Same Object</h4>
+            <p>
+              Because of this rule, if a module exports an object,
+              <strong>all importers get exactly the same object</strong>. If one
+              importer changes it, the others will see the change!
+            </p>
+            <div class="code-block">
+              <span class="comment">// 📁 admin.js</span>
+              <span class="keyword">export let</span> admin = { name:
+              <span class="string">"John"</span> };
+
+              <span class="comment">// 📁 1.js</span>
+              <span class="keyword">import</span> {admin}
+              <span class="keyword">from</span>
+              <span class="string">'./admin.js'</span>; admin.name =
+              <span class="string">"Pete"</span>;
+              <span class="comment">// Changed!</span>
+
+              <span class="comment">// 📁 2.js</span>
+              <span class="keyword">import</span> {admin}
+              <span class="keyword">from</span>
+              <span class="string">'./admin.js'</span>; alert(admin.name);
+              <span class="comment">// 'Pete' (Sees the change!)</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>The Configuration Pattern</h3>
+            <p>
+              This behavior is great for configuring a module once at startup,
+              and having that configuration apply everywhere else automatically.
+            </p>
+            <div class="code-block">
+              <span class="comment">// 📁 admin.js</span>
+              <span class="keyword">export let</span> config = { };
+              <span class="keyword">export function</span>
+              <span class="function">sayHi</span>() { alert(<span class="string"
+                >`Ready, ${config.user}!`</span
+              >); }
+
+              <span class="comment"
+                >// 📁 init.js (Runs first, sets it up)</span
+              >
+              <span class="keyword">import</span> {config}
+              <span class="keyword">from</span>
+              <span class="string">'./admin.js'</span>; config.user =
+              <span class="string">"Pete"</span>;
+
+              <span class="comment">// 📁 another.js (Runs later)</span>
+              <span class="keyword">import</span> {sayHi}
+              <span class="keyword">from</span>
+              <span class="string">'./admin.js'</span>; sayHi();
+              <span class="comment">// Ready, Pete!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: import.meta & this -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Minor Features: import.meta & this</h2>
+          <p class="slide-subtitle">Module-specific details</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>import.meta</h3>
+              <p>
+                The object <code>import.meta</code> contains information about
+                the current module.
+              </p>
+              <p>In the browser, it contains the URL of the script:</p>
+              <div class="code-block">
+                <span class="keyword">&lt;script type="module"&gt;</span>
+                alert(import.meta.url);
+                <span class="comment">// e.g., "https://site.com/my.js"</span>
+                <span class="keyword">&lt;/script&gt;</span>
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>"this" is undefined</h3>
+              <p>
+                In a module, top-level <code>this</code> is
+                <code>undefined</code>.
+              </p>
+              <p>
+                Compare it to non-module scripts, where <code>this</code> is the
+                global object (<code>window</code>):
+              </p>
+              <div class="code-block">
+                <span class="keyword">&lt;script&gt;</span> alert(<span
+                  class="keyword"
+                  >this</span
+                >); <span class="comment">// window</span>
+                <span class="keyword">&lt;/script&gt;</span>
+
+                <span class="keyword">&lt;script type="module"&gt;</span>
+                alert(<span class="keyword">this</span>);
+                <span class="comment">// undefined</span>
+                <span class="keyword">&lt;/script&gt;</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Why does this matter?</strong> It prevents accidental
+            modifications to the global window object. Modules force you to be
+            intentional about where your data lives.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Browser-Specific Features -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Browser-Specific Features</h2>
+          <p class="slide-subtitle">How modules behave in the browser</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>1. Module Scripts are Deferred</h3>
+            <p>
+              Module scripts always act like they have a
+              <code>defer</code> attribute. They download in the background
+              (without blocking HTML) and wait until the HTML is fully loaded
+              before running.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>2. Async Works on Inline Scripts</h4>
+            <p>
+              For normal scripts, <code>async</code> only works on external
+              files. For modules, <code>async</code> works on inline scripts
+              too! This is great for independent things like analytics that
+              shouldn't block the page.
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;script async type="module"&gt;</span>
+              <span class="keyword">import</span> {counter}
+              <span class="keyword">from</span>
+              <span class="string">'./analytics.js'</span>; counter.count();
+              <span class="comment">// Runs as soon as ready</span>
+              <span class="keyword">&lt;/script&gt;</span>
+            </div>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>3. External Scripts Run Once</h4>
+              <p>If you link the same script twice, it only runs once.</p>
+              <div class="code-block">
+                <span class="comment">&lt;!-- my.js runs only once --&gt;</span>
+                &lt;script type="module" src="my.js"&gt;&lt;/script&gt;
+                &lt;script type="module" src="my.js"&gt;&lt;/script&gt;
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>4. CORS Required</h4>
+              <p>
+                Fetching a module from another site requires CORS headers
+                (permission from the other server).
+              </p>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>5. No "Bare" Modules</h4>
+            <p>
+              In the browser, you must provide a relative or absolute URL. You
+              cannot just use a name.
+            </p>
+            <div class="code-block">
+              <span class="keyword">import</span> {sayHi}
+              <span class="keyword">from</span>
+              <span class="string">'sayHi'</span>;
+              <span class="comment">// Error! No path.</span>
+
+              <span class="keyword">import</span> {sayHi}
+              <span class="keyword">from</span>
+              <span class="string">'./sayHi.js'</span>;
+              <span class="comment">// Correct!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Build Tools -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Build Tools & "nomodule"</h2>
+          <p class="slide-subtitle">Preparing Modules for Production</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Fallback: "nomodule"</h3>
+            <p>
+              Old browsers don't understand <code>type="module"</code> and will
+              ignore the script. We can provide a fallback using the
+              <code>nomodule</code> attribute for older browsers.
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;script type="module"&gt;</span>
+              alert(<span class="string">"Runs in modern browsers"</span>);
+              <span class="keyword">&lt;/script&gt;</span>
+
+              <span class="keyword">&lt;script nomodule&gt;</span>
+              alert(<span class="string"
+                >"Modern browsers ignore this. Old browsers run this."</span
+              >); <span class="keyword">&lt;/script&gt;</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Build Tools (Webpack, Vite, etc.)</h3>
+            <p>
+              In real-life, browser modules are rarely used in their "raw" form.
+              Usually, we bundle them together with a tool like Webpack or Vite.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine moving to a new
+              house. Instead of carrying 50 small boxes (50 module files) one by
+              one, you pack them all into one giant shipping container
+              (<code>bundle.js</code>). It's much more efficient to transport!
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>What Build Tools Do:</h4>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>Bundle:</strong> Take the main module and all its
+                  imports, combining them into one (or a few) files.
+                </li>
+                <li>
+                  <strong>Tree-shaking:</strong> Remove unused exports to save
+                  space.
+                </li>
+                <li>
+                  <strong>Transform:</strong> Convert modern JS to older JS so
+                  older browsers understand it.
+                </li>
+                <li>
+                  <strong>Minify:</strong> Remove spaces and shorten variable
+                  names to make files smaller.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              After bundling, the final script doesn't need
+              <code>type="module"</code> because it no longer contains
+              <code>import/export</code> statements. It's just a regular script!
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >&lt;!-- Assuming we got bundle.js from Webpack --&gt;</span
+              >
+              &lt;script src="bundle.js"&gt;&lt;/script&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        JavaScript Modules Presentation | Scroll down to continue &uarr; or
+        &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>
