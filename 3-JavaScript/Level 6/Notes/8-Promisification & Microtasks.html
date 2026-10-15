@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promisification & Microtasks</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Promisification & Microtasks</h1>
+          <p class="slide-subtitle">
+            Upgrading callbacks and understanding the Promise queue
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Factory assembly line upgrade"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Many older libraries use callbacks, but promises are much easier
+              to work with. We need a way to convert them. Also, to truly master
+              promises, we must understand how they schedule their code behind
+              the scenes using "Microtasks".
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogies 🏭🎟️</strong><br />
+            <strong>Promisification:</strong> Upgrading an old appliance with a
+            modern plug adapter so it fits your new outlets.<br />
+            <strong>Microtasks:</strong> A VIP fast-pass line at a theme park.
+            Regular code runs on the main line, but Promise handlers get to cut
+            to the front as soon as the main line takes a break.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: What is Promisification? -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">What is Promisification?</h2>
+          <p class="slide-subtitle">Converting callbacks to promises</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Promisification is the conversion of a function that accepts a
+              callback into a function that returns a Promise. It makes old code
+              compatible with modern async/await and promise chains.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Before: Callback-based</h4>
+            <pre><code>function loadScript(src, callback) {
+  let script = document.createElement('script');
+  script.src = src;
+  script.onload = () => callback(null, script);
+  script.onerror = () => callback(new Error(`Load error`));
+  document.head.append(script);
+}</code></pre>
+          </div>
+          <div class="info-card">
+            <h4>After: Promisified Wrapper</h4>
+            <pre><code>let loadScriptPromise = function(src) {
+  return new Promise((resolve, reject) => {
+    loadScript(src, (err, script) => {
+      if (err) reject(err);
+      else resolve(script);
+    });
+  });
+};
+
+// Much cleaner usage!
+loadScriptPromise('my.js').then(script => ...);</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: The Promisify Helper -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Promisify Helper</h2>
+          <p class="slide-subtitle">Automating the conversion process</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Writing a custom wrapper for every single function is tedious.
+              Instead, we can create a helper function
+              <code>promisify(f)</code> that automatically converts any
+              error-first callback function into a promise!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Universal Promisify Function</h4>
+            <pre><code>function promisify(f) {
+  return function (...args) { // Return a wrapper
+    return new Promise((resolve, reject) => {
+      function callback(err, result) { // Custom callback
+        if (err) reject(err);
+        else resolve(result);
+      }
+      args.push(callback); // Add callback to arguments
+      f.call(this, ...args); // Call the original function
+    });
+  };
+}
+
+// Usage:
+let loadScriptPromise = promisify(loadScript);
+loadScriptPromise('my.js').then(script => alert('Loaded!'));</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: The Universal Translator 🤖</strong><br />
+            Instead of learning a new language (writing a wrapper) for every old
+            function, you build a Universal Translator (<code>promisify</code>).
+            You just feed it the old function, and it outputs a modern version
+            that speaks "Promises".
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Advanced Promisification -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Advanced Promisification</h2>
+          <p class="slide-subtitle">Handling multiple callback results</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if the original callback returns multiple arguments, like
+              <code>callback(err, res1, res2)</code>? A Promise can only resolve
+              with one value. To fix this, we use an advanced
+              <code>promisify</code> that returns an array of results.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Promisify with manyArgs</h4>
+            <pre><code>function promisify(f, manyArgs = false) {
+  return function (...args) {
+    return new Promise((resolve, reject) => {
+      function callback(err, ...results) {
+        if (err) reject(err);
+        else resolve(manyArgs ? results : results[0]);
+      }
+      args.push(callback);
+      f.call(this, ...args);
+    });
+  };
+}
+
+// Usage:
+const fPromise = promisify(f, true);
+fPromise(...).then(arrayOfResults => ...);</code></pre>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="protocol-info">
+              <h4>Important Limitation!</h4>
+              <p>
+                Promisification is only for functions that call the callback
+                <strong>once</strong>. If a function calls its callback multiple
+                times (like an <code>onmousemove</code> handler), the Promise
+                will only resolve on the <em>first</em> call. Later calls are
+                ignored!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Microtasks: The Async Secret -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Microtasks: The Async Secret</h2>
+          <p class="slide-subtitle">Why promise handlers are always delayed</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Promise handlers (<code>.then</code>, <code>.catch</code>,
+              <code>.finally</code>) are <strong>always asynchronous</strong>.
+              Even if a promise resolves instantly, the code below
+              <code>.then</code> will still execute first.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Weird Behavior</h4>
+            <pre><code>let promise = Promise.resolve();
+
+promise.then(() => alert("promise done!"));
+
+alert("code finished"); // THIS ALERT SHOWS FIRST!</code></pre>
+          </div>
+          <div class="text-section">
+            <h3>Why does this happen?</h3>
+            <p>
+              Because of the <strong>Microtask Queue</strong> (internal name:
+              PromiseJobs). When a promise is ready, its
+              <code>.then</code> handler is put into this queue. The JavaScript
+              engine finishes the current code first, and <em>then</em> looks in
+              the queue.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>The Rule:</strong> Execution of a microtask is initiated
+            only when nothing else is running. The main code always takes
+            priority over the microtask queue.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Forcing Order with Microtasks -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Forcing Order with Microtasks</h2>
+          <p class="slide-subtitle">Guaranteeing execution sequence</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if we absolutely need "code finished" to run
+              <em>after</em> "promise done"? Simple: put it inside a
+              <code>.then()</code>! This adds it to the microtask queue in the
+              correct order.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e74c3c">
+                <h4>Wrong Order</h4>
+                <pre><code>Promise.resolve()
+  .then(() => alert("promise done!"));
+
+alert("code finished"); 
+// Output: 
+// 1. code finished
+// 2. promise done!</code></pre>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #2ecc71">
+                <h4>Right Order</h4>
+                <pre><code>Promise.resolve()
+  .then(() => alert("promise done!"))
+  .then(() => alert("code finished"));
+
+// Output: 
+// 1. promise done!
+// 2. code finished</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Unhandled Rejections Explained -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Unhandled Rejections Explained</h2>
+          <p class="slide-subtitle">How the microtask queue tracks errors</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Now we can understand exactly how the browser detects an
+              "unhandled rejection". It happens when the microtask queue
+              finishes, and a promise is still rejected with no
+              <code>.catch</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Too Late to Catch!</h4>
+            <pre><code>let promise = Promise.reject(new Error("Failed!"));
+
+// We catch it, but inside a setTimeout (Macrotask)
+setTimeout(() => promise.catch(err => alert('caught')), 1000);
+
+// The unhandledrejection event STILL fires!
+window.addEventListener('unhandledrejection', event => {
+  alert(event.reason); // Error: Failed!
+});</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Why did it fire?</strong> The
+            <code>unhandledrejection</code> event checks the promise state
+            immediately after the <strong>microtask queue</strong> is empty.
+            Because <code>setTimeout</code> is a "macrotask" and runs much
+            later, the engine thinks the error was forgotten by the time the
+            microtask queue finishes!
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Promisification & Microtasks Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

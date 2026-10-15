@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Extending Error</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #e0f7fa;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      input {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #00796b;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      #result {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+      }
+      .error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+      }
+      .success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Sign Up</h2>
+      <p>You must be 18 or older.</p>
+      <input type="number" id="age-input" placeholder="Enter your age" />
+      <button id="btn-submit">Verify Age</button>
+      <div id="result"></div>
+    </div>
+
+    <script>
+      // 1. Create the Custom Error
+      class AgeValidationError extends Error {
+        constructor(message) {
+          super(message); // Call built-in Error constructor
+          this.name = "AgeValidationError"; // Override the name
+        }
+      }
+
+      const ageInput = document.getElementById("age-input");
+      const btnSubmit = document.getElementById("btn-submit");
+      const resultBox = document.getElementById("result");
+
+      function checkAge(age) {
+        if (!age) {
+          // Using a standard error for generic code failure
+          throw new Error("Age input is empty.");
+        }
+        if (age < 18) {
+          // Using our CUSTOM error for business logic failure
+          throw new AgeValidationError("User is too young. Must be 18+.");
+        }
+        return false;
+      }
+
+      btnSubmit.addEventListener("click", () => {
+        resultBox.style.display = "block";
+
+        try {
+          const age = Number(ageInput.value);
+          checkAge(age);
+
+          resultBox.className = "success";
+          resultBox.textContent = "Access Granted!";
+        } catch (err) {
+          console.log(err);
+
+          resultBox.className = "error";
+          // Because we set this.name, we get a beautiful, specific prefix!
+          resultBox.innerHTML = `<strong>${err.name}:</strong> ${err.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>

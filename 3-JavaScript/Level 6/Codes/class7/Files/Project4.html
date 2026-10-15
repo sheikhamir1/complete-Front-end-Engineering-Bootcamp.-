@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Promise.resolve Caching</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+      }
+      button#failBtn {
+        background-color: #dc3545;
+      }
+      .output-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e9ecef;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Data Fetcher (With Cache)</h2>
+      <button id="fetchBtn">Get Data</button>
+      <p id="status"></p>
+    </div>
+    <script>
+      let localCache = null;
+      const statusText = document.getElementById("status");
+
+      function getUserData() {
+        // If we already have the data, return it wrapped in a resolved promise instantly!
+        if (localCache) {
+          console.log(localCache);
+
+          return Promise.resolve(localCache);
+        }
+
+        // Otherwise, do the "slow" network request
+        statusText.innerText = "Fetching from Network (takes 2 seconds)...";
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const data = "Super Secret User Data";
+            localCache = data; // Save to cache for next time
+            resolve(data);
+          }, 2000);
+        });
+      }
+
+      document.getElementById("fetchBtn").addEventListener("click", () => {
+        // Because getUserData ALWAYS returns a Promise, we can safely use .then()
+        getUserData().then((data) => {
+          console.log(data);
+
+          if (localCache) {
+            console.log(localCache);
+
+            statusText.innerText = `Data Loaded instantly from Cache: ${data}`;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

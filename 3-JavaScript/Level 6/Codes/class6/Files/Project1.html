@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Safety Net</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #output {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Network Request Simulator</h2>
+      <button id="fetchBtn">Fetch Data</button>
+      <p id="output">Waiting for action...</p>
+    </div>
+    <script>
+      const outputText = document.getElementById("output");
+      const button = document.getElementById("fetchBtn");
+
+      button.addEventListener("click", () => {
+        outputText.style.color = "black";
+        outputText.innerText = "Fetching...";
+
+        fetch("https://this-website-does-not-exist.com/data.json")
+          .then(function (response) {
+            outputText.innerText = "Step 1: Data Received!";
+            return response.json();
+          })
+          .then(function (data) {
+            outputText.innerText = "Step 2: Data Parsed!";
+          })
+          .catch(function (error) {
+            outputText.style.color = "red";
+            outputText.innerText = `Error Caught: ${error.message}`;
+          });
+      });
+    </script>
+  </body>
+</html>

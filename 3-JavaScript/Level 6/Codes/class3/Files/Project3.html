@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error-First Callbacks</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #f4f4f9;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #ff4757;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      button {
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Error-First Callbacks</h1>
+      <button id="successBtn">Load Valid Script</button>
+      <button id="failBtn">Load Broken Script</button>
+      <p id="output">Waiting...</p>
+    </div>
+    <script>
+      const successBtn = document.getElementById("successBtn");
+      const failBtn = document.getElementById("failBtn");
+      const output = document.getElementById("output");
+
+      function loadScript(src, callback) {
+        console.log("src loadScript", src);
+        console.log("callback loadScript", callback);
+
+        let script = document.createElement("script");
+        script.src = src;
+        console.log("script.src", script);
+        // On Success: Pass null for the error, and the script for the result
+        script.onload = () => callback(null, script);
+
+        // On Error: Pass an Error object for the error, and null for the result
+        script.onerror = () =>
+          callback(new Error(`Script load failed for ${src}`), null);
+
+        document.head.append(script);
+      }
+
+      // Reusable callback handler
+      function handleScriptLoad(error, script) {
+        console.log("handleScriptLoad error", error);
+        console.log("handleScriptLoad script", script);
+
+        if (error) {
+          // Handle the failure!
+          output.innerText = `Oops! ${error.message}`;
+          output.style.color = "red";
+        } else {
+          // Handle the success!
+          output.innerText = `Success! Loaded ${script.src}`;
+          output.style.color = "green";
+        }
+      }
+
+      successBtn.addEventListener("click", () => {
+        output.innerText = "Loading...";
+        output.style.color = "black";
+        loadScript(
+          "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js",
+          handleScriptLoad,
+        );
+      });
+
+      failBtn.addEventListener("click", () => {
+        output.innerText = "Loading...";
+        output.style.color = "black";
+        loadScript(
+          "https://this-url-does-not-exist.com/fake.js",
+          handleScriptLoad,
+        );
+      });
+    </script>
+  </body>
+</html>

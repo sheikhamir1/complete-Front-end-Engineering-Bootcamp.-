@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Capstone: Async Profile</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        margin-top: 100px;
+        font-family: sans-serif;
+      }
+      .card {
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        background: #fff;
+        transition: background 0.3s;
+      }
+      button {
+        padding: 10px 15px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      #status {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="profileCard">
+      <h2>User Profile Simulator</h2>
+      <button id="startBtn">Download Profile</button>
+      <p id="status">Ready.</p>
+    </div>
+    <script>
+      const startBtn = document.getElementById("startBtn");
+      const statusText = document.getElementById("status");
+      const card = document.getElementById("profileCard");
+
+      // Helper function simulating a network request with a chance of failure
+      function simulateRequest(taskName, delay, shouldFail, callback) {
+        setTimeout(() => {
+          if (shouldFail) {
+            callback(new Error(`Failed to ${taskName} (Network Error)`), null);
+          } else {
+            callback(null, `${taskName} Complete!`);
+          }
+        }, delay);
+      }
+
+      startBtn.addEventListener("click", () => {
+        // Reset UI
+        card.style.backgroundColor = "#fff";
+        statusText.style.color = "black";
+        statusText.innerText = "Connecting to server...";
+        startBtn.disabled = true;
+
+        // STEP 1: Connect
+        simulateRequest("Connect to Server", 1000, false, (err1, res1) => {
+          if (err1) return handleError(err1);
+          statusText.innerText = "Server connected. Fetching User Data...";
+
+          // STEP 2: Fetch Data
+          simulateRequest("Fetch User Data", 1500, true, (err2, res2) => {
+            if (err2) return handleError(err2);
+            statusText.innerText = "Data fetched. Downloading Picture...";
+
+            // STEP 3: Fetch Picture (Set shouldFail to true/false to test error handling!)
+            simulateRequest("Download Picture", 1000, false, (err3, res3) => {
+              console.log(err3);
+              if (err3) return handleError(err3);
+
+              // ALL STEPS SUCCESSFUL
+              statusText.innerText = "Profile successfully downloaded!";
+              card.style.backgroundColor = "#d4edda"; // Light green
+              startBtn.disabled = false;
+            });
+          });
+        });
+      });
+
+      function handleError(error) {
+        statusText.innerText = error.message;
+        statusText.style.color = "#721c24";
+        card.style.backgroundColor = "#f8d7da"; // Light red
+        startBtn.disabled = false;
+      }
+    </script>
+  </body>
+</html>

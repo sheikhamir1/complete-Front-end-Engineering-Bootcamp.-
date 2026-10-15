@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async Problem</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #f4f4f9;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #ff4757;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>The Async Problem</h1>
+      <button id="loadBtn">Load Script & Run</button>
+      <p id="output">Waiting...</p>
+    </div>
+    <script>
+      const loadBtn = document.getElementById("loadBtn");
+      const output = document.getElementById("output");
+
+      // A function to simulate loading a script dynamically
+      function loadScript(src) {
+        let script = document.createElement("script");
+        script.src = src;
+        document.head.append(script);
+        // The browser starts downloading it here in the background!
+      }
+
+      loadBtn.addEventListener("click", () => {
+        output.innerText = "Attempting to load and run...";
+
+        // 1. We tell the browser to load a fake script
+        // (Imagine this script contains a function called 'newFunction')
+        loadScript(
+          "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js",
+        );
+
+        // 2. We immediately try to use a function from that script
+        try {
+          // 'newFunction' doesn't exist, but even if it did in the script,
+          // it wouldn't be ready yet! We will check for lodash's '_' variable.
+          console.log(_.VERSION);
+        } catch (error) {
+          output.innerText = "ERROR! The script hasn't loaded yet!";
+          output.style.color = "red";
+          console.log(error);
+        }
+      });
+    </script>
+  </body>
+</html>

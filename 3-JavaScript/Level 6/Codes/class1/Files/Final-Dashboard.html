@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Enterprise Error Handler</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #1e272e;
+        color: #d2dae2;
+        padding: 20px;
+      }
+      .dashboard {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #2f3640;
+        padding: 30px;
+        border-radius: 10px;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      button {
+        padding: 12px;
+        background: #0fb9b1;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background: #20bf6b;
+      }
+      .danger {
+        background: #eb3b5a;
+      }
+      .danger:hover {
+        background: #fc5c65;
+      }
+      .hide {
+        display: none;
+      }
+      .loader {
+        color: #f7b731;
+        font-weight: bold;
+        text-align: center;
+        margin: 15px 0;
+      }
+      .message {
+        padding: 15px;
+        border-radius: 4px;
+        text-align: center;
+      }
+      .success {
+        background: #20bf6b;
+        color: white;
+        display: block;
+      }
+      .error {
+        background: #eb3b5a;
+        color: white;
+        display: block;
+      }
+      #global-log {
+        margin-top: 30px;
+        background: #111;
+        padding: 15px;
+        border-left: 4px solid #eb3b5a;
+        font-family: monospace;
+        list-style: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard">
+      <h1>Admin Dashboard</h1>
+
+      <div class="controls">
+        <button id="btn-good">Load Valid Data</button>
+        <button id="btn-bad-json">Load Corrupt JSON</button>
+        <button id="btn-bad-logic">Load Incomplete Data</button>
+        <button id="btn-fatal" class="danger">Trigger Typo Bug</button>
+      </div>
+
+      <div id="loader" class="loader hide">Connecting to server...</div>
+      <div id="ui-message" class="message hide"></div>
+
+      <ul id="global-log"></ul>
+    </div>
+    <script>
+      //  Global Catch Setup (Logging unknown crashes)
+      window.onerror = function (msg, url, line, col, err) {
+        const log = document.getElementById("global-log");
+        const li = document.createElement("li");
+        li.textContent = `[FATAL] ${msg} at line ${line}`;
+        log.appendChild(li);
+        return false; // Suppress console error for demo
+      };
+
+      // UI Elements
+      const loader = document.getElementById("loader");
+      const uiMessage = document.getElementById("ui-message");
+
+      // Core Application Logic
+      function processServerData(rawData) {
+        try {
+          // TOPIC 1: JSON Parsing
+          const data = JSON.parse(rawData);
+
+          // Custom Business Logic
+          if (!data.isAdmin) {
+            throw new Error("Access Denied: User is not an admin.");
+          }
+
+          // Simulating the typo bug triggered by the red button
+          if (data.triggerBug) {
+            nonExistentFunction(); // Throws ReferenceError
+          }
+
+          // Success Path
+          uiMessage.textContent = `Welcome Admin: ${data.name}`;
+          uiMessage.className = "message success";
+        } catch (err) {
+          //  The Mail Sorter (Rethrowing)
+
+          // Handle JSON format errors safely
+          if (err instanceof SyntaxError) {
+            uiMessage.textContent =
+              "System Error: Received corrupt data from server.";
+            uiMessage.className = "message error";
+          }
+          // Handle our Custom Business Logic errors safely
+          else if (err.message.includes("Access Denied")) {
+            uiMessage.textContent = err.message;
+            uiMessage.className = "message error";
+          }
+          // We don't recognize this error! (e.g., the typo bug)
+          // Throw it up to the Global Catch!
+          else {
+            throw err;
+          }
+        }
+      }
+
+      // Controller function simulating network request
+      function fetchSimulation(payload) {
+        uiMessage.className = "message hide";
+        loader.classList.remove("hide");
+
+        setTimeout(() => {
+          try {
+            processServerData(payload);
+          } finally {
+            //  Guaranteed Cleanup
+            loader.classList.add("hide");
+          }
+        }, 1000);
+      }
+
+      // Event Listeners for the buttons
+      document.getElementById("btn-good").addEventListener("click", () => {
+        fetchSimulation('{ "name": "Sarah", "isAdmin": true }');
+      });
+
+      document.getElementById("btn-bad-json").addEventListener("click", () => {
+        fetchSimulation('{ "name": "Sarah", "isAdmin": true, }'); // Bad JSON (trailing comma)
+      });
+
+      document.getElementById("btn-bad-logic").addEventListener("click", () => {
+        fetchSimulation('{ "name": "Mike", "isAdmin": false }'); // Fails business logic
+      });
+
+      document.getElementById("btn-fatal").addEventListener("click", () => {
+        fetchSimulation(
+          '{ "name": "Dave", "isAdmin": true, "triggerBug": true }',
+        ); // Triggers typo
+      });
+    </script>
+  </body>
+</html>

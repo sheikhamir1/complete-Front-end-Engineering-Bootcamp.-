@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Errors & Extending Error</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Custom Errors & Extending Error</h1>
+          <p class="slide-subtitle">
+            Building a hierarchy of specific, helpful errors
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Team working on code architecture"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Built-in errors like <code>Error</code> or
+              <code>SyntaxError</code> are great, but as apps grow, we need
+              specific errors for specific problems: <code>HttpError</code>,
+              <code>DbError</code>, <code>NotFoundError</code>, etc.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy: Medical Diagnosis 🏥</strong><br />
+            A generic <code>Error</code> is like a doctor saying "You are sick."
+            It's true, but not helpful. Custom Errors are like a doctor saying
+            "You have a specific bacterial infection." It tells you exactly what
+            went wrong and how to treat it. Plus, custom errors can carry extra
+            data (like an HTTP status code <code>404</code>).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Extending the Error Class -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Extending the Error Class</h2>
+          <p class="slide-subtitle">Creating our own specific error types</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Technically, you can <code>throw</code> anything (even a string).
+              But if we create a class that <em>inherits</em> from
+              <code>Error</code>, we can use <code>instanceof Error</code> to
+              identify it easily.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Inside the built-in Error class</h4>
+            <pre><code>class Error {
+  constructor(message) {
+    this.message = message;
+    this.name = "Error"; 
+    this.stack = &lt;call stack&gt;; // Non-standard but widely supported
+  }
+}</code></pre>
+          </div>
+          <div class="info-card">
+            <h4>Our Custom: ValidationError</h4>
+            <pre><code>class ValidationError extends Error {
+  constructor(message) {
+    super(message); // 1. Call parent constructor (required!)
+    this.name = "ValidationError"; // 2. Override the name
+  }
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Why set <code>this.name</code>?</strong> The parent
+            <code>Error</code> constructor automatically sets
+            <code>this.name = "Error"</code>. If we don't manually reset it to
+            "ValidationError" after calling <code>super()</code>, our error will
+            incorrectly report itself as a generic Error.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Using Custom Errors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Using Custom Errors</h2>
+          <p class="slide-subtitle">Throwing and catching specific issues</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Let's say we are reading user data. The JSON might be valid, but
+              missing required fields (like <code>name</code> or
+              <code>age</code>). This is a perfect use case for
+              <code>ValidationError</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Implementation</h4>
+            <pre><code>function readUser(json) {
+  let user = JSON.parse(json);
+
+  if (!user.age) {
+    throw new ValidationError("No field: age");
+  }
+  if (!user.name) {
+    throw new ValidationError("No field: name");
+  }
+  return user;
+}
+
+try {
+  let user = readUser('{ "age": 25 }');
+} catch (err) {
+  if (err instanceof ValidationError) {
+    alert("Invalid data: " + err.message);
+  } else if (err instanceof SyntaxError) {
+    alert("JSON Syntax Error: " + err.message);
+  } else {
+    throw err; // Rethrow unknown errors!
+  }
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Pro Tip:</strong> Always use
+            <code>err instanceof ValidationError</code> rather than checking
+            <code>err.name == "ValidationError"</code>.
+            <code>instanceof</code> respects inheritance, so it will still work
+            if you create sub-classes of ValidationError later!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Deepening the Hierarchy -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Deepening the Hierarchy</h2>
+          <p class="slide-subtitle">
+            Getting more specific with PropertyRequiredError
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              <code>ValidationError</code> is good, but we can get more
+              specific. Let's make <code>PropertyRequiredError</code> that
+              automatically knows which property is missing.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Adding Custom Properties</h4>
+            <pre><code>class PropertyRequiredError extends ValidationError {
+  constructor(property) {
+    super("No property: " + property); // Set the message
+    this.name = "PropertyRequiredError";
+    this.property = property; // Attach extra data!
+  }
+}
+
+// Usage:
+throw new PropertyRequiredError("age");</code></pre>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-magic"></i></div>
+            <div class="protocol-info">
+              <h4>The Base Class Trick</h4>
+              <p>
+                Setting <code>this.name</code> manually in every class is
+                tedious. Create a base class that does it automatically:
+                <code>this.name = this.constructor.name;</code>. Then, all your
+                custom errors inherit from <em>that</em> base class instead of
+                <code>Error</code> directly!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Wrapping Exceptions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Wrapping Exceptions</h2>
+          <p class="slide-subtitle">
+            Simplifying error handling for the caller
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              As functions grow, they can throw many types of errors
+              (<code>SyntaxError</code>, <code>ValidationError</code>,
+              <code>DatabaseError</code>, etc.). Forcing the caller to check for
+              every single type is exhausting.
+            </p>
+            <p>
+              <strong>Solution:</strong> Wrap low-level errors into one generic,
+              high-level error (like <code>ReadError</code>).
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The ReadError Wrapper</h4>
+            <pre><code>class ReadError extends Error {
+  constructor(message, cause) {
+    super(message);
+    this.cause = cause; // The original low-level error!
+    this.name = 'ReadError';
+  }
+}
+
+function readUser(json) {
+  try {
+    let user = JSON.parse(json);
+    // validation logic...
+  } catch (err) {
+    // Wrap any known error into a ReadError
+    if (err instanceof SyntaxError || err instanceof ValidationError) {
+      throw new ReadError("Reading failed", err);
+    } else {
+      throw err; // Rethrow unknown errors
+    }
+  }
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: The Company Receptionist 🕵️‍♂️</strong><br />
+            You don't need to know the specific internal departments (Syntax,
+            Validation, etc.). You just talk to the Receptionist
+            (<code>ReadError</code>). If you need the deep details, the
+            receptionist can give you the original memo (<code>e.cause</code>),
+            but 90% of the time, just knowing "Reading failed" is enough.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Wrapping Exceptions in Action -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Wrapping Exceptions in Action</h2>
+          <p class="slide-subtitle">
+            How the caller handles wrapped exceptions
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Now, the code that calls <code>readUser()</code> only needs to
+              check for one single error type: <code>ReadError</code>. It
+              doesn't need to care about the underlying specifics.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Clean Calling Code</h4>
+            <pre><code>try {
+  readUser('{bad json}');
+} catch (e) {
+  if (e instanceof ReadError) {
+    alert(e.message); // "Reading failed"
+    
+    // We can still access the original error if we need it!
+    alert("Original error: " + e.cause); 
+    // "SyntaxError: Unexpected token..."
+  } else {
+    throw e; // Rethrow unexpected errors
+  }
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Why is this powerful?</strong><br />
+            1. <strong>Decoupling:</strong> The calling code doesn't need to
+            know the internal implementation details of
+            <code>readUser</code>.<br />
+            2. <strong>Flexibility:</strong> You can add new low-level errors
+            inside <code>readUser</code> later, and the calling code won't
+            break—as long as you wrap them in <code>ReadError</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Custom Errors & Extending Error Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

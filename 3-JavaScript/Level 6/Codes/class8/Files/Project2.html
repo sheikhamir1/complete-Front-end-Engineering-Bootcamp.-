@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Universal Promisify</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 350px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #output {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        padding: 8px;
+        background: #e9ecef;
+        margin: 5px 0;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>The Universal Translator</h2>
+      <button id="runBtn">Run Promisified Math</button>
+      <ul id="outputList"></ul>
+    </div>
+    <script>
+      const outputList = document.getElementById("outputList");
+
+      // 1. A Legacy Function that returns MULTIPLE results in its callback
+      function legacyMath(a, b, callback) {
+        setTimeout(() => {
+          // Callback signature: (error, sum, product, difference)
+          callback(null, a + b, a * b, a - b);
+        }, 1000);
+      }
+
+      // 2. The Universal Promisify Helper
+      function promisify(f, manyArgs = false) {
+        // Returns the wrapper function
+        return function (...args) {
+          console.log(...args);
+
+          return new Promise((resolve, reject) => {
+            // Define the intercepting callback
+            function customCallback(err, ...results) {
+              console.log(err);
+              console.log(...results);
+
+              if (err) {
+                reject(err);
+              } else {
+                // If manyArgs is true, resolve with an array of all results.
+                // Otherwise, just resolve with the first result.
+                resolve(manyArgs ? results : results[0]);
+              }
+            }
+
+            // Add our custom callback to the end of the arguments list
+            // console.log("customCallback 1", customCallback);
+
+            args.push(customCallback);
+            // console.log("customCallback 2", customCallback);
+
+            // Execute the original function with the arguments + the callback
+
+            f.call(this, ...args);
+            console.log(...args);
+          });
+        };
+      }
+
+      // 3. Usage
+      // Pass `true` because legacyMath returns multiple results
+      const modernMath = promisify(legacyMath, true);
+      //   console.log("modernMath", modernMath);
+
+      document.getElementById("runBtn").addEventListener("click", () => {
+        outputList.innerHTML = "<li>Calculating...</li>";
+
+        // Call the newly generated function
+        modernMath(10, 5)
+          .then((resultsArray) => {
+            console.log(resultsArray);
+
+            outputList.innerHTML = ""; // Clear loading text
+
+            const [sum, product, difference] = resultsArray; // Destructure array
+
+            outputList.innerHTML += `<li>Sum: ${sum}</li>`;
+            outputList.innerHTML += `<li>Product: ${product}</li>`;
+            outputList.innerHTML += `<li>Difference: ${difference}</li>`;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    </script>
+  </body>
+</html>

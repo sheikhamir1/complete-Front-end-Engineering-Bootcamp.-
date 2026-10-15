@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Avatar Fetcher</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #24292e;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      #container {
+        text-align: center;
+        background-color: #2f363d;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      img {
+        border-radius: 50%;
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
+        border: 4px solid #28a745;
+        animation: fadeIn 1s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>GitHub Profile Viewer</h1>
+      <p id="status">Loading data...</p>
+    </div>
+    <script>
+      // Step 1: Reusable function to fetch JSON
+      function loadJson(url) {
+        console.log("url", url);
+
+        // fetch returns a promise. response.json() also returns a promise.
+        return fetch(url).then((response) => response.json());
+      }
+
+      // Step 2: Reusable function to fetch GitHub user data
+      function loadGithubUser(name) {
+        console.log("name", name);
+
+        return loadJson(`https://api.github.com/users/${name}`);
+      }
+
+      // Step 3: Reusable function to display the avatar and return a promise
+      function showAvatar(githubUser) {
+        console.log("githubUser", githubUser);
+
+        return new Promise(function (resolve, reject) {
+          document.getElementById("status").innerText =
+            `Found ${githubUser.name}!`;
+
+          let img = document.createElement("img");
+          img.src = githubUser.avatar_url;
+          document.getElementById("container").appendChild(img);
+
+          // Remove the image after 6 seconds, then resolve the promise
+          setTimeout(() => {
+            img.remove();
+            document.getElementById("status").innerText =
+              "Avatar removed. Chain complete.";
+            resolve(githubUser); // Resolving makes the chain extendable!
+          }, 6000);
+        });
+      }
+
+      // Step 4: The incredibly clean execution chain
+      // Note: We use a real GitHub username directly here to simulate the user.json output for this runnable example.
+      Promise.resolve({ name: "sheikhamir1" }) // Simulating loadJson('/user.json') returning Linus Torvalds
+        .then((user) => {
+          //   console.log(user);
+          let x = loadGithubUser(user.name);
+          console.log(x);
+          return x;
+        })
+        .then(showAvatar)
+        .then((githubUser) =>
+          console.log(`Finished showing profile for ${githubUser.name}`),
+        );
+    </script>
+  </body>
+</html>

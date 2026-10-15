@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async Fixed</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #f4f4f9;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #ff4757;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>The Callback Solution</h1>
+      <button id="loadBtn">Load Script & Run</button>
+      <p id="output">Waiting...</p>
+    </div>
+    <script>
+      const loadBtn = document.getElementById("loadBtn");
+      const output = document.getElementById("output");
+
+      // Now accepts a second argument: 'callback'
+      function loadScript(src, callback) {
+        let script = document.createElement("script");
+        script.src = src;
+
+        // The 'onload' event fires when the script is fully loaded
+        script.onload = function () {
+          // Now it's safe to run the callback function!
+          callback(script);
+        };
+
+        document.head.append(script);
+      }
+
+      loadBtn.addEventListener("click", () => {
+        output.innerText = "Downloading...";
+        output.style.color = "black";
+
+        // We pass the URL, AND an anonymous function as the second argument
+        loadScript(
+          "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js",
+          function () {
+            // This code only runs AFTER script.onload is triggered inside loadScript
+            output.innerText = `Success! Lodash version ${_.VERSION} loaded.`;
+            output.style.color = "green";
+          },
+        );
+      });
+    </script>
+  </body>
+</html>

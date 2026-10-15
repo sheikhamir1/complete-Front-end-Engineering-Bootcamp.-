@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Synchronous Gotcha</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #eee;
+        padding: 20px;
+      }
+      .container {
+        max-width: 500px;
+        margin: auto;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .danger {
+        background: #d35400;
+      }
+      .safe {
+        background: #27ae60;
+      }
+      p {
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>The Timer Gotcha</h1>
+
+      <div class="card">
+        <button id="btn-wrong" class="danger">
+          Trigger Wrong Timer (Crash)
+        </button>
+        <p id="msg-wrong">Waiting...</p>
+      </div>
+
+      <div class="card">
+        <button id="btn-right" class="safe">
+          Trigger Right Timer (Survive)
+        </button>
+        <p id="msg-right">Waiting...</p>
+      </div>
+    </div>
+    <script>
+      const btnWrong = document.getElementById("btn-wrong");
+      const msgWrong = document.getElementById("msg-wrong");
+
+      const btnRight = document.getElementById("btn-right");
+      const msgRight = document.getElementById("msg-right");
+
+      // THE WRONG WAY
+      btnWrong.addEventListener("click", () => {
+        msgWrong.textContent = "Timer started... (Check console in 5s)";
+
+        try {
+          setTimeout(function () {
+            // This error happens AFTER try...catch has already finished
+            nonExistentFunctionWrong();
+          }, 5000);
+        } catch (err) {
+          console.log(err);
+          msgWrong.textContent = "Caught it!"; // This will NEVER run.
+        }
+
+        console.log("This is WRONG WAY");
+      });
+
+      // THE RIGHT WAY
+      btnRight.addEventListener("click", () => {
+        msgRight.textContent = "Timer started... (Wait 5s)";
+
+        setTimeout(function () {
+          try {
+            // The try...catch is inside the timer. It runs at the exact time the error happens.
+            nonExistentFunctionRight();
+          } catch (err) {
+            console.log(err);
+            msgRight.textContent = "Caught the delayed error safely!";
+            msgRight.style.color = "green";
+          }
+          console.log("This is WRONG WAY");
+        }, 5000);
+      });
+    </script>
+  </body>
+</html>

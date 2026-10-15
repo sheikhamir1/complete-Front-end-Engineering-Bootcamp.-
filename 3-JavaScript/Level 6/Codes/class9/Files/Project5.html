@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Throw and Return</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+        background-color: #8e44ad;
+        color: white;
+      }
+      .container {
+        background: #34495e;
+        padding: 30px;
+        border-radius: 8px;
+        width: 350px;
+      }
+      button {
+        padding: 10px;
+        width: 100%;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background: #ecf0f1;
+        color: #2c3e50;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      #poolOutput {
+        background: white;
+        color: #8e44ad;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 18px;
+        word-break: break-all;
+      }
+      .chat {
+        background: #e8f4f8;
+        color: black;
+        padding: 15px;
+        border-left: 5px solid #3498db;
+        margin-bottom: 20px;
+        min-height: 20px;
+        font-weight: bold;
+      }
+      input {
+        padding: 10px;
+        width: 60%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 35%;
+      }
+      button {
+        margin-top: 5px;
+        width: 100%;
+        border: none;
+        padding: 10px;
+        color: white;
+        cursor: pointer;
+        border-radius: 3px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Data Processor</h2>
+      <p id="taskOutput" class="chat">Status: Awaiting Start</p>
+
+      <button id="stepBtn" style="background: #27ae60">Next Step</button>
+      <button id="cancelBtn" style="background: #f39c12">Abort (Return)</button>
+      <button id="errorBtn" style="background: #c0392b">Crash (Throw)</button>
+    </div>
+    <script>
+      // 1. Generator with Error Handling
+      function* taskRunner() {
+        try {
+          yield "Step 1: Connecting to database...";
+          yield "Step 2: Downloading files...";
+          yield "Step 3: Processing data...";
+          return "All tasks completed successfully!";
+        } catch (err) {
+          // This catches the error injected by generator.throw()!
+          return `Emergency Stop Activated: ${err.message}`;
+        }
+      }
+
+      let runner = taskRunner();
+      const display = document.getElementById("taskOutput");
+
+      // Standard Next Step
+      document.getElementById("stepBtn").addEventListener("click", () => {
+        let result = runner.next();
+        display.innerText = result.value || "Finished!";
+        if (result.done) disableButtons();
+      });
+
+      // Force Abort using return()
+      document.getElementById("cancelBtn").addEventListener("click", () => {
+        // Instantly ends the generator, ignoring remaining yields
+        let result = runner.return("User Aborted the Process.");
+        display.innerText = result.value;
+        display.style.backgroundColor = "#fdebd0"; // Yellowish
+        disableButtons();
+      });
+
+      // Inject Error using throw()
+      document.getElementById("errorBtn").addEventListener("click", () => {
+        // Injects an error. The try..catch inside the generator catches it!
+        let result = runner.throw(new Error("Drive disconnected!"));
+        display.innerText = result.value;
+        display.style.backgroundColor = "#fadbd8"; // Reddish
+        disableButtons();
+      });
+
+      function disableButtons() {
+        document.querySelectorAll("button").forEach((b) => (b.disabled = true));
+      }
+    </script>
+  </body>
+</html>

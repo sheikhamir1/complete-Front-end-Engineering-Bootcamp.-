@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anatomy of Error</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .btn-bad {
+        background-color: #e74c3c;
+      }
+      .btn-good {
+        background-color: #3498db;
+      }
+      pre {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Throwing: Bad vs Good</h2>
+      <button id="btn-string" class="btn-bad">Throw a String (Bad)</button>
+      <button id="btn-error" class="btn-good">
+        Throw an Error Object (Good)
+      </button>
+
+      <div id="output-container" style="display: none">
+        <h3>Caught Result:</h3>
+        <pre id="output"></pre>
+      </div>
+    </div>
+
+    <script>
+      const btnString = document.getElementById("btn-string");
+      const btnError = document.getElementById("btn-error");
+      const outputContainer = document.getElementById("output-container");
+      const output = document.getElementById("output");
+
+      btnString.addEventListener("click", () => {
+        try {
+          // BAD PRACTICE: Throwing a raw string
+          throw "Database connection failed";
+        } catch (err) {
+          outputContainer.style.display = "block";
+          output.textContent = `
+Type of caught item: ${typeof err}
+Value: ${err}
+Does it have a stack trace?: ${err.stack ? "Yes" : "NO! Good luck debugging."}
+                `;
+        }
+      });
+
+      btnError.addEventListener("click", () => {
+        try {
+          // GOOD PRACTICE: Throwing a proper Error object
+          throw new Error("Database connection failed");
+        } catch (err) {
+          outputContainer.style.display = "block";
+          output.textContent = `
+Type of caught item: ${typeof err}
+Error Name: ${err.name}
+Error Message: ${err.message}
+Does it have a stack trace?: Yes! Look:
+${err.stack}
+                `;
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consuming Promises</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #f0f4f8;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background-color: #93c5fd;
+        cursor: not-allowed;
+      }
+      .hidden {
+        display: none;
+      }
+      #status {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>The Coin Flip Consumer</h2>
+      <button id="flipBtn">Flip Coin</button>
+      <p id="status">Ready.</p>
+      <div id="spinner" class="hidden">🔄 Flipping...</div>
+    </div>
+    <script>
+      const flipBtn = document.getElementById("flipBtn");
+      const statusText = document.getElementById("status");
+      const spinner = document.getElementById("spinner");
+
+      flipBtn.addEventListener("click", () => {
+        // 1. Prepare UI (Start party)
+        flipBtn.disabled = true;
+        spinner.classList.remove("hidden");
+        statusText.innerText = "";
+        statusText.style.color = "black";
+
+        // 2. Create the Promise (The Producer)
+        const coinFlipPromise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const isHeads = Math.random() > 0.5;
+            if (isHeads) {
+              resolve("It's Heads! You win!");
+            } else {
+              reject(new Error("It's Tails! You lose."));
+            }
+          }, 1500);
+        });
+        console.log(coinFlipPromise);
+
+        // 3. Consume the Promise (The Subscriber)
+        coinFlipPromise
+          .then((result) => {
+            // console.log(result);
+
+            // This runs ONLY if resolve() was called
+            statusText.innerText = result;
+            statusText.style.color = "green";
+          })
+          .catch((error) => {
+            // This runs ONLY if reject() was called
+            statusText.innerText = error.message;
+            statusText.style.color = "red";
+          })
+          .finally(() => {
+            // This runs EVERY time (The Party Cleanup)
+            flipBtn.disabled = false;
+            spinner.classList.add("hidden");
+          });
+      });
+    </script>
+  </body>
+</html>

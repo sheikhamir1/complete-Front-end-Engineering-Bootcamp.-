@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error Sorting</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #2c3e50;
+        color: white;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+      .card {
+        background: #34495e;
+        padding: 30px;
+        border-radius: 8px;
+        width: 400px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        background: #3498db;
+        color: white;
+      }
+      button.btn-fatal {
+        background: #e74c3c;
+      }
+      .output {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        font-weight: bold;
+      }
+      .warning {
+        background: #f39c12;
+        color: #fff;
+      }
+      .info {
+        background: #9b59b6;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Data Parser (Mail Sorter)</h2>
+
+      <button id="btn-bad-json">Simulate Bad JSON (SyntaxError)</button>
+      <button id="btn-bad-data">Simulate Missing Name (ValidationError)</button>
+      <button id="btn-typo" class="btn-fatal">
+        Simulate Code Typo (Unknown Error)
+      </button>
+
+      <div id="output" class="output"></div>
+    </div>
+
+    <script>
+      class ValidationError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "ValidationError";
+        }
+      }
+
+      function readUser(jsonString) {
+        // This will throw a built-in SyntaxError if jsonString is malformed
+        let user = JSON.parse(jsonString);
+
+        // This is our business logic
+        if (!user.name) {
+          throw new ValidationError("Missing required field: name");
+        }
+
+        return user;
+      }
+
+      const outputBox = document.getElementById("output");
+
+      function processData(dataToParse, isTypoSimulation = false) {
+        outputBox.style.display = "block";
+
+        try {
+          let user = readUser(dataToParse);
+
+          if (isTypoSimulation) {
+            // Developer made a typo: calling a function that doesn't exist!
+            // This creates a built-in ReferenceError
+            console.log(user);
+          }
+
+          outputBox.textContent = `Success: Welcome ${user.name}`;
+          outputBox.style.background = "#2ecc71";
+        } catch (err) {
+          if (err instanceof ValidationError) {
+            // Handled: We know the user forgot to enter a name
+            outputBox.className = "output warning";
+            outputBox.textContent = `Business Rule Broken: ${err.message}`;
+          } else if (err instanceof SyntaxError) {
+            // Handled: We know the server sent corrupted text
+            outputBox.className = "output info";
+            outputBox.textContent = `Data Corruption: Invalid JSON format.`;
+          } else {
+            // UNHANDLED: We did not expect this error (like our typo).
+            // We put it back in the outgoing mail!
+            outputBox.style.display = "none"; // Hide UI
+            throw err; // Craters the app, prints red text in Developer Console
+          }
+        }
+      }
+
+      document.getElementById("btn-bad-json").addEventListener("click", () => {
+        processData('{ "name": "John", }'); // Trailing comma breaks JSON
+      });
+
+      document.getElementById("btn-bad-data").addEventListener("click", () => {
+        processData('{ "age": 25 }'); // Valid JSON, but missing "name"
+      });
+
+      document.getElementById("btn-typo").addEventListener("click", () => {
+        processData('{ "name": "Jane" }', true); // Valid data, but triggers code typo
+      });
+    </script>
+  </body>
+</html>

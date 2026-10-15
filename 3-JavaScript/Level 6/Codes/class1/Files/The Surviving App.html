@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Try...Catch Basics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .button-group {
+        margin: 20px 0;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .danger {
+        background-color: #e74c3c;
+      }
+
+      .safe {
+        background-color: #2ecc71;
+      }
+
+      .status {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #e8f8f5;
+        color: #16a085;
+        font-weight: bold;
+      }
+
+      .error-status {
+        background-color: #fadbd8;
+        color: #c0392b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Safety Net Demo</h1>
+      <p>Clicking the buttons will try to use a variable that doesn't exist.</p>
+
+      <div class="button-group">
+        <button id="btn-crash" class="danger">Run Without Safety Net</button>
+        <button id="btn-survive" class="safe">Run With Try...Catch</button>
+      </div>
+
+      <div id="status-box" class="status">App is running smoothly...</div>
+      <p>
+        <em
+          >Note: If you click the first button, check your browser console (F12)
+          to see the crash. The UI will stop updating.</em
+        >
+      </p>
+    </div>
+
+    <script>
+      "use strict";
+      // Grab HTML elements
+      const btnCrash = document.getElementById("btn-crash");
+      const btnSurvive = document.getElementById("btn-survive");
+      const statusBox = document.getElementById("status-box");
+
+      // Function 1: No Safety Net
+      function crashApp() {
+        statusBox.textContent = "Attempting risky operation...";
+        statusBox.className = "status";
+
+        console.log("Before Error");
+        // We are trying to change a variable that was never created!
+        nonExistentVariable = "This will cause a ReferenceError";
+
+        console.log("After Error");
+
+        // Because the line above crashed the script, THIS line will NEVER run.
+        statusBox.textContent = "Success! (You will never see this)";
+      }
+
+      // Function 2: With Safety Net
+      function surviveApp() {
+        statusBox.textContent = "Attempting risky operation...";
+        statusBox.className = "status";
+
+        try {
+          // We put our risky code inside the 'try' block
+          nonExistentVariable = "This will cause a ReferenceError";
+
+          // This line is skipped because the error happened above
+          statusBox.textContent = "Success! (You will never see this)";
+        } catch (error) {
+          // The engine jumps here immediately when the error happens
+          console.log(error);
+
+          statusBox.textContent =
+            "Caught an error, but the app is still alive!";
+          statusBox.className = "status error-status";
+        }
+
+        // Because we caught the error, the script continues running normally down here!
+        console.log("The script survived and reached the end of the function.");
+      }
+
+      // Attach event listeners to buttons
+      btnCrash.addEventListener("click", crashApp);
+      btnSurvive.addEventListener("click", surviveApp);
+    </script>
+  </body>
+</html>

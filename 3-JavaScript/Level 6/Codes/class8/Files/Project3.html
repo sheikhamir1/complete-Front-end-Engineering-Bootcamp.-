@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Microtask Queue</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 350px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #output {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        padding: 8px;
+        background: #e9ecef;
+        margin: 5px 0;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Execution Order Test</h2>
+      <button id="runBtn">Run Test</button>
+      <ul id="logList"></ul>
+    </div>
+    <script>
+      const logList = document.getElementById("logList");
+
+      function addLog(message, color = "black") {
+        const li = document.createElement("li");
+        li.innerText = message;
+        li.style.color = color;
+        li.style.fontWeight = "bold";
+        logList.appendChild(li);
+      }
+
+      document.getElementById("runBtn").addEventListener("click", () => {
+        logList.innerHTML = ""; // clear list
+
+        addLog("--- TEST STARTED ---", "gray");
+
+        // 1. MACROTASK (Regular Line)
+        // Even with 0 milliseconds delay, it goes to the back of the Macrotask queue!
+        setTimeout(() => {
+          addLog("3. setTimeout (Macrotask)", "red");
+        }, 0);
+
+        // 2. MICROTASK (VIP Fast-Pass)
+        // Instantly resolved promise. The handler goes to the Microtask queue.
+        Promise.resolve().then(() => {
+          addLog("2. Promise.then (Microtask)", "blue");
+        });
+
+        // 3. SYNCHRONOUS CODE (Currently on the ride)
+        // This executes immediately on the main thread.
+        addLog("1. Synchronous Code", "green");
+
+        // JS Engine flow right now:
+        // "Finish sync code" -> "Check Microtasks (Promises)" -> "Check Macrotasks (Timers)"
+      });
+
+      console.log("i am at end");
+    </script>
+  </body>
+</html>

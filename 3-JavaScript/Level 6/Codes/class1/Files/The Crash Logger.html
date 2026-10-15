@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Global Catch Demo</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #34495e;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        color: #333;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        width: 450px;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: white;
+      }
+      .danger {
+        background: #e74c3c;
+      }
+      h3 {
+        margin-top: 30px;
+        font-size: 16px;
+        color: #7f8c8d;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+      }
+      .logs {
+        background: #2c3e50;
+        color: #2ecc71;
+        padding: 15px;
+        border-radius: 4px;
+        min-height: 100px;
+        font-family: monospace;
+        font-size: 12px;
+        list-style-type: none;
+        margin: 0;
+      }
+      .logs li {
+        margin-bottom: 10px;
+        border-bottom: 1px dashed #34495e;
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Global Crash Logger</h2>
+      <p>This button triggers an error outside of any try...catch block.</p>
+
+      <button id="btn-fatal" class="danger">Trigger Fatal Error</button>
+
+      <h3>Simulated Server Logs (Sentry)</h3>
+      <ul id="server-logs" class="logs"></ul>
+    </div>
+    <script>
+      const btnFatal = document.getElementById("btn-fatal");
+      const serverLogs = document.getElementById("server-logs");
+
+      // 1. Setup the Global Catch
+      window.onerror = function (message, url, line, col, error) {
+        // In the real world, you would use fetch() to send this to your database
+
+        // For this demo, we will render it into our "Simulated Server Logs" UI
+        const logItem = document.createElement("li");
+        logItem.innerHTML = `
+        <strong>CRASH REPORT:</strong><br>
+        Message: ${message}<br>
+        Line: ${line}, Column: ${col}<br>
+        Stack: ${error ? error.stack : "N/A"}
+    `;
+
+        serverLogs.appendChild(logItem);
+
+        // Return true to prevent the default browser error from showing in the console
+        // (Optional, returning false lets it print to console as usual)
+        return false;
+      };
+
+      // 2. Triggering the crash
+      btnFatal.addEventListener("click", () => {
+        // Notice there is NO try...catch here.
+        // We are referencing a variable that doesn't exist.
+        thisVariableDoesntExist.doSomething();
+      });
+    </script>
+  </body>
+</html>

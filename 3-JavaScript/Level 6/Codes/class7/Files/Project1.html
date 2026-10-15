@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise.all Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+      }
+      button#failBtn {
+        background-color: #dc3545;
+      }
+      .output-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e9ecef;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Dashboard Loader</h2>
+      <button id="loadBtn">Load Dashboard Data</button>
+      <button id="failBtn">Simulate One Failure</button>
+      <div id="output" class="output-box">Waiting...</div>
+    </div>
+    <script>
+      const output = document.getElementById("output");
+
+      // Helper function to simulate a network request
+      function fakeFetch(data, delay, shouldFail = false) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            // console.log(shouldFail);
+            // console.log(data);
+
+            if (shouldFail) {
+              reject(new Error(`Failed to load: ${data}`));
+            } else {
+              resolve(data);
+            }
+          }, delay);
+        });
+      }
+
+      // 1. Success Scenario
+      document.getElementById("loadBtn").addEventListener("click", () => {
+        output.innerText = "Loading profile and posts concurrently...";
+        output.style.color = "black";
+
+        const profilePromise = fakeFetch("User Profile: John Doe", 2000);
+        const postsPromise = fakeFetch("User Posts: [Post 1, Post 2]", 1000);
+        const postsPromise2 = fakeFetch("User Status: Good Night", 1000);
+        // console.log(profilePromise, postsPromise, postsPromise2);
+        Promise.all([profilePromise, postsPromise, postsPromise2])
+
+          .then((results) => {
+            console.log(results);
+
+            // results is an array containing the outputs in the EXACT order of the input array
+            const profileData = results[0];
+            const postsData = results[1];
+            const postsData2 = results[2];
+            output.innerText = `Success!\n1. ${profileData}\n2. ${postsData}\n3.${postsData2}`;
+          })
+          .catch((error) => {
+            output.innerText = `Error: ${error.message}`;
+            output.style.color = "red";
+          });
+      });
+
+      // 2. Failure Scenario
+      document.getElementById("failBtn").addEventListener("click", () => {
+        output.innerText = "Loading data (one will fail)...";
+        output.style.color = "black";
+
+        const profilePromise = fakeFetch("User Profile", 2000);
+        const brokenPostsPromise = fakeFetch("User Posts", 1000, true); // This will reject
+        console.log(profilePromise, brokenPostsPromise);
+
+        Promise.all([profilePromise, brokenPostsPromise])
+          .then((results) => {
+            output.innerText = "You will never see this text.";
+          })
+          .catch((error) => {
+            console.log(error);
+
+            output.innerText = `Catastrophic Failure Caught:\n${error.message}\n\n(Profile data is lost even though it would have succeeded).`;
+            output.style.color = "red";
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error Handling with Promises</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Error Handling with Promises</h1>
+          <p class="slide-subtitle">Catching failures in asynchronous code</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Safety net concept"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Promise chains are great at error handling. When a promise
+              rejects, the control immediately jumps to the closest rejection
+              handler (`.catch`), skipping the rest of the chain.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy: The Factory Safety Net 🏭</strong><br />
+            Imagine an assembly line with 3 stations, and a big safety net at
+            the end. If a product breaks at station 1, 2, or 3, it falls off the
+            belt and is caught by the safety net (<code>.catch</code>). You
+            don't need a net at every single station—just one at the bottom
+            catches everything.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Catching Errors in Chains -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Catching Errors in Chains</h2>
+          <p class="slide-subtitle">One catch to rule them all</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The easiest way to handle errors in a sequence of async tasks is
+              to append a single <code>.catch</code> at the very end of the
+              chain.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example: Network Request Chain</h4>
+            <pre><code>fetch('https://no-such-server.blabla') // Rejects!
+  .then(response => response.json())
+  .then(user => fetch(`https://api.github.com/users/${user.name}`))
+  .then(response => response.json())
+  .catch(err => alert(err)); // Catches ANY error above!</code></pre>
+            <p>
+              If the first <code>fetch</code> fails, the entire chain is
+              skipped, and the error drops straight into <code>.catch</code>.
+              But if the first fetch succeeds and the second fails,
+              <code>.catch</code> still gets it!
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Convenience:</strong> You don't need to check for errors
+            after every single step. A single <code>.catch</code> at the bottom
+            acts as a safety net for the entire chain.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Implicit try...catch -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Implicit try...catch</h2>
+          <p class="slide-subtitle">Throwing vs. Rejecting</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The code inside a promise executor and <code>.then</code> handlers
+              has an "invisible <code>try..catch</code>" around it. If you throw
+              an error, it is automatically caught and treated as a rejection!
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4>Explicit Reject</h4>
+                <pre><code>new Promise((resolve, reject) => {
+  reject(new Error("Whoops!"));
+}).catch(alert); // Error: Whoops!</code></pre>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4>Implicit Throw</h4>
+                <pre><code>new Promise((resolve, reject) => {
+  throw new Error("Whoops!");
+}).catch(alert); // Error: Whoops!</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Works inside .then() too!</h4>
+            <pre><code>new Promise((resolve, reject) => {
+  resolve("ok");
+}).then((result) => {
+  blabla(); // No such function! (ReferenceError)
+}).catch(alert); // Catches the accidental error!</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Key Takeaway:</strong> <code>.catch</code> catches not just
+            explicit <code>reject()</code> calls, but also accidental
+            programming errors (like typos) in the handlers above.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Rethrowing Errors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Rethrowing Errors</h2>
+          <p class="slide-subtitle">
+            Handling what you can, passing what you can't
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Just like regular <code>try...catch</code>, we can analyze an
+              error in <code>.catch</code>. If we can handle it, the chain
+              continues to the next successful <code>.then</code>. If we can't
+              handle it, we can <strong>rethrow</strong> it to the next error
+              handler.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example: Handled successfully</h4>
+            <pre><code>new Promise((resolve, reject) => {
+  throw new Error("Whoops!");
+}).catch(function(error) {
+  alert("The error is handled, continue normally");
+  // No throw = error is swallowed, chain continues
+}).then(() => alert("Next successful handler runs"));</code></pre>
+          </div>
+          <div class="info-card">
+            <h4>Example: Rethrowing</h4>
+            <pre><code>new Promise((resolve, reject) => {
+  throw new Error("Whoops!");
+}).catch(function(error) {
+  if (error instanceof URIError) {
+    // Handle it
+  } else {
+    alert("Can't handle such error");
+    throw error; // Rethrows to the next catch!
+  }
+}).catch(error => alert(`The unknown error: ${error}`));</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: The Triage Nurse 🏥</strong><br />
+            A patient (error) arrives. The nurse (<code>.catch</code>) checks
+            it. If it's a minor cut, they treat it and send the patient home
+            (continue to <code>.then</code>). If it's major surgery, they send
+            the patient to the specialist (rethrow to next <code>.catch</code>).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Unhandled Rejections -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Unhandled Rejections</h2>
+          <p class="slide-subtitle">What happens when errors get stuck?</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if an error occurs but there's no <code>.catch</code> to
+              handle it? The error gets "stuck". In real life, this means
+              something went terribly wrong silently.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Global Catch: unhandledrejection</h4>
+            <p>
+              Modern JavaScript tracks unhandled rejections. In the browser, we
+              can catch these "stuck" errors using a global event called
+              <code>unhandledrejection</code>.
+            </p>
+            <pre><code>window.addEventListener('unhandledrejection', function(event) {
+  // event.promise: the promise that generated the error
+  // event.reason: the unhandled error object
+  alert(event.reason); 
+});
+
+new Promise(function() {
+  throw new Error("Whoops!");
+}); // No catch attached!</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: The Fire Alarm 🚨</strong><br />
+            If a fire (error) breaks out and no one is there to put it out (no
+            <code>.catch</code>), the building's global fire alarm
+            (<code>unhandledrejection</code>) goes off. It doesn't fix the fire,
+            but it alerts everyone (including developers) that something
+            catastrophic happened.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">
+            Best practices for promise error handling
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-shield-alt"></i></div>
+            <div class="protocol-info">
+              <h4>1. .catch catches everything</h4>
+              <p>
+                It catches explicit <code>reject()</code> calls AND accidental
+                <code>throw</code> errors in handlers above it.
+              </p>
+            </div>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-filter"></i></div>
+            <div class="protocol-info">
+              <h4>2. Analyze and Rethrow</h4>
+              <p>
+                Place <code>.catch</code> where you know how to handle specific
+                errors. If you encounter an error you can't handle, rethrow it
+                for the next handler.
+              </p>
+            </div>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-bell"></i></div>
+            <div class="protocol-info">
+              <h4>3. The Global Safety Net</h4>
+              <p>
+                Always set up the <code>unhandledrejection</code> event handler
+                on <code>window</code>. This ensures your app never "just dies"
+                silently if a <code>.catch</code> is forgotten.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Error Handling with Promises Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

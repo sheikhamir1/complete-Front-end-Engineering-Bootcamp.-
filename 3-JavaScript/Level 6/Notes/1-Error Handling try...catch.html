@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error Handling: try...catch</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Error Handling: try...catch</h1>
+          <p class="slide-subtitle">Saving your scripts from crashing</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Code and error handling"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              No matter how carefully we code, errors happen—bad user input,
+              network failures, or unexpected server responses. Normally, a
+              script "dies" immediately when an error occurs.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy: The Airbag 🚗</strong><br />
+            Driving a car is like running code inside a <code>try</code> block.
+            If you crash (an error occurs), you don't want the journey to end
+            fatally (script dies). The <code>catch</code> block is the airbag—it
+            deploys to handle the crash safely so you can keep going or exit
+            gracefully.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The "try...catch" Syntax -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The "try...catch" Syntax</h2>
+          <p class="slide-subtitle">
+            How to catch an error before it kills your app
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>Basic Structure</h4>
+            <pre><code>try {
+  // Code that might fail
+} catch (err) {
+  // Code that runs ONLY if an error occurs
+}</code></pre>
+          </div>
+          <div class="text-section">
+            <h3>How it works:</h3>
+            <ul class="list-section">
+              <li>
+                <strong>No errors:</strong> The <code>try</code> block runs top
+                to bottom, and the <code>catch</code> block is completely
+                ignored.
+              </li>
+              <li>
+                <strong>Error occurs:</strong> Execution stops immediately
+                inside <code>try</code>, and the script jumps to the
+                <code>catch</code> block. The script survives!
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <strong>Crucial Rule:</strong> <code>try...catch</code> only works
+            for <strong>runtime errors</strong> (exceptions). It will NOT catch
+            syntax errors (like missing curly braces) because the engine can't
+            even read/parse the code to begin with.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: The Error Object & Synchronous Gotchas -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Error Object & Synchronous Gotchas</h2>
+          <p class="slide-subtitle">
+            Understanding the details of a caught error
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When an error is caught, JavaScript passes an error object to the
+              <code>catch</code> block. This object contains vital debugging
+              information.
+            </p>
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>What it means</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>err.name</code></td>
+                <td>The type of error.</td>
+                <td>ReferenceError</td>
+              </tr>
+              <tr>
+                <td><code>err.message</code></td>
+                <td>The human-readable text about the error.</td>
+                <td>"lalala is not defined"</td>
+              </tr>
+              <tr>
+                <td><code>err.stack</code></td>
+                <td>
+                  The call stack (where it happened). Great for debugging.
+                </td>
+                <td>"ReferenceError: lalala... at line 5"</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-clock"></i></div>
+            <div class="protocol-info">
+              <h4>The Synchronous Catch</h4>
+              <p>
+                <code>try...catch</code> won't catch errors inside scheduled
+                code like <code>setTimeout</code> because by the time the
+                scheduled function runs, the engine has already left the
+                <code>try</code> block. <strong>Fix:</strong> Put the
+                <code>try...catch</code> <em>inside</em> the
+                <code>setTimeout</code> function!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Real-World Use Case -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Real-World Use Case: JSON Parsing</h2>
+          <p class="slide-subtitle">Handling bad data from a server</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When we fetch data from a server, we use
+              <code>JSON.parse()</code> to turn text into a JavaScript object.
+              If the data is malformed, <code>JSON.parse()</code> crashes the
+              script.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e74c3c">
+                <h4>Bad (No Catch)</h4>
+                <pre><code>let json = "{ bad json }";
+let user = JSON.parse(json);
+// Script dies here. 
+// User sees nothing.</code></pre>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #2ecc71">
+                <h4>Good (With try...catch)</h4>
+                <pre><code>let json = "{ bad json }";
+try {
+  let user = JSON.parse(json);
+} catch (err) {
+  alert("Sorry, bad data!");
+  // Script keeps running!
+}</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Optional Catch Binding:</strong> If you don't need to look
+            at the error object details, modern JavaScript allows you to omit it
+            entirely: <code>catch { ... }</code> instead of
+            <code>catch (err) { ... }</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Throwing Our Own Errors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Throwing Our Own Errors</h2>
+          <p class="slide-subtitle">Creating custom errors with "throw"</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Sometimes the data is technically valid JSON, but logically wrong
+              for our app (e.g., a user object without a name). We can manually
+              throw an error using the <code>throw</code> operator.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Using Built-in Error Constructors</h4>
+            <pre><code>let json = '{ "age": 30 }'; // Valid JSON, but missing name!
+
+try {
+  let user = JSON.parse(json);
+
+  if (!user.name) {
+    throw new SyntaxError("Incomplete data: no name");
+  }
+
+} catch (err) {
+  alert( "JSON Error: " + err.message ); 
+  // Catches both JSON.parse errors 
+  // AND our custom thrown error!
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Why use built-in constructors?</strong> You can throw
+            anything (even a string), but it's best practice to use objects like
+            <code>new Error()</code>, <code>new SyntaxError()</code>, or
+            <code>new TypeError()</code> because they automatically generate the
+            correct <code>name</code> and <code>message</code> properties, and
+            capture the <code>stack</code> trace.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Rethrowing Errors -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Rethrowing Errors</h2>
+          <p class="slide-subtitle">Only catch what you can handle</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              A <code>catch</code> block catches <em>all</em> errors. But what
+              if a different, unexpected error happens (like a typo in your
+              code)? You shouldn't mask it with a generic "JSON Error" message.
+              You should let it pass through.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Rethrowing Pattern</h4>
+            <pre><code>try {
+  // ...
+  blabla(); // Unexpected error (typo)
+} catch (err) {
+  if (err instanceof SyntaxError) {
+    // We know how to handle this specific error
+    alert( "JSON Error: " + err.message );
+  } else {
+    // We don't know what this is. Throw it back!
+    throw err; 
+  }
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: The Mail Sorter 📬</strong><br />
+            The <code>catch</code> block is like a mail sorter. You only take
+            the letters addressed to you (SyntaxError). Everything else you put
+            back in the outgoing mail (rethrow) so the main post office (global
+            error handler) can deal with it.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: The "finally" Clause -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The "finally" Clause</h2>
+          <p class="slide-subtitle">Code that runs no matter what</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The <code>finally</code> block executes after <code>try</code> (if
+              no errors) or after <code>catch</code> (if there was an error). It
+              runs <strong>always</strong>, even if you use
+              <code>return</code> or <code>throw</code> inside the try/catch.
+            </p>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-stopwatch"></i></div>
+            <div class="protocol-info">
+              <h4>Use Case: Measuring Execution Time</h4>
+              <p>
+                Start a timer before the <code>try</code>, and stop the timer
+                inside <code>finally</code>. This guarantees you'll get the
+                measurement regardless of whether the function succeeded or
+                crashed.
+              </p>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>try...finally (No catch)</h4>
+            <p>
+              You can even omit <code>catch</code> entirely! This is useful when
+              you want to ensure cleanup happens (like closing a connection or
+              stopping a loading spinner), but you want the error to still
+              propagate up to the caller.
+            </p>
+            <pre><code>function func() {
+  try {
+    // do work that might fail
+  } finally {
+    // cleanup, no matter what
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Global Catch -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Global Catch</h2>
+          <p class="slide-subtitle">
+            Catching errors that slip through the cracks
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if a fatal error happens outside of any
+              <code>try...catch</code>? Normally, the script dies silently.
+              Modern environments provide a "global catch" to log these crashes.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-left: 4px solid #9b59b6">
+                <h4>In the Browser</h4>
+                <p>
+                  We can assign a function to <code>window.onerror</code>. It
+                  catches the error message, URL, and line number.
+                </p>
+                <pre><code>window.onerror = function(
+  message, url, line, col, error
+) {
+  // Log error to a service
+};</code></pre>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-left: 4px solid #f1c40f">
+                <h4>In Node.js</h4>
+                <p>We use the uncaughtException event on the process object.</p>
+                <pre><code>process.on(
+  "uncaughtException", 
+  function(err) {
+  // Log error
+});</code></pre>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Application:</strong> Global handlers aren't
+            meant to recover the script (the app is likely in a bad state). They
+            are used to send crash reports to services like
+            <strong>Sentry</strong> or <strong>Muscula</strong> so developers
+            can fix bugs they didn't know existed!
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Error Handling: try...catch Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

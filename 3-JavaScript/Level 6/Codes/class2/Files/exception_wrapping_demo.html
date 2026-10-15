@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exception Wrapping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-50 text-gray-800 font-sans p-8 flex flex-col items-center min-h-screen"
+  >
+    <div class="max-w-2xl w-full">
+      <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">
+        System Architecture Layers
+      </h1>
+
+      <div
+        class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-6"
+      >
+        <h2 class="text-xl font-bold mb-4 text-blue-600">
+          UI Layer (The Caller)
+        </h2>
+        <p class="text-gray-600 mb-4 text-sm">
+          The UI only cares about high-level success or failure. It shouldn't
+          deal with database or validation specifics.
+        </p>
+        <button
+          id="btn-run"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+        >
+          Fetch User Profile
+        </button>
+      </div>
+
+      <!-- Terminal Output Window -->
+      <div
+        class="bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-700"
+      >
+        <div
+          class="bg-gray-800 px-4 py-2 border-b border-gray-700 flex items-center space-x-2"
+        >
+          <div class="w-3 h-3 rounded-full bg-red-500"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500"></div>
+          <span class="text-gray-400 text-xs ml-2 font-mono"
+            >system-logs.sh</span
+          >
+        </div>
+        <pre
+          id="logs"
+          class="p-6 font-mono text-sm whitespace-pre-wrap text-gray-300"
+        >
+Awaiting execution...</pre
+        >
+      </div>
+    </div>
+
+    <script>
+      // --- 1. HIGH LEVEL ERROR (For the UI) ---
+      class ReadError extends Error {
+        constructor(message, cause) {
+          // We pass the cause object into the native Error constructor options!
+          super(message, { cause: cause });
+          this.name = "ReadError";
+        }
+      }
+
+      // --- 2. LOW LEVEL ERROR (For the Service/Database) ---
+      class ValidationError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "ValidationError";
+        }
+      }
+
+      // COMPLEX SERVICE FUNCTION
+      function fetchProfile() {
+        try {
+          // Simulating a low-level data issue deep in the code
+          throw new ValidationError(
+            "Missing User ID in Database Table 'users'",
+          );
+        } catch (err) {
+          // The Mail Sorter: We catch specific low-level errors...
+          console.log(err);
+          if (err instanceof ValidationError || err instanceof SyntaxError) {
+            // ...and WRAP them in a high-level ReadError!
+            throw new ReadError("Failed to fetch user profile.", err);
+          } else {
+            // Rethrow unknown bugs (e.g., typos)
+            throw err;
+          }
+        }
+      }
+
+      const logs = document.getElementById("logs");
+      document.getElementById("btn-run").addEventListener("click", () => {
+        logs.innerHTML =
+          "<span class='text-blue-400'>[System]</span> Executing UI request...\n\n";
+
+        // THE CALLER CODE (UI Layer - Clean and simple!)
+        try {
+          fetchProfile();
+        } catch (err) {
+          console.log("2nd", err);
+
+          // The caller only has to care about ONE error type!
+          if (err instanceof ReadError) {
+            // 1. User Notification (Friendly)
+            logs.innerHTML += `<span class="text-red-400 font-bold">[UI Alert]</span> ${err.message}\n\n`;
+
+            // 2. Developer Diagnostic (Digging into the root cause)
+            if (err.cause) {
+              logs.innerHTML += `<span class="text-yellow-400 font-bold">--- Developer Diagnostic Trace ---</span>\n`;
+              logs.innerHTML += `<span class="text-gray-400">Root Cause Type:</span> ${err.cause.name}\n`;
+              logs.innerHTML += `<span class="text-gray-400">Root Cause Details:</span> ${err.cause.message}\n`;
+            }
+          } else {
+            // If it's not a ReadError, it's an unhandled application crash.
+            logs.innerHTML += `<span class="text-red-600 font-bold">[FATAL] Unhandled Exception!</span>\n`;
+            throw err;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

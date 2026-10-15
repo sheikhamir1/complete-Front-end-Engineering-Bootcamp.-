@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GitHub Commit Fetcher</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        background-color: #24292e;
+        color: #c9d1d9;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #0d1117;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #30363d;
+      }
+      button {
+        background: #238636;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background: #2ea043;
+      }
+      #status {
+        margin-top: 15px;
+        font-style: italic;
+        color: #8b949e;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        padding: 15px 0;
+        border-bottom: 1px solid #21262d;
+      }
+      li strong {
+        color: #58a6ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Latest Commits (javascript-tutorial/en.javascript.info)</h1>
+      <button id="fetch-btn">Fetch Stream</button>
+      <div id="status"></div>
+      <ul id="commits-list"></ul>
+    </div>
+    <script>
+      // The Async Generator abstraction
+      async function* fetchCommits(repo) {
+        let url = `https://api.github.com/repos/${repo}/commits`;
+
+        while (url) {
+          console.log(`Fetching from: ${url}...`); // To prove pagination is happening
+          const response = await fetch(url);
+          //   console.log(response);
+
+          const body = await response.json();
+          console.log(body);
+
+          // GitHub's API places the next page URL in the "Link" header.
+          // We extract it using Regex.
+          let linkHeader = response.headers.get("Link");
+          console.log(linkHeader);
+
+          let nextPage =
+            linkHeader && linkHeader.match(/<(.*?)>; rel="next"/)?.[1];
+          console.log(nextPage);
+
+          url = nextPage; // Set url for the next iteration of the while loop
+
+          // Yield commits one by one
+          for (let commit of body) {
+            // console.log(commit);
+
+            yield commit;
+          }
+        }
+      }
+
+      // UI Interaction
+      const fetchBtn = document.getElementById("fetch-btn");
+      const commitsList = document.getElementById("commits-list");
+      const statusDiv = document.getElementById("status");
+
+      fetchBtn.addEventListener("click", async () => {
+        commitsList.innerHTML = "";
+        fetchBtn.disabled = true;
+
+        const repo = "javascript-tutorial/en.javascript.info";
+        let count = 0;
+
+        try {
+          // The consumer code is clean, simple, and semantic
+          for await (let commit of fetchCommits(repo)) {
+            count++;
+            statusDiv.textContent = `Processing commit #${count}...`;
+
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${commit.author.login || "Unknown"}</strong>: ${commit.commit.message}`;
+            commitsList.appendChild(li);
+
+            // Stop after 40 commits just for this demo
+            // (This will automatically stop fetching pages!)
+
+            if (count >= 70) {
+              break;
+            }
+          }
+          statusDiv.textContent = `Finished parsing ${count} commits.`;
+        } catch (error) {
+          statusDiv.textContent = "Error fetching stream!";
+        }
+      });
+    </script>
+  </body>
+</html>

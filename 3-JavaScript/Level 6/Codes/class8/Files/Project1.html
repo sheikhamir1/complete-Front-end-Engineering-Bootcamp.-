@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Promisification Basics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 350px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #output {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Legacy Code Adapter</h2>
+      <button id="runBtn">Run Promisified Function</button>
+      <p id="output">Waiting...</p>
+    </div>
+    <script>
+      const output = document.getElementById("output");
+
+      // 1. The Legacy Function (We pretend we can't change this code)
+      function legacyLoadData(dataName, callback) {
+        setTimeout(() => {
+          if (dataName === "SecretFile") {
+            // Error-first callback convention: (error, result)
+            callback(null, "Data loaded successfully: " + dataName);
+          } else {
+            callback(new Error("File not found"), null);
+          }
+        }, 1500);
+      }
+
+      // 2. The Promisified Wrapper (Our Adapter)
+      function loadDataPromise(dataName) {
+        return new Promise(function (resolve, reject) {
+          // We call the old function inside the Promise
+          legacyLoadData(dataName, function (error, result) {
+            console.log(error);
+            console.log(result);
+
+            if (error) {
+              reject(error); // Route callback error to Promise rejection
+            } else {
+              resolve(result); // Route callback success to Promise resolution
+            }
+          });
+        });
+      }
+
+      // 3. Usage using modern Promises
+      document.getElementById("runBtn").addEventListener("click", () => {
+        output.innerText = "Loading data...";
+        output.style.color = "black";
+
+        // Notice how clean this is compared to passing callbacks!
+        loadDataPromise("SecretFiles")
+          .then((result) => {
+            output.innerText = result;
+            output.style.color = "green";
+          })
+          .catch((error) => {
+            console.log(error);
+
+            output.innerText = `Failed: ${error.message}`;
+            output.style.color = "red";
+          });
+      });
+    </script>
+  </body>
+</html>

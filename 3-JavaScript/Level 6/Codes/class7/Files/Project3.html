@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Race vs Any</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+      }
+      button#failBtn {
+        background-color: #dc3545;
+      }
+      .output-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e9ecef;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Fastest Promise Wins</h2>
+      <p>
+        Task 1 (Fails in 1s) | Task 2 (Succeeds in 2s) | Task 3 (Succeeds in 3s)
+      </p>
+      <button id="raceBtn">Run Promise.race</button>
+      <button id="anyBtn">Run Promise.any</button>
+      <div id="output" class="output-box">Output will appear here.</div>
+    </div>
+    <script>
+      const output = document.getElementById("output");
+
+      function createTask(name, delay, isSuccess) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (isSuccess) resolve(`${name} SUCCESS`);
+            else reject(new Error(`${name} FAILED`));
+          }, delay);
+        });
+      }
+
+      function getTasks() {
+        return [
+          createTask("Task 1", 1000, false), // Fastest, but fails
+          createTask("Task 2", 5000, false), // Medium, succeeds
+          createTask("Task 3", 3000, false), // Slowest, succeeds
+          createTask("Task 4", 8000, false), // Slowest, succeeds
+        ];
+      }
+
+      // Promise.race
+      document.getElementById("raceBtn").addEventListener("click", () => {
+        output.innerText = "Racing...";
+
+        Promise.race(getTasks())
+          .then((result) => {
+            console.log(result);
+
+            output.innerText = `Race Won by: ${result}`;
+            output.style.color = "green";
+          })
+          .catch((error) => {
+            console.log(error);
+            output.innerText = `Race crashed because the fastest task failed: ${error.message}`;
+            output.style.color = "red";
+          });
+      });
+
+      // Promise.any
+      document.getElementById("anyBtn").addEventListener("click", () => {
+        output.innerText = "Finding first success (Any)...";
+
+        Promise.any(getTasks())
+          .then((result) => {
+            console.log(result);
+            output.innerText = `Any Found Success: ${result}\n(Ignored the failed Task 1!)`;
+            output.style.color = "green";
+          })
+          .catch((aggregateError) => {
+            console.log(aggregateError);
+            // This only happens if EVERY task fails
+            output.innerText = `All failed: ${aggregateError.errors.join(", ")}`;
+            output.style.color = "red";
+          });
+      });
+    </script>
+  </body>
+</html>

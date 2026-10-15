@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promises in JavaScript</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Promises in JavaScript</h1>
+          <p class="slide-subtitle">
+            The modern way to handle asynchronous results
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Concert Singer and Fans"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              A Promise is a special JavaScript object that links the "producing
+              code" (which takes time) with the "consuming code" (which wants
+              the result).
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy: The Singer & Fans 🎤</strong><br />
+            You’re a top singer. Fans ask day and night for your upcoming song.
+            To get relief, you <em>promise</em> to send it when published. You
+            give them a subscription list. When the song is ready, they all get
+            it. Even if the studio burns down and you can't publish, they still
+            get notified of the failure. The subscription list is the
+            <strong>Promise</strong>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The Promise Constructor -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Promise Constructor</h2>
+          <p class="slide-subtitle">Creating a new promise</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              We create a Promise using the
+              <code>new Promise</code> constructor, which takes a function
+              called the <strong>executor</strong>. The executor runs
+              automatically and contains the "producing code".
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Syntax</h4>
+            <pre><code>let promise = new Promise(function(resolve, reject) {
+  // Executor: The producing code (the "singer")
+});</code></pre>
+          </div>
+          <div class="text-section">
+            <h3>The Two Callbacks</h3>
+            <p>The executor receives two arguments provided by JavaScript:</p>
+            <ul class="list-section">
+              <li>
+                <strong>resolve(value):</strong> Call this when the job is
+                finished successfully. The <code>value</code> is the result.
+              </li>
+              <li>
+                <strong>reject(error):</strong> Call this if an error occurs.
+                The <code>error</code> is the error object.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <strong>Key Rule:</strong> The executor should call
+            <code>resolve</code> OR <code>reject</code>. Only one! A job can
+            only have one final result or one error. Any further calls are
+            ignored.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Promise States -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Promise States</h2>
+          <p class="slide-subtitle">From pending to settled</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              A Promise object has internal properties: <code>state</code> and
+              <code>result</code>. We can't access them directly, but they
+              dictate how the promise behaves.
+            </p>
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Result</th>
+                <th>When it happens</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>"pending"</strong></td>
+                <td>undefined</td>
+                <td>Initial state. The executor is still working.</td>
+              </tr>
+              <tr>
+                <td><strong>"fulfilled"</strong></td>
+                <td>value</td>
+                <td><code>resolve(value)</code> was called.</td>
+              </tr>
+              <tr>
+                <td><strong>"rejected"</strong></td>
+                <td>error</td>
+                <td><code>reject(error)</code> was called.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="info-card">
+            <h4>Success vs Failure</h4>
+            <pre><code>// Fulfilled Promise
+let promiseSuccess = new Promise(function(resolve, reject) {
+  setTimeout(() => resolve("done!"), 1000);
+});
+
+// Rejected Promise
+let promiseFail = new Promise(function(resolve, reject) {
+  setTimeout(() => reject(new Error("Whoops!")), 1000);
+});</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Settled:</strong> A promise that is either "fulfilled" or
+            "rejected" is called <strong>settled</strong>. Also, always reject
+            with <code>Error</code> objects, not raw strings!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Consumers: then & catch -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Consumers: then & catch</h2>
+          <p class="slide-subtitle">Subscribing to the result or error</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              State and result are internal. To actually use the outcome, we use
+              the methods <code>.then()</code> and <code>.catch()</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>.then() - The main handler</h4>
+            <pre><code>promise.then(
+  function(result) { /* handle success */ },
+  function(error) { /* handle error */ }
+);</code></pre>
+            <p>
+              The first argument runs if resolved; the second runs if rejected.
+              If you only care about success, just provide one argument.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>.catch() - Shorthand for errors</h4>
+            <pre><code>// These two lines do the exact same thing:
+promise.catch(alert); 
+promise.then(null, alert);</code></pre>
+            <p>
+              If you only care about errors, use <code>.catch()</code>. It's
+              cleaner than passing <code>null</code> to <code>.then()</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Cleanup: finally -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Cleanup: finally</h2>
+          <p class="slide-subtitle">Code that runs no matter what</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Just like <code>try...catch...finally</code>, promises have a
+              <code>.finally()</code> method. It runs when the promise is
+              settled, regardless of success or failure.
+            </p>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-broom"></i></div>
+            <div class="protocol-info">
+              <h4>Analogy: The Party Cleanup 🧹</h4>
+              <p>
+                Irrespective of whether the party was great (resolved) or a
+                disaster (rejected), you still have to clean up the house
+                afterward.
+              </p>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>How it works</h4>
+            <pre><code>new Promise((resolve, reject) => {
+  /* do time-consuming work */
+})
+  .finally(() => stopLoadingIndicator())
+  .then(result => showResult, err => showError);</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Important Differences:</strong><br />
+            1. A <code>finally</code> handler has NO arguments. It doesn't know
+            if it was a success or error.<br />
+            2. It "passes through" the result/error to the next handler.<br />
+            3. If it returns anything, it's ignored (unless it throws an error).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Late Subscriptions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Late Subscriptions</h2>
+          <p class="slide-subtitle">
+            Adding handlers to already settled promises
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if you add a <code>.then()</code> handler after the promise
+              has already resolved? It runs immediately!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Immediate Execution</h4>
+            <pre><code>// The promise resolves immediately
+let promise = new Promise(resolve => resolve("done!"));
+
+// This runs right now, even though it's "late"
+promise.then(alert); // done!</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Promises vs Real Life:</strong> In real life, if you
+            subscribe to a singer's list <em>after</em> the song is released,
+            you miss it. In JavaScript, Promises are more flexible! If you
+            subscribe (using <code>.then</code>) after the result is already
+            there, your handler just executes immediately. You never miss the
+            result.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Real-World Example: loadScript -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Real-World Example: loadScript</h2>
+          <p class="slide-subtitle">Converting callbacks to Promises</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Remember our callback-based <code>loadScript</code> function?
+              Let's rewrite it to return a Promise. Instead of taking a
+              callback, it resolves or rejects based on the script loading.
+            </p>
+          </div>
+          <div class="info-card">
+            <pre><code>function loadScript(src) {
+  return new Promise(function(resolve, reject) {
+    let script = document.createElement('script');
+    script.src = src;
+
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error(`Load error for ${src}`));
+
+    document.head.append(script);
+  });
+}
+
+// Usage is much cleaner!
+let promise = loadScript("my.js");
+promise.then(script => alert('Loaded!'));
+promise.catch(err => alert(err));</code></pre>
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Promises</th>
+                <th>Callbacks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Order</strong></td>
+                <td>
+                  Natural order: call function, <em>then</em> write what to do
+                  with result.
+                </td>
+                <td>Must pass callback <em>before</em> you know the result.</td>
+              </tr>
+              <tr>
+                <td><strong>Multiple Listeners</strong></td>
+                <td>
+                  Can call <code>.then()</code> multiple times on same promise.
+                </td>
+                <td>Only one callback allowed.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Promises in JavaScript Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

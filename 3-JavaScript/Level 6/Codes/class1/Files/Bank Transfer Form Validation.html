@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throw and Finally</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #e0f7fa;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+      }
+      input {
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 90%;
+        padding: 10px;
+        background: #00796b;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .hidden {
+        display: none;
+      }
+      #loading {
+        margin-top: 15px;
+        color: #00796b;
+        font-weight: bold;
+      }
+      #message {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+      .error {
+        color: #d32f2f;
+      }
+      .success {
+        color: #388e3c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bank Transfer</h1>
+      <p>Available Balance: $<span id="Basevalue">100</span></p>
+
+      <input type="number" id="amount" placeholder="Enter amount to transfer" />
+      <button id="transfer-btn">Transfer</button>
+
+      <div id="loading" class="hidden">🔄 Processing...</div>
+      <div id="message"></div>
+    </div>
+    <script>
+      const transferBtn = document.getElementById("transfer-btn");
+      const amountInput = document.getElementById("amount");
+      const loadingText = document.getElementById("loading");
+      const messageBox = document.getElementById("message");
+      const Basevalue = document.getElementById("Basevalue");
+
+      let availableBalance = 100;
+
+      transferBtn.addEventListener("click", () => {
+        // Reset UI
+        messageBox.textContent = "";
+        messageBox.className = "";
+        loadingText.classList.remove("hidden"); // Show loading spinner
+        transferBtn.disabled = true;
+
+        // Simulate network delay to see the loading spinner
+        setTimeout(() => {
+          try {
+            const requestedAmount = Number(amountInput.value);
+
+            // CUSTOM ERROR 1: Invalid input
+            if (!requestedAmount || requestedAmount <= 0) {
+              throw new Error("Please enter a valid amount greater than 0.");
+            }
+
+            // CUSTOM ERROR 2: Insufficient funds
+            if (requestedAmount > availableBalance) {
+              throw new Error("Insufficient funds. You only have $100.");
+            }
+
+            // If we make it past the throws, it's a success!
+            availableBalance = availableBalance - requestedAmount;
+            Basevalue.textContent = availableBalance;
+            // console.log(availableBalance);
+
+            messageBox.textContent = `Success! Transferred $${requestedAmount}.`;
+            messageBox.className = "success";
+          } catch (err) {
+            // We catch our custom thrown errors here
+            messageBox.textContent = `Failed: ${err.message}`;
+            messageBox.className = "error";
+          } finally {
+            // THIS ALWAYS RUNS. Perfect for hiding the loading spinner.
+            loadingText.classList.add("hidden");
+            transferBtn.disabled = false;
+          }
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Capstone: Secure Data Fetcher</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #222;
+        color: white;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .app-container {
+        background: #333;
+        padding: 40px;
+        border-radius: 12px;
+        width: 400px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      button:hover {
+        background: #2980b9;
+      }
+      button:disabled {
+        background: #7f8c8d;
+        cursor: not-allowed;
+      }
+      .hidden {
+        display: none;
+      }
+      #loader {
+        margin-top: 20px;
+        text-align: center;
+        color: #f1c40f;
+      }
+      #error-alert {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e74c3c;
+        border-radius: 6px;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+      li {
+        background: #444;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 6px;
+        border-left: 5px solid #2ecc71;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <h1>User Directory</h1>
+      <button id="fetch-btn">Fetch User Data</button>
+
+      <div id="loader" class="hidden">Loading data from server...</div>
+      <div id="error-alert" class="hidden"></div>
+
+      <ul id="user-list"></ul>
+    </div>
+    <script>
+      const fetchBtn = document.getElementById("fetch-btn");
+      const loader = document.getElementById("loader");
+      const errorAlert = document.getElementById("error-alert");
+      const userList = document.getElementById("user-list");
+
+      // Simulated backend database
+      const database = [
+        { id: 1, name: "Alice Johnson" },
+        { id: 2, name: "Bob Smith" },
+        { id: 3, name: "Charlie Brown" },
+        { id: 4, name: "Diana Prince" },
+        { id: 5, name: "Evan Wright" },
+        { id: 6, name: "Fiona Gallagher" },
+        { id: 7, name: "George Miller" },
+        { id: 8, name: "Hannah Abbott" },
+        { id: 9, name: "Ian Malcolm" },
+        { id: 10, name: "Julia Styles" },
+        { id: 11, name: "Kevin Hart" },
+        { id: 12, name: "Laura Palmer" },
+        { id: 13, name: "Michael Scott" },
+        { id: 14, name: "Nina Simone" },
+        { id: 15, name: "Oscar Isaac" },
+        { id: 16, name: "Penelope Cruz" },
+        { id: 17, name: "Quentin Vance" },
+        { id: 18, name: "Rachel Green" },
+        { id: 19, name: "Steve Rogers" },
+        { id: 20, name: "Tina Fey" },
+        { id: 21, name: "Uma Thurman" },
+        { id: 22, name: "Victor Hugo" },
+        { id: 23, name: "Wanda Maximoff" },
+        { id: 24, name: "Xavier Woods" },
+        { id: 25, name: "Yara Shahidi" },
+        { id: 26, name: "Zack Snyder" },
+        { id: 27, name: "Amelia Earhart" },
+        { id: 28, name: "Bruce Wayne" },
+        { id: 29, name: "Clark Kent" },
+        { id: 30, name: "Natasha Romanoff" },
+        { id: 31, name: "Peter Parker" },
+        { id: 32, name: "Tony Stark" },
+        { id: 33, name: "Ahmet Yılmaz" },
+        { id: 34, name: "Fatima Al-Fayed" },
+        { id: 35, name: "Mehmet Demir" },
+        { id: 36, name: "Omar Tariq" },
+        { id: 37, name: "Zeynep Kaya" },
+        { id: 38, name: "Aisha Rahman" },
+        { id: 39, name: "Mustafa Şahin" },
+        { id: 40, name: "Khalid Hassan" },
+        { id: 41, name: "Elif Çelik" },
+        { id: 42, name: "Mariam Youssef" },
+        { id: 43, name: "Burak Yıldız" },
+        { id: 44, name: "Youssef Zidan" },
+        { id: 45, name: "Fatma Erdoğan" },
+        { id: 46, name: "Leila Mahmoud" },
+        { id: 47, name: "Emre Arslan" },
+        { id: 48, name: "Ahmed Nader" },
+        { id: 49, name: "Merve Koç" },
+        { id: 50, name: "Noor El-Din" },
+        { id: 51, name: "Kaan Doğan" },
+        { id: 52, name: "Huda Jaber" },
+        { id: 53, name: "Esra Aydın" },
+        { id: 54, name: "Tariq Mansour" },
+        { id: 55, name: "Tolga Polat" },
+        { id: 56, name: "Salma Saeed" },
+        { id: 57, name: "Yasemin Özkan" },
+        { id: 58, name: "Sami Haddad" },
+        { id: 59, name: "Ozan Bulut" },
+        { id: 60, name: "Zainab Ali" },
+        { id: 61, name: "Deniz Kaplan" },
+        { id: 62, name: "Karim Ibrahim" },
+      ];
+
+      fetchBtn.addEventListener("click", () => {
+        // 1. Initial State Setup
+        errorAlert.classList.add("hidden");
+        userList.innerHTML = "";
+        loader.classList.remove("hidden");
+        fetchBtn.disabled = true;
+
+        // 2. Asynchronous Operation
+        setTimeout(() => {
+          // 3. Try...Catch placed INSIDE the async callback
+          try {
+            // Simulate a 30% chance the server randomly fails
+            const serverDidCrash = Math.random() < 0.3;
+
+            if (serverDidCrash) {
+              // 4. Throwing a custom error
+              throw new Error(
+                "500 Internal Server Error. The database is unreachable.",
+              );
+            }
+
+            // Simulate a parsing error (Runtime Error generated by JS engine)
+            const fakeServerResponse = undefined;
+            // The next line will throw a TypeError because we can't map over undefined
+            // UNCOMMENT the next line to test catching a system error instead of custom error:
+            // fakeServerResponse.map(user => user.name);
+
+            // If no errors, render the data
+            database.forEach((user) => {
+              const li = document.createElement("li");
+              li.textContent = user.name;
+              userList.appendChild(li);
+            });
+          } catch (err) {
+            // 5. Utilizing the Error Object
+            errorAlert.textContent = `Failed to load: ${err.message}`;
+            errorAlert.classList.remove("hidden");
+            console.error("Stack Trace:", err.stack); // For developer eyes only
+          } finally {
+            // 6. Guaranteed Cleanup
+            loader.classList.add("hidden");
+            fetchBtn.disabled = false;
+          }
+        }, 1500);
+      });
+    </script>
+  </body>
+</html>

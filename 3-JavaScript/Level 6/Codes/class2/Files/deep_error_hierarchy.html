@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep Error Hierarchy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-900 min-h-screen flex items-center justify-center p-4 font-sans text-gray-200"
+  >
+    <div
+      class="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full border border-gray-700"
+    >
+      <h2 class="text-2xl font-bold text-white mb-6 text-center">
+        Register Product
+      </h2>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-1"
+            >Product Name</label
+          >
+          <!-- Notice the IDs match the property names exactly -->
+          <input
+            type="text"
+            id="name"
+            placeholder="e.g., Quantum Laptop"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-1"
+            >Price (USD)</label
+          >
+          <input
+            type="number"
+            id="price"
+            placeholder="e.g., 999"
+            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          />
+        </div>
+
+        <button
+          id="btn-save"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg"
+        >
+          Save Product
+        </button>
+      </div>
+
+      <div
+        id="error-msg"
+        class="hidden mt-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded-lg text-sm font-medium"
+      ></div>
+      <div
+        id="success-msg"
+        class="hidden mt-4 p-3 bg-green-900/50 border border-green-500 text-green-200 rounded-lg text-sm font-medium"
+      >
+        Product saved successfully!
+      </div>
+    </div>
+
+    <script>
+      // 1. Base Validation Error
+      class ValidationError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "ValidationError";
+        }
+      }
+
+      // 2. Specific Subclass WITH PAYLOAD
+      class PropertyRequiredError extends ValidationError {
+        constructor(propertyName) {
+          super(`Missing required field: ${propertyName}`);
+          this.name = "PropertyRequiredError";
+          // THE PAYLOAD: Attaching specific metadata to the error
+          this.faultyProperty = propertyName;
+          //   console.log(this.faultyProperty);
+        }
+      }
+
+      const nameInput = document.getElementById("name");
+      const priceInput = document.getElementById("price");
+      const errorMsg = document.getElementById("error-msg");
+      const successMsg = document.getElementById("success-msg");
+
+      // Business Logic Function (Has no idea about the UI)
+      function saveProduct(data) {
+        if (!data.name) {
+          // Pass the EXACT ID of the failing property
+          throw new PropertyRequiredError("name");
+        }
+        if (!data.price) {
+          throw new PropertyRequiredError("price");
+        }
+        return true;
+      }
+
+      document.getElementById("btn-save").addEventListener("click", () => {
+        // Reset UI states before processing
+        nameInput.classList.remove("border-red-500", "bg-red-900/20");
+        priceInput.classList.remove("border-red-500", "bg-red-900/20");
+        errorMsg.classList.add("hidden");
+        successMsg.classList.add("hidden");
+
+        const payload = {
+          name: nameInput.value.trim(),
+          price: priceInput.value.trim(),
+        };
+
+        try {
+          // Attempt to execute business logic
+          saveProduct(payload);
+          successMsg.classList.remove("hidden");
+        } catch (err) {
+          // We catch the broad ValidationError (which includes PropertyRequiredError)
+          if (err instanceof ValidationError) {
+            // Display the message
+            errorMsg.textContent = err.message;
+            errorMsg.classList.remove("hidden");
+
+            // Read the Custom Payload!
+            if (err.faultyProperty) {
+              // Dynamically find the HTML element using the payload data
+              const badInput = document.getElementById(err.faultyProperty);
+              if (badInput) {
+                // Highlight it in red
+                badInput.classList.add("border-red-500", "bg-red-900/20");
+              }
+            }
+          } else {
+            // Rethrow unknown bugs (Mail Sorter pattern)
+            throw err;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

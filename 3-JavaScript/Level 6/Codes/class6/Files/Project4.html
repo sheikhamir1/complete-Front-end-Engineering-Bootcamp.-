@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Global Error Handler</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #output {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Global Fire Alarm</h2>
+      <button id="crashBtn">Trigger Unhandled Error</button>
+      <p id="output">Watch the console and alert box!</p>
+    </div>
+    <script>
+      // 1. Set up the global fire alarm FIRST
+      window.addEventListener("unhandledrejection", function (event) {
+        // Prevent the default browser console error (optional)
+        event.preventDefault();
+
+        // Alert the user (or send to your telemetry server)
+        // alert(`GLOBAL ALARM!\nReason: ${event.reason.message}`);
+        console.log(`GLOBAL ALARM!\nReason: ${event.reason.message}`);
+
+        document.getElementById("output").style.color = "red";
+        document.getElementById("output").innerText =
+          "An unexpected application error occurred.";
+      });
+
+      // 2. Trigger a bad promise
+      document.getElementById("crashBtn").addEventListener("click", () => {
+        document.getElementById("output").innerText = "Running risky code...";
+
+        new Promise((resolve, reject) => {
+          // Simulating a severe crash
+          throw new Error("System out of memory!");
+        });
+        // Notice: There is NO .catch() attached here!
+      });
+    </script>
+  </body>
+</html>

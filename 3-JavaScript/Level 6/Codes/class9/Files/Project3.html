@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Generator Composition</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+        background-color: #8e44ad;
+        color: white;
+      }
+      .container {
+        background: #34495e;
+        padding: 30px;
+        border-radius: 8px;
+        width: 350px;
+      }
+      button {
+        padding: 10px;
+        width: 100%;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background: #ecf0f1;
+        color: #2c3e50;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      #poolOutput {
+        background: white;
+        color: #8e44ad;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 18px;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Character Pool Generator</h2>
+      <button id="poolBtn">Generate Character Pool</button>
+      <p id="poolOutput"></p>
+    </div>
+    <script>
+      // 1. The Helper Generator (Generates ASCII codes based on a range)
+      function* generateSequence(start, end) {
+        for (let i = start; i <= end; i++) {
+          yield i;
+        }
+      }
+
+      // 2. The Master Generator (Composes sequences together)
+      function* generateCharacterPool() {
+        // Delegate to the helper for Numbers (ASCII 48 to 57 are '0' to '9')
+        yield* generateSequence(48, 57);
+
+        // Add a custom separator in the middle just to prove we are back in the parent!
+        yield 45; // ASCII 45 is a dash '-'
+
+        // Delegate to the helper for Letters (ASCII 65 to 90 are 'A' to 'Z')
+        yield* generateSequence(65, 90);
+      }
+
+      document.getElementById("poolBtn").addEventListener("click", () => {
+        let resultString = "";
+
+        // 3. Loop through the Master generator
+        for (let code of generateCharacterPool()) {
+          console.log(code);
+
+          // Convert ASCII numeric code to actual text character
+          resultString += String.fromCharCode(code);
+        }
+
+        document.getElementById("poolOutput").innerText = resultString;
+        // Expected Output: 0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      });
+    </script>
+  </body>
+</html>

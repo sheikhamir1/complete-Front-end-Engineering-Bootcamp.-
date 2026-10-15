@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promises Chaining</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Promises Chaining</h1>
+          <p class="slide-subtitle">Executing asynchronous tasks in sequence</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1513828583688-c52646db42da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Relay Race Baton Pass"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              We often need to execute a sequence of asynchronous tasks one
+              after another—like loading scripts one by one. Promises provide an
+              elegant way to do this called <strong>chaining</strong>.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy: The Relay Race 🏃‍♂️</strong><br />
+            In a relay race, Runner 1 finishes their leg and passes the baton
+            (result) to Runner 2. Runner 2 takes it, runs, and passes it to
+            Runner 3. In JavaScript, the baton is the <code>result</code>, and
+            the runners are <code>.then()</code> handlers.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The Basics of Chaining -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Basics of Chaining</h2>
+          <p class="slide-subtitle">Passing results down the line</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The whole concept works because every call to
+              <code>.then()</code> returns a <strong>new promise</strong>. When
+              a handler returns a value, that value becomes the result of that
+              new promise.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example: Doubling a number</h4>
+            <pre><code>new Promise(function(resolve, reject) {
+  setTimeout(() => resolve(1), 1000); // (*)
+
+}).then(function(result) { // (**)
+  alert(result); // 1
+  return result * 2;
+
+}).then(function(result) { // (***)
+  alert(result); // 2
+  return result * 2;
+
+}).then(function(result) {
+  alert(result); // 4
+  return result * 2;
+
+});</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>The Flow:</strong> The initial promise resolves with
+            <code>1</code>. The first <code>.then</code> catches it, returns
+            <code>2</code>. The second <code>.then</code> catches
+            <code>2</code>, returns <code>4</code>. The sequence of alerts is 1
+            → 2 → 4.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: The Classic Newbie Error -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Classic Newbie Error</h2>
+          <p class="slide-subtitle">Multiple handlers vs. Chaining</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Technically, you can add many <code>.then()</code> handlers to a
+              <em>single</em> promise. This is NOT chaining; they process the
+              result independently.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e74c3c">
+                <h4>Wrong: Adding to one promise</h4>
+                <pre><code>let promise = new Promise(
+  resolve => resolve(1)
+);
+
+promise.then(r => alert(r)); // 1
+promise.then(r => alert(r)); // 1
+promise.then(r => alert(r)); // 1</code></pre>
+                <p>
+                  All handlers get the <strong>same</strong> result (1). They
+                  don't pass data to each other.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #2ecc71">
+                <h4>Right: Chaining</h4>
+                <pre><code>let promise = new Promise(
+  resolve => resolve(1)
+);
+
+promise
+  .then(r => { alert(r); return r*2; })
+  .then(r => { alert(r); return r*2; })
+  .then(r => { alert(r); });</code></pre>
+                <p>
+                  Each handler passes its transformed result to the
+                  <strong>next</strong> handler.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Returning Promises -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Returning Promises</h2>
+          <p class="slide-subtitle">Making the chain wait for async work</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              A <code>.then()</code> handler doesn't just return values; it can
+              also return a <strong>new Promise</strong>. If it does, the rest
+              of the chain waits until that new promise settles.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Adding delays to the chain</h4>
+            <pre><code>new Promise(resolve => resolve(1))
+  .then(function(result) {
+    alert(result); // 1
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(result * 2), 1000);
+    });
+  })
+  .then(function(result) {
+    alert(result); // 2 (shows after 1 second delay!)
+    return result * 2;
+  });</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: The Drive-Thru 🚗</strong><br />
+            You order at the speaker (Promise 1 resolves). You drive to the
+            first window to pay (return Promise 2). The second window
+            <strong>waits</strong> until you pay before handing you the food.
+            Returning a promise makes the next step wait for your async task to
+            finish!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Real-World Example: loadScript -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Real-World Example: loadScript</h2>
+          <p class="slide-subtitle">
+            Loading scripts sequentially without the Pyramid of Doom
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Let's use our promisified <code>loadScript</code> to load scripts
+              one by one. Because <code>loadScript</code> returns a promise, we
+              can chain them.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Clean, flat code</h4>
+            <pre><code>loadScript("/article/promise-chaining/one.js")
+  .then(script => loadScript("/article/promise-chaining/two.js"))
+  .then(script => loadScript("/article/promise-chaining/three.js"))
+  .then(script => {
+    // Scripts are loaded sequentially!
+    one();
+    two();
+    three();
+  });</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Notice the shape:</strong> The code grows downwards, not to
+            the right. We have completely eliminated the "Pyramid of Doom" that
+            we had with callbacks, while ensuring each script waits for the
+            previous one to finish.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Thenables -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Thenables</h2>
+          <p class="slide-subtitle">Promise-compatible custom objects</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              To be precise, a handler can return an object that has a method
+              called <code>.then()</code>. This is called a
+              <strong>thenable</strong>. JavaScript treats it exactly like a
+              native Promise.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>A custom Thenable</h4>
+            <pre><code>class Thenable {
+  constructor(num) {
+    this.num = num;
+  }
+  then(resolve, reject) {
+    alert(resolve); // native resolve function
+    setTimeout(() => resolve(this.num * 2), 1000);
+  }
+}
+
+new Promise(resolve => resolve(1))
+  .then(result => {
+    return new Thenable(result); // returns a thenable
+  })
+  .then(alert); // shows 2 after 1000ms</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Why does this matter?</strong> It allows 3rd-party libraries
+            to create their own "promise-compatible" objects with extra
+            features, without having to inherit directly from the native
+            <code>Promise</code> class.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Bigger Example: Fetch -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Bigger Example: Fetch</h2>
+          <p class="slide-subtitle">Chaining network requests</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              In frontend programming, promises are heavily used for network
+              requests. The <code>fetch(url)</code> function returns a promise
+              that resolves with a <code>response</code> object.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Fetching data and a GitHub Avatar</h4>
+            <pre><code>fetch('/article/promise-chaining/user.json')
+  .then(response => response.json()) // Parse JSON
+  .then(user => fetch(`https://api.github.com/users/${user.name}`))
+  .then(response => response.json()) // Parse GitHub JSON
+  .then(githubUser => {
+    let img = document.createElement('img');
+    img.src = githubUser.avatar_url;
+    document.body.append(img);
+    setTimeout(() => img.remove(), 3000);
+  });</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: Looking up a friend 📖</strong><br />
+            1. Look up their name in your contacts (Fetch user.json).<br />
+            2. Use that name to find their social profile (Fetch GitHub API).<br />
+            3. Show their profile picture (Display avatar).<br />
+            Each step depends on the data from the previous step!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Making Chains Extendable -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Making Chains Extendable</h2>
+          <p class="slide-subtitle">
+            Always return a promise from async actions
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              In the previous example, what if we want to do something
+              <em>after</em> the avatar is removed? Currently, the chain ends at
+              the <code>setTimeout</code>. To make it extendable, return a new
+              Promise!
+            </p>
+          </div>
+          <div class="info-card">
+            <pre><code>.then(githubUser => new Promise(function(resolve, reject) {
+  let img = document.createElement('img');
+  img.src = githubUser.avatar_url;
+  document.body.append(img);
+
+  setTimeout(() => {
+    img.remove();
+    resolve(githubUser); // (*) Resolve only after removal!
+  }, 3000);
+}))
+// Now we can safely add more steps!
+.then(githubUser => alert(`Finished showing ${githubUser.name}`));</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Best Practice:</strong> An asynchronous action should
+            <strong>always</strong> return a promise. It makes it possible to
+            plan actions after it, even if you don't need to extend the chain
+            right now.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Refactoring into Reusable Functions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Refactoring into Reusable Functions</h2>
+          <p class="slide-subtitle">Cleaning up long promise chains</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Long chains can get messy. We can split them into small,
+              single-purpose functions that return promises. This makes the code
+              highly readable and reusable.
+            </p>
+          </div>
+          <div class="info-card">
+            <pre><code>// 1. Reusable fetch function
+function loadJson(url) {
+  return fetch(url).then(response => response.json());
+}
+
+// 2. Reusable GitHub fetcher
+function loadGithubUser(name) {
+  return loadJson(`https://api.github.com/users/${name}`);
+}
+
+// 3. Reusable avatar shower
+function showAvatar(githubUser) {
+  return new Promise(resolve => {
+    // show img logic...
+    setTimeout(() => {
+      // remove img logic...
+      resolve(githubUser);
+    }, 3000);
+  });
+}
+
+// The chain is now incredibly clean!
+loadJson('/user.json')
+  .then(user => loadGithubUser(user.name))
+  .then(showAvatar)
+  .then(githubUser => alert(`Finished showing ${githubUser.name}`));</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Promises Chaining Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

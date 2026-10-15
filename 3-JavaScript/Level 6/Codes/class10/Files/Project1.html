@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Regular Iterable Example</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      #output {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Synchronous Iterable Range</h1>
+      <button id="start-btn">Run Iterable</button>
+      <div id="output"></div>
+    </div>
+    <script>
+      // The Custom Iterable Object
+      let range = {
+        from: 1,
+        to: 15,
+
+        [Symbol.iterator]() {
+          return {
+            current: this.from,
+            last: this.to,
+
+            next() {
+              if (this.current <= this.last) {
+                return { done: false, value: this.current++ };
+              } else {
+                return { done: true };
+              }
+            },
+          };
+        },
+      };
+
+      // DOM Elements
+      const startBtn = document.getElementById("start-btn");
+      const outputDiv = document.getElementById("output");
+
+      startBtn.addEventListener("click", () => {
+        outputDiv.innerHTML = "";
+
+        for (let value of range) {
+          // This happens instantly because it is synchronous
+          outputDiv.innerHTML += ` ${value} `;
+        }
+      });
+    </script>
+  </body>
+</html>

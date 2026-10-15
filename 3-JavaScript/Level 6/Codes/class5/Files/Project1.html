@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise Chaining Basics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Check your browser Console!</h1>
+    <script>
+      // Step 1: Create an initial promise that resolves with the number 1
+      let initialPromise = new Promise(function (resolve, reject) {
+        setTimeout(() => {
+          resolve(1);
+        }, 1000);
+      });
+      console.log(initialPromise);
+
+      // Step 2: Chain the handlers
+      initialPromise
+        .then(function (result) {
+          console.log(result);
+          return result * 2;
+        })
+        .then(function (result) {
+          console.log(result);
+          return result * 2;
+        })
+        .then(function (result) {
+          console.log(result);
+          console.log(result * 2);
+          return result * 2;
+        });
+    </script>
+  </body>
+</html>

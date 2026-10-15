@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Returning Promises</title>
+  </head>
+  <body>
+    <h1>Check the console for sequential delays!</h1>
+    <script>
+      new Promise(function (resolve, reject) {
+        setTimeout(() => resolve(1), 1000);
+      })
+        .then(function (result) {
+          console.log(`Step 1: ${result}`);
+
+          // We return a NEW promise to make the chain wait
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve(result * 2);
+            }, 1000);
+          });
+        })
+        .then(function (result) {
+          console.log(`Step 2: ${result} (Appeared 1 second later!)`);
+
+          // We return a Thenable object to prove JS accepts them
+          return {
+            num: result,
+            then: function (resolve, reject) {
+              setTimeout(() => {
+                resolve(this.num * 2);
+              }, 1000);
+            },
+          };
+        })
+        .then(function (result) {
+          console.log(`Step 3: ${result} (Appeared another second later!)`);
+        });
+      // -----------------------------------------
+      //   const obj = {
+      //     then(resolve, reject) {
+      //       resolve("Hello");
+      //     },
+      //   };
+
+      //   obj.then(
+      //     (resolve) => console.log(resolve),
+      //     (reject) => console.log(reject),
+      //   );
+    </script>
+  </body>
+</html>

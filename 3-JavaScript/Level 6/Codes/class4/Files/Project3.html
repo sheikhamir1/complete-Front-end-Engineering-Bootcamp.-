@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promisifying loadScript</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #f0f4f8;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #8b5cf6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #status {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Dynamic Script Loader</h2>
+      <button id="loadBtn">Load Lodash Library</button>
+      <p id="status">Lodash is not loaded.</p>
+    </div>
+    <script>
+      const loadBtn = document.getElementById("loadBtn");
+      const statusText = document.getElementById("status");
+
+      // The Promisified Function
+      function loadScript(src) {
+        // We immediately return a new promise to the caller
+        return new Promise((resolve, reject) => {
+          let script = document.createElement("script");
+          script.src = src;
+
+          // Legacy callback event: onload
+          script.onload = () => {
+            resolve(script); // Task successful!
+          };
+
+          // Legacy callback event: onerror
+          script.onerror = () => {
+            reject(new Error(`Failed to load script: ${src}`)); // Task failed!
+          };
+
+          document.head.append(script);
+        });
+      }
+
+      loadBtn.addEventListener("click", () => {
+        statusText.innerText = "Downloading...";
+
+        // Now we can consume loadScript using modern Promise syntax!
+        loadScript(
+          "https://cdnjs.cloudflare.com/ajax/lib/lodash.js/4.17.21/lodash.min.js",
+        )
+          .then((scriptTag) => {
+            // Because we resolved with the script element, we have access to it here
+            statusText.innerText = `Success! Lodash loaded from: ${scriptTag.src}`;
+            statusText.style.color = "green";
+            console.log("Lodash version:", _.VERSION); // We can now use the library
+          })
+          .catch((error) => {
+            console.log(error);
+
+            statusText.innerText = error.message;
+            statusText.style.color = "red";
+          })
+          .finally((cleanUp) => {
+            console.log("This is CleanUp...");
+          });
+      });
+    </script>
+  </body>
+</html>

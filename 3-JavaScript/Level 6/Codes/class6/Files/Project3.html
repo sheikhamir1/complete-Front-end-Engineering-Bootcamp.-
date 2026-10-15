@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rethrowing Errors</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+      }
+      button {
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #output {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+      }
+      li {
+        background: #e9ecef;
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Triage Nurse Simulator</h2>
+      <button id="recoverBtn">Simulate Recoverable Error</button>
+      <button id="fatalBtn">Simulate Fatal Error</button>
+      <ul id="logList"></ul>
+    </div>
+    <script>
+      const logList = document.getElementById("logList");
+
+      function logAction(message, color = "black") {
+        const li = document.createElement("li");
+        li.style.color = color;
+        li.innerText = message;
+        logList.appendChild(li);
+      }
+
+      function processTask(isFatal) {
+        logList.innerHTML = ""; // Clear list
+
+        new Promise((resolve, reject) => {
+          logAction("Starting task...");
+          if (isFatal) {
+            throw new Error("Database completely down!");
+          } else {
+            throw new URIError("Image URL is malformed.");
+          }
+        })
+          .catch((error) => {
+            console.log(error);
+
+            if (error instanceof URIError) {
+              logAction(
+                "Nurse: Minor URI error caught. Applying fallback image.",
+                "green",
+              );
+              return "fallback_image.png"; // We recovered! Chain resumes.
+            } else {
+              logAction(
+                "Nurse: Fatal error! I can't handle this. Rethrowing!",
+                "orange",
+              );
+              throw error; // We can't handle it. Pass it down!
+            }
+          })
+          .then((result) => {
+            console.log(result);
+
+            // This only runs if there was NO error, OR if the previous catch recovered it!
+            logAction(`Next Step: Rendering UI with data: ${result}`);
+          })
+          .catch((error) => {
+            console.log(error);
+
+            // The Specialist Surgeon
+            logAction(
+              `Specialist: Caught unhandled error - ${error.message}`,
+              "red",
+            );
+          });
+      }
+
+      document
+        .getElementById("recoverBtn")
+        .addEventListener("click", () => processTask(false));
+      document
+        .getElementById("fatalBtn")
+        .addEventListener("click", () => processTask(true));
+    </script>
+  </body>
+</html>

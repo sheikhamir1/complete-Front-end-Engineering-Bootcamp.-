@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pyramid of Doom</title>
+    <style>
+      /* Previous container styles + box styles */
+      body {
+        font-family: Arial;
+        padding: 50px;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      button {
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #2ed573;
+        color: white;
+        border: none;
+      }
+      #box {
+        width: 150px;
+        height: 150px;
+        background-color: gray;
+        margin: 30px auto;
+        transition: background-color 0.5s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Callback Hell</h1>
+      <button id="animateBtn">Start Animation Sequence</button>
+      <div id="box"></div>
+    </div>
+    <script>
+      const animateBtn = document.getElementById("animateBtn");
+      const box = document.getElementById("box");
+
+      function changeColor(color, delay, callback) {
+        console.log(color, delay, callback);
+
+        setTimeout(() => {
+          box.style.backgroundColor = color;
+          if (callback) callback();
+        }, delay);
+      }
+
+      // THE FLAWED FIX: Flattening via named functions
+      animateBtn.addEventListener("click", startSequence);
+
+      function startSequence() {
+        changeColor("red", 1000, stepTwo);
+      }
+
+      function stepTwo() {
+        changeColor("blue", 1000, stepThree);
+      }
+
+      function stepThree() {
+        changeColor("green", 1000, stepFour);
+      }
+
+      function stepFour() {
+        changeColor("purple", 1000, finishSequence);
+      }
+
+      function finishSequence() {
+        console.log("Animation sequence finished!");
+      }
+    </script>
+  </body>
+</html>

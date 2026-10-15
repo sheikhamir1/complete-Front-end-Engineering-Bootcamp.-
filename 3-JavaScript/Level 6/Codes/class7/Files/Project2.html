@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Promise.allSettled Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+      }
+      button#failBtn {
+        background-color: #dc3545;
+      }
+      .output-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e9ecef;
+        border-radius: 4px;
+        white-space: pre-wrap;
+        text-align: left;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: left;
+      }
+      li {
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+      }
+      .online {
+        background-color: #28a745;
+      }
+      .offline {
+        background-color: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Server Health Checker</h2>
+      <button id="checkBtn">Ping Servers</button>
+      <ul id="serverList"></ul>
+    </div>
+    <script>
+      const serverList = document.getElementById("serverList");
+
+      function pingServer(serverName, delay, isOnline) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (isOnline) resolve(`${serverName} is UP and running.`);
+            else reject(new Error(`${serverName} is DOWN.`));
+          }, delay);
+        });
+      }
+
+      document.getElementById("checkBtn").addEventListener("click", () => {
+        serverList.innerHTML =
+          "<li style='color:black;'>Pinging all servers...</li>";
+
+        // Array of promises
+        const pings = [
+          pingServer("Database Server", 1000, true),
+          pingServer("Auth Server", 500, false), // Fails fast
+          pingServer("Image Server", 2000, true),
+          pingServer("audio Server", 1000, true),
+          pingServer("Video Server", 1000, false),
+        ];
+
+        // Wait for all to settle
+        Promise.allSettled(pings).then((results) => {
+          console.log(results);
+
+          serverList.innerHTML = ""; // Clear loading text
+
+          results.forEach((result) => {
+            const li = document.createElement("li");
+
+            if (result.status === "fulfilled") {
+              li.className = "online";
+              li.innerText = `✅ Success: ${result.value}`;
+            } else if (result.status === "rejected") {
+              li.className = "offline";
+              li.innerText = `❌ Error: ${result.reason.message}`;
+            }
+
+            serverList.appendChild(li);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

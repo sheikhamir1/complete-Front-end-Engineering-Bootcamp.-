@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Unhandled Rejection Timing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 350px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #output {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        padding: 8px;
+        background: #e9ecef;
+        margin: 5px 0;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>The Late Janitor</h2>
+      <button id="runBtn">Simulate Late Catch</button>
+      <ul id="logList"></ul>
+    </div>
+    <script>
+      const logList = document.getElementById("logList");
+      function addLog(message, color = "black") {
+        const li = document.createElement("li");
+        li.innerText = message;
+        li.style.color = color;
+        logList.appendChild(li);
+      }
+
+      // 1. Set up the global fire alarm
+      window.addEventListener("unhandledrejection", (event) => {
+        // Prevent the red console error
+        event.preventDefault();
+        addLog(
+          `🚨 ALARM FIRED: Unhandled Error -> ${event.reason.message}`,
+          "red",
+        );
+      });
+
+      document.getElementById("runBtn").addEventListener("click", () => {
+        logList.innerHTML = "";
+        addLog("Creating a rejected promise...", "black");
+
+        // 2. A promise that fails instantly
+        let badPromise = Promise.reject(new Error("Network Failure!"));
+        // .catch(
+        //   (err) => {
+        //     addLog(`🧹 TESING: ${err.message}`, "blue");
+        //   },
+        // );
+
+        // 3. The Late Catch (Macrotask)
+        // We attach the .catch(), but we put it inside a setTimeout.
+        setTimeout(() => {
+          badPromise.catch((err) => {
+            addLog(
+              `🧹 Janitor arrived 5 second late. Caught: ${err.message}`,
+              "blue",
+            );
+          });
+          console.log("hii");
+        }, 5000);
+
+        // JS flow:
+        // - badPromise fails.
+        // - Sync code finishes.
+        // - Microtask queue is empty. Engine sees badPromise has no catch yet.
+        // - Engine fires 'unhandledrejection'.
+        // - 5 second later, Macrotask runs, attaching the catch.
+      });
+    </script>
+  </body>
+</html>

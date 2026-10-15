@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Async Generator Example</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        background-color: #fdfbfb;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        width: 300px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #8e44ad;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+      li {
+        background: #ecf0f1;
+        margin-bottom: 5px;
+        padding: 10px;
+        border-radius: 4px;
+        animation: fadein 0.5s ease-in-out;
+      }
+      @keyframes fadein {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Async Generator Sequence</h1>
+      <button id="start-btn">Generate Sequence</button>
+      <ul id="output-list"></ul>
+    </div>
+    <script>
+      let range = {
+        from: 1,
+        to: 15,
+
+        // Combining async and generator syntax
+        async *[Symbol.asyncIterator]() {
+          for (let value = this.from; value <= this.to; value++) {
+            // We can use await inside!
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            // We can use yield inside!
+            yield value;
+          }
+        },
+      };
+
+      const startBtn = document.getElementById("start-btn");
+      const outputList = document.getElementById("output-list");
+
+      startBtn.addEventListener("click", async () => {
+        outputList.innerHTML = "";
+        startBtn.disabled = true;
+
+        for await (let value of range) {
+          const li = document.createElement("li");
+          li.textContent = `Generated Item: ${value}`;
+          outputList.appendChild(li);
+        }
+
+        startBtn.disabled = false;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise Coin Flip</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #f0f4f8;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #2563eb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>The Coin Flip Promise</h2>
+      <button id="flipBtn">Flip Coin</button>
+      <p id="status">Waiting for your command...</p>
+    </div>
+    <script>
+      const flipBtn = document.getElementById("flipBtn");
+      const statusText = document.getElementById("status");
+
+      flipBtn.addEventListener("click", () => {
+        statusText.innerText = "Flipping the coin (Promise is Pending)...";
+
+        // 1. We create a new Promise
+        const coinFlipPromise = new Promise((resolve, reject) => {
+          // 2. We simulate a task that takes time using setTimeout
+          setTimeout(() => {
+            const isHeads = Math.random() > 0.5;
+
+            if (isHeads) {
+              // 3. Success! We transition state to "fulfilled"
+              resolve("It's Heads! You win!");
+            } else {
+              // 4. Failure! We transition state to "rejected"
+              reject(new Error("It's Tails! You lose."));
+            }
+          }, 1000);
+        });
+
+        // We log the promise object to the console to see its state
+        console.log("coinFlipPromise", coinFlipPromise);
+      });
+    </script>
+  </body>
+</html>

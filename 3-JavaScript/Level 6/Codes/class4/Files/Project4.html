@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise Capstone</title>
+    <style>
+      body {
+        font-family: system-ui;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        background-color: #1e293b;
+        color: white;
+      }
+      .card {
+        background: #334155;
+        padding: 30px;
+        border-radius: 10px;
+        width: 300px;
+        text-align: center;
+      }
+      button {
+        padding: 10px;
+        width: 100%;
+        background: #10b981;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:disabled {
+        background: #6ee7b7;
+        cursor: not-allowed;
+      }
+      .hidden {
+        display: none !important;
+      }
+      #loader {
+        margin-top: 20px;
+        font-style: italic;
+        color: #cbd5e1;
+      }
+      #errorMsg {
+        background: #ef4444;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+      #dataContainer {
+        background: #475569;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 20px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="dashboard">
+      <h2>Data Dashboard</h2>
+      <button id="fetchBtn">Fetch Secure Data</button>
+      <p id="errorMsg" class="hidden"></p>
+      <div id="loader" class="hidden">Connecting to server...</div>
+
+      <div id="dataContainer" class="hidden">
+        <h3 id="dataTitle"></h3>
+        <p id="dataDesc"></p>
+      </div>
+    </div>
+    <script>
+      const fetchBtn = document.getElementById("fetchBtn");
+      const loader = document.getElementById("loader");
+      const errorMsg = document.getElementById("errorMsg");
+      const dataContainer = document.getElementById("dataContainer");
+      const dataTitle = document.getElementById("dataTitle");
+      const dataDesc = document.getElementById("dataDesc");
+
+      // Promisified fake API
+      function fetchFakeData() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const networkSuccess = Math.random() > 0.3; // 70% chance of success
+
+            if (networkSuccess) {
+              resolve({
+                title: "System Nominal",
+                description: "All servers are running at optimal capacity.",
+              });
+            } else {
+              reject(new Error("Network Error: 500 Internal Server Error"));
+            }
+          }, 2000);
+        });
+      }
+
+      fetchBtn.addEventListener("click", () => {
+        // 1. UI Reset & Loading State
+        fetchBtn.disabled = true;
+        loader.classList.remove("hidden");
+        errorMsg.classList.add("hidden");
+        dataContainer.classList.add("hidden");
+
+        // 2. Execute & Consume Promise
+        fetchFakeData()
+          .then((data) => {
+            // Handle Success
+            dataTitle.innerText = data.title;
+            dataDesc.innerText = data.description;
+            dataContainer.classList.remove("hidden");
+          })
+          .catch((error) => {
+            // Handle Failure
+            errorMsg.innerText = error.message;
+            errorMsg.classList.remove("hidden");
+          })
+          .finally(() => {
+            // Cleanup UI
+            fetchBtn.disabled = false;
+            loader.classList.add("hidden");
+          });
+      });
+    </script>
+  </body>
+</html>

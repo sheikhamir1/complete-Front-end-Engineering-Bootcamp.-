@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async Iteration and Generators</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      pre {
+        background-color: #e8f0fe;
+        padding: 12px;
+        border-radius: 5px;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        margin: 10px 0;
+      }
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Async Iteration & Generators</h1>
+          <p class="slide-subtitle">
+            Handling data streams that arrive over time
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Data streaming over network"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Asynchronous iteration allows us to iterate over data that comes
+              asynchronously, on-demand. For example, downloading data
+              chunk-by-chunk over a network. Async generators make this
+              incredibly convenient.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy: Streaming a Movie 🎬</strong><br />
+            A regular iterator is like a downloaded movie file: all the data is
+            there, you just go through it. An async iterator is like Netflix
+            streaming: you only get the next chunk of data (the next second of
+            video) when the network delivers it. You must <em>await</em> the
+            next piece.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Recall: Regular Iterables -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Recall: Regular Iterables</h2>
+          <p class="slide-subtitle">How we loop through synchronous data</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              To make an object iterable using <code>for..of</code>, we add a
+              method named <code>Symbol.iterator</code> that returns an object
+              with a <code>next()</code> method.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Standard Iterable Range</h4>
+            <pre><code>let range = {
+  from: 1,
+  to: 5,
+
+  [Symbol.iterator]() {
+    return {
+      current: this.from,
+      last: this.to,
+      next() {
+        if (this.current <= this.last) {
+          return { done: false, value: this.current++ };
+        } else {
+          return { done: true };
+        }
+      }
+    };
+  }
+};
+
+for(let value of range) {
+  alert(value); // 1, 2, 3, 4, 5 instantly
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>The Limitation:</strong> The <code>next()</code> method must
+            return the value <em>immediately</em>. If the value takes time to
+            generate (like a network request), regular iterables can't pause and
+            wait.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Async Iterables -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Async Iterables</h2>
+          <p class="slide-subtitle">
+            Looping through data that arrives asynchronously
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              To make an object asynchronously iterable, we use
+              <code>Symbol.asyncIterator</code>, make <code>next()</code> an
+              async function, and loop using <code>for await..of</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Async Iterable Range (1 value per second)</h4>
+            <pre><code>let range = {
+  from: 1,
+  to: 5,
+
+  [Symbol.asyncIterator]() { // (1)
+    return {
+      current: this.from,
+      last: this.to,
+
+      async next() { // (2)
+        await new Promise(resolve => setTimeout(resolve, 1000)); // (3)
+
+        if (this.current <= this.last) {
+          return { done: false, value: this.current++ };
+        } else {
+          return { done: true };
+        }
+      }
+    };
+  }
+};
+
+(async () => {
+  for await (let value of range) { // (4)
+    alert(value); // 1, 2, 3, 4, 5 (with 1s delay)
+  }
+})();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Sync vs. Async Iterables -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Sync vs. Async Iterables</h2>
+          <p class="slide-subtitle">Understanding the key differences</p>
+        </div>
+        <div class="slide-content">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Regular Iterable</th>
+                <th>Async Iterable</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Object Method</td>
+                <td><code>Symbol.iterator</code></td>
+                <td><code>Symbol.asyncIterator</code></td>
+              </tr>
+              <tr>
+                <td><code>next()</code> returns...</td>
+                <td><code>{value, done}</code> immediately</td>
+                <td>
+                  A <code>Promise</code> that resolves to
+                  <code>{value, done}</code>
+                </td>
+              </tr>
+              <tr>
+                <td>Loop Syntax</td>
+                <td><code>for (let x of iterable)</code></td>
+                <td><code>for await (let x of iterable)</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="protocol-card">
+            <div class="protocol-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="protocol-info">
+              <h4>Spread syntax doesn't work!</h4>
+              <p>
+                Features that require synchronous iterators (like
+                <code>[...range]</code>) don't work with async iterables. They
+                look for <code>Symbol.iterator</code>, not
+                <code>Symbol.asyncIterator</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Recall: Regular Generators -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Recall: Regular Generators</h2>
+          <p class="slide-subtitle">The shortcut for making iterables</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Instead of writing a complex <code>Symbol.iterator</code> method
+              manually, we can use a generator function
+              <code>function*</code> to make objects iterable much more cleanly.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Using a Generator for Iteration</h4>
+            <pre><code>let range = {
+  from: 1,
+  to: 5,
+
+  *[Symbol.iterator]() {
+    for(let value = this.from; value <= this.to; value++) {
+      yield value;
+    }
+  }
+};
+
+for(let value of range) {
+  alert(value); // 1, 2, 3, 4, 5
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>The Problem:</strong> In regular generators, we can't use
+            <code>await</code>. All values must come synchronously. What if we
+            need to <code>await</code> a network request inside the generator?
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Async Generators -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Async Generators</h2>
+          <p class="slide-subtitle">
+            Combining generators with asynchronous code
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              For practical applications, when we want an object that generates
+              values asynchronously, we use an <strong>async generator</strong>.
+              Just prepend <code>function*</code> with <code>async</code>!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Syntax: async function*</h4>
+            <pre><code>async function* generateSequence(start, end) {
+  for (let i = start; i <= end; i++) {
+    // We can use await inside!
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    yield i;
+  }
+}
+
+(async () => {
+  let generator = generateSequence(1, 5);
+  for await (let value of generator) {
+    alert(value); // 1, 2, 3, 4, 5 (1 second apart)
+  }
+})();</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>How it works:</strong> In an async generator,
+            <code>generator.next()</code> is asynchronous—it returns a Promise.
+            That's why it works perfectly with <code>for await...of</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Async Iterable Range (Simplified) -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Async Iterable Range (Simplified)</h2>
+          <p class="slide-subtitle">
+            Using async generators as Symbol.asyncIterator
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Just like regular generators can be used as
+              <code>Symbol.iterator</code>, async generators can be used as
+              <code>Symbol.asyncIterator</code> to make objects asynchronously
+              iterable.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Clean, modern implementation</h4>
+            <pre><code>let range = {
+  from: 1,
+  to: 5,
+
+  async *[Symbol.asyncIterator]() {
+    for(let value = this.from; value <= this.to; value++) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      yield value;
+    }
+  }
+};
+
+(async () => {
+  for await (let value of range) {
+    alert(value); // 1, 2, 3, 4, 5 (with pauses)
+  }
+})();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Real-Life Example: Paginated Data -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Real-Life Example: Paginated Data</h2>
+          <p class="slide-subtitle">
+            Fetching commits from GitHub page-by-page
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Many APIs return data in "pages". GitHub gives 30 commits per
+              request, plus a URL for the next page. Async generators make this
+              seamless!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Async Generator</h4>
+            <pre><code>async function* fetchCommits(repo) {
+  let url = `https://api.github.com/repos/${repo}/commits`;
+
+  while (url) {
+    const response = await fetch(url);
+    const body = await response.json();
+
+    // Get next page URL from the Link header
+    let nextPage = response.headers.get('Link')
+      .match(/<(.*?)>; rel="next"/)?.[1];
+    
+    url = nextPage;
+
+    // Yield commits one by one
+    for(let commit of body) {
+      yield commit;
+    }
+  }
+}</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy: Reading an Encyclopedia 📚</strong><br />
+            Instead of carrying 10 heavy volumes home at once, you use an async
+            generator. You ask for Volume 1 (network request). When it arrives,
+            you read it (<code>yield</code> the pages). Then you ask for Volume
+            2, and so on. The pagination is invisible to the user!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">Key differences to remember</p>
+        </div>
+        <div class="slide-content">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Synchronous</th>
+                <th>Asynchronous</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Iterator Method</td>
+                <td><code>Symbol.iterator</code></td>
+                <td><code>Symbol.asyncIterator</code></td>
+              </tr>
+              <tr>
+                <td>Generator Declaration</td>
+                <td><code>function*</code></td>
+                <td><code>async function*</code></td>
+              </tr>
+              <tr>
+                <td><code>next()</code> returns</td>
+                <td><code>{value, done}</code></td>
+                <td>Promise resolving to <code>{value, done}</code></td>
+              </tr>
+              <tr>
+                <td>Loop Syntax</td>
+                <td><code>for (let x of obj)</code></td>
+                <td><code>for await (let x of obj)</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="highlight-box">
+            <strong>When to use:</strong> Use regular iterators/generators for
+            data that's instantly available. Use async iterators/generators when
+            data arrives with delays (network requests, file streams, database
+            pagination).
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Async Iteration and Generators Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

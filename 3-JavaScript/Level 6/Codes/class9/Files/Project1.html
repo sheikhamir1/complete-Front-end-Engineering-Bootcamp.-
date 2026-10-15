@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Generator Ticket Dispenser</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+        background-color: #f0f0f0;
+      }
+      .machine {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 300px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #dc143c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #ticketDisplay {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 20px;
+        border: 2px dashed #333;
+        background: #fffacd;
+      }
+      #status {
+        color: gray;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="machine">
+      <h2>Deli Ticket Dispenser</h2>
+      <button id="dispenseBtn">Get Ticket</button>
+      <div id="ticketDisplay">Press button to start</div>
+      <p id="status"></p>
+    </div>
+    <script>
+      // 1. Define the Generator Function
+      function* ticketGenerator() {
+        yield "Ticket #1";
+        yield "Ticket #2";
+        yield "Ticket #3";
+        return "Out of paper!";
+      }
+
+      // 2. Initialize the Generator Object (Remote Control)
+      // Code inside the function does NOT run yet.
+      const dispenser = ticketGenerator();
+
+      // 3. DOM Elements
+      const btn = document.getElementById("dispenseBtn");
+      const display = document.getElementById("ticketDisplay");
+      const statusText = document.getElementById("status");
+
+      // 4. Handle Clicks
+      btn.addEventListener("click", () => {
+        // 5. Call next() to run the generator until the next yield
+        const result = dispenser.next();
+
+        // result is an object: { value: "...", done: false/true }
+        display.innerText = result.value;
+
+        if (result.done) {
+          statusText.innerText = "Status: Finished (done: true)";
+          btn.disabled = true; // Turn off button
+          btn.style.backgroundColor = "gray";
+        } else {
+          statusText.innerText = "Status: Paused (done: false)";
+        }
+      });
+    </script>
+  </body>
+</html>

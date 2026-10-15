@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pyramid of Doom</title>
+    <style>
+      /* Previous container styles + box styles */
+      body {
+        font-family: Arial;
+        padding: 50px;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      button {
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #2ed573;
+        color: white;
+        border: none;
+      }
+      #box {
+        width: 150px;
+        height: 150px;
+        background-color: gray;
+        margin: 30px auto;
+        transition: background-color 0.5s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Callback Hell</h1>
+      <button id="animateBtn">Start Animation Sequence</button>
+      <div id="box"></div>
+    </div>
+    <!-- <script>
+      const animateBtn = document.getElementById("animateBtn");
+      const box = document.getElementById("box");
+
+      // A function that changes color after a delay, then fires a callback
+      function changeColor(color, delay, callback) {
+        console.log("color", color);
+        console.log("delay", delay);
+
+        setTimeout(() => {
+          box.style.backgroundColor = color;
+          // In a real app, we'd pass (error, data), but we'll keep it simple here
+          console.log("callback 2", callback);
+          callback();
+        }, delay);
+      }
+
+      animateBtn.addEventListener("click", () => {
+        // Welcome to the Pyramid of Doom!
+        changeColor("red", 1000, () => {
+          changeColor("blue", 1000, () => {
+            changeColor("green", 1000, () => {
+              changeColor("purple", 1000, () => {
+                changeColor("orange", 1000, () => {
+                  console.log("Animation sequence finished!");
+                });
+              });
+            });
+          });
+        });
+      });
+    </script> -->
+
+    <script>
+      const animateBtn = document.getElementById("animateBtn");
+      const box = document.getElementById("box");
+
+      /**
+       * Classic Error-First Callback Pattern
+       * callback(error, result)
+       */
+      function changeColor(color, delay, callback) {
+        console.log(`Starting ${color} animation...`);
+
+        // Input validation
+        if (!color) {
+          return callback(new Error("Color is required"), null);
+        }
+
+        if (typeof delay !== "number" || delay <= 0) {
+          return callback(
+            new Error("Delay must be a positive number And Greater Then 0 "),
+            null,
+          );
+        }
+
+        setTimeout(() => {
+          // Simulate occasional failure
+          const randomFailure = Math.random() < 0.2;
+          // const randomFailure = false;
+
+          if (randomFailure) {
+            return callback(
+              new Error(`Failed to change color to ${color}`),
+              null,
+            );
+          }
+
+          box.style.backgroundColor = color;
+
+          callback(null, {
+            color,
+            timestamp: new Date().toLocaleTimeString(),
+          });
+        }, delay);
+      }
+
+      animateBtn.addEventListener("click", () => {
+        console.log("Animation Started");
+
+        changeColor("red", 1000, (error, result) => {
+          if (error) {
+            console.error("Step 1 Error:", error.message);
+            return;
+          }
+
+          console.log("Success:", result);
+
+          changeColor("blue", 1000, (error, result) => {
+            if (error) {
+              console.error("Step 2 Error:", error.message);
+              return;
+            }
+
+            console.log("Success:", result);
+
+            changeColor("green", 1000, (error, result) => {
+              if (error) {
+                console.error("Step 3 Error:", error.message);
+                return;
+              }
+
+              console.log("Success:", result);
+
+              changeColor("purple", 1000, (error, result) => {
+                if (error) {
+                  console.error("Step 4 Error:", error.message);
+                  return;
+                }
+
+                console.log("Success:", result);
+
+                changeColor("orange", 1000, (error, result) => {
+                  if (error) {
+                    console.error("Step 5 Error:", error.message);
+                    return;
+                  }
+
+                  console.log("Success:", result);
+
+                  console.log("Animation sequence finished successfully!");
+                });
+              });
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

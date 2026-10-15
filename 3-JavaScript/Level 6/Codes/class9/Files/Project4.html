@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Two-Way Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+        background-color: #8e44ad;
+        color: white;
+      }
+      .container {
+        background: #34495e;
+        padding: 30px;
+        border-radius: 8px;
+        width: 350px;
+      }
+      button {
+        padding: 10px;
+        width: 100%;
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background: #ecf0f1;
+        color: #2c3e50;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      #poolOutput {
+        background: white;
+        color: #8e44ad;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 18px;
+        word-break: break-all;
+      }
+      .chat {
+        background: #e8f4f8;
+        color: black;
+        padding: 15px;
+        border-left: 5px solid #3498db;
+        margin-bottom: 20px;
+        min-height: 20px;
+        font-weight: bold;
+      }
+      input {
+        padding: 10px;
+        width: 60%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 35%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Math Chatbot</h2>
+      <p id="chatDisplay" class="chat">Click Start to begin...</p>
+
+      <input
+        type="number"
+        id="userInput"
+        placeholder="Type a number"
+        disabled
+      />
+      <button id="actionBtn">Start Chat</button>
+    </div>
+    <script>
+      // 1. The Two-Way Generator
+
+      function* chatBot() {
+        // 1st Pause: Yields the question. Waits for next(val).
+        let num1 = yield "Bot: Please provide the first number.";
+
+        // 2nd Pause: Yields the second question. Waits for next(val).
+        let num2 = yield `Bot: Got ${num1}. Now provide the second number.`;
+
+        // Finishes and returns the calculation.
+        return `Bot: The total is ${num1 + num2}!`;
+      }
+
+      let bot; // Will hold our Generator Object
+      let step = 0; // Tracks conversation state
+
+      const display = document.getElementById("chatDisplay");
+      const input = document.getElementById("userInput");
+      const btn = document.getElementById("actionBtn");
+
+      btn.addEventListener("click", () => {
+        if (step === 0) {
+          // Start the generator (No argument passed to first next!)
+          bot = chatBot();
+          console.log(bot);
+
+          let result = bot.next();
+          console.log(result);
+
+          display.innerText = result.value; // Show first question
+          btn.innerText = "Reply";
+          input.disabled = false;
+          step++;
+        } else if (step === 1 || step === 2) {
+          // Get user input and convert to number
+          let userNum = Number(input.value);
+
+          // Pass data INTO the generator!
+          let result = bot.next(userNum);
+          console.log(result);
+
+          display.innerText = result.value;
+          input.value = ""; // Clear input
+
+          if (result.done) {
+            btn.innerText = "Chat Ended";
+            btn.disabled = true;
+            input.disabled = true;
+          }
+          step++;
+        }
+      });
+    </script>
+  </body>
+</html>

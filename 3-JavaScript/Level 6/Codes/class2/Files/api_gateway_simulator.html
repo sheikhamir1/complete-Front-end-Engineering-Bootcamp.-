@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise Error Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-slate-900 min-h-screen flex items-center justify-center p-4 font-sans text-slate-200"
+  >
+    <div
+      class="bg-slate-800 p-8 rounded-2xl shadow-2xl max-w-lg w-full border border-slate-700"
+    >
+      <h2
+        class="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-2"
+      >
+        Secure Gateway System
+      </h2>
+
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <button
+          id="btn-success"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg active:scale-95"
+        >
+          Fetch Valid Data
+        </button>
+        <button
+          id="btn-network"
+          class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg active:scale-95"
+        >
+          Simulate Network Crash
+        </button>
+        <button
+          id="btn-invalid"
+          class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg active:scale-95"
+        >
+          Simulate Missing Token
+        </button>
+        <button
+          id="btn-typo"
+          class="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-lg active:scale-95"
+        >
+          Simulate Dev Typo
+        </button>
+      </div>
+
+      <!-- UI Alert Box (For the User) -->
+      <div
+        id="ui-alert"
+        class="hidden mb-6 p-4 rounded-xl text-center font-bold text-lg shadow-inner"
+      ></div>
+
+      <!-- Dev Logs Box (For the Developer) -->
+      <div>
+        <h3
+          class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2"
+        >
+          Developer Diagnostics
+        </h3>
+        <div
+          class="bg-black rounded-xl p-4 font-mono text-xs overflow-hidden border border-slate-700 relative"
+        >
+          <!-- Terminal header styling -->
+          <div
+            class="absolute top-0 left-0 w-full bg-slate-800 px-3 py-1 flex items-center space-x-2 border-b border-slate-700"
+          >
+            <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+            <span class="text-slate-500 text-[10px] ml-2">diagnostic.log</span>
+          </div>
+          <pre
+            id="dev-logs"
+            class="text-green-400 whitespace-pre-wrap mt-6 min-h-[100px]"
+          ></pre>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 1. Top Level Base Error (The Base Class Trick + Wrapper setup)
+      class ApplicationError extends Error {
+        constructor(message, cause = null) {
+          // Support wrapping via the 'cause' object
+          super(message, cause ? { cause } : undefined);
+          // The Base Class trick (Automatically sets name to child class name)
+          this.name = this.constructor.name;
+        }
+      }
+
+      // 2. Specific Networking Error (Payload: statusCode)
+      class NetworkError extends ApplicationError {
+        constructor(message, statusCode) {
+          super(message);
+          this.statusCode = statusCode;
+        }
+      }
+
+      // 3. Specific Validation Error (Payload: missingField)
+      class SecurityError extends ApplicationError {
+        constructor(missingField) {
+          super(`Security check failed. Missing: ${missingField}`);
+          this.missingField = missingField;
+        }
+      }
+
+      function simulateApiCall(scenario) {
+        // LOW LEVEL LAYER
+        if (scenario === "network") {
+          throw new NetworkError("Connection refused by host", 503);
+        }
+        if (scenario === "invalid") {
+          throw new SecurityError("auth_token");
+        }
+        if (scenario === "typo") {
+          misspelledFunctionCall(); // Throws native ReferenceError
+        }
+        return { data: "Secret Dashboard Information" };
+      }
+
+      function fetchDashboardData(scenario) {
+        try {
+          return simulateApiCall(scenario);
+        } catch (err) {
+          // The Mail Sorter: Wrap known custom errors into a generic App Error for the UI
+          if (err instanceof ApplicationError) {
+            throw new ApplicationError("Failed to load dashboard data.", err);
+          }
+          // Unknown typos bubble straight up without wrapping!
+          throw err;
+        }
+      }
+
+      const uiAlert = document.getElementById("ui-alert");
+      const devLogs = document.getElementById("dev-logs");
+
+      function runScenario(scenario) {
+        // Reset UI
+        uiAlert.classList.add("hidden");
+        uiAlert.className =
+          "hidden mb-6 p-4 rounded-xl text-center font-bold text-lg shadow-inner";
+        devLogs.textContent = `[Request Initiated]: ${scenario}\n`;
+
+        try {
+          // UI calls the service layer
+          const result = fetchDashboardData(scenario);
+
+          // Success State
+          uiAlert.textContent = `Success: ${result.data}`;
+          uiAlert.classList.add(
+            "bg-emerald-500/20",
+            "text-emerald-400",
+            "border",
+            "border-emerald-500/50",
+          );
+          uiAlert.classList.remove("hidden");
+          devLogs.textContent += `[Status]: 200 OK\n`;
+        } catch (err) {
+          // Error State
+          if (err instanceof ApplicationError) {
+            // 1. User friendly UI message (High Level)
+            uiAlert.textContent = err.message;
+            uiAlert.classList.add(
+              "bg-rose-500/20",
+              "text-rose-400",
+              "border",
+              "border-rose-500/50",
+            );
+            uiAlert.classList.remove("hidden");
+
+            // 2. Developer Diagnostic Logs utilizing Wrapped Payloads & Causes
+            devLogs.textContent += `[Caught High-Level]: ${err.name}\n`;
+
+            if (err.cause) {
+              devLogs.textContent += `[Root Cause Type]: ${err.cause.name}\n`;
+              devLogs.textContent += `[Root Message]: ${err.cause.message}\n`;
+
+              // Extracting specific payloads from the cause!
+              if (err.cause instanceof NetworkError) {
+                devLogs.textContent += `[Payload HTTP Status]: ${err.cause.statusCode}\n`;
+              }
+              if (err.cause instanceof SecurityError) {
+                devLogs.textContent += `[Payload Missing Field]: ${err.cause.missingField}\n`;
+              }
+            }
+          } else {
+            // FATAL ERROR handling (The Typo)
+            devLogs.textContent += `[FATAL CRASH]: Native ${err.name} Occurred.\n`;
+            devLogs.textContent += `Check browser console for stack trace.\n`;
+            throw err; // Craters the app for developer to fix typo in console!
+          }
+        }
+      }
+
+      // Bind buttons
+      document.getElementById("btn-success").onclick = () =>
+        runScenario("success");
+      document.getElementById("btn-network").onclick = () =>
+        runScenario("network");
+      document.getElementById("btn-invalid").onclick = () =>
+        runScenario("invalid");
+      document.getElementById("btn-typo").onclick = () => runScenario("typo");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rethrowing Errors</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background: #dfe6e9;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+      }
+      .card {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        width: 350px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: white;
+        background: #2ecc71;
+        font-weight: bold;
+      }
+      .danger {
+        background: #e74c3c;
+      }
+      .output {
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        margin-top: 10px;
+      }
+      .show {
+        display: block;
+        background: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Smart Error Handler</h2>
+
+      <button id="btn-known">Trigger Known Error (Bad JSON)</button>
+      <button id="btn-unknown" class="danger">
+        Trigger Unknown Error (Typo)
+      </button>
+
+      <div id="message" class="output"></div>
+    </div>
+    <script>
+      const btnKnown = document.getElementById("btn-known");
+      const btnUnknown = document.getElementById("btn-unknown");
+      const messageBox = document.getElementById("message");
+
+      function processData(rawData) {
+        try {
+          // Parse the data
+          const user = JSON.parse(rawData);
+
+          // This simulates a developer making a typo in their code!
+          // We misspell 'console' as 'consol'
+          consol.log(user);
+        } catch (err) {
+          // THE MAIL SORTER PATTERN
+          if (err instanceof SyntaxError) {
+            // We know how to handle this. The user gave bad JSON.
+            messageBox.textContent = `Handled Locally: Invalid Data Format.`;
+            messageBox.className = "output show";
+          } else if (err instanceof ReferenceError) {
+            // We know how to handle this. The user gave bad JSON.
+            messageBox.textContent = `Handled Locally: ReferenceError  Occur.`;
+            messageBox.className = "output show";
+          } else {
+            // We don't know what this is (like our consol.log typo).
+            // Do not hide it! Rethrow it!
+            throw err;
+          }
+        }
+      }
+
+      // 1. Simulating an expected data error
+      btnKnown.addEventListener("click", () => {
+        // We pass bad JSON to trigger a SyntaxError
+        processData("{ bad json }");
+      });
+
+      // 2. Simulating a developer code typo
+      btnUnknown.addEventListener("click", () => {
+        // We pass PERFECT JSON. JSON.parse will succeed.
+        // But it will hit the 'consol.log' typo and throw a ReferenceError.
+        processData('{ "name": "John" }');
+      });
+    </script>
+  </body>
+</html>
