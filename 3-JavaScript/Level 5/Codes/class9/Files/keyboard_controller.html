@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keyboard Events</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #2ecc71;
+        font-family: sans-serif;
+      }
+      #player {
+        width: 50px;
+        height: 50px;
+        background: #8e44ad;
+        border-radius: 8px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          top 0.1s,
+          left 0.1s; /* Smooth movement */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      #hud {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+      }
+      .key-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        background: #eee;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-family: monospace;
+        font-weight: bold;
+        margin: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hud">
+      <h3>Move with W, A, S, D</h3>
+      <p>
+        Last Key Pressed: <span id="keyDisplay" class="key-badge">None</span>
+      </p>
+      <p>Physical Code: <span id="codeDisplay" class="key-badge">None</span></p>
+    </div>
+
+    <div id="player"></div>
+
+    <script>
+      const player = document.getElementById("player");
+      const keyDisplay = document.getElementById("keyDisplay");
+      const codeDisplay = document.getElementById("codeDisplay");
+
+      // Set starting position variables
+      // console.log(window.innerWidth / 2);
+
+      let playerX = window.innerWidth / 2;
+      let playerY = window.innerHeight / 2;
+      const speed = 20; // How many pixels to move per keystroke
+
+      // Listen to the whole window for keyboard events
+      window.addEventListener("keydown", function (event) {
+        // Update HUD
+        keyDisplay.innerText = event.key;
+        codeDisplay.innerText = event.code;
+
+        // We use event.code because we want the physical W-A-S-D layout,
+        // regardless of if the user has a French (AZERTY) keyboard!
+        switch (event.code) {
+          case "KeyW":
+          case "ArrowUp":
+            playerY -= speed; // Move up (decrease Y)
+            break;
+          case "KeyS":
+          case "ArrowDown":
+            playerY += speed; // Move down (increase Y)
+            break;
+          case "KeyA":
+          case "ArrowLeft":
+            playerX -= speed; // Move left (decrease X)
+            break;
+          case "KeyD":
+          case "ArrowRight":
+            playerX += speed; // Move right (increase X)
+            break;
+        }
+
+        // Apply the new position to the element
+        player.style.left = playerX + "px";
+        player.style.top = playerY + "px";
+      });
+    </script>
+  </body>
+</html>

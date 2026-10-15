@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      button {
+        padding: 12px 24px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .log-area {
+        margin-top: 15px;
+        border-left: 4px solid #4caf50;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Topic 3: addEventListener</h2>
+    <button id="multiBtn">Click Me (Triggers Multiple Functions)</button>
+    <br /><br />
+    <button id="toggleBtn">Turn OFF the First Alert</button>
+
+    <div class="log-area" id="log"></div>
+
+    <script>
+      const multiBtn = document.getElementById("multiBtn");
+      const toggleBtn = document.getElementById("toggleBtn");
+      const log = document.getElementById("log");
+
+      // We must define this function outside so we can reference it later
+      function handlerOne() {
+        log.innerHTML += "<p>Handler 1: Executed!</p>";
+      }
+
+      function handlerTwo() {
+        log.innerHTML += "<p>Handler 2: Also executed!</p>";
+      }
+
+      // Adding multiple listeners to the exact same event!
+      multiBtn.addEventListener("click", handlerOne);
+      multiBtn.addEventListener("click", handlerTwo);
+
+      // Removing a listener
+      toggleBtn.addEventListener("click", function () {
+        // We use the exact function name 'handlerOne' to remove it
+        multiBtn.removeEventListener("click", handlerOne);
+
+        toggleBtn.innerText = "Handler 1 Removed!";
+        toggleBtn.disabled = true; // disable the button after clicking
+        log.innerHTML +=
+          "<p><em>System: Handler 1 has been detached. Try clicking the top button again.</em></p>";
+      });
+    </script>
+  </body>
+</html>

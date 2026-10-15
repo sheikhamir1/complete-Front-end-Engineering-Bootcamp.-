@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Selection & Range</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        max-width: 600px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .toolbar {
+        background: #eee;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        padding: 8px 12px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        background: white;
+        border-radius: 4px;
+      }
+      button:hover {
+        background: #ddd;
+      }
+      p {
+        line-height: 1.6;
+        font-size: 18px;
+      }
+
+      /* The custom class we will apply via JavaScript */
+      .marker {
+        background-color: #ffe066;
+        border-radius: 3px;
+        padding: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Text Editor</h2>
+      <div class="toolbar">
+        <button id="highlightBtn">Highlight Selection</button>
+        <button id="extractBtn">Extract Selection</button>
+      </div>
+
+      <p id="article">
+        JavaScript is a versatile programming language. You can use it to build
+        dynamic websites, servers, and mobile applications. Mastering the DOM is
+        the key to creating interactive user interfaces.
+      </p>
+    </div>
+    <script>
+      const highlightBtn = document.getElementById("highlightBtn");
+      const extractBtn = document.getElementById("extractBtn");
+
+      // 1. Wrapping text with surroundContents()
+      highlightBtn.addEventListener("click", () => {
+        // Grab the global Selection object (what the user has highlighted)
+        let selection = window.getSelection();
+        // console.log(selection);
+
+        // If nothing is selected, selection.rangeCount is 0. Exit early.
+        if (selection.rangeCount === 0 || selection.toString() === "") {
+          alert("Please highlight some text first!");
+          return;
+        }
+
+        // Get the actual invisible Range object from the Selection
+        // Browsers usually only support 1 selection at a time, so it's always index 0
+        let range = selection.getRangeAt(0);
+        // console.log(range);
+
+        // Create a new HTML element to wrap around the text
+        let span = document.createElement("span");
+        span.className = "marker";
+
+        try {
+          // surroundContents takes the range, rips it out, puts it inside our span,
+          // and puts the span back into the document!
+          range.surroundContents(span);
+
+          // Clear the visible blue selection highlight so it looks clean
+          selection.removeAllRanges();
+        } catch (e) {
+          // surroundContents fails if the user highlights across multiple paragraph tags
+          alert("Please select text within a single paragraph.");
+        }
+      });
+
+      // 2. Cutting text with extractContents()
+      extractBtn.addEventListener("click", () => {
+        let selection = window.getSelection();
+        if (selection.rangeCount === 0) {
+          console.log("Nothing is Selected");
+          return;
+        }
+
+        let range = selection.getRangeAt(0);
+
+        // extractContents cuts the text out of the document completely!
+        // It returns a "DocumentFragment" (a mini DOM tree) containing the cut content.
+        let cutContent = range.extractContents();
+
+        console.log("You extracted:", cutContent.textContent);
+      });
+    </script>
+  </body>
+</html>

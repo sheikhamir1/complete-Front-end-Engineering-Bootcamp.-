@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hover Events Demo</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .container {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+
+      .box {
+        width: 280px;
+        padding: 20px;
+        border: 2px solid black;
+        background: white;
+        text-align: center;
+        transition: 0.2s;
+      }
+
+      .child {
+        margin-top: 20px;
+        padding: 30px;
+        background: #e74c3c;
+        color: white;
+        font-weight: bold;
+      }
+
+      .active {
+        background: #c8f7c5;
+        border-color: green;
+      }
+
+      p {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      .note {
+        margin-bottom: 20px;
+        color: #444;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>Subtopic 3: Hover Events</h2>
+
+    <p class="note">
+      <b>Demo:</b> Move your mouse into each box, then move over the red child
+      element. Notice how the left box flickers while the right box does not.
+    </p>
+
+    <div class="container">
+      <!-- mouseover / mouseout -->
+      <div id="box1" class="box">
+        <h3>mouseover / mouseout</h3>
+
+        <div class="child">Child Element</div>
+
+        <p id="count1">Count: 0</p>
+      </div>
+
+      <!-- mouseenter / mouseleave -->
+      <div id="box2" class="box">
+        <h3>mouseenter / mouseleave</h3>
+
+        <div class="child">Child Element</div>
+
+        <p id="count2">Count: 0</p>
+      </div>
+    </div>
+
+    <script>
+      // -----------------------------
+      // Left Box (mouseover/mouseout)
+      // -----------------------------
+      const box1 = document.getElementById("box1");
+      const count1 = document.getElementById("count1");
+
+      let total1 = 0;
+
+      box1.addEventListener("mouseover", function () {
+        box1.classList.add("active");
+
+        total1++;
+        count1.innerText = "Count: " + total1;
+      });
+
+      box1.addEventListener("mouseout", function () {
+        box1.classList.remove("active");
+      });
+
+      // --------------------------------
+      // Right Box (mouseenter/mouseleave)
+      // --------------------------------
+      const box2 = document.getElementById("box2");
+      const count2 = document.getElementById("count2");
+
+      let total2 = 0;
+
+      box2.addEventListener("mouseenter", function () {
+        box2.classList.add("active");
+
+        total2++;
+        count2.innerText = "Count: " + total2;
+      });
+
+      box2.addEventListener("mouseleave", function () {
+        box2.classList.remove("active");
+      });
+    </script>
+  </body>
+</html>

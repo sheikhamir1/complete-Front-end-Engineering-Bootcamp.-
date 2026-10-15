@@ -1,0 +1,34 @@
+/* Standard styling */
+body {
+  font-family: Arial, sans-serif;
+  padding: 50px;
+  text-align: center;
+}
+.container {
+  background: white;
+  padding: 30px;
+  display: inline-block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+button {
+  padding: 15px 20px;
+  font-size: 16px;
+  background: #6f42c1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background: #59339d;
+}
+#status {
+  margin-top: 15px;
+  font-style: italic;
+  color: #666;
+}
+.error {
+  color: red !important;
+  font-weight: bold;
+}

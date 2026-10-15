@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Lifecycle Tracker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      img {
+        width: 100%;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      #logList {
+        list-style-type: none;
+        padding: 0;
+      }
+      #logList li {
+        padding: 10px;
+        background: #e9ecef;
+        margin-bottom: 5px;
+        border-left: 5px solid #007bff;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Lifecycle Event Log</h2>
+      <img
+        src="https://picsum.photos/400/200?random=1"
+        alt="Random Image"
+        id="heavyImage"
+      />
+      <ul id="logList"></ul>
+    </div>
+    <script>
+      // 1. Grab the UL element where we will print our logs
+      const logList = document.getElementById("logList");
+
+      // 2. Helper function to create a new list item and append it
+      function logEvent(message) {
+        const li = document.createElement("li");
+        li.textContent = message;
+        logList.appendChild(li);
+      }
+
+      // 3. Log that the script has started executing immediately
+      logEvent("1. Script executed (Synchronous)");
+
+      // 4. Listen for DOMContentLoaded on the 'document'
+      document.addEventListener("DOMContentLoaded", function () {
+        logEvent(
+          "2. DOMContentLoaded: HTML is fully parsed. Image might not be visible yet.",
+        );
+      });
+
+      // 5. Listen for 'load' on the 'window'
+      window.addEventListener("load", function () {
+        logEvent("3. Load: Page is fully loaded, including the heavy image.");
+      });
+
+      // 6. Listen for the user trying to leave the page
+      window.addEventListener("beforeunload", function (event) {
+        // We cannot log this to the screen because the page is closing!
+        // Instead, we trigger the browser's "Are you sure you want to leave?" prompt.
+        event.preventDefault();
+        event.returnValue = ""; // Required for Chrome to show the prompt
+      });
+    </script>
+  </body>
+</html>

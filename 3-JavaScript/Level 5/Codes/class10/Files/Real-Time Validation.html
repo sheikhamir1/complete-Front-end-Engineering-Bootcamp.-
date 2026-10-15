@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Focus and Blur Events</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      input[type="text"],
+      select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      #output {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+      /* Previous basic styling applies, adding specific styles for focus/error */
+      body {
+        font-family: Arial, sans-serif;
+        padding: 50px;
+      }
+      .container {
+        width: 300px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      input {
+        padding: 8px;
+        border: 2px solid #ccc;
+        outline: none;
+      }
+
+      /* Dynamic classes we will add via JavaScript */
+      .invalid {
+        border-color: red;
+        background-color: #ffe6e6;
+      }
+      .focus-active {
+        border-color: #007bff;
+      }
+      .error-msg {
+        color: red;
+        font-size: 12px;
+        height: 15px;
+      }
+
+      /* Styling for our custom focusable div */
+      .box {
+        padding: 20px;
+        background: #eee;
+        text-align: center;
+        margin-top: 20px;
+        cursor: pointer;
+        border: 2px dashed #ccc;
+      }
+      .box:focus {
+        background: #d4edda;
+        border-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Account Setup</h2>
+      <form name="setupForm">
+        <label for="email">Email Address:</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+        />
+        <span id="emailError" class="error-msg"></span>
+
+        <div id="customBox" tabindex="0" class="box">
+          Click or Tab to focus me!
+        </div>
+      </form>
+    </div>
+    <script>
+      // 1. Grab the elements
+      const emailInput = document.forms.setupForm.elements.email;
+      const errorSpan = document.getElementById("emailError");
+
+      // 2. The 'focus' event: User clicks INTO the input
+      emailInput.addEventListener("focus", function () {
+        this.classList.remove("invalid");
+        this.classList.add("focus-active");
+        errorSpan.textContent = "Please enter a valid email.";
+        errorSpan.style.color = "blue";
+      });
+
+      // 3. The 'blur' event: User clicks AWAY from the input
+      emailInput.addEventListener("blur", function () {
+        this.classList.remove("focus-active");
+
+        if (!this.value.includes("@") && this.value !== "") {
+          this.classList.add("invalid");
+          errorSpan.textContent = "Error: Email must contain an '@' symbol.";
+          errorSpan.style.color = "red";
+        } else if (this.value !== "") {
+          errorSpan.textContent = "Looks good!";
+          errorSpan.style.color = "green";
+        } else {
+          errorSpan.textContent = "";
+        }
+      });
+
+      // 4. Grab the custom focusable box
+      const customBox = document.getElementById("customBox");
+
+      // Focus event for the box
+      customBox.addEventListener("focus", function () {
+        this.textContent = "I am focused!";
+      });
+
+      // Blur event for the box
+      customBox.addEventListener("blur", function () {
+        this.textContent = "Click or Tab to focus me!";
+      });
+    </script>
+  </body>
+</html>

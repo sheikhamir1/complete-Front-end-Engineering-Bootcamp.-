@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pointer Capturing</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 50px;
+        background: #333;
+        color: white;
+      }
+
+      #slider {
+        width: 300px;
+        height: 10px;
+        background: #555;
+        border-radius: 5px;
+        position: relative;
+        margin: 50px 0;
+      }
+
+      #thumb {
+        width: 30px;
+        height: 30px;
+        background: #3498db;
+        border-radius: 50%;
+        position: absolute;
+        top: -10px; /* Center it vertically over the line */
+        left: 0;
+        cursor: pointer;
+        touch-action: none; /* Prevent mobile scrolling */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      #output {
+        font-size: 24px;
+        font-weight: bold;
+        color: #3498db;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Volume Control</h2>
+    <div id="slider">
+      <div id="thumb"></div>
+    </div>
+    <div id="output">Volume: 0%</div>
+
+    <script>
+      const slider = document.getElementById("slider");
+      const thumb = document.getElementById("thumb");
+      const output = document.getElementById("output");
+
+      thumb.addEventListener("pointerdown", function (event) {
+        // 1. THE INVISIBLE LEASH
+        // We lock the pointer to the thumb. No matter where the mouse goes,
+        // the 'pointermove' event will act as if it is still hovering over the thumb!
+        thumb.setPointerCapture(event.pointerId);
+
+        // 2. We can now put 'pointermove' directly on the THUMB, not the document!
+        thumb.addEventListener("pointermove", onMove);
+
+        // 3. Prevent native dragging bugs
+        event.preventDefault();
+      });
+
+      function onMove(event) {
+        // Calculate relative position based on the slider container
+        let sliderRect = slider.getBoundingClientRect();
+        // console.log(sliderRect);
+
+        // Where is the mouse relative to the left edge of the slider?
+        let newLeft = event.clientX - sliderRect.left;
+        // console.log(newLeft);
+
+        // Constrain it so it doesn't fall off the edges
+        if (newLeft < 0) newLeft = 0;
+        if (newLeft > sliderRect.width) newLeft = sliderRect.width;
+
+        // Move the thumb
+        thumb.style.left = newLeft + "px";
+
+        // Calculate percentage for the UI
+        let percentage = Math.round((newLeft / sliderRect.width) * 100);
+        output.innerText = `Volume: ${percentage}%`;
+      }
+
+      thumb.addEventListener("pointerup", function (event) {
+        // 4. Clean up the listener
+        thumb.removeEventListener("pointermove", onMove);
+
+        // Note: The browser automatically removes the pointer capture (the leash)
+        // when 'pointerup' happens, so we don't need to manually release it!
+      });
+    </script>
+  </body>
+</html>

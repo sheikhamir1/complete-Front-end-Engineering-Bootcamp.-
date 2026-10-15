@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      #smartBtn {
+        padding: 15px 30px;
+        font-size: 18px;
+        background: #ff9800;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.1s;
+      }
+      #smartBtn:active {
+        transform: scale(0.95);
+      }
+      #status {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Topic 5: Object Handlers (handleEvent)</h2>
+    <button id="smartBtn">Interact with me!</button>
+    <div id="status">Status: Idle</div>
+
+    <script>
+      const btn = document.getElementById("smartBtn");
+      const statusDiv = document.getElementById("status");
+
+      class ButtonController {
+        // The browser automatically looks for THIS specific method name
+        handleEvent(event) {
+          // Smart Routing: Dynamically construct the method name based on the event type
+          // e.g., 'mousedown' becomes 'onMousedown'
+          let methodName =
+            "on" + event.type[0].toUpperCase() + event.type.slice(1);
+          console.log(methodName);
+
+          // If the method exists in this class, run it!
+          if (this[methodName]) {
+            this[methodName](event);
+          }
+        }
+
+        onMousedown() {
+          statusDiv.innerText = "Status: Mouse BUTTON PRESSED (Hold it!)";
+          btn.style.background = "#d32f2f";
+        }
+
+        onMouseup() {
+          statusDiv.innerText = "Status: Mouse BUTTON RELEASED";
+          btn.style.background = "#4caf50";
+        }
+
+        onDblclick() {
+          statusDiv.innerText = "Status: DOUBLE CLICK DETECTED!";
+          btn.style.background = "#9c27b0";
+        }
+      }
+
+      // Instantiate the class
+      const controller = new ButtonController();
+
+      // Pass the WHOLE OBJECT to addEventListener!
+      btn.addEventListener("mousedown", controller);
+      btn.addEventListener("mouseup", controller);
+      btn.addEventListener("dblclick", controller);
+    </script>
+  </body>
+</html>

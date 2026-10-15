@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      .btn-group button {
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      #messageBoard {
+        margin-top: 20px;
+        padding: 15px;
+        background: #eee;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Topic 2: DOM Properties</h2>
+
+    <div class="btn-group">
+      <button id="btnGood">Proper Assignment</button>
+      <button id="btnOverwrite">Overwritten Button</button>
+    </div>
+
+    <div id="messageBoard">Awaiting action...</div>
+
+    <script>
+      const board = document.getElementById("messageBoard");
+      const btnGood = document.getElementById("btnGood");
+      const btnOverwrite = document.getElementById("btnOverwrite");
+
+      // 1. PROPER ASSIGNMENT (Notice: no parentheses after logGoodClick)
+      function logGoodClick() {
+        board.innerText =
+          "Good button clicked! The 'this' keyword refers to: " + this.id;
+      }
+      btnGood.onclick = logGoodClick;
+
+      // 2. THE OVERWRITING DANGER
+      btnOverwrite.onclick = function () {
+        board.innerText = "This is the FIRST function.";
+      };
+
+      // Because onclick is just a property, this completely replaces the first function!
+      btnOverwrite.onclick = function () {
+        board.innerText =
+          "This is the SECOND function! The first one was erased.";
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actions in Markup & Behavior Pattern Demo</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        background: #f4f7fb;
+        padding: 30px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: auto;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      .card {
+        background: white;
+        margin-bottom: 25px;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #0d6efd;
+        margin-bottom: 15px;
+      }
+
+      p {
+        margin-bottom: 15px;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      button,
+      input[type="button"] {
+        padding: 10px 18px;
+        margin: 5px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #0d6efd;
+        color: white;
+        transition: 0.3s;
+      }
+
+      button:hover,
+      input[type="button"]:hover {
+        background: #084dbb;
+      }
+
+      form {
+        margin-top: 15px;
+        padding: 15px;
+        background: #eef5ff;
+        border-radius: 8px;
+      }
+
+      input[type="email"] {
+        padding: 10px;
+        width: 250px;
+      }
+
+      #output {
+        margin-top: 15px;
+        padding: 12px;
+        background: #222;
+        color: #00ff99;
+        border-radius: 6px;
+        min-height: 50px;
+        font-family: monospace;
+      }
+
+      code {
+        background: #eee;
+        padding: 2px 5px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Actions in Markup & Behavior Pattern</h1>
+
+      <!-- ========================================= -->
+      <!-- SECTION 1 -->
+      <!-- ========================================= -->
+
+      <div class="card">
+        <h2>1. Actions in Markup (data-action)</h2>
+
+        <p>
+          Each button has a
+          <code>data-action</code>
+          attribute. Instead of attaching separate click handlers to every
+          button, only the parent div listens for clicks.
+        </p>
+
+        <div id="menu">
+          <button data-action="save">💾 Save</button>
+
+          <button data-action="load">📂 Load</button>
+
+          <button data-action="deleteData">🗑 Delete</button>
+        </div>
+
+        <div id="output">Click any button above...</div>
+      </div>
+
+      <!-- ========================================= -->
+      <!-- SECTION 2 -->
+      <!-- ========================================= -->
+
+      <div class="card">
+        <h2>2. Behavior Pattern - Counter</h2>
+
+        <p>
+          Every button having
+          <code>data-counter</code>
+          automatically increases its own value when clicked.
+        </p>
+
+        <input type="button" value="1" data-counter />
+        <input type="button" value="5" data-counter />
+        <input type="button" value="10" data-counter />
+      </div>
+
+      <!-- ========================================= -->
+      <!-- SECTION 3 -->
+      <!-- ========================================= -->
+
+      <div class="card">
+        <h2>3. Behavior Pattern - Toggle</h2>
+
+        <p>
+          The button contains
+          <code>data-toggle-id</code>. When clicked, JavaScript finds the
+          element with that ID and toggles its visibility.
+        </p>
+
+        <button data-toggle-id="subscribeForm">Show / Hide Form</button>
+
+        <form id="subscribeForm" hidden>
+          <label>Email:</label><br /><br />
+
+          <input type="email" placeholder="Enter your email" />
+        </form>
+      </div>
+    </div>
+
+    <script>
+      /*======================================================
+    ACTIONS IN MARKUP
+=======================================================*/
+
+      class Menu {
+        constructor(element) {
+          this.element = element;
+
+          // Parent handles all button clicks
+          this.element.addEventListener("click", this.onClick.bind(this));
+        }
+
+        save() {
+          document.getElementById("output").innerHTML =
+            "✅ Save method executed.";
+
+          console.log("save() called");
+        }
+
+        load() {
+          document.getElementById("output").innerHTML =
+            "📂 Load method executed.";
+
+          console.log("load() called");
+        }
+
+        deleteData() {
+          document.getElementById("output").innerHTML =
+            "🗑 Delete method executed.";
+
+          console.log("deleteData() called");
+        }
+
+        onClick(event) {
+          let action = event.target.dataset.action;
+
+          if (action) {
+            // Calls this.save(), this.load(), etc.
+            this[action]();
+          }
+        }
+      }
+
+      // Create object
+      new Menu(document.getElementById("menu"));
+
+      /*======================================================
+    BEHAVIOR PATTERN
+    One document-level event listener
+=======================================================*/
+
+      document.addEventListener("click", function (event) {
+        /*-----------------------------
+        COUNTER BEHAVIOR
+    ------------------------------*/
+
+        if (event.target.dataset.counter !== undefined) {
+          event.target.value++;
+        }
+
+        /*-----------------------------
+        TOGGLE BEHAVIOR
+    ------------------------------*/
+
+        let id = event.target.dataset.toggleId;
+
+        if (!id) return;
+
+        let element = document.getElementById(id);
+
+        element.hidden = !element.hidden;
+      });
+    </script>
+  </body>
+</html>

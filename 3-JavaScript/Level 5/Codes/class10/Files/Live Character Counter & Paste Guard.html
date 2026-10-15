@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Input and Clipboard Events</title>
+    <style>
+      /* Basic resets */
+      body {
+        font-family: Arial, sans-serif;
+        padding: 50px;
+      }
+      .container {
+        width: 350px;
+      }
+      textarea {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        resize: none;
+      }
+      #charCount {
+        text-align: right;
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+      .warning {
+        color: red !important;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Write a short post</h2>
+      <form name="postForm">
+        <textarea
+          name="message"
+          id="message"
+          rows="4"
+          placeholder="What's on your mind?"
+        ></textarea>
+        <div id="charCount">0 / 50 characters</div>
+      </form>
+    </div>
+    <script>
+      const messageBox = document.forms.postForm.elements.message;
+      const charCountDisplay = document.getElementById("charCount");
+      const MAX_CHARS = 50;
+
+      // 1. The 'input' Event: Fires on every single keystroke
+      messageBox.addEventListener("input", function () {
+        // Get the current length of the text
+        let currentLength = this.value.length;
+
+        // Update the counter on the screen immediately
+        charCountDisplay.textContent = `${currentLength} / ${MAX_CHARS} characters`;
+
+        // Add a visual warning if they are getting close to the limit
+        if (currentLength >= MAX_CHARS) {
+          charCountDisplay.classList.add("warning");
+          // Prevent typing past 50 characters by trimming the value
+          this.value = this.value.substring(0, MAX_CHARS);
+          charCountDisplay.textContent = `${MAX_CHARS} / ${MAX_CHARS} characters`;
+        } else {
+          charCountDisplay.classList.remove("warning");
+        }
+      });
+
+      // 2. The 'change' Event: Fires when they click away (commit)
+      messageBox.addEventListener("change", function () {
+        console.log("Change committed to database: ", this.value);
+        // In a real app, you might send an API request to auto-save here
+      });
+
+      // 3. The 'paste' Event: Intercepting clipboard data
+      messageBox.addEventListener("paste", function (event) {
+        // Stop the paste from happening entirely!
+        event.preventDefault();
+
+        // We can read what they TRIED to paste
+        let pastedData = event.clipboardData.getData("text/plain");
+        alert(
+          `Sorry, pasting is disabled! You tried to paste: "${pastedData}"`,
+        );
+      });
+    </script>
+  </body>
+</html>

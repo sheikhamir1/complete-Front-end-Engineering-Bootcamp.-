@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Event Delegation</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+        width: 300px;
+      }
+
+      li {
+        background: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .delete-btn {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Task Manager</h2>
+
+    <button id="addTaskBtn">Add New Task</button>
+
+    <ul id="taskList">
+      <li>
+        <span>Buy Groceries</span>
+        <button class="delete-btn">Delete</button>
+      </li>
+      <li>
+        <span>Pay Bills</span>
+        <button class="delete-btn">Delete</button>
+      </li>
+    </ul>
+
+    <script>
+      const taskList = document.getElementById("taskList");
+      const addTaskBtn = document.getElementById("addTaskBtn");
+
+      // --- THE EVENT DELEGATION LOGIC ---
+      // 1. Attach ONE listener to the parent container
+      taskList.addEventListener("click", function (event) {
+        alert("Event fire");
+        // 2. Check if the click happened on (or inside) a delete button
+        // closest() looks at the clicked element and its parents for a match
+        const deleteButton = event.target.closest(".delete-btn");
+        console.log(deleteButton);
+
+        // 3. If a delete button wasn't clicked, stop here.
+        if (!deleteButton) {
+          console.log("Button not triggerd");
+          return;
+        }
+
+        // 4. If it was clicked, find the closest <li> (the whole task) and remove it
+        const taskItem = deleteButton.closest("li");
+        taskItem.remove();
+      });
+
+      // --- DEMONSTRATION OF DYNAMIC ELEMENTS ---
+      // Notice how we DO NOT need to add an event listener to the new button!
+      addTaskBtn.addEventListener("click", function () {
+        const li = document.createElement("li");
+        li.innerHTML = `
+    <span>New Auto-Task</span>
+    <button class="delete-btn">Delete</button>
+  `;
+        taskList.appendChild(li); // Adding it to the DOM
+      });
+    </script>
+  </body>
+</html>

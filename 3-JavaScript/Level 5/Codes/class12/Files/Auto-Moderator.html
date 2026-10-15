@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mutation Observer Chat</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f4f4f9;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        width: 400px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .chat-box {
+        height: 200px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        background: #fafafa;
+      }
+      .chat-box p {
+        margin: 5px 0;
+        padding: 8px;
+        background: #e2f0fe;
+        border-radius: 4px;
+      }
+      .ads {
+        background: #ffe6e6 !important;
+        border: 1px solid red;
+        color: red;
+        font-weight: bold;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      input {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 8px 15px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .danger {
+        background: #dc3545;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Live Chat</h2>
+
+      <div id="chatBox" class="chat-box">
+        <p><strong>System:</strong> Welcome to the chat!</p>
+      </div>
+
+      <div class="controls">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+        <button id="injectAdBtn" class="danger">Inject 3rd-Party Ad</button>
+      </div>
+    </div>
+    <!-- <script>
+      const chatBox = document.getElementById("chatBox");
+      const messageInput = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const injectAdBtn = document.getElementById("injectAdBtn");
+
+      // 1. Define what the observer should do when it sees a change
+      const observerCallback = function (mutationsList, observer) {
+        // A single change event can contain multiple "mutations" (changes)
+        console.log("1 - ", mutationsList, observer);
+
+        for (let mutation of mutationsList) {
+          // We only care if new nodes (HTML elements) were added
+          if (mutation.type === "childList") {
+            // Loop through all newly added elements
+            mutation.addedNodes.forEach((node) => {
+              // Ensure it's an actual Element, not just a blank text node
+              if (node.nodeType === 1) {
+                // Use Case A: Blocking 3rd-Party Ads based on class
+                if (node.classList.contains("ads")) {
+                  console.log(
+                    "Observer detected an ad! Removing it instantly.",
+                  );
+                  node.remove(); // Delete it from the DOM
+                }
+
+                // Use Case B: Moderating bad words in the text content
+                if (node.textContent.toLowerCase().includes("spam")) {
+                  console.log("Observer detected spam!");
+                  node.textContent = "🛑 [Message removed by Auto-Moderator]";
+                  node.style.background = "#ffcccc";
+                }
+              }
+            });
+          }
+        }
+      };
+
+      // 2. Create the Observer instance, passing in our callback function
+      const observer = new MutationObserver(observerCallback);
+
+      // 3. Define the configuration (what to watch)
+      const config = {
+        childList: true, // Watch for added/removed children
+        subtree: true, // Watch deep inside the children too
+      };
+
+      // 4. Start observing the chatBox
+      observer.observe(chatBox, config);
+
+      // --- Standard UI Logic below (Simulating user/app behavior) ---
+
+      // Normal user sending a message
+      sendBtn.addEventListener("click", () => {
+        if (!messageInput.value) return;
+        const p = document.createElement("p");
+        p.innerHTML = `<strong>User:</strong> ${messageInput.value}`;
+        chatBox.appendChild(p);
+        messageInput.value = "";
+      });
+
+      // Simulating a malicious 3rd-party script injecting an ad into the DOM
+      injectAdBtn.addEventListener("click", () => {
+        const ad = document.createElement("div");
+        ad.className = "ads";
+        ad.textContent = "🔥 BUY ONE GET ONE FREE! CLICK HERE! 🔥";
+        chatBox.appendChild(ad);
+        // The observer will catch this instantly and delete it!
+      });
+
+      // Best Practice: If you ever destroy the chat box or leave the page, disconnect it!
+      // observer.disconnect();
+    </script> -->
+
+    <script>
+      const chatBox = document.getElementById("chatBox");
+      const messageInput = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const injectAdBtn = document.getElementById("injectAdBtn");
+
+      console.log("========== PAGE LOADED ==========");
+      //   console.log("chatBox :", chatBox);
+      //   console.log("messageInput :", messageInput);
+      //   console.log("sendBtn :", sendBtn);
+      //   console.log("injectAdBtn :", injectAdBtn);
+      //   console.log("=================================");
+
+      // =========================
+      // OBSERVER CALLBACK
+      // =========================
+      const observerCallback = function (mutationsList, observer) {
+        console.log("");
+        console.log("################################################");
+        console.log("Observer Callback Fired");
+        console.log("################################################");
+
+        console.log("mutationsList :", mutationsList);
+        console.log("observer :", observer);
+
+        console.log("Number of mutations :", mutationsList.length);
+
+        for (let i = 0; i < mutationsList.length; i++) {
+          console.log("");
+          console.log("------------- Mutation", i + 1, "-------------");
+
+          const mutation = mutationsList[i];
+
+          //   console.log("Complete Mutation Object :", mutation);
+
+          //   console.log("mutation.type :", mutation.type);
+
+          //   console.log("mutation.target :", mutation.target);
+
+          //   console.log("mutation.target.id :", mutation.target.id);
+
+          console.log("addedNodes :", mutation.addedNodes);
+
+          console.log("addedNodes.length :", mutation.addedNodes.length);
+
+          console.log("removedNodes :", mutation.removedNodes);
+
+          //   console.log("previousSibling :", mutation.previousSibling);
+
+          //   console.log("nextSibling :", mutation.nextSibling);
+
+          //   console.log("oldValue :", mutation.oldValue);
+
+          if (mutation.type === "childList") {
+            console.log("This mutation is childList.");
+
+            mutation.addedNodes.forEach((node, index) => {
+              console.log("");
+              console.log("Node Index :", index);
+
+              //   console.log("Complete Node :", node);
+
+              //   console.log("nodeType :", node.nodeType);
+
+              //   console.log("nodeName :", node.nodeName);
+
+              //   console.log("textContent :", node.textContent);
+
+              //   console.log("parentNode :", node.parentNode);
+
+              //   console.log("previousSibling :", node.previousSibling);
+
+              //   console.log("nextSibling :", node.nextSibling);
+
+              //   console.log("isConnected :", node.isConnected);
+
+              if (node.nodeType === 1) {
+                console.log("This is an ELEMENT NODE");
+
+                // console.log("tagName :", node.tagName);
+
+                // console.log("innerHTML :", node.innerHTML);
+
+                // console.log("outerHTML :", node.outerHTML);
+
+                // console.log("children :", node.children);
+
+                // console.log("childNodes :", node.childNodes);
+
+                // console.log("className :", node.className);
+
+                // console.log("classList :", node.classList);
+
+                // console.log("style :", node.style);
+
+                console.log(
+                  'Does classList contain "ads"? :',
+                  node.classList.contains("ads"),
+                );
+
+                if (node.classList.contains("ads")) {
+                  console.log("************ AD DETECTED ************");
+
+                  console.log("Removing :", node);
+
+                  node.remove();
+
+                  console.log("Ad Removed");
+                }
+
+                console.log(
+                  'Does text contain "spam"? :',
+                  node.textContent.toLowerCase().includes("spam"),
+                );
+
+                if (node.textContent.toLowerCase().includes("spam")) {
+                  console.log("************ SPAM DETECTED ************");
+
+                  console.log("Before :", node.textContent);
+
+                  node.textContent = "🛑 [Message removed by Auto-Moderator]";
+
+                  node.style.background = "#ffcccc";
+
+                  console.log("After :", node.textContent);
+                }
+              } else {
+                console.log("Not an Element.");
+
+                console.log("Node Type :", node.nodeType);
+              }
+            });
+          }
+        }
+
+        console.log("Observer Callback Finished");
+
+        console.log("################################################");
+      };
+
+      // =========================
+      // CREATE OBSERVER
+      // =========================
+
+      console.log("Creating MutationObserver...");
+
+      const observer = new MutationObserver(observerCallback);
+
+      //   console.log("Observer Created :", observer);
+
+      // =========================
+      // CONFIG
+      // =========================
+
+      const config = {
+        childList: true,
+
+        subtree: true,
+      };
+
+      //   console.log("Observer Config :", config);
+
+      // =========================
+      // START OBSERVING
+      // =========================
+
+      observer.observe(chatBox, config);
+
+      console.log("Started observing :", chatBox);
+
+      // =========================
+      // SEND BUTTON
+      // =========================
+
+      sendBtn.addEventListener("click", () => {
+        console.log("");
+        console.log("=====================================");
+        console.log("SEND BUTTON CLICKED");
+        console.log("=====================================");
+
+        // console.log("Input Value :", messageInput.value);
+
+        if (!messageInput.value) {
+          //   console.log("Input Empty");
+
+          return;
+        }
+
+        // console.log("Creating <p> element...");
+
+        const p = document.createElement("p");
+
+        const p1 = document.createElement("p");
+        const p2 = document.createElement("p");
+        const p3 = document.createElement("p");
+
+        // console.log("Created :", p);
+
+        p.innerHTML = `<strong>User:</strong> ${messageInput.value}`;
+
+        p1.innerHTML = `<strong>User:</strong> ${messageInput.value}`;
+        p2.innerHTML = `<strong>User:</strong> ${messageInput.value}`;
+        p3.innerHTML = `<strong>User:</strong> ${messageInput.value}`;
+
+        // console.log("After innerHTML :", p);
+
+        // console.log("Appending to chatBox...");
+
+        chatBox.appendChild(p);
+
+        chatBox.appendChild(p1);
+        chatBox.appendChild(p2);
+        chatBox.appendChild(p3);
+
+        // console.log("appendChild() Finished");
+
+        console.log("Current chatBox children :", chatBox.children);
+
+        messageInput.value = "";
+
+        // console.log("Input Cleared");
+      });
+
+      // =========================
+      // AD BUTTON
+      // =========================
+
+      injectAdBtn.addEventListener("click", () => {
+        console.log("");
+        console.log("=====================================");
+        console.log("INJECT AD BUTTON CLICKED");
+        console.log("=====================================");
+
+        const ad = document.createElement("div");
+
+        console.log("Created :", ad);
+
+        ad.className = "ads";
+
+        console.log("className assigned");
+
+        ad.textContent = "🔥 BUY ONE GET ONE FREE! CLICK HERE! 🔥";
+
+        console.log("textContent assigned");
+
+        console.log("Appending ad...");
+
+        chatBox.appendChild(ad);
+
+        console.log("appendChild() Finished");
+      });
+
+      // observer.disconnect();
+    </script>
+  </body>
+</html>

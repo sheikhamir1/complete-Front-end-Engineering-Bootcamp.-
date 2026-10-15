@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser Default Actions & Custom Events</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Default Actions & Custom Events</h1>
+          <p class="slide-subtitle">
+            Controlling the browser and creating your own signals
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=2070&auto=format&fit=crop"
+              alt="Code on a computer screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Sometimes the browser automatically does things we don't want,
+              like navigating to a new page when a link is clicked. Other times,
+              we want to create our own unique signals to tell the rest of our
+              code that something happened.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Default actions are like a
+            restaurant automatically bringing you a glass of water. You can say
+            "No water, please" (<code>preventDefault</code>). Custom events are
+            like hitting a custom buzzer at your table to say "Ready for
+            dessert!" instead of waiting for the waiter to check on you.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Browser Default Actions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Browser Default Actions</h2>
+          <p class="slide-subtitle">What the browser does automatically</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Many events automatically trigger built-in browser behaviors.</p>
+          </div>
+          <div class="info-card">
+            <h4>Common Default Actions</h4>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>Clicking a link (<code>&lt;a&gt;</code>):</strong>
+                  Navigates to the href URL.
+                </li>
+                <li>
+                  <strong>Clicking a submit button:</strong> Submits the form to
+                  the server.
+                </li>
+                <li>
+                  <strong>Mouse drag over text:</strong> Selects the text.
+                </li>
+                <li>
+                  <strong>Right-click:</strong> Opens the browser's context
+                  menu.
+                </li>
+                <li>
+                  <strong>Pressing a key in an input:</strong> Types the
+                  character.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              If we want to handle these events with JavaScript instead, we need
+              to tell the browser: "Stop! Don't do your default thing, let me
+              handle it."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Preventing Default Actions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Preventing Default Actions</h2>
+          <p class="slide-subtitle">Saying "No thank you" to the browser</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>There are two ways to stop the browser's default behavior:</p>
+          </div>
+          <div class="info-card">
+            <h4>1. event.preventDefault()</h4>
+            <p>
+              The standard, modern way. You call this method on the event object
+              inside your handler.
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;a</span> href=<span class="string"
+                >"/"</span
+              >
+              onclick=<span class="string">"event.preventDefault()"</span
+              ><span class="keyword">&gt;</span>
+              Clicking me does nothing!
+              <span class="keyword">&lt;/a&gt;</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>2. return false</h4>
+            <p>
+              An older shortcut that <strong>only</strong> works if you assigned
+              the handler using the <code>on&lt;event&gt;</code> HTML attribute
+              or DOM property. It does NOT work with
+              <code>addEventListener</code>.
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;a</span> href=<span class="string"
+                >"/"</span
+              >
+              onclick=<span class="string">"return false"</span
+              ><span class="keyword">&gt;</span>
+              Also does nothing!
+              <span class="keyword">&lt;/a&gt;</span>
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Don't mix them up!</strong> Returning
+            <code>false</code> from an <code>addEventListener</code> handler
+            will <em>not</em> prevent the default action. Always use
+            <code>event.preventDefault()</code> for modern code.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Example - The JS Menu -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Example: The JavaScript Menu</h2>
+          <p class="slide-subtitle">Using links without navigating</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Web menus often use <code>&lt;a&gt;</code> tags for accessibility
+              and SEO, but we want clicks to open a menu tab, not navigate to a
+              new page.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Solution</h4>
+            <p>
+              Use event delegation on the menu, and prevent the default action.
+            </p>
+            <div class="code-block">
+              menu.onclick = <span class="keyword">function</span>(event) {
+              <span class="keyword">if</span> (event.target.nodeName !=
+              <span class="string">'A'</span>)
+              <span class="keyword">return</span>;
+
+              <span class="keyword">let</span> href =
+              event.target.getAttribute(<span class="string">'href'</span>);
+              alert( <span class="string">'Loading: '</span> + href );
+              <span class="comment">// JS logic here</span>
+
+              <span class="keyword">return false</span>;
+              <span class="comment">// Prevent browser navigation!</span> };
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Follow-up Events:</strong> Preventing an early event can
+            stop later events. For example, if you
+            <code>preventDefault()</code> on <code>mousedown</code> for an input
+            field, the browser won't focus it (the <code>focus</code> event
+            won't fire).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: The passive Option -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The passive Option</h2>
+          <p class="slide-subtitle">Optimizing mobile scrolling</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              On mobile, the <code>touchmove</code> event is used to scroll the
+              page. However, the browser has to wait to see if your JavaScript
+              calls <code>preventDefault()</code> before it starts scrolling.
+              This waiting causes a slight delay or "jitter".
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Solution: passive: true</h4>
+            <p>
+              If you add <code>{passive: true}</code> to your event listener,
+              you are promising the browser: "I will NOT call
+              <code>preventDefault()</code>". The browser can then start
+              scrolling immediately without waiting for your code to finish.
+            </p>
+            <div class="code-block">
+              elem.addEventListener(<span class="string">'touchmove'</span>,
+              handler, {passive: <span class="keyword">true</span>});
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Good to know:</strong> In modern browsers,
+            <code>touchstart</code> and <code>touchmove</code> are set to
+            <code>passive: true</code> by default to ensure smooth scrolling!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: event.defaultPrevented -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">event.defaultPrevented</h2>
+          <p class="slide-subtitle">The smart alternative to stopPropagation</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Imagine a button with its own custom right-click menu, sitting
+              inside a document that also has a custom right-click menu. If you
+              right-click the button, both menus will open because of bubbling!
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>❌ Bad Way: stopPropagation()</h4>
+              <p>
+                Stopping the bubble blocks ALL outer code from knowing the event
+                happened (even analytics trackers). It's like locking the door.
+              </p>
+            </div>
+            <div class="column info-card">
+              <h4>✅ Good Way: defaultPrevented</h4>
+              <p>
+                The inner handler calls <code>preventDefault()</code>. The outer
+                handler checks <code>event.defaultPrevented</code>. If true, it
+                steps aside. It's like leaving a note on the door saying
+                "Already handled!"
+              </p>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Code Example</h4>
+            <div class="code-block">
+              <span class="comment">// Inner Button Handler</span>
+              button.oncontextmenu =
+              <span class="keyword">function</span>(event) {
+              event.preventDefault(); alert(<span class="string"
+                >"Button menu"</span
+              >); };
+
+              <span class="comment">// Outer Document Handler</span>
+              document.oncontextmenu =
+              <span class="keyword">function</span>(event) {
+              <span class="keyword">if</span> (event.defaultPrevented)
+              <span class="keyword">return</span>;
+              <span class="comment">// Note left!</span>
+
+              event.preventDefault(); alert(<span class="string"
+                >"Document menu"</span
+              >); };
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Dispatching Custom Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Dispatching Custom Events</h2>
+          <p class="slide-subtitle">Creating your own signals</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              We aren't limited to browser events; we can create our own! This
+              is great for building UI components that need to talk to the rest
+              of the app.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>1. Create the Event</h4>
+            <p>
+              Use the <code>Event</code> constructor. You can define if it
+              <code>bubbles</code> and if it is <code>cancelable</code>.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> event =
+              <span class="keyword">new</span> Event(<span class="string"
+                >"my-event"</span
+              >, { bubbles: <span class="keyword">true</span>, cancelable:
+              <span class="keyword">true</span> });
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>2. Dispatch the Event</h4>
+            <p>
+              Fire it on an element using
+              <code>elem.dispatchEvent(event)</code>.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> elem =
+              document.getElementById(<span class="string">"myElem"</span>);
+              elem.dispatchEvent(event);
+
+              <span class="comment"
+                >// Any listener on elem (or its parents if bubbles=true) will
+                run.</span
+              >
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Is it a real user?</strong> You can tell the difference
+            between a script-fired event and a real user action using
+            <code>event.isTrusted</code>. It is <code>true</code> for real
+            actions and <code>false</code> for script-generated ones.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: CustomEvent & Detail -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">CustomEvent & Detail</h2>
+          <p class="slide-subtitle">Passing data with your events</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              While <code>new Event()</code> works,
+              <code>new CustomEvent()</code> is specifically designed for
+              developer-defined events. It has a special
+              <code>detail</code> property where you can pass any data you want.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Using the detail property</h4>
+            <div class="code-block">
+              <span class="comment">// Dispatch</span> elem.dispatchEvent(<span
+                class="keyword"
+                >new</span
+              >
+              CustomEvent(<span class="string">"user-logged-in"</span>, {
+              detail: { username: <span class="string">"John"</span>, role:
+              <span class="string">"Admin"</span> }, bubbles:
+              <span class="keyword">true</span>
+              }));
+
+              <span class="comment">// Listen</span>
+              elem.addEventListener(<span class="string">"user-logged-in"</span
+              >, <span class="keyword">function</span>(event) { alert(<span
+                class="string"
+                >`Welcome ${event.detail.username}!`</span
+              >); });
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Built-in Event Types</h4>
+            <p>
+              If you want to fake a mouse click, you should use
+              <code>new MouseEvent("click")</code> instead of
+              <code>new Event("click")</code>. This allows you to set specific
+              properties like <code>clientX</code> and <code>clientY</code>.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> event =
+              <span class="keyword">new</span> MouseEvent(<span class="string"
+                >"click"</span
+              >, { bubbles: <span class="keyword">true</span>, clientX: 100,
+              clientY: 100 });
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Preventing Custom Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Preventing Custom Events</h2>
+          <p class="slide-subtitle">Canceling the action after the signal</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Custom events don't have browser default actions, but the code
+              that dispatches them might want to know if a handler canceled the
+              process.
+            </p>
+            <p>
+              If a handler calls <code>event.preventDefault()</code> on a custom
+              event, <code>dispatchEvent()</code> will return
+              <code>false</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example: The Hiding Rabbit</h4>
+            <div class="code-block">
+              rabbit.addEventListener(<span class="string">'hide'</span>,
+              <span class="keyword">function</span>(event) {
+              <span class="keyword">if</span> (confirm(<span class="string"
+                >"Prevent hiding?"</span
+              >)) { event.preventDefault(); } });
+
+              <span class="keyword">function</span>
+              <span class="function">hideRabbit</span>() {
+              <span class="keyword">let</span> event =
+              <span class="keyword">new</span> CustomEvent(<span class="string"
+                >"hide"</span
+              >, { cancelable: <span class="keyword">true</span>
+              <span class="comment"
+                >// REQUIRED for preventDefault to work!</span
+              >
+              });
+
+              <span class="keyword">if</span> (!rabbit.dispatchEvent(event)) {
+              alert(<span class="string">'Action was prevented!'</span>); }
+              <span class="keyword">else</span> { rabbit.hidden =
+              <span class="keyword">true</span>; } }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Events-in-Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Events-in-Events (Synchronous)</h2>
+          <p class="slide-subtitle">Handling nested event timing</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When an event is dispatched from inside another event's handler,
+              the new event is processed
+              <strong>immediately</strong> (synchronously). The outer handler
+              pauses, the inner event runs, and then the outer handler resumes.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example Output Order</h4>
+            <div class="code-block">
+              menu.onclick = <span class="keyword">function</span>() { alert(1);
+              menu.dispatchEvent(<span class="keyword">new</span>
+              CustomEvent(<span class="string">"menu-open"</span>,
+              {bubbles:<span class="keyword">true</span>})); alert(2); };
+              document.addEventListener(<span class="string">'menu-open'</span>,
+              () => alert(<span class="string">'nested'</span>));
+
+              <span class="comment">// Output order: 1 -> nested -> 2</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Making it Asynchronous</h4>
+            <p>
+              If you want the outer event to finish completely before the inner
+              event runs, wrap the dispatch in a zero-delay
+              <code>setTimeout</code>.
+            </p>
+            <div class="code-block">
+              menu.onclick = <span class="keyword">function</span>() { alert(1);
+              setTimeout(() => menu.dispatchEvent(<span class="keyword"
+                >new</span
+              >
+              CustomEvent(<span class="string">"menu-open"</span>))); alert(2);
+              };
+
+              <span class="comment">// Output order: 1 -> 2 -> nested</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Browser Default Actions & Custom Events | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

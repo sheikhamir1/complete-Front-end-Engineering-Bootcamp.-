@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Range & Selection Lab</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      .editor {
+        border: 2px solid #ccc;
+        padding: 15px;
+        min-height: 150px;
+      }
+
+      button {
+        padding: 10px;
+        margin: 5px;
+      }
+
+      .info {
+        background: #f5f5f5;
+        padding: 10px;
+        margin-top: 10px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+      }
+
+      .highlight {
+        background: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Range & Selection Playground</h1>
+
+    <div class="editor" contenteditable="true" id="editor">
+      Select any text inside this editable area. Try selecting forwards and
+      backwards. Experiment with Range and Selection APIs.
+    </div>
+
+    <div>
+      <button id="highlightBtn">Highlight Selection</button>
+
+      <button id="deleteBtn">Delete Selection</button>
+
+      <button id="cloneBtn">Clone Selection</button>
+
+      <button id="extractBtn">Extract Selection</button>
+
+      <button id="insertBtn">Insert Node</button>
+    </div>
+
+    <div class="info">
+      <p>
+        Selected Text:
+        <span id="selectedText"></span>
+      </p>
+
+      <p>
+        Anchor:
+        <span id="anchor"></span>
+      </p>
+
+      <p>
+        Focus:
+        <span id="focus"></span>
+      </p>
+    </div>
+
+    <h2>Clone/Extract Output</h2>
+
+    <div id="output"></div>
+
+    <hr />
+
+    <h2>Selection In Form Controls</h2>
+
+    <input id="inputBox" value="JavaScript Selection API Demo" />
+
+    <button id="selectAll">Select All</button>
+
+    <button id="selectWord">Select Word</button>
+
+    <button id="replaceSelection">Replace Selection</button>
+
+    <div id="inputInfo"></div>
+
+    <script>
+      const selectedText = document.getElementById("selectedText");
+
+      const anchor = document.getElementById("anchor");
+
+      const focus = document.getElementById("focus");
+
+      document.addEventListener("selectionchange", () => {
+        const sel = window.getSelection();
+
+        selectedText.textContent = sel.toString();
+
+        anchor.textContent = sel.anchorOffset;
+
+        focus.textContent = sel.focusOffset;
+      });
+
+      document.addEventListener("selectstart", () => {
+        console.log("Selection Started");
+      });
+
+      function getRange() {
+        const sel = window.getSelection();
+
+        if (sel.rangeCount === 0) return null;
+
+        return sel.getRangeAt(0);
+      }
+
+      document.getElementById("highlightBtn").addEventListener("click", () => {
+        const range = getRange();
+
+        if (!range) return;
+
+        const span = document.createElement("span");
+
+        span.className = "highlight";
+
+        try {
+          range.surroundContents(span);
+        } catch {
+          alert("Select plain text only.");
+        }
+      });
+
+      document.getElementById("deleteBtn").addEventListener("click", () => {
+        const range = getRange();
+
+        if (range) range.deleteContents();
+      });
+
+      document.getElementById("cloneBtn").addEventListener("click", () => {
+        const range = getRange();
+
+        if (!range) return;
+
+        const clone = range.cloneContents();
+
+        document.getElementById("output").innerHTML = "";
+
+        document.getElementById("output").append(clone);
+      });
+
+      document.getElementById("extractBtn").addEventListener("click", () => {
+        const range = getRange();
+
+        if (!range) return;
+
+        const extracted = range.extractContents();
+
+        document.getElementById("output").innerHTML = "";
+
+        document.getElementById("output").append(extracted);
+      });
+
+      document.getElementById("insertBtn").addEventListener("click", () => {
+        const range = getRange();
+
+        if (!range) return;
+
+        const badge = document.createElement("strong");
+
+        badge.textContent = " [INSERTED NODE] ";
+
+        range.insertNode(badge);
+      });
+
+      const input = document.getElementById("inputBox");
+
+      function updateInputInfo() {
+        document.getElementById("inputInfo").innerHTML = `
+Selection Start:
+${input.selectionStart}
+
+<br>
+
+Selection End:
+${input.selectionEnd}
+`;
+      }
+
+      input.addEventListener("select", updateInputInfo);
+
+      input.addEventListener("keyup", updateInputInfo);
+
+      document.getElementById("selectAll").addEventListener("click", () => {
+        input.select();
+
+        updateInputInfo();
+      });
+
+      document.getElementById("selectWord").addEventListener("click", () => {
+        input.setSelectionRange(0, 10);
+
+        updateInputInfo();
+      });
+
+      document
+        .getElementById("replaceSelection")
+        .addEventListener("click", () => {
+          input.setRangeText("REPLACED");
+
+          updateInputInfo();
+        });
+
+      updateInputInfo();
+    </script>
+  </body>
+</html>

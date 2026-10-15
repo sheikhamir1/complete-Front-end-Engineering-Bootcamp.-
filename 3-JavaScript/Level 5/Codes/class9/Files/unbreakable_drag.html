@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Touch Action & Pointer Cancel</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        height: 200vh; /* Make the page very tall so scrolling is possible */
+        background: linear-gradient(to bottom, #ecf0f1, #bdc3c7);
+        margin: 0;
+        padding: 20px;
+      }
+
+      #dragBox {
+        width: 150px;
+        height: 150px;
+        background-color: #e74c3c;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        cursor: grab;
+        position: absolute;
+
+        /* THE MAGIC CSS PROPERTY */
+        /* This tells the phone: "Never scroll the page when the user swipes on THIS box." */
+        touch-action: none;
+      }
+
+      #dragBox:active {
+        cursor: grabbing;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Try dragging the red box.</h2>
+    <p>
+      Because of <code>touch-action: none</code>, it won't trigger page
+      scrolling on mobile!
+    </p>
+
+    <div id="dragBox">Drag Me</div>
+
+    <script>
+      const box = document.getElementById("dragBox");
+
+      // Disable native image/text dragging just in case
+      box.ondragstart = () => false;
+
+      box.addEventListener("pointerdown", function (event) {
+        // Calculate where inside the box we clicked (the shift offset)
+        let shiftX = event.clientX - box.getBoundingClientRect().left;
+        let shiftY = event.clientY - box.getBoundingClientRect().top;
+
+        function moveAt(pageX, pageY) {
+          box.style.left = pageX - shiftX + "px";
+          box.style.top = pageY - shiftY + "px";
+        }
+
+        function onPointerMove(event) {
+          moveAt(event.pageX, event.pageY);
+        }
+
+        // Listen on the document so we don't lose the cursor if we move fast
+        document.addEventListener("pointermove", onPointerMove);
+
+        // When released, clean up
+        box.addEventListener(
+          "pointerup",
+          function () {
+            document.removeEventListener("pointermove", onPointerMove);
+          },
+          { once: true },
+        );
+
+        // IF the browser hijacks the event, we also need to clean up!
+        box.addEventListener(
+          "pointercancel",
+          function () {
+            document.removeEventListener("pointermove", onPointerMove);
+            alert("Browser hijacked the interaction!");
+          },
+          { once: true },
+        );
+      });
+    </script>
+  </body>
+</html>

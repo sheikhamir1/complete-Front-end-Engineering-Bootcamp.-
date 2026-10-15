@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Drag & Drop</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        background: #eef2f7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        width: 900px;
+        background: #fff;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .info {
+        background: #e8f4ff;
+        border-left: 5px solid #2196f3;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+      }
+
+      .workspace {
+        position: relative;
+        height: 450px;
+        border: 2px solid #ccc;
+        border-radius: 12px;
+        background: #fafafa;
+        overflow: hidden;
+      }
+
+      /* Drop Zone */
+
+      #dropZone {
+        position: absolute;
+        right: 60px;
+        top: 110px;
+
+        width: 280px;
+        height: 180px;
+
+        border: 4px dashed #bdbdbd;
+        border-radius: 12px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 24px;
+        font-weight: bold;
+
+        background: #eceff1;
+        color: #777;
+
+        transition: 0.3s;
+      }
+
+      .highlight {
+        background: #d4edda !important;
+        border-color: #28a745 !important;
+        color: #28a745 !important;
+      }
+
+      /* File */
+
+      #fileBox {
+        position: absolute;
+
+        left: 50px;
+        top: 300px;
+
+        width: 180px;
+
+        padding: 18px;
+
+        background: white;
+
+        border: 2px solid #333;
+
+        border-radius: 10px;
+
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+
+        cursor: grab;
+
+        user-select: none;
+
+        font-weight: bold;
+
+        transition: 0.2s;
+      }
+
+      #fileBox:hover {
+        transform: scale(1.05);
+      }
+
+      #fileBox:active {
+        cursor: grabbing;
+      }
+
+      .steps {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .step {
+        flex: 1;
+        background: #f5f5f5;
+        padding: 15px;
+        text-align: center;
+        border-radius: 8px;
+      }
+
+      .step h3 {
+        color: #2196f3;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>📂 Advanced Drag & Drop</h2>
+
+      <div class="info">
+        <b>Demo:</b> Drag the file into the drop zone. The file follows the
+        mouse smoothly without jumping.
+      </div>
+
+      <div class="workspace" id="workspace">
+        <div id="dropZone" class="droppable">Drop Here</div>
+
+        <div id="fileBox">📄 Report.pdf</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <h3>Step 1</h3>
+          <p>mousedown</p>
+        </div>
+
+        <div class="step">
+          <h3>Step 2</h3>
+          <p>mousemove</p>
+        </div>
+
+        <div class="step">
+          <h3>Step 3</h3>
+          <p>mouseup</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const file = document.getElementById("fileBox");
+      const dropZone = document.getElementById("dropZone");
+      const workspace = document.getElementById("workspace");
+
+      // Disable browser drag
+      file.ondragstart = () => false;
+
+      file.addEventListener("mousedown", function (event) {
+        // Distance between mouse and file corner
+        const fileRect = file.getBoundingClientRect();
+        // console.log("fileRect", fileRect);
+        // console.log(event.clientX);
+
+        const shiftX = event.clientX - fileRect.left;
+        const shiftY = event.clientY - fileRect.top;
+        // console.log(shiftX);
+
+        let currentDroppable = null;
+
+        function moveFile(event) {
+          // Workspace position
+          const workRect = workspace.getBoundingClientRect();
+          //   console.log("workRect", workRect);
+
+          // Mouse position inside workspace
+          const x = event.clientX - workRect.left;
+          const y = event.clientY - workRect.top;
+
+          // Move file smoothly
+          file.style.left = x - shiftX + "px";
+          file.style.top = y - shiftY + "px";
+          //   console.log(x - shiftX);
+          //   console.log(y - shiftY);
+
+          // Find element below mouse
+          file.hidden = true;
+
+          const elemBelow = document.elementFromPoint(
+            event.clientX,
+            event.clientY,
+          );
+
+          file.hidden = false;
+
+          if (!elemBelow) return;
+
+          const droppableBelow = elemBelow.closest(".droppable");
+
+          if (currentDroppable !== droppableBelow) {
+            if (currentDroppable) {
+              currentDroppable.classList.remove("highlight");
+            }
+
+            currentDroppable = droppableBelow;
+
+            if (currentDroppable) {
+              currentDroppable.classList.add("highlight");
+            }
+          }
+        }
+
+        // Move immediately
+        moveFile(event);
+
+        document.addEventListener("mousemove", moveFile);
+
+        document.addEventListener(
+          "mouseup",
+          function () {
+            document.removeEventListener("mousemove", moveFile);
+
+            if (currentDroppable) {
+              currentDroppable.innerHTML = "✅ File Uploaded";
+              currentDroppable.classList.remove("highlight");
+
+              file.style.display = "none";
+            }
+          },
+          { once: true },
+        );
+      });
+    </script>
+  </body>
+</html>

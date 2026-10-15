@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Events</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        line-height: 1.8;
+        margin: 0;
+        padding: 0;
+        background: #f9f9f9;
+      }
+
+      /* The container for the progress bar stays fixed at the top */
+      #progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: #ccc;
+        z-index: 1000;
+      }
+
+      /* The actual colored bar that will grow */
+      #progress-bar {
+        height: 100%;
+        background: #e74c3c;
+        width: 0%; /* Starts at 0 width */
+        transition: width 0.1s; /* Smooth animation */
+      }
+
+      .content {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 3em;
+      }
+      p {
+        margin-bottom: 30px;
+        font-size: 1.2em;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+    </div>
+
+    <div class="content">
+      <h1>The Art of Scrolling</h1>
+      <p>Scroll down to see the progress bar fill up.</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.
+      </p>
+      <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <!-- Generating fake height to allow scrolling -->
+      <div
+        style="
+          height: 1000px;
+          background: linear-gradient(to bottom, #ecf0f1, #95a5a6);
+          border-radius: 10px;
+          margin: 40px 0;
+        "
+      ></div>
+      <p>You have reached the end of the article. Congratulations!</p>
+    </div>
+
+    <script>
+      const progressBar = document.getElementById("progress-bar");
+
+      window.addEventListener("scroll", function () {
+        // 1. How far has the user scrolled down?
+        const pixelsScrolled = window.scrollY;
+
+        // 2. What is the total height of the entire document?
+        const documentHeight = document.documentElement.scrollHeight;
+
+        // 3. What is the height of the user's visible window (screen size)?
+        const windowHeight = document.documentElement.clientHeight;
+
+        // 4. Calculate the maximum possible scroll distance.
+        // (Total height minus what is already visible on screen)
+        const maxScrollableDistance = documentHeight - windowHeight;
+
+        // 5. Calculate the percentage: (Current Scroll / Max Scroll) * 100
+        let percentage = (pixelsScrolled / maxScrollableDistance) * 100;
+
+        // 6. Apply it to the CSS width
+        progressBar.style.width = percentage + "%";
+      });
+    </script>
+  </body>
+</html>

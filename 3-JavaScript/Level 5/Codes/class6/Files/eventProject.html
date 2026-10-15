@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Target vs CurrentTarget</title>
+    <style>
+      #myForm {
+        background-color: #f0f0f0;
+        padding: 30px;
+        border: 2px solid #333;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 300px;
+      }
+
+      input,
+      button {
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      #output {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="myForm">
+      <h2>User Profile</h2>
+      <input type="text" placeholder="First Name" />
+      <input type="text" placeholder="Last Name" />
+      <p>i am new</p>
+      <button type="submit">Save</button>
+    </form>
+
+    <p id="output"></p>
+
+    <script>
+      const form = document.getElementById("myForm");
+      const output = document.getElementById("output");
+
+      // 1. We put ONE listener on the parent <form>
+      form.addEventListener("click", function (event) {
+        // 2. Read who triggered the event vs who is handling it
+        const whoStartedIt = event.target.tagName;
+        const whoIsHandlingIt = event.currentTarget.tagName;
+
+        // 3. Display the result
+        output.innerText = `Original Target: ${whoStartedIt} \nHandling Target: ${whoIsHandlingIt}`;
+      });
+    </script>
+  </body>
+</html>

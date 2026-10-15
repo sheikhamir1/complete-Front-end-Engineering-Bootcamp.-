@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Searching & Properties</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Searching the DOM & Node Properties</h1>
+          <p class="slide-subtitle">
+            Finding elements and understanding what they are
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2064&auto=format&fit=crop"
+              alt="Search and Find Concept"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Navigating the DOM with parent/children properties is great, but
+              what if you need to find a specific element anywhere on the page?
+              And once you find it, how do you read or change its contents?
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of an HTML page as a
+            massive warehouse. Navigating the DOM is like walking aisle by
+            aisle. Search methods are like using the warehouse computer to
+            instantly locate a specific item by its barcode or description.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Search Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Modern Search Methods</h2>
+          <p class="slide-subtitle">querySelector & querySelectorAll</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>1. document.getElementById('id')</h3>
+            <p>
+              The classic way. It finds exactly one element by its unique ID. It
+              only works on the <code>document</code> object.
+            </p>
+            <div class="warning-box">
+              <strong>Don't use ID as a global variable!</strong> Browsers
+              automatically create global variables from IDs (e.g.,
+              <code>&lt;div id="elem"&gt;</code> creates
+              <code>window.elem</code>). This is a bad practice because it
+              causes naming conflicts. Always use
+              <code>document.getElementById()</code>.
+            </div>
+          </div>
+          <div class="info-card">
+            <h3>2. elem.querySelector(css)</h3>
+            <p>
+              The modern, powerful way. It searches inside <code>elem</code> and
+              returns the <strong>first</strong> element that matches the CSS
+              selector.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// Find the first
+                <li>inside .menu</li></span
+              >
+              <span class="keyword">let</span> firstItem =
+              document.querySelector(<span class="string">'.menu li'</span>);
+            </div>
+          </div>
+          <div class="info-card">
+            <h3>3. elem.querySelectorAll(css)</h3>
+            <p>
+              Returns a <strong>collection</strong> of ALL elements matching the
+              CSS selector. You can loop over it with <code>for..of</code>.
+            </p>
+            <div class="code-block">
+              <span class="comment">// Find all links inside the nav</span>
+              <span class="keyword">let</span> navLinks =
+              document.querySelectorAll(<span class="string">'nav a'</span>);
+
+              <span class="keyword">for</span> (<span class="keyword">let</span>
+              link <span class="keyword">of</span> navLinks) { alert(link.href);
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: matches & closest -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Special Search Helpers</h2>
+          <p class="slide-subtitle">matches & closest</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>elem.matches(css)</h3>
+              <p>
+                This doesn't search the DOM. It just checks if the current
+                element matches a specific CSS selector. It returns
+                <code>true</code> or <code>false</code>.
+              </p>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> Like a bouncer checking your ID
+                against a rule. The bouncer doesn't search the street for you;
+                they just check if YOU match the criteria.
+              </div>
+              <div class="code-block">
+                <span class="keyword">if</span> (elem.matches(<span
+                  class="string"
+                  >'a[href$="zip"]'</span
+                >)) { alert(<span class="string">"It's a ZIP file link!"</span
+                >); }
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>elem.closest(css)</h3>
+              <p>
+                Searches <strong>upwards</strong> from the current element to
+                find the nearest ancestor (parent, grandparent, etc.) that
+                matches the CSS selector. The element itself is also checked.
+              </p>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> Like asking "Who is the nearest
+                manager above me in the company chain of command?"
+              </div>
+              <div class="code-block">
+                <span class="comment">// Find the closest .book container</span>
+                <span class="keyword">let</span> chapter =
+                document.querySelector(<span class="string">'.chapter'</span>);
+                <span class="keyword">let</span> book = chapter.closest(<span
+                  class="string"
+                  >'.book'</span
+                >); <span class="comment">// UL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Old School vs New School -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Old School vs. New School</h2>
+          <p class="slide-subtitle">"getElementsBy*" vs "querySelector*"</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You might see older methods in legacy code. They return
+              <strong>live collections</strong> instead of static ones.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Old Methods</h4>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <code>getElementsByTagName('div')</code> - Note the "s" in
+                  Elements!
+                </li>
+                <li><code>getElementsByClassName('article')</code></li>
+                <li><code>getElementsByName('age')</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Live vs. Static Collections</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>getElementsBy* (Old)</th>
+                  <th>querySelectorAll (New)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Collection Type</td>
+                  <td><strong>Live</strong> (Auto-updates if DOM changes)</td>
+                  <td><strong>Static</strong> (Frozen snapshot in time)</td>
+                </tr>
+                <tr>
+                  <td>Array Methods?</td>
+                  <td>No (Needs Array.from)</td>
+                  <td>No (Needs Array.from)</td>
+                </tr>
+                <tr>
+                  <td>Best Practice?</td>
+                  <td>Avoid in modern code</td>
+                  <td>✅ Use this!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong>The "Live" Trap:</strong> If you use
+            <code>getElementsByTagName</code> and add a new element to the page,
+            the collection's length magically increases. With
+            <code>querySelectorAll</code>, the length stays the same as when you
+            called it.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Node Types & Tags -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Node Properties: Type & Tag</h2>
+          <p class="slide-subtitle">What kind of node is this?</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Every DOM node belongs to a class in JavaScript (like
+              HTMLInputElement, HTMLBodyElement). They all inherit from the base
+              <code>EventTarget</code> -> <code>Node</code> ->
+              <code>Element</code> -> <code>HTMLElement</code> chain.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>nodeType</h4>
+              <p>An old-school numeric way to check the type of node.</p>
+              <div class="code-block">
+                <span class="comment">// 1 = Element (e.g., &lt;div&gt;)</span>
+                <span class="comment"
+                  >// 3 = Text node (e.g., spaces/text)</span
+                >
+                <span class="comment">// 9 = Document object</span>
+
+                alert(elem.nodeType); <span class="comment">// 1</span>
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>tagName vs nodeName</h4>
+              <p>Both return the tag name in UPPERCASE (e.g., "DIV").</p>
+              <div class="code-block">
+                <span class="comment">// tagName only works for Elements</span>
+                <span class="comment">// nodeName works for ANY node</span>
+
+                <span class="comment">// For a comment node:</span>
+                comment.tagName;
+                <span class="comment">// undefined</span> comment.nodeName;
+                <span class="comment">// #comment</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Rule of Thumb:</strong> If you are only dealing with HTML
+            elements, use <code>tagName</code>. If you might be dealing with
+            text or comments, use <code>nodeName</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: innerHTML & outerHTML -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Contents: innerHTML & outerHTML</h2>
+          <p class="slide-subtitle">Reading and replacing HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>innerHTML</h4>
+            <p>
+              Gets or sets the HTML <strong>inside</strong> the element. It
+              allows you to insert valid HTML tags.
+            </p>
+            <div class="code-block">
+              <span class="comment">// Read contents</span>
+              alert(document.body.innerHTML);
+
+              <span class="comment">// Replace contents entirely</span>
+              document.body.innerHTML =
+              <span class="string">'The new BODY!'</span>;
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ The innerHTML += Trap:</strong> Doing
+            <code>elem.innerHTML += "new"</code> doesn't just append text. It
+            erases the entire contents and rewrites them from scratch! This
+            reloads all images and removes user input in forms.
+          </div>
+          <div class="info-card">
+            <h4>outerHTML</h4>
+            <p>
+              Gets the full HTML of the element,
+              <strong>including the element itself</strong>.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> div =
+              document.querySelector(<span class="string">'div'</span>);
+
+              <span class="comment"
+                >// Replaces the div in the DOM with a
+                <p></p
+              ></span>
+              div.outerHTML =
+              <span class="string">'&lt;p&gt;A new element&lt;/p&gt;'</span>;
+
+              <span class="comment"
+                >// BUT the old 'div' variable still references the old
+                object!</span
+              >
+              alert(div.outerHTML);
+              <span class="comment"
+                >// Shows the old div, not the new &lt;p&gt;</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Safe Text & Hiding -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Safe Text & Hiding Elements</h2>
+          <p class="slide-subtitle">textContent, data, and hidden</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>textContent</h4>
+              <p>
+                Gets/sets the text inside an element. It strips out all HTML
+                tags completely.
+              </p>
+              <div class="highlight-box">
+                <strong>Safety First!</strong> Always use
+                <code>textContent</code> to insert user input. If you use
+                <code>innerHTML</code>, a user could inject malicious scripts
+                (XSS). <code>textContent</code> treats everything as plain text.
+              </div>
+              <div class="code-block">
+                <span class="keyword">let</span> userInput =
+                <span class="string">"&lt;b&gt;Bold&lt;/b&gt;"</span>;
+                elem.innerHTML = userInput;
+                <span class="comment">// Shows: Bold</span> elem.textContent =
+                userInput;
+                <span class="comment">// Shows: &lt;b&gt;Bold&lt;/b&gt;</span>
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>nodeValue / data</h4>
+              <p>
+                Used to read the content of <strong>non-element</strong> nodes,
+                like text nodes or comments.
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> textNode =
+                document.body.firstChild; alert(textNode.data);
+                <span class="comment">// The text content</span>
+
+                <span class="keyword">let</span> comment = textNode.nextSibling;
+                alert(comment.data);
+                <span class="comment">// The comment content</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>The "hidden" property</h4>
+            <p>
+              The DOM property <code>hidden</code> acts just like
+              <code>display: none</code> in CSS. It's a quick way to show/hide
+              elements.
+            </p>
+            <div class="code-block">
+              <span class="comment">// Hide the element</span> elem.hidden =
+              <span class="keyword">true</span>;
+
+              <span class="comment">// Blinking element example</span>
+              setInterval(() => elem.hidden = !elem.hidden, 1000);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Attributes vs Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Attributes vs. Properties</h2>
+          <p class="slide-subtitle">The blueprint vs. the real object</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When the browser loads HTML, it reads the
+              <strong>attributes</strong> (what's written in the HTML) and
+              creates <strong>properties</strong> (what lives in the DOM
+              object). They are usually synced, but not always!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Core Difference</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>HTML Attributes</th>
+                  <th>DOM Properties</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>What is it?</td>
+                  <td>The value written in HTML</td>
+                  <td>The value in the JS object</td>
+                </tr>
+                <tr>
+                  <td>Data Type</td>
+                  <td>Always a <strong>String</strong></td>
+                  <td>
+                    Can be <strong>Any type</strong> (String, Boolean, Object)
+                  </td>
+                </tr>
+                <tr>
+                  <td>Case Sensitive?</td>
+                  <td>No (ID is same as id)</td>
+                  <td>Yes (must use elem.id)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong>The <code>input.value</code> Exception:</strong> If a user
+            types into an input field, the DOM property
+            <code>input.value</code> updates immediately. But the HTML attribute
+            <code>input.getAttribute('value')</code> stays the original value
+            from the HTML source! The attribute represents the "initial" value;
+            the property represents the "current" value.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Custom Data (dataset) -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Custom Data & dataset</h2>
+          <p class="slide-subtitle">Passing data safely via HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Problem with Custom Attributes</h3>
+            <p>
+              Sometimes we want to attach custom data to HTML elements for
+              JavaScript to read. But making up our own attributes (like
+              <code>show-info="name"</code>) is risky because future HTML
+              standards might use that name.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Solution: data-*</h4>
+            <p>
+              Any attribute starting with <code>data-</code> is reserved for
+              developers. It will never conflict with standard HTML. These are
+              accessed cleanly via the <code>dataset</code> property.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >&lt;div id="order" data-order-state="new"
+                data-user-id="123"&gt;</span
+              >
+
+              <span class="keyword">let</span> order =
+              document.querySelector(<span class="string">'#order'</span>);
+
+              <span class="comment">// Read data attributes</span>
+              alert(order.dataset.orderState);
+              <span class="comment">// "new" (hyphens become camelCase)</span>
+              alert(order.dataset.userId); <span class="comment">// "123"</span>
+
+              <span class="comment">// Modify data attributes</span>
+              order.dataset.orderState = <span class="string">"pending"</span>;
+              <span class="comment">// Updates the HTML instantly!</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of
+            <code>data-*</code> attributes like a secure luggage tag. You can
+            attach any custom information you want to the element (the
+            suitcase), and JavaScript can easily read it to know how to handle
+            it. Plus, it can be used to trigger CSS styles!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        DOM Searching & Properties Presentation | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

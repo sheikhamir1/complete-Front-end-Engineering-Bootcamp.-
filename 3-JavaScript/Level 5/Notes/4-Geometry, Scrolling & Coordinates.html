@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Element Geometry, Scrolling & Coordinates</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Geometry, Scrolling & Coordinates</h1>
+          <p class="slide-subtitle">
+            Measuring and moving elements on the page
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1518773553398-650c184e0bb3?q=80&w=2070&auto=format&fit=crop"
+              alt="Measuring and dimensions concept"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              To move, position, or read the size of elements, JavaScript
+              provides special geometry properties. We need these to figure out
+              where an element is, how big it is, and how to scroll to it.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of an element like a
+            framed painting. The <code>border</code> is the wooden frame, the
+            <code>padding</code> is the matte board inside, and the
+            <code>content</code> is the actual painting. Geometry properties let
+            you measure the frame, the matte, or the canvas!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Outer Sizes (offset) -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Outer Sizes: offsetWidth & offsetHeight</h2>
+          <p class="slide-subtitle">Measuring the whole framed picture</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The "Outer" Measurement</h3>
+            <p>
+              <code>offsetWidth</code> and <code>offsetHeight</code> give you
+              the full size of the element, including borders, padding, and the
+              content itself.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Calculation</h4>
+            <div class="code-block">
+              <span class="comment"
+                >// For an element with CSS width: 300px, padding: 20px, border:
+                25px</span
+              >
+
+              offsetWidth = 300 + (20 * 2) + (25 * 2) = 390px offsetHeight = 200
+              + (20 * 2) + (25 * 2) = 290px
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>offsetParent & offsetLeft/Top</h4>
+            <p>
+              Sometimes you need to know where the element is relative to its
+              positioned ancestor (its <code>offsetParent</code>).
+              <code>offsetLeft</code> and <code>offsetTop</code> give you the
+              x/y distance from the upper-left corner of that parent.
+            </p>
+            <div class="code-block">
+              alert(example.offsetParent.id);
+              <span class="comment">// "main"</span> alert(example.offsetLeft);
+              <span class="comment">// 180 (distance from left)</span>
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Zero for Hidden Elements:</strong> If an element (or its
+            parent) has <code>display: none</code>, all geometry properties are
+            0. You can use this to check if an element is hidden:
+            <code
+              >function isHidden(elem) { return !elem.offsetWidth &&
+              !elem.offsetHeight; }</code
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Inner Sizes (client) -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Inner Sizes: clientWidth & clientHeight</h2>
+          <p class="slide-subtitle">Measuring inside the frame</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              <code>clientWidth</code> and <code>clientHeight</code> measure the
+              space <strong>inside the borders</strong>. They include the
+              padding and the content, but
+              <strong>exclude the borders and the scrollbar</strong>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Calculation (With Scrollbar)</h4>
+            <p>
+              If a scrollbar takes up 16px, that space is taken from the content
+              width.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// CSS width: 300px, Padding: 20px, Scrollbar: 16px</span
+              >
+              clientWidth = (300 - 16) + (20 * 2) = 324px
+
+              <span class="comment"
+                >// CSS height: 200px, Padding: 20px, No vertical
+                scrollbar</span
+              >
+              clientHeight = 200 + (20 * 2) = 240px
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>clientTop & clientLeft</h4>
+            <p>
+              These simply give you the thickness of the top and left borders.
+              In left-to-right languages, they are exactly the border width. In
+              right-to-left languages, <code>clientLeft</code> also includes the
+              scrollbar width!
+            </p>
+            <div class="code-block">
+              clientLeft = 25
+              <span class="comment">// Left border width</span> clientTop = 25
+              <span class="comment">// Top border width</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Scrolled Sizes (scroll) -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">
+            Scrolled Sizes: scrollWidth & scrollHeight
+          </h2>
+          <p class="slide-subtitle">Measuring the hidden content</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if the content inside overflows and is hidden by a scrollbar?
+              <code>scrollWidth</code> and <code>scrollHeight</code> measure the
+              <strong>total</strong> size of the content, including the parts
+              scrolled out of view.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Imagine a rolled-up poster
+              inside a tube. <code>clientHeight</code> only measures the visible
+              part sticking out. <code>scrollHeight</code> measures the entire
+              length of the poster if you unrolled it completely.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Expanding an Element</h4>
+            <p>
+              A common trick is to use <code>scrollHeight</code> to expand an
+              element to fit all its content dynamically.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// Expand the element to its full content height</span
+              >
+              element.style.height =
+              <span class="string">`${element.scrollHeight}px`</span>;
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>scrollLeft & scrollTop</h4>
+            <p>
+              These tell you "how much" the user has scrolled.
+              <code>scrollTop</code> is how many pixels are hidden above the
+              visible area. Unlike other geometry properties, these are
+              <strong>writable</strong>—you can change them to force the element
+              to scroll!
+            </p>
+            <div class="code-block">
+              <span class="comment">// Read how far scrolled</span>
+              alert(elem.scrollTop);
+
+              <span class="comment">// Force scroll down by 10px</span>
+              elem.scrollTop += 10;
+
+              <span class="comment">// Scroll to the very top</span>
+              elem.scrollTop = 0;
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Why Not CSS Width? -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Why Not Use getComputedStyle?</h2>
+          <p class="slide-subtitle">Why geometry properties are better</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You might wonder, "Why not just use
+              <code>getComputedStyle(elem).width</code> to get the size?" There
+              are three major reasons why DOM geometry is better:
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>1. box-sizing Complications</h4>
+            <p>
+              CSS <code>box-sizing</code> changes whether
+              <code>width</code> includes padding and borders or not. Geometry
+              properties (<code>offsetWidth</code>, <code>clientWidth</code>)
+              are always predictable and ignore <code>box-sizing</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>2. The "auto" Problem</h4>
+            <p>
+              For inline elements, CSS width is often <code>auto</code>. You
+              can't do math with <code>auto</code> in JavaScript! Geometry
+              properties always return exact pixel numbers.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>3. The Scrollbar Inconsistency</h4>
+            <p>
+              Browsers disagree on what
+              <code>getComputedStyle().width</code> returns when a scrollbar
+              exists. Firefox returns the full CSS width, while Chrome returns
+              the width minus the scrollbar. <code>clientWidth</code> always
+              returns the true usable width minus the scrollbar.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Window Sizes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Window Sizes</h2>
+          <p class="slide-subtitle">Measuring the browser viewport</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              How do we find the width and height of the browser window? We use
+              <code>document.documentElement</code> (the
+              <code>&lt;html&gt;</code> tag).
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Visible Area (Without Scrollbar)</h4>
+            <p>This gives you the actual space available for your content.</p>
+            <div class="code-block">
+              <span class="keyword">let</span> width =
+              document.documentElement.clientWidth;
+              <span class="keyword">let</span> height =
+              document.documentElement.clientHeight;
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Avoid window.innerWidth/innerHeight:</strong> While these
+            exist, they include the width of the scrollbar. If a scrollbar is
+            present, <code>innerWidth</code> will be slightly larger than
+            <code>clientWidth</code>. Usually, you want the usable space
+            (<code>clientWidth</code>).
+          </div>
+          <div class="info-card">
+            <h4>Full Document Height</h4>
+            <p>
+              To get the full height of the page (including the scrolled out
+              parts), you have to take the maximum of a few properties due to
+              browser inconsistencies:
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> scrollHeight = Math.max(
+              document.body.scrollHeight, document.documentElement.scrollHeight,
+              document.body.offsetHeight, document.documentElement.offsetHeight,
+              document.body.clientHeight, document.documentElement.clientHeight
+              );
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Window Scrolling -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Window Scrolling</h2>
+          <p class="slide-subtitle">Reading and controlling the page scroll</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Reading the Scroll</h3>
+            <p>
+              How far down has the user scrolled? Use
+              <code>window.pageYOffset</code> (or <code>window.scrollY</code>).
+            </p>
+            <div class="code-block">
+              alert(<span class="string">'Current scroll from the top: '</span>
+              + window.pageYOffset);
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Changing the Scroll</h3>
+            <p>You can scroll the page programmatically using these methods:</p>
+          </div>
+          <div class="info-card">
+            <h4>1. window.scrollTo(pageX, pageY)</h4>
+            <p>
+              Scrolls to absolute coordinates. Like typing a specific page
+              number in a book.
+            </p>
+            <div class="code-block">
+              window.scrollTo(0, 0);
+              <span class="comment">// Scroll to the very top</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>2. window.scrollBy(x, y)</h4>
+            <p>
+              Scrolls relative to the current position. Like turning forward 2
+              pages.
+            </p>
+            <div class="code-block">
+              window.scrollBy(0, 10);
+              <span class="comment">// Scroll 10px down from current spot</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>3. elem.scrollIntoView(top)</h4>
+            <p>
+              Makes a specific element visible. If <code>top=true</code>, it
+              aligns with the window top. If <code>top=false</code>, it aligns
+              with the bottom.
+            </p>
+            <div class="code-block">
+              document.querySelector(<span class="string">'#footer'</span
+              >).scrollIntoView(<span class="keyword">true</span>);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Coordinate Systems -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Coordinate Systems</h2>
+          <p class="slide-subtitle">Window vs. Document</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When moving elements, we need to know exactly where they are.
+              There are two coordinate systems in the browser:
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>1. Window Coordinates</h4>
+              <p>
+                Similar to CSS <code>position: fixed</code>. Calculated from the
+                top-left corner of the browser window.
+              </p>
+              <p>Denoted as <code>clientX</code> / <code>clientY</code>.</p>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> Like smudging a finger on the glass of
+                your monitor. The position on the glass doesn't change even if
+                you scroll the page behind it.
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>2. Document Coordinates</h4>
+              <p>
+                Similar to CSS <code>position: absolute</code>. Calculated from
+                the top-left corner of the document itself.
+              </p>
+              <p>Denoted as <code>pageX</code> / <code>pageY</code>.</p>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> Like a GPS coordinate on a map. Even
+                if you fold the map, the coordinate stays fixed to that spot on
+                the paper.
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              When the page is scrolled, an element's Document coordinates stay
+              the same, but its Window coordinates change (because it moves
+              closer to or further from the top of the visible glass).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: getBoundingClientRect -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Element Coordinates</h2>
+          <p class="slide-subtitle">elem.getBoundingClientRect()</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The method <code>elem.getBoundingClientRect()</code> returns the
+              window coordinates for the smallest rectangle that fits around the
+              element. It returns an object with these properties:
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>DOMRect Properties</h4>
+            <div class="code-block">
+              { x: 100,
+              <span class="comment"
+                >// X coordinate of the rectangle origin</span
+              >
+              y: 150,
+              <span class="comment"
+                >// Y coordinate of the rectangle origin</span
+              >
+              width: 300,
+              <span class="comment"
+                >// Width of the rectangle (always positive here)</span
+              >
+              height: 200,
+              <span class="comment">// Height of the rectangle</span>
+
+              <span class="comment"
+                >// Derived (calculated from x, y, width, height):</span
+              >
+              top: 150,
+              <span class="comment">// Y-coordinate of the top edge</span>
+              bottom: 350,
+              <span class="comment"
+                >// Y-coordinate of the bottom edge (y + height)</span
+              >
+              left: 100,
+              <span class="comment">// X-coordinate of the left edge</span>
+              right: 400
+              <span class="comment"
+                >// X-coordinate of the right edge (x + width)</span
+              >
+              }
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Remember:</strong> These coordinates are relative to the
+            <strong>window</strong>, not the document. If you scroll the page,
+            <code>top</code> and <code>bottom</code> will change. Also,
+            coordinates can be negative if the element is scrolled above the
+            window!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Finding & Positioning -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Finding & Positioning Elements</h2>
+          <p class="slide-subtitle">elementFromPoint & Document Coords</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>Finding Elements by Coordinate</h3>
+              <p>
+                <code>document.elementFromPoint(x, y)</code> does the reverse of
+                <code>getBoundingClientRect</code>. You give it window
+                coordinates, and it returns the topmost element at that spot.
+              </p>
+              <div class="code-block">
+                <span class="comment"
+                  >// What element is in the middle of the screen?</span
+                >
+                <span class="keyword">let</span> centerX =
+                document.documentElement.clientWidth / 2;
+                <span class="keyword">let</span> centerY =
+                document.documentElement.clientHeight / 2;
+
+                <span class="keyword">let</span> elem =
+                document.elementFromPoint(centerX, centerY);
+                elem.style.background = <span class="string">"red"</span>;
+              </div>
+            </div>
+            <div class="column text-section">
+              <h3>Document Coordinates</h3>
+              <p>
+                There's no built-in method for document coordinates, but they
+                are easy to calculate. Just add the current scroll position to
+                the window coordinates!
+              </p>
+              <div class="code-block">
+                <span class="keyword">function</span>
+                <span class="function">getCoords</span>(elem) {
+                <span class="keyword">let</span> box =
+                elem.getBoundingClientRect();
+
+                <span class="keyword">return</span> { top: box.top +
+                window.pageYOffset, left: box.left + window.pageXOffset }; }
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Positioning Use Case</h4>
+            <p>
+              Use <strong>Window coordinates</strong> with
+              <code>position: fixed</code> if you want an element (like a
+              tooltip) to stay in place while the user scrolls.
+            </p>
+            <p>
+              Use <strong>Document coordinates</strong> with
+              <code>position: absolute</code> if you want an element to stay
+              attached to a specific part of the document as the user scrolls.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Geometry, Scrolling & Coordinates Presentation | Scroll down to continue
+        &uarr; or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

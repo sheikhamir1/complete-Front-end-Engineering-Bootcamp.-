@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>State & Beacon</title>
+    <style>
+      /* Using similar styles from Project 1 for consistency */
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        width: 300px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+      button {
+        padding: 10px;
+        width: 100%;
+        background: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 10px;
+      }
+      button:hover {
+        background: #218838;
+      }
+      #stateDisplay {
+        font-weight: bold;
+        text-align: center;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Secret Notes</h2>
+      <textarea id="noteInput" rows="5" placeholder="Type a note..."></textarea>
+      <button id="checkStateBtn">Check Ready State</button>
+      <button id="sendBeacon">Check sendBeacon Status</button>
+      <p id="stateDisplay"></p>
+    </div>
+    <script>
+      const checkStateBtn = document.getElementById("checkStateBtn");
+      const stateDisplay = document.getElementById("stateDisplay");
+      const noteInput = document.getElementById("noteInput");
+
+      // 1. Checking document.readyState
+      checkStateBtn.addEventListener("click", function () {
+        // If the user clicks this, the page is definitely already loaded.
+        // So it will say "complete".
+        stateDisplay.textContent = `Current State: ${document.readyState}`;
+      });
+
+      // 2. Safe Initialization Pattern
+      function initializeApp() {
+        console.log("App safely initialized!");
+      }
+
+      // We check: Are we already completely loaded?
+      if (document.readyState === "loading") {
+        // If still loading, wait for the event
+        document.addEventListener("DOMContentLoaded", initializeApp);
+      } else {
+        // If already interactive/complete, run immediately!
+        initializeApp();
+      }
+
+      //   3. The Unload Event & sendBeacon
+      //   window.addEventListener("unload", function () {
+      //     // The user is leaving right NOW.
+      //     let currentNote = noteInput.value;
+      //     console.log(currentNote);
+
+      //     if (currentNote.length > 0) {
+      //       let serverUrl = "https://httpbin.org/post";
+
+      //       // Create a FormData object to hold our note
+      //       let data = new FormData();
+      //       data.append("note", currentNote);
+
+      //       // Fire and forget!
+      //       navigator.sendBeacon(serverUrl, data);
+      //     }
+      //   });
+      document.getElementById("sendBeacon").addEventListener("click", () => {
+        let data = new FormData();
+        data.append("sendNote", noteInput.value);
+
+        navigator.sendBeacon("https://httpbin.org/post", data);
+      });
+    </script>
+  </body>
+</html>

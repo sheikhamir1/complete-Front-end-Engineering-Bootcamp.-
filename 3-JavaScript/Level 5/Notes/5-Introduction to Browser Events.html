@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction to Browser Events</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Introduction to Browser Events</h1>
+          <p class="slide-subtitle">Making your page react to users</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1517292987719-0369a794ec0f?q=80&w=2070&auto=format&fit=crop"
+              alt="User clicking on a screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              An <strong>event</strong> is a signal that something has happened.
+              Every time a user clicks a button, types on a keyboard, or hovers
+              over an element, the browser fires an event. Your JavaScript can
+              "listen" for these events and react.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of an event like a
+            doorbell. When someone presses the doorbell (the event), you hear it
+            and open the door (the handler). In JavaScript, the browser rings
+            the doorbell, and your code decides what to do next.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Types of Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Types of Events</h2>
+          <p class="slide-subtitle">What kind of doorbells do we have?</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>Mouse Events</h4>
+            <div class="list-section">
+              <ul>
+                <li><code>click</code> – A mouse click (or tap on mobile).</li>
+                <li><code>contextmenu</code> – Right-click.</li>
+                <li>
+                  <code>mouseover</code> / <code>mouseout</code> – Cursor
+                  enters/leaves an element.
+                </li>
+                <li>
+                  <code>mousedown</code> / <code>mouseup</code> –
+                  Pressing/releasing the mouse button.
+                </li>
+                <li><code>mousemove</code> – Moving the mouse.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>Keyboard Events</h4>
+              <div class="list-section">
+                <ul>
+                  <li><code>keydown</code> – Key is pressed.</li>
+                  <li><code>keyup</code> – Key is released.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>Form & Document Events</h4>
+              <div class="list-section">
+                <ul>
+                  <li><code>submit</code> – Form is submitted.</li>
+                  <li><code>focus</code> – Element gets focus.</li>
+                  <li><code>DOMContentLoaded</code> – HTML is fully loaded.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: HTML Attribute Handlers -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Way 1: HTML Attributes</h2>
+          <p class="slide-subtitle">onclick="..."</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The simplest way to handle an event is right inside the HTML tag
+              using an attribute named <code>on&lt;event&gt;</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example</h4>
+            <div class="code-block">
+              <span class="keyword">&lt;input</span> value=<span class="string"
+                >"Click me"</span
+              >
+              onclick=<span class="string">"alert('Click!')"</span> type=<span
+                class="string"
+                >"button"</span
+              ><span class="keyword">&gt;</span>
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Quote Trap!</strong> Because the HTML attribute uses
+            double quotes <code>"..."</code>, you must use single quotes
+            <code>'...'</code> for the strings inside your JavaScript.
+          </div>
+          <div class="text-section">
+            <p>
+              You can also call a predefined function. This keeps the HTML
+              cleaner:
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;script&gt;</span>
+              <span class="keyword">function</span>
+              <span class="function">countRabbits</span>() {
+              <span class="keyword">for</span>(<span class="keyword">let</span>
+              i=1; i<=3; i++) { alert(<span class="string">"Rabbit "</span> +
+              i); } }
+              <span class="keyword">&lt;/script&gt;</span>
+
+              <span class="keyword">&lt;input</span> type=<span class="string"
+                >"button"</span
+              >
+              onclick=<span class="string">"countRabbits()"</span> value=<span
+                class="string"
+                >"Count!"</span
+              ><span class="keyword">&gt;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: DOM Property Handlers -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Way 2: DOM Properties</h2>
+          <p class="slide-subtitle">elem.onclick = function</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Instead of putting JavaScript in HTML, we can assign a handler
+              using a DOM property. This separates your HTML from your logic.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example</h4>
+            <div class="code-block">
+              <span class="keyword">&lt;input</span> id=<span class="string"
+                >"elem"</span
+              >
+              type=<span class="string">"button"</span> value=<span
+                class="string"
+                >"Click me"</span
+              ><span class="keyword">&gt;</span>
+
+              <span class="keyword">&lt;script&gt;</span>
+              elem.onclick = <span class="keyword">function</span>() {
+              alert(<span class="string">'Thank you'</span>); };
+              <span class="keyword">&lt;/script&gt;</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Accessing the Element:</strong> Inside the handler, the
+            keyword <code>this</code> refers to the element that triggered the
+            event. For example: <code>alert(this.innerHTML)</code>.
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Overwriting Danger:</strong> A DOM property is just a
+            single variable. If you assign two handlers to <code>onclick</code>,
+            the second one completely erases the first one!
+            <div class="code-block">
+              input.onclick = <span class="keyword">function</span>() {
+              alert(1); } <span class="comment">// Erased!</span> input.onclick
+              = <span class="keyword">function</span>() { alert(2); }
+              <span class="comment">// Only this runs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Common Mistakes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Common Mistakes with Handlers</h2>
+          <p class="slide-subtitle">
+            Passing the function vs. Calling the function
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The most common mistake beginners make is adding parentheses when
+              they shouldn't.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>❌ Wrong</h4>
+              <div class="code-block">
+                <span class="comment"
+                  >// This runs the function immediately!</span
+                >
+                <span class="comment">// It assigns undefined to onclick.</span>
+                button.onclick = sayThanks();
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>✅ Right</h4>
+              <div class="code-block">
+                <span class="comment"
+                  >// This assigns the function to run LATER</span
+                >
+                button.onclick = sayThanks;
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Why the difference?</h3>
+            <p>
+              Adding <code>()</code> means "execute this code right now".
+              Without <code>()</code>, you are passing a reference to the
+              function, telling the browser: "Here is the recipe. Don't bake the
+              cake now, bake it when the event happens."
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>The HTML Exception:</strong> In HTML attributes, you
+            <em>do</em> need parentheses: <code>onclick="sayThanks()"</code>.
+            This is because the browser automatically wraps your string inside a
+            function block.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: addEventListener -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Way 3: addEventListener</h2>
+          <p class="slide-subtitle">The modern, flexible way</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Because HTML attributes and DOM properties can only hold
+              <strong>one</strong> handler, modern JavaScript uses
+              <code>addEventListener</code>. It's like a bulletin board where
+              you can pin as many recipes as you want!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Syntax</h4>
+            <div class="code-block">
+              element.addEventListener(event, handler[, options]);
+
+              <span class="comment">// Example</span>
+              elem.addEventListener(<span class="string">"click"</span>,
+              handler1); elem.addEventListener(<span class="string"
+                >"click"</span
+              >, handler2); <span class="comment">// Both will run!</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Removing Handlers</h4>
+            <p>
+              To remove a handler, you must pass the
+              <strong>exact same function reference</strong>. Anonymous arrow
+              functions won't work because they create new objects every time.
+            </p>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">handler</span>() { alert(<span
+                class="string"
+                >'Thanks!'</span
+              >); } input.addEventListener(<span class="string">"click"</span>,
+              handler);
+              <span class="comment">// ... later ...</span>
+              input.removeEventListener(<span class="string">"click"</span>,
+              handler); <span class="comment">// Works!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: The Event Object -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Event Object</h2>
+          <p class="slide-subtitle">Getting the details of what happened</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When an event happens, the browser creates an
+              <code>event</code> object with all the details (where was the
+              mouse? which key was pressed?) and passes it as the first argument
+              to your handler.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> If the event is a doorbell
+              ringing, the Event Object is the security camera showing you
+              exactly who is at the door and what they are carrying.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Example Usage</h4>
+            <div class="code-block">
+              elem.onclick = <span class="keyword">function</span>(event) {
+              <span class="comment">// What type of event was it?</span>
+              alert(event.type); <span class="comment">// "click"</span>
+
+              <span class="comment">// Which element handled it?</span>
+              alert(event.currentTarget);
+              <span class="comment">// The element itself</span>
+
+              <span class="comment">// Where did the click happen?</span>
+              alert(<span class="string">"X: "</span> + event.clientX +
+              <span class="string">" Y: "</span> + event.clientY); };
+            </div>
+          </div>
+          <div class="text-section">
+            <p><strong>Important properties:</strong></p>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <code>event.type</code> – The name of the event (e.g.,
+                  "click").
+                </li>
+                <li>
+                  <code>event.currentTarget</code> – The element listening for
+                  the event (same as <code>this</code>).
+                </li>
+                <li>
+                  <code>event.clientX / clientY</code> – Window-relative
+                  coordinates for mouse events.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Object Handlers -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Object Handlers: handleEvent</h2>
+          <p class="slide-subtitle">Passing an object instead of a function</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Did you know <code>addEventListener</code> can accept an
+              <strong>object</strong> instead of a function? When the event
+              fires, the browser calls the object's
+              <code>handleEvent(event)</code> method.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Basic Example</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> obj = {
+              <span class="function">handleEvent</span>(event) {
+              alert(event.type + <span class="string">" at "</span> +
+              event.currentTarget); } }; elem.addEventListener(<span
+                class="string"
+                >'click'</span
+              >, obj); <span class="comment">// Pass the whole object!</span>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Smart Routing Pattern</h4>
+            <p>
+              You can use <code>handleEvent</code> as a router to call specific
+              methods based on the event type.
+            </p>
+            <div class="code-block">
+              <span class="keyword">class</span> Menu {
+              <span class="function">handleEvent</span>(event) {
+              <span class="comment">// mousedown -> onMousedown</span>
+              <span class="keyword">let</span> method =
+              <span class="string">'on'</span> + event.type[0].toUpperCase() +
+              event.type.slice(1);
+              <span class="keyword">this</span>[method](event); }
+
+              <span class="function">onMousedown</span>() { elem.innerHTML =
+              <span class="string">"Pressed"</span>; }
+              <span class="function">onMouseup</span>() { elem.innerHTML +=
+              <span class="string">"...and released."</span>; } }
+
+              <span class="keyword">let</span> menu =
+              <span class="keyword">new</span> Menu();
+              elem.addEventListener(<span class="string">'mousedown'</span>,
+              menu); elem.addEventListener(<span class="string">'mouseup'</span
+              >, menu);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">3 Ways to handle events</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>Comparison Table</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Syntax</th>
+                  <th>Pros/Cons</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>HTML Attribute</td>
+                  <td><code>onclick="..."</code></td>
+                  <td>
+                    Quick, but mixes HTML and JS. Rarely used in modern code.
+                  </td>
+                </tr>
+                <tr>
+                  <td>DOM Property</td>
+                  <td><code>elem.onclick = func</code></td>
+                  <td>
+                    Clean, but you can only assign <strong>one</strong> handler
+                    per event.
+                  </td>
+                </tr>
+                <tr>
+                  <td>addEventListener</td>
+                  <td><code>elem.addEventListener(event, func)</code></td>
+                  <td>✅ Multiple handlers! Removable. The modern standard.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong>Key Takeaways:</strong>
+            <ul class="list-section">
+              <li>
+                Always use <code>addEventListener</code> for modern
+                applications.
+              </li>
+              <li>
+                Remember to pass the function reference
+                (<code>sayThanks</code>), not the call
+                (<code>sayThanks()</code>), unless inside an HTML attribute.
+              </li>
+              <li>
+                The <code>event</code> object is your best friend for finding
+                out exactly what happened and where it happened.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Introduction to Browser Events | Scroll down to continue &uarr; or
+        &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

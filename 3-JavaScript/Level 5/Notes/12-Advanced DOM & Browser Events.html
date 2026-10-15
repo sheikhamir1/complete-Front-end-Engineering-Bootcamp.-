@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced DOM & Browser Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 15px;
+        }
+
+        .slide-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: #5f6368;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-section {
+            margin-bottom: 20px;
+        }
+
+        .text-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .text-section p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-section {
+            margin-bottom: 20px;
+        }
+
+        .list-section ul {
+            padding-left: 25px;
+        }
+
+        .list-section li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        .highlight-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #0d47a1;
+            transform: scale(1.1);
+        }
+
+        .progress-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: #1a73e8;
+            z-index: 101;
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5f6368;
+            font-size: 0.9rem;
+        }
+
+        .info-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h4 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #e1e8ed;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .protocol-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .protocol-icon {
+            font-size: 2rem;
+            color: #1a73e8;
+            margin-right: 15px;
+            width: 60px;
+            text-align: center;
+        }
+
+        .protocol-info {
+            flex: 1;
+        }
+
+        .protocol-info h4 {
+            margin-bottom: 5px;
+            color: #1a73e8;
+        }
+
+        pre {
+            background-color: #e8f0fe;
+            padding: 12px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            margin: 10px 0;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+
+            .slide-title {
+                font-size: 1.8rem;
+            }
+
+            .two-column {
+                flex-direction: column;
+            }
+
+            .navigation {
+                bottom: 20px;
+                top: auto;
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="topBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+        <button class="nav-btn" id="downBtn" title="Go to bottom"><i class="fas fa-arrow-down"></i></button>
+    </div>
+
+    <div class="presentation-container">
+
+        <!-- Slide 1: Title & Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Advanced DOM & Browser Events</h1>
+                <p class="slide-subtitle">Mutation Observer, Selection, and the Event Loop</p>
+            </div>
+            <div class="slide-content">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Code on screen">
+                </div>
+                <div class="text-section">
+                    <p>As web applications get complex, we need to observe changes dynamically, handle user text selections, and ensure our code runs smoothly without freezing the browser.</p>
+                </div>
+                <div class="highlight-box">
+                    <strong>Real-World Analogy:</strong> The Browser Kitchen 🍳<br>
+                    1. <strong>Mutation Observer:</strong> The security camera watching the fridge for missing items.<br>
+                    2. <strong>Selection/Range:</strong> A highlighter pen and scissors to mark and cut text.<br>
+                    3. <strong>Event Loop:</strong> The chef taking orders, cooking one at a time, while keeping the restaurant running.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Mutation Observer -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Mutation Observer</h2>
+                <p class="slide-subtitle">Watching the DOM change in real-time</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p><code>MutationObserver</code> is a built-in object that watches a DOM element and fires a callback when it detects a change.</p>
+                </div>
+                <div class="info-card">
+                    <h4>How it works (3 Steps)</h4>
+                    <pre><code>// 1. Create the observer with a callback
+let observer = new MutationObserver(callback);
+
+// 2. Attach it to a DOM node
+observer.observe(node, config);
+
+// 3. Stop observing when done
+observer.disconnect();</code></pre>
+                </div>
+                <div class="text-section">
+                    <h3>The Config Object</h3>
+                    <p>You tell the observer exactly what to watch for:</p>
+                    <ul class="list-section">
+                        <li><strong>childList:</strong> Changes in direct children.</li>
+                        <li><strong>subtree:</strong> Changes in all descendants (deep watching).</li>
+                        <li><strong>attributes:</strong> Changes to element attributes (like class, id).</li>
+                        <li><strong>characterData:</strong> Changes to text content.</li>
+                        <li><strong>attributeOldValue / characterDataOldValue:</strong> Passes the old and new value to the callback.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Mutation Observer Use Cases -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Mutation Observer Use Cases</h2>
+                <p class="slide-subtitle">Why do we need a DOM security camera?</p>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div class="column">
+                        <div class="protocol-card">
+                            <div class="protocol-icon"><i class="fas fa-ban"></i></div>
+                            <div class="protocol-info">
+                                <h4>Integration: Blocking 3rd-Party Ads</h4>
+                                <p>Sometimes a 3rd-party script injects unwanted ads (<code>&lt;div class="ads"&gt;</code>) into your page. You can use an observer to detect when that element appears and instantly remove it.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="protocol-card">
+                            <div class="protocol-icon"><i class="fas fa-paint-brush"></i></div>
+                            <div class="protocol-info">
+                                <h4>Architecture: Auto-Highlighting</h4>
+                                <p>If you dynamically load articles with code snippets, you need to run a syntax highlighter (like Prism.js). Instead of calling it manually every time you load content, the observer detects new <code>&lt;pre&gt;</code> tags and highlights them automatically.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <strong>Cleaning up:</strong> Always call <code>observer.disconnect()</code> when you're done to save memory. If you need to process any changes that happened right before you disconnected, use <code>observer.takeRecords()</code> to grab the final unprocessed list.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Range -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Range: The Invisible Highlighter</h2>
+                <p class="slide-subtitle>Selecting parts of the document programmatically</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Before we can "select" text on screen, we need to understand <code>Range</code>. A Range is an invisible pair of boundary points (start and end) in the document.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Creating a Range</h4>
+                    <pre><code>let range = new Range();
+range.setStart(node, offset);
+range.setEnd(node, offset);</code></pre>
+                    <p><strong>How Offset Works:</strong></p>
+                    <ul class="list-section">
+                        <li>If <code>node</code> is a <strong>Text Node</strong>, offset is the character number. (e.g., offset 2 in "Hello" starts at the first 'l').</li>
+                        <li>If <code>node</code> is an <strong>Element Node</strong>, offset is the child number. (e.g., offset 0 selects the first child element).</li>
+                    </ul>
+                </div>
+                <div class="text-section">
+                    <h3>Powerful Range Methods</h3>
+                    <ul class="list-section">
+                        <li><strong>deleteContents():</strong> Removes the content from the DOM.</li>
+                        <li><strong>cloneContents() / extractContents():</strong> Copies or cuts the selected content to use elsewhere.</li>
+                        <li><strong>insertNode(node):</strong> Inserts a new node at the start of the range.</li>
+                        <li><strong>surroundContents(node):</strong> Wraps the range in a new element (e.g., wrapping text in a <code>&lt;b&gt;</code> tag).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Selection -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Selection: What the User Sees</h2>
+                <p class="slide-subtitle">The visible blue highlight on the screen</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>While <code>Range</code> is the underlying concept, <code>Selection</code> is the visible result. We get it using <code>window.getSelection()</code>. A selection can contain one or more Ranges (though most browsers only allow one).</p>
+                </div>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="info-card">
+                            <h4>Anchor vs Focus</h4>
+                            <p><strong>Anchor:</strong> Where the selection started.<br>
+                            <strong>Focus:</strong> Where the selection ended.</p>
+                            <p>Unlike Range, the Focus can be BEFORE the Anchor if the user dragged their mouse backwards!</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="info-card">
+                            <h4>Selection Events</h4>
+                            <p><strong>onselectstart:</strong> Fires when the user starts selecting. (Prevent this to make text unselectable!).<br>
+                            <strong>onselectionchange:</strong> Fires whenever the selection changes. Must be attached to <code>document</code>.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <strong>Getting Selected Text:</strong> Use <code>document.getSelection().toString()</code> to get plain text, or <code>selection.getRangeAt(0).cloneContents()</code> to get the actual DOM nodes (to preserve formatting like bold/italics).
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Form Selections -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Selection in Form Controls</h2>
+                <p class="slide-subtitle">Handling text inputs and textareas</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>For <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code>, the Selection API is much simpler because the content is just plain text, not HTML DOM nodes.</p>
+                </div>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Property / Method</th>
+                            <th>What it does</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>input.selectionStart</code></td>
+                            <td>Position where selection starts (or cursor is).</td>
+                        </tr>
+                        <tr>
+                            <td><code>input.selectionEnd</code></td>
+                            <td>Position where selection ends.</td>
+                        </tr>
+                        <tr>
+                            <td><code>input.select()</code></td>
+                            <td>Selects all text in the input.</td>
+                        </tr>
+                        <tr>
+                            <td><code>input.setSelectionRange(start, end)</code></td>
+                            <td>Selects text between start and end.</td>
+                        </tr>
+                        <tr>
+                            <td><code>input.setRangeText(replacement)</code></td>
+                            <td>Replaces the currently selected text.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="highlight-box">
+                    <strong>Moving the Cursor:</strong> If <code>selectionStart</code> equals <code>selectionEnd</code>, there is no selection—it's just the blinking cursor! You can programmatically move the cursor by setting these properties to the same number.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Event Loop Basics -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">The Event Loop</h2>
+                <p class="slide-subtitle">How JavaScript multitasks with a single thread</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>JavaScript is single-threaded, meaning it can only do one thing at a time. The <strong>Event Loop</strong> is the mechanism that lets the browser handle user clicks, network requests, and timers without freezing.</p>
+                </div>
+                <div class="protocol-card">
+                    <div class="protocol-icon"><i class="fas fa-sync-alt"></i></div>
+                    <div class="protocol-info">
+                        <h4>The Loop Algorithm</h4>
+                        <p>1. Execute the oldest task in the queue.<br>
+                        2. Sleep and wait for a new task.<br>
+                        3. Repeat.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h4>What is a Macrotask?</h4>
+                    <p>Almost everything is a macrotask: running a <code>&lt;script&gt;</code>, handling a click event, a <code>setTimeout</code> callback, etc.</p>
+                    <p><strong>Critical Rule:</strong> The browser NEVER renders changes to the screen while a macrotask is running. If a task takes 10 seconds, the page freezes for 10 seconds.</p>
+                </div>
+                <div class="highlight-box">
+                    <strong>Analogy:</strong> A chef in a kitchen. If they take a 10-minute order, they can't serve other customers or answer questions until it's done.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Splitting CPU-Heavy Tasks -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Splitting CPU-Heavy Tasks</h2>
+                <p class="slide-subtitle">Keeping the UI responsive</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>If you have a heavy script (like highlighting 10,000 lines of code), it will block the event loop. The solution? Break it into chunks using <code>setTimeout</code> with zero delay.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Before (Freezes the browser):</h4>
+                    <pre><code>function count() {
+  for (let j = 0; j < 1e9; j++) { i++; }
+  alert("Done!");
+}</code></pre>
+                </div>
+                <div class="info-card">
+                    <h4>After (Allows UI updates between chunks):</h4>
+                    <pre><code>let i = 0;
+function count() {
+  // Do a piece of the work
+  do { i++; } while (i % 1e6 != 0);
+
+  if (i == 1e9) {
+    alert("Done!");
+  } else {
+    // Yield control back to browser
+    setTimeout(count); 
+  }
+}
+count();</code></pre>
+                </div>
+                <div class="highlight-box">
+                    <strong>Use Cases:</strong> Showing a progress bar that actually updates visually, or preventing the "Page Unresponsive" warning.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Microtasks vs Macrotasks -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2 class="slide-title">Microtasks vs Macrotasks</h2>
+                <p class="slide-subtitle">The VIP line of the Event Loop</p>
+            </div>
+            <div class="slide-content">
+                <div class="text-section">
+                    <p>Besides macrotasks, there are <strong>Microtasks</strong>. These come exclusively from our code (Promises, <code>await</code>, <code>queueMicrotask()</code>).</p>
+                </div>
+                <div class="info-card">
+                    <h4>The Execution Order</h4>
+                    <p>1. Run the Macrotask.<br>
+                    2. Run <strong>ALL</strong> Microtasks until the queue is empty.<br>
+                    3. Render changes to the screen.<br>
+                    4. Take the next Macrotask.</p>
+                </div>
+                <div class="highlight-box">
+                    <strong>Example Order:</strong><br>
+                    <code>setTimeout(() => alert("timeout"));</code> <em>(Macrotask)</em><br>
+                    <code>Promise.resolve().then(() => alert("promise"));</code> <em>(Microtask)</em><br>
+                    <code>alert("code");</code> <em>(Synchronous)</em><br><br>
+                    <strong>Result:</strong> "code" → "promise" → "timeout". Microtasks always execute before the next macrotask!
+                </div>
+                <div class="protocol-card">
+                    <div class="protocol-icon"><i class="fas fa-hard-hat"></i></div>
+                    <div class="protocol-info">
+                        <h4>Web Workers (For extreme heavy lifting)</h4>
+                        <p>If a task is too heavy even for chunking, use Web Workers. They run in a completely separate background thread. They can't touch the DOM, but they can crunch numbers and send messages back to the main thread.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Advanced DOM & Browser Events Presentation</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.getElementById('topBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('downBtn').addEventListener('click', function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Progress bar functionality
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Add fade-in animation to slides when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.transform = 'translateY(20px)';
+            slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(slide);
+        });
+    </script>
+</body>
+</html>

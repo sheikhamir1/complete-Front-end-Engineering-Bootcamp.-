@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mouse Events & Drag'n'Drop</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Roboto', sans-serif;
+background-color: #f5f7fa;
+color: #333;
+line-height: 1.6;
+}
+
+.presentation-container {
+width: 100%;
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.slide {
+background: white;
+border-radius: 10px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+padding: 40px;
+margin-bottom: 30px;
+min-height: 70vh;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+position: relative;
+}
+
+.slide-header {
+margin-bottom: 30px;
+border-bottom: 2px solid #e1e8ed;
+padding-bottom: 15px;
+}
+
+.slide-title {
+font-family: 'Montserrat', sans-serif;
+font-size: 2.5rem;
+color: #1a73e8;
+margin-bottom: 10px;
+}
+
+.slide-subtitle {
+font-size: 1.2rem;
+color: #5f6368;
+}
+
+.slide-content {
+flex: 1;
+display: flex;
+flex-direction: column;
+}
+
+.text-section {
+margin-bottom: 20px;
+}
+
+.text-section h3 {
+font-family: 'Montserrat', sans-serif;
+color: #1a73e8;
+margin-bottom: 10px;
+font-size: 1.5rem;
+}
+
+.text-section p {
+margin-bottom: 15px;
+font-size: 1.1rem;
+}
+
+.image-container {
+display: flex;
+justify-content: center;
+margin: 20px 0;
+}
+
+.image-container img {
+max-width: 100%;
+border-radius: 8px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.list-section {
+margin-bottom: 20px;
+}
+
+.list-section ul {
+padding-left: 25px;
+}
+
+.list-section li {
+margin-bottom: 10px;
+font-size: 1.1rem;
+}
+
+.two-column {
+display: flex;
+gap: 30px;
+margin-top: 20px;
+}
+
+.column {
+flex: 1;
+}
+
+.highlight-box {
+background-color: #e8f0fe;
+border-left: 4px solid #1a73e8;
+padding: 15px;
+margin: 20px 0;
+border-radius: 0 8px 8px 0;
+}
+
+.warning-box {
+background-color: #fff3e0;
+border-left: 4px solid #ff9800;
+padding: 15px;
+margin: 20px 0;
+border-radius: 0 8px 8px 0;
+}
+
+.navigation {
+position: fixed;
+top: 20px;
+right: 20px;
+z-index: 100;
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.nav-btn {
+background-color: #1a73e8;
+color: white;
+border: none;
+border-radius: 50%;
+width: 50px;
+height: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+transition: all 0.3s ease;
+font-size: 1.2rem;
+}
+
+.nav-btn:hover {
+background-color: #0d47a1;
+transform: scale(1.1);
+}
+
+.progress-indicator {
+position: fixed;
+top: 0;
+left: 0;
+height: 5px;
+background-color: #1a73e8;
+z-index: 101;
+transition: width 0.3s ease;
+}
+
+.footer {
+text-align: center;
+padding: 20px;
+color: #5f6368;
+font-size: 0.9rem;
+}
+
+.info-card {
+background-color: #f8f9fa;
+border-radius: 8px;
+padding: 20px;
+margin-bottom: 20px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h4 {
+color: #1a73e8;
+margin-bottom: 10px;
+font-size: 1.3rem;
+}
+
+.comparison-table {
+width: 100%;
+border-collapse: collapse;
+margin: 20px 0;
+}
+
+.comparison-table th, .comparison-table td {
+border: 1px solid #e1e8ed;
+padding: 12px;
+text-align: left;
+}
+
+.comparison-table th {
+background-color: #e8f0fe;
+color: #1a73e8;
+}
+
+.comparison-table tr:nth-child(even) {
+background-color: #f8f9fa;
+}
+
+.code-block {
+background-color: #283593;
+color: #e8f0fe;
+padding: 20px;
+border-radius: 8px;
+font-family: 'Courier New', Courier, monospace;
+margin: 15px 0;
+overflow-x: auto;
+white-space: pre-wrap;
+font-size: 0.9rem;
+line-height: 1.5;
+}
+
+.code-block .keyword { color: #ff79c6; }
+.code-block .string { color: #50fa7b; }
+.code-block .comment { color: #6272a4; font-style: italic; }
+.code-block .function { color: #8be9fd; }
+
+@media (max-width: 768px) {
+.slide {
+padding: 20px;
+}
+
+.slide-title {
+font-size: 1.8rem;
+}
+
+.two-column {
+flex-direction: column;
+}
+
+.navigation {
+bottom: 20px;
+top: auto;
+flex-direction: row;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-indicator" id="progressBar"></div>
+
+<div class="navigation">
+<button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+<button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+</div>
+
+<div class="presentation-container">
+
+<!-- Slide 1: Title -->
+<div class="slide">
+<div class="slide-header">
+<h1 class="slide-title">Mouse Events & Drag'n'Drop</h1>
+<p class="slide-subtitle">Tracking clicks, movements, and building drag interactions</p>
+</div>
+<div class="slide-content">
+<div class="image-container">
+<img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=2067&auto=format&fit=crop" alt="Computer mouse on desk">
+</div>
+<div class="text-section">
+<p>Mouse events are the backbone of interactive web pages. They let us know exactly when a user clicks, moves, or drags. Let's explore the different types and how to use them to build cool features like Drag'n'Drop.</p>
+</div>
+<div class="highlight-box">
+<strong>Real-World Analogy:</strong> Mouse events are like a security camera for your desk. It tells you exactly <em>where</em> a hand touched the desk, <em>which</em> finger it used, and <em>where</em> it moved next.
+</div>
+</div>
+</div>
+
+<!-- Slide 2: Event Types & Order -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Mouse Event Types & Order</h2>
+<p class="slide-subtitle">What happens when you click?</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>A single user action can trigger multiple events in a very specific order.</p>
+</div>
+<div class="info-card">
+<h4>The Click Sequence</h4>
+<p>When you press and release the left mouse button, three events fire in this exact order:</p>
+<ol class="list-section">
+<li><strong>mousedown:</strong> The button is pressed down.</li>
+<li><strong>mouseup:</strong> The button is released.</li>
+<li><strong>click:</strong> A full click (press + release) is completed.</li>
+</ol>
+</div>
+<div class="info-card">
+<h4>Other Common Events</h4>
+<div class="list-section">
+<ul>
+<li><code>dblclick</code> – Double-clicking.</li>
+<li><code>contextmenu</code> – Right-clicking (opens the context menu).</li>
+<li><code>mousemove</code> – Moving the mouse over an element.</li>
+<li><code>mouseover / mouseout</code> – Entering/leaving an element.</li>
+</ul>
+</div>
+</div>
+<div class="highlight-box">
+<strong>Why does order matter?</strong> If you are listening for a <code>mouseup</code> to close a menu, but a <code>click</code> on a button opens it, understanding the sequence prevents the menu from instantly closing the moment it opens!
+</div>
+</div>
+</div>
+
+<!-- Slide 3: Mouse Button & Modifiers -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Which Button? Which Keys?</h2>
+<p class="slide-subtitle">event.button & Modifier Keys</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>Click events usually imply the left button, but <code>mousedown</code> and <code>mouseup</code> happen for <em>any</em> button. Use <code>event.button</code> to tell them apart.</p>
+</div>
+<div class="info-card">
+<h4>event.button Values</h4>
+<table class="comparison-table">
+<thead>
+<tr>
+<th>Button</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Left button (primary)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Middle button (auxiliary)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Right button (secondary)</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="info-card">
+<h4>Modifier Keys</h4>
+<p>Mouse events also tell you if modifier keys were held down during the click.</p>
+<div class="code-block"><span class="comment">// Shift, Alt, Ctrl, Cmd (Mac)</span>
+event.shiftKey
+event.altKey
+event.ctrlKey
+event.metaKey <span class="comment">// Cmd key on Mac</span>
+
+<span class="comment">// Example: Alt+Shift+Click</span>
+button.onclick = <span class="keyword">function</span>(event) {
+  <span class="keyword">if</span> (event.altKey && event.shiftKey) {
+    alert(<span class="string">'Hooray!'</span>);
+  }
+};</div>
+</div>
+<div class="warning-box">
+<strong>⚠️ Mac vs. Windows:</strong> Windows uses <code>Ctrl</code>, Mac uses <code>Cmd</code> (<code>metaKey</code>). To support both, check: <code>if (event.ctrlKey || event.metaKey)</code>.
+</div>
+</div>
+</div>
+
+<!-- Slide 4: Coordinates -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Mouse Coordinates</h2>
+<p class="slide-subtitle">Where did the click happen?</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>All mouse events provide two sets of coordinates: where the mouse is relative to the <strong>window</strong>, and where it is relative to the <strong>document</strong>.</p>
+</div>
+<div class="info-card">
+<h4>Window-relative: clientX / clientY</h4>
+<p>Measured from the top-left corner of the <em>visible browser window</em>. If you scroll down, the Y value resets. Like sticking a piece of tape on your screen.</p>
+</div>
+<div class="info-card">
+<h4>Document-relative: pageX / pageY</h4>
+<p>Measured from the top-left corner of the <em>entire HTML document</em>. Includes scroll distance. Like putting a pin on a physical map.</p>
+<div class="code-block"><span class="comment">// Example usage</span>
+input.onmousemove = <span class="keyword">function</span>(event) {
+  this.value = <span class="string">`X: ${event.clientX}, Y: ${event.clientY}`</span>;
+};</div>
+</div>
+<div class="highlight-box">
+<strong>When to use which?</strong> Use <code>clientX/Y</code> when positioning something relative to the screen (like a popup menu). Use <code>pageX/Y</code> when positioning something on the page itself (like a Drag'n'Drop element).
+</div>
+</div>
+</div>
+
+<!-- Slide 5: Moving the Mouse: over/out -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Moving the Mouse: over/out</h2>
+<p class="slide-subtitle">Hovering and the relatedTarget</h2>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p><code>mouseover</code> fires when the pointer enters an element. <code>mouseout</code> fires when it leaves. These events have a special partner: <code>relatedTarget</code>.</p>
+</div>
+<div class="info-card">
+<h4>The relatedTarget Property</h4>
+<p>For <code>mouseover</code>: <code>event.target</code> is where the mouse <em>went to</em>, and <code>event.relatedTarget</code> is where it <em>came from</em>.</p>
+<p>For <code>mouseout</code>: <code>event.target</code> is where the mouse <em>left</em>, and <code>event.relatedTarget</code> is where it <em>went to</em>.</p>
+</div>
+<div class="info-card">
+<h4>Skipping Elements</h4>
+<p>The browser doesn't fire events for every single pixel. If you move the mouse very fast, it might "jump" over intermediate elements. The browser just fires <code>mouseover</code> on the final destination.</p>
+</div>
+<div class="warning-box">
+<strong>⚠️ The Child Problem:</strong> If you move from a parent element to a child element inside it, the parent fires <code>mouseout</code>! The browser thinks the mouse "left" the parent because it's now technically over the child. This can cause annoying flickering effects.
+</div>
+</div>
+</div>
+
+<!-- Slide 6: Moving the Mouse: enter/leave -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Moving the Mouse: enter/leave</h2>
+<p class="slide-subtitle">The simple, no-fuss hover events</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>To avoid the "child problem" of <code>mouseover/out</code>, use <code>mouseenter</code> and <code>mouseleave</code>.</p>
+</div>
+<div class="info-card">
+<h4>Key Differences</h4>
+<table class="comparison-table">
+<thead>
+<tr>
+<th>Feature</th>
+<th>mouseover / mouseout</th>
+<th>mouseenter / mouseleave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trigger on child transition?</td>
+<td>Yes (Triggers on parent when entering child)</td>
+<td>No (Ignores children)</td>
+</tr>
+<tr>
+<td>Do they bubble?</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Has relatedTarget?</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box">
+<strong>Analogy:</strong> <code>mouseenter</code> is like entering a house. Once you are in the house, it doesn't matter which room you walk into; you are still inside the house. You only trigger "leave" when you walk out the front door.
+</div>
+<div class="info-card">
+<h4>Event Delegation Limitation</h4>
+<p>Because <code>mouseenter/leave</code> do <strong>not bubble</strong>, you cannot use event delegation with them. If you need to handle hover events for hundreds of table cells using a single table handler, you <em>must</em> use <code>mouseover/out</code> and filter the events manually.</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 7: Drag'n'Drop Basics -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Drag'n'Drop Basics</h2>
+<p class="slide-subtitle">Building drag from scratch using mouse events</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>While HTML has a native Drag API, it has limitations (like poor mobile support). Building it with mouse events gives you total control.</p>
+</div>
+<div class="info-card">
+<h4>The 3-Step Algorithm</h4>
+<ol class="list-section">
+<li><strong>mousedown:</strong> Prepare the element. Set it to <code>position: absolute</code> and a high <code>z-index</code>.</li>
+<li><strong>mousemove:</strong> Change the element's <code>left</code> and <code>top</code> styles based on mouse coordinates.</li>
+<li><strong>mouseup:</strong> Drop the element. Remove the <code>mousemove</code> listener.</li>
+</ol>
+</div>
+<div class="info-card">
+<h4>Basic Code Structure</h4>
+<div class="code-block">ball.onmousedown = <span class="keyword">function</span>(event) {
+  ball.style.position = <span class="string">'absolute'</span>;
+  ball.style.zIndex = 1000;
+  document.body.append(ball);
+
+  <span class="keyword">function</span> <span class="function">moveAt</span>(pageX, pageY) {
+    ball.style.left = pageX + <span class="string">'px'</span>;
+    ball.style.top = pageY + <span class="string">'px'</span>;
+  }
+
+  moveAt(event.pageX, event.pageY);
+
+  <span class="keyword">function</span> <span class="function">onMouseMove</span>(event) {
+    moveAt(event.pageX, event.pageY);
+  }
+
+  <span class="comment">// Listen on DOCUMENT to catch fast moves</span>
+  document.addEventListener(<span class="string">'mousemove'</span>, onMouseMove);
+
+  ball.onmouseup = <span class="keyword">function</span>() {
+    document.removeEventListener(<span class="string">'mousemove'</span>, onMouseMove);
+    ball.onmouseup = <span class="keyword">null</span>;
+  };
+};
+
+<span class="comment">// Disable browser's native drag</span>
+ball.ondragstart = <span class="keyword">function</span>() { <span class="keyword">return false</span>; };</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 8: Correct Positioning -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Correct Drag Positioning</h2>
+<p class="slide-subtitle">Preventing the "jump" on click</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>If you use the basic code, clicking the bottom-right corner of the ball makes it instantly "jump" so its top-left corner is under the cursor. This feels unnatural. We want to drag it from the exact point we clicked.</p>
+</div>
+<div class="info-card">
+<h4>The Shift Solution</h4>
+<p>When <code>mousedown</code> happens, calculate the distance between the click and the element's top-left corner. Keep this "shift" while moving.</p>
+<div class="code-block">ball.onmousedown = <span class="keyword">function</span>(event) {
+  <span class="comment">// 1. Calculate the initial shift</span>
+  <span class="keyword">let</span> shiftX = event.clientX - ball.getBoundingClientRect().left;
+  <span class="keyword">let</span> shiftY = event.clientY - ball.getBoundingClientRect().top;
+
+  ball.style.position = <span class="string">'absolute'</span>;
+  document.body.append(ball);
+
+  <span class="keyword">function</span> <span class="function">moveAt</span>(pageX, pageY) {
+    <span class="comment">// 2. Apply the shift while moving</span>
+    ball.style.left = pageX - shiftX + <span class="string">'px'</span>;
+    ball.style.top = pageY - shiftY + <span class="string">'px'</span>;
+  }
+
+  moveAt(event.pageX, event.pageY);
+
+  <span class="comment">// ... mousemove and mouseup logic same as before</span>
+};</div>
+</div>
+<div class="highlight-box">
+<strong>Why listen on document?</strong> If you move the mouse too fast, the cursor can slip off the ball. If the listener was on the ball, it would stop moving. Listening on <code>document</code> ensures we catch the movement no matter how fast the mouse goes.
+</div>
+</div>
+</div>
+
+<!-- Slide 9: Drop Targets -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Finding Drop Targets</h2>
+<p class="slide-subtitle">What is underneath the dragged item?</p>
+</div>
+<div class="slide-content">
+<div class="text-section">
+<p>In real apps, you drag an element onto a specific "drop zone" (like a folder). But how do we know what's under the ball if the ball itself is blocking the view?</p>
+</div>
+<div class="info-card">
+<h4>The elementFromPoint Trick</h4>
+<p>We can temporarily hide the dragged element, ask the browser what element is at those coordinates, and then show the dragged element again. This happens instantly, so the user never sees it disappear.</p>
+<div class="code-block"><span class="keyword">function</span> <span class="function">onMouseMove</span>(event) {
+  moveAt(event.pageX, event.pageY);
+
+  <span class="comment">// 1. Hide the ball</span>
+  ball.hidden = <span class="keyword">true</span>;
+  
+  <span class="comment">// 2. Find the element underneath</span>
+  <span class="keyword">let</span> elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+  
+  <span class="comment">// 3. Show the ball again</span>
+  ball.hidden = <span class="keyword">false</span>;
+
+  <span class="keyword">if</span> (!elemBelow) <span class="keyword">return</span>;
+
+  <span class="comment">// Is it a droppable zone?</span>
+  <span class="keyword">let</span> droppableBelow = elemBelow.closest(<span class="string">'.droppable'</span>);
+  
+  <span class="comment">// ... handle highlighting/leaving</span>
+}</div>
+</div>
+<div class="highlight-box">
+<strong>Why <code>closest('.droppable')</code>?</strong> The element directly under the cursor might be a tiny text node inside the drop zone. Using <code>closest()</code> looks up the DOM tree to see if that element, or any of its parents, is the actual drop zone container.
+</div>
+</div>
+</div>
+
+<!-- Slide 10: Summary -->
+<div class="slide">
+<div class="slide-header">
+<h2 class="slide-title">Summary</h2>
+<p class="slide-subtitle">Key takeaways for Mouse Events & DnD</p>
+</div>
+<div class="slide-content">
+<div class="info-card">
+<h4>Mouse Events</h4>
+<ul class="list-section">
+<li><strong>Order:</strong> mousedown → mouseup → click.</li>
+<li><strong>Button:</strong> Use <code>event.button</code> (0=left, 2=right).</li>
+<li><strong>Modifiers:</strong> <code>ctrlKey</code>, <code>shiftKey</code>, <code>altKey</code>, <code>metaKey</code> (Cmd). Always check <code>ctrlKey || metaKey</code> to support Macs.</li>
+<li><strong>Coords:</strong> <code>clientX/Y</code> (window) vs <code>pageX/Y</code> (document).</li>
+</ul>
+</div>
+<div class="info-card">
+<h4>Hover Events</h4>
+<ul class="list-section">
+<li><strong>mouseover/out:</strong> Bubble, trigger on child transitions. Use for delegation. Have <code>relatedTarget</code>.</li>
+<li><strong>mouseenter/leave:</strong> Do NOT bubble, ignore children. Simpler, but no delegation.</li>
+</ul>
+</div>
+<div class="info-card">
+<h4>Drag'n'Drop</h4>
+<ul class="list-section">
+<li>Algorithm: <code>mousedown</code> → <code>mousemove</code> (on document) → <code>mouseup</code>.</li>
+<li>Remember the <code>shiftX/Y</code> to prevent the element from "jumping" to the cursor.</li>
+<li>Always disable native drag: <code>ondragstart = () => false</code>.</li>
+<li>Use <code>document.elementFromPoint</code> to find drop targets under the dragged item.</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+<p>Mouse Events & Drag'n'Drop Presentation | Scroll down to continue &uarr; or &darr;</p>
+</div>
+
+<script>
+// Navigation functionality
+document.getElementById('topBtn').addEventListener('click', function() {
+window.scrollTo({
+top: 0,
+behavior: 'smooth'
+});
+});
+
+document.getElementById('downBtn').addEventListener('click', function() {
+window.scrollTo({
+top: document.body.scrollHeight,
+behavior: 'smooth'
+});
+});
+
+// Progress bar functionality
+window.addEventListener('scroll', function() {
+const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+const scrolled = (winScroll / height) * 100;
+document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// Add fade-in animation to slides when they come into view
+const observerOptions = {
+root: null,
+rootMargin: '0px',
+threshold: 0.1
+};
+
+const observer = new IntersectionObserver(function(entries) {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.style.opacity = '1';
+entry.target.style.transform = 'translateY(0)';
+}
+});
+}, observerOptions);
+
+document.querySelectorAll('.slide').forEach(slide => {
+slide.style.opacity = '0';
+slide.style.transform = 'translateY(20px)';
+slide.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+observer.observe(slide);
+});
+</script>
+</body>
+</html>

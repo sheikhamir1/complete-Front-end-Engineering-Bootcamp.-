@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Event Capturing</title>
+    <style>
+      #outerBox {
+        background-color: lightgray;
+        padding: 50px;
+        border: 2px solid black;
+        width: 200px;
+      }
+
+      #innerBtn {
+        margin-top: 20px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="outerBox">
+      Outer
+      <button id="innerBtn">Inner Button</button>
+    </div>
+
+    <script>
+      const outerBox = document.getElementById("outerBox");
+      const innerBtn = document.getElementById("innerBtn");
+
+      // 1. Listening on the BUBBLING phase (Default)
+      outerBox.addEventListener("click", function () {
+        alert("1. Outer Box (Bubbling Phase)");
+      });
+
+      // 2. Listening on the TARGET phase
+      innerBtn.addEventListener("click", function () {
+        alert("2. Inner Button (Target Phase)");
+      });
+
+      // 3. Listening on the CAPTURING phase
+      outerBox.addEventListener(
+        "click",
+        function () {
+          alert("3. Outer Box (Capturing Phase)");
+        },
+        { capture: true },
+      ); // <-- This makes it listen to the dive down!
+    </script>
+  </body>
+</html>

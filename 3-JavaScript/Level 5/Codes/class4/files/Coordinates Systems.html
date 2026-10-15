@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        height: 1500px;
+        margin: 0;
+        position: relative;
+        cursor: crosshair;
+      }
+      .instruction {
+        padding: 20px;
+        font-family: sans-serif;
+      }
+      .dot {
+        position: absolute; /* Document coordinate positioning */
+        width: 20px;
+        height: 20px;
+        background: red;
+        border-radius: 50%;
+        transform: translate(-50%, -50%); /* Center the dot on the click */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="instruction">
+      <h2>Topic 4: Coordinates</h2>
+      <p>Scroll down a bit, then click anywhere on the white space.</p>
+    </div>
+
+    <script>
+      // Listen for clicks on the whole document
+      document.addEventListener("click", function (event) {
+        // event.clientX = Window relative (where on the glass you clicked)
+        // event.pageX = Document relative (where on the page you clicked)
+
+        // Create a dot element
+        const dot = document.createElement("div");
+        dot.className = "dot";
+
+        // We use pageX and pageY because the dot is position: absolute (Document relative)
+        dot.style.left = event.pageX + "px";
+        dot.style.top = event.pageY + "px";
+
+        document.body.appendChild(dot);
+
+        console.log(`Window Coords: X=${event.clientX}, Y=${event.clientY}`);
+        console.log(`Document Coords: X=${event.pageX}, Y=${event.pageY}`);
+      });
+    </script>
+  </body>
+</html>

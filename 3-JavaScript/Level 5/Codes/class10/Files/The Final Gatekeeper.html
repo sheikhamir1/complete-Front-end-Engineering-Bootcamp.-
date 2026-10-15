@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Form Submission</title>
+    <style>
+      /* Keep styles from previous projects */
+      body {
+        font-family: Arial, sans-serif;
+        padding: 50px;
+      }
+      .container {
+        width: 300px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      input {
+        padding: 8px;
+      }
+      button {
+        padding: 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #forceSubmitBtn {
+        background: #17a2b8;
+        margin-top: 20px;
+        width: 100%;
+      }
+      .error-msg {
+        color: red;
+        font-size: 14px;
+        text-align: center;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login</h2>
+      <form name="loginForm" action="https://example.com/login" method="POST">
+        <label>Username:</label>
+        <input type="text" name="user" />
+
+        <label>Password:</label>
+        <input type="password" name="pass" />
+
+        <div id="submitError" class="error-msg"></div>
+
+        <button type="submit">Log In</button>
+      </form>
+
+      <hr />
+      <button type="button" id="forceSubmitBtn">Force Submit via Code</button>
+    </div>
+    <script>
+      const loginForm = document.forms.loginForm;
+      const errorDisplay = document.getElementById("submitError");
+
+      // 1. Listen for the 'submit' event on the FORM itself
+      loginForm.addEventListener("submit", function (event) {
+        // Extract final values
+        let usernameValue = loginForm.elements.user.value;
+        let passwordValue = loginForm.elements.pass.value;
+
+        // Final Validation Check
+        if (usernameValue === "" || passwordValue === "") {
+          // STOP THE FORM FROM SENDING TO THE SERVER!
+          event.preventDefault();
+
+          // Show error to the user
+          errorDisplay.textContent = "Both fields are required!";
+
+          // Programmatically focus the first empty field for good UX
+          if (usernameValue === "") {
+            loginForm.elements.user.focus();
+          } else {
+            loginForm.elements.pass.focus();
+          }
+        } else {
+          // If everything is good, we do NOT call preventDefault().
+          // The browser will naturally submit the form to 'https://example.com/login'
+          alert("Validation passed! Form is submitting...");
+        }
+      });
+
+      // 2. Programmatic Submission (Advanced)
+      const forceBtn = document.getElementById("forceSubmitBtn");
+
+      forceBtn.addEventListener("click", function () {
+        // We can fill out the form using code...
+        loginForm.elements.user.value = "AdminGhost";
+        loginForm.elements.pass.value = "SuperSecret123";
+
+        // ...and submit it instantly via JS.
+        // CRITICAL NOTE: This bypasses the 'submit' event listener above!
+        // It assumes you, the programmer, know what you are doing.
+        alert("Force submitting via code! Bypassing validation.");
+        loginForm.submit();
+      });
+    </script>
+  </body>
+</html>

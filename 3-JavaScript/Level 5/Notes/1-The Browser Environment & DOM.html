@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser Environment & DOM</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Introduction -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">The Browser Environment & DOM</h1>
+          <p class="slide-subtitle">How JavaScript talks to the Web Page</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=2064&auto=format&fit=crop"
+              alt="Web browser code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              JavaScript was born in the browser, but it has grown to run on
+              servers (Node.js) and even smart devices. Each place JS runs is
+              called a <strong>Host Environment</strong>.
+            </p>
+            <p>
+              The host environment provides its own objects and functions. In
+              the browser, the "root" object of everything is
+              <code>window</code>.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of the browser as a
+            house. The <code>window</code> object is the master control panel of
+            that house. It lets you control the global settings (global object)
+            and open/close the windows (browser window controls).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The Three Pillars -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Three Pillars of the Browser</h2>
+          <p class="slide-subtitle">DOM, CSSOM, and BOM</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The browser's functionality is split into three main areas. Here
+              is how they break down:
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>1. DOM (Document Object Model)</h4>
+            <p>
+              Represents the <strong>page content</strong>. Everything inside
+              the HTML is converted into objects that you can modify.
+            </p>
+            <div class="code-block">
+              <span class="comment"
+                >// Change the page background to red for 1 second</span
+              >
+              document.body.style.background =
+              <span class="string">"red"</span>; setTimeout(() =>
+              document.body.style.background = <span class="string">""</span>,
+              1000);
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>2. CSSOM (CSS Object Model)</h4>
+            <p>
+              Represents <strong>CSS rules and stylesheets</strong>. Used
+              together with the DOM to modify styling. In practice, we rarely
+              use it directly because we usually just add/remove CSS classes
+              instead of rewriting CSS rules in JS.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>3. BOM (Browser Object Model)</h4>
+            <p>
+              Represents <strong>everything else</strong> the browser provides
+              besides the document. This includes the
+              <code>navigator</code> (browser info),
+              <code>location</code> (current URL), and user prompts.
+            </p>
+            <div class="code-block">
+              <span class="comment">// Redirect the browser</span> location.href
+              = <span class="string">"https://wikipedia.org"</span>;
+
+              <span class="comment">// Browser info</span>
+              alert(navigator.userAgent);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: The DOM Tree -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The DOM Tree</h2>
+          <p class="slide-subtitle">How HTML becomes Objects</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Tags become Nodes</h3>
+            <p>
+              According to the DOM, every HTML tag is an
+              <strong>object</strong>. Nested tags are "children" of the
+              enclosing one. Even the text inside a tag is an object! All of
+              these objects form the "DOM Tree".
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> A family tree. The
+              <code>&lt;html&gt;</code> tag is the grandparent at the top.
+              <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code> are the
+              parents, and the tags inside them are the children. The text
+              inside the tags are the "leaves" of the tree.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>The 4 Main Node Types</h4>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>Document:</strong> The main "entry point" into the
+                  DOM.
+                </li>
+                <li>
+                  <strong>Element nodes:</strong> HTML tags
+                  (<code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>), the
+                  building blocks.
+                </li>
+                <li>
+                  <strong>Text nodes:</strong> Contain the actual text. They
+                  cannot have children (they are leaves).
+                </li>
+                <li>
+                  <strong>Comments:</strong>
+                  <code>&lt;!-- comment --&gt;</code> Even these become nodes in
+                  the tree!
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>Watch out for spaces!</strong> Spaces and line breaks
+              between tags are valid characters and become
+              <code>#text</code> nodes in the DOM. If you minify your HTML to
+              one line, these empty text nodes disappear.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Autocorrection -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">DOM Autocorrection</h2>
+          <p class="slide-subtitle">The browser fixes your mistakes</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If the browser encounters malformed HTML, it automatically
+              corrects it when building the DOM. The browser will always create
+              a valid DOM tree.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>Missing tags? Added.</h4>
+              <p>
+                If you just type <code>"Hello"</code> in an empty file, the
+                browser wraps it in <code>&lt;html&gt;</code>,
+                <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code>.
+              </p>
+            </div>
+            <div class="column info-card">
+              <h4>Unclosed tags? Closed.</h4>
+              <p>
+                Writing
+                <code>&lt;p&gt;Hello&lt;li&gt;Mom&lt;li&gt;Dad</code> will
+                automatically be fixed into properly closed
+                <code>&lt;p&gt;</code> and <code>&lt;li&gt;</code> nodes in the
+                DOM.
+              </p>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>The Table Exception:</strong> Tables always have a
+            <code>&lt;tbody&gt;</code> in the DOM. Even if you don't write it in
+            your HTML, the browser will automatically insert it between
+            <code>&lt;table&gt;</code> and <code>&lt;tr&gt;</code>. Keep this in
+            mind when styling or navigating tables!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Walking the DOM - Top Level -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Walking the DOM: Top Level</h2>
+          <p class="slide-subtitle">Starting at the top of the tree</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              All operations on the DOM start with the
+              <code>document</code> object. The topmost tree nodes are available
+              directly as its properties.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Big Three</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Represents</th>
+                  <th>HTML Tag</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>document.documentElement</code></td>
+                  <td>The root element</td>
+                  <td><code>&lt;html&gt;</code></td>
+                </tr>
+                <tr>
+                  <td><code>document.body</code></td>
+                  <td>The body element</td>
+                  <td><code>&lt;body&gt;</code></td>
+                </tr>
+                <tr>
+                  <td><code>document.head</code></td>
+                  <td>The head element</td>
+                  <td><code>&lt;head&gt;</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong>Important Catch:</strong> A script cannot access an element
+            that doesn't exist yet! If your script is inside
+            <code>&lt;head&gt;</code>, <code>document.body</code> will be
+            <code>null</code> because the browser hasn't loaded the body yet. In
+            the DOM world, <code>null</code> means "doesn't exist".
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Children vs Descendants -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Children vs. Descendants</h2>
+          <p class="slide-subtitle">Direct kids vs. the whole family</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>Before we navigate, we must clarify two important terms:</p>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>Child Nodes (Children):</strong> Elements that are
+                  <em>directly</em> nested inside the given element. (e.g.,
+                  <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code> are
+                  children of <code>&lt;html&gt;</code>).
+                </li>
+                <li>
+                  <strong>Descendants:</strong> ALL elements nested inside the
+                  given element, including children, their children, and so on.
+                  (e.g., <code>&lt;li&gt;</code> is a descendant of
+                  <code>&lt;body&gt;</code>).
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> You are a direct
+            <strong>child</strong> of your parents. You are a
+            <strong>descendant</strong> of your grandparents. Children are
+            immediate; descendants go on for generations.
+          </div>
+          <div class="info-card">
+            <h4>Navigating All Children</h4>
+            <p>
+              These properties access <em>all</em> nodes, including text nodes
+              (spaces) and comments:
+            </p>
+            <div class="code-block">
+              <span class="comment">// Collection of all direct children</span>
+              document.body.childNodes
+
+              <span class="comment">// Shortcuts to first and last child</span>
+              document.body.firstChild document.body.lastChild
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: DOM Collections -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">DOM Collections</h2>
+          <p class="slide-subtitle">Array-like, but not Arrays</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When you access something like <code>childNodes</code>, it returns
+              a <strong>collection</strong>. Collections look like arrays, but
+              they are special.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>What you CAN do ✅</h4>
+              <p>You can iterate over them using <code>for..of</code>.</p>
+              <div class="code-block">
+                <span class="keyword">for</span> (<span class="keyword"
+                  >let</span
+                >
+                node <span class="keyword">of</span> document.body.childNodes) {
+                alert(node); }
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>What you CANNOT do ❌</h4>
+              <p>
+                You cannot use Array methods like <code>filter()</code>,
+                <code>map()</code>, etc., because it's not a true Array.
+              </p>
+              <div class="code-block">
+                document.body.childNodes.filter
+                <span class="comment">// undefined!</span>
+
+                <span class="comment">// Fix: Convert to Array first</span>
+                <span class="keyword">let</span> arr =
+                Array.from(document.body.childNodes); arr.filter
+                <span class="comment">// function!</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Two Golden Rules of Collections</h4>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <strong>They are Live:</strong> If you save
+                  <code>elem.childNodes</code> to a variable, and later add a
+                  new HTML element to the page, it automatically appears in your
+                  variable!
+                </li>
+                <li>
+                  <strong>They are Read-Only:</strong> You cannot replace a
+                  child by doing <code>childNodes[i] = ...</code>. Changing the
+                  DOM requires specific methods.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Element-Only Navigation -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Element-Only Navigation</h2>
+          <p class="slide-subtitle">Ignoring the text and comment nodes</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Navigating with <code>childNodes</code> is annoying because you
+              have to skip over blank text nodes and comments. For real-world
+              tasks, we usually only care about
+              <strong>Element Nodes</strong> (HTML tags).
+            </p>
+            <p>
+              JavaScript provides a second set of navigation properties that
+              ignores everything except elements!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Comparison Table</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>All Nodes (incl. text)</th>
+                  <th>Element Nodes Only</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>childNodes</code></td>
+                  <td><code>children</code></td>
+                </tr>
+                <tr>
+                  <td><code>firstChild</code></td>
+                  <td><code>firstElementChild</code></td>
+                </tr>
+                <tr>
+                  <td><code>lastChild</code></td>
+                  <td><code>lastElementChild</code></td>
+                </tr>
+                <tr>
+                  <td><code>previousSibling</code></td>
+                  <td><code>previousElementSibling</code></td>
+                </tr>
+                <tr>
+                  <td><code>nextSibling</code></td>
+                  <td><code>nextElementSibling</code></td>
+                </tr>
+                <tr>
+                  <td><code>parentNode</code></td>
+                  <td><code>parentElement</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong
+              ><code>parentNode</code> vs <code>parentElement</code>:</strong
+            >
+            They are almost identical. The only difference is at the very top:
+            <code>document.documentElement.parentNode</code> returns
+            <code>document</code>, but
+            <code>document.documentElement.parentElement</code> returns
+            <code>null</code> (because <code>document</code> is not an Element
+            node).
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Special Table Navigation -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Special Table Navigation</h2>
+          <p class="slide-subtitle">Built-in shortcuts for tables</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Tables are complex, so the DOM provides extra, convenient
+              properties specifically for navigating
+              <code>&lt;table&gt;</code> elements. These save you from writing
+              long chains of <code>children</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Table Properties</h4>
+            <div class="code-block">
+              table.rows
+              <span class="comment"
+                >// Collection of all &lt;tr&gt; elements</span
+              >
+              table.caption
+              <span class="comment">// Reference to &lt;caption&gt;</span>
+              table.tHead
+              <span class="comment">// Reference to &lt;thead&gt;</span>
+              table.tFoot
+              <span class="comment">// Reference to &lt;tfoot&gt;</span>
+              table.tBodies
+              <span class="comment"
+                >// Collection of &lt;tbody&gt; (always at least one!)</span
+              >
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Row & Cell Properties</h4>
+            <div class="code-block">
+              tbody.rows
+              <span class="comment"
+                >// Collection of &lt;tr&gt; inside a tbody/thead/tfoot</span
+              >
+
+              tr.cells
+              <span class="comment"
+                >// Collection of all &lt;td&gt; and &lt;th&gt; in this
+                row</span
+              >
+              tr.sectionRowIndex
+              <span class="comment"
+                >// Position of this &lt;tr&gt; inside its section</span
+              >
+              tr.rowIndex
+              <span class="comment"
+                >// Position of this &lt;tr&gt; in the whole table</span
+              >
+
+              td.cellIndex
+              <span class="comment"
+                >// Position of this &lt;td&gt; inside its row</span
+              >
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Quick Example:</strong> To highlight the second column of
+            the first row, you can do:
+            <code>table.rows[0].cells[1].style.background = "red";</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Browser Environment & DOM Presentation | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

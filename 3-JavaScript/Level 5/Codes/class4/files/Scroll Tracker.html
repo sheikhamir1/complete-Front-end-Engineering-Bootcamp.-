@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        height: 2000px;
+        margin: 0;
+        font-family: sans-serif;
+      } /* Force page to scroll */
+      .tracker {
+        position: fixed; /* Stays fixed to the window glass */
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #333;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        z-index: 100;
+      }
+      .target-section {
+        margin-top: 1000px;
+        padding: 50px;
+        background: #ffcccb;
+        border: 2px dashed red;
+      }
+      button {
+        padding: 10px;
+        cursor: pointer;
+        margin-top: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tracker" id="scrollTracker">Scroll Position: 0px</div>
+
+    <button onclick="jumpToTarget()">Jump to Target Section</button>
+
+    <div class="target-section" id="target">
+      <h3>You found me!</h3>
+      <p>I am exactly 1000px down the document.</p>
+    </div>
+
+    <script>
+      const tracker = document.getElementById("scrollTracker");
+
+      // Listen to the window scroll event
+      window.addEventListener("scroll", () => {
+        // Read how far the window has scrolled
+        tracker.innerText = `Scroll Position: ${Math.round(window.scrollY)}px`;
+        // tracker.innerText = `Scroll Position: ${window.scrollY}px`;
+      });
+
+      function jumpToTarget() {
+        const target = document.getElementById("target");
+        // Smoothly scroll the element into view
+        // target.scrollIntoView({ behavior: "smooth", block: "center" });
+        target.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forms, Focus & Events</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Forms, Focus & Data Events</h1>
+          <p class="slide-subtitle">Controlling user input in the browser</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop"
+              alt="Laptop with form on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Forms are how we talk to the web. Whether it's a login screen, a
+              search bar, or a checkout page, handling form data correctly is
+              crucial. Let's learn how to navigate, validate, and submit forms
+              using JavaScript.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of a form like a physical
+            clipboard at a doctor's office. Navigating it means knowing where
+            the blanks are. Focus is picking up the pen to fill one in.
+            Change/Input events are the act of writing. Submit is handing the
+            clipboard back to the receptionist.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Form Navigation -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Form Navigation</h2>
+          <p class="slide-subtitle">Finding forms and their elements</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Forms are so important that JavaScript gives us special, faster
+              ways to find them and the inputs inside them, without using
+              <code>querySelector</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>1. Finding the Form</h4>
+            <p>
+              Use <code>document.forms</code>. You can find a form by its index
+              or its <code>name</code> attribute.
+            </p>
+            <div class="code-block">
+              <span class="comment">// Get the first form on the page</span>
+              <span class="keyword">let</span> form1 = document.forms[0];
+
+              <span class="comment">// Get a form with name="myForm"</span>
+              <span class="keyword">let</span> form2 = document.forms.myForm;
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>2. Finding Elements inside a Form</h4>
+            <p>
+              Once you have the form, use <code>form.elements</code> to grab any
+              input inside it by name.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> form = document.forms.myForm;
+
+              <span class="comment">// Get input with name="username"</span>
+              <span class="keyword">let</span> usernameInput =
+              form.elements.username;
+
+              <span class="comment">// Shortcut: form.username works too!</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Backreference:</strong> Elements know their parent! Any
+            input can find its form via <code>input.form</code>. This is super
+            handy when passing inputs to functions.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Form Element Values -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Getting & Setting Values</h2>
+          <p class="slide-subtitle">Reading what the user typed</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>How you read a value depends on the type of input.</p>
+          </div>
+          <div class="info-card">
+            <h4>Text & Textarea</h4>
+            <p>
+              Use <code>.value</code> to get the text. Always use
+              <code>textarea.value</code>, never <code>innerHTML</code>!
+            </p>
+            <div class="code-block">
+              input.value = <span class="string">"New value"</span>;
+              textarea.value = <span class="string">"New text"</span>;
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Checkboxes & Radio Buttons</h4>
+            <p>
+              Use <code>.checked</code> to see if they are selected. It returns
+              a boolean (true/false).
+            </p>
+            <div class="code-block">
+              <span class="keyword">if</span> (checkbox.checked) { alert(<span
+                class="string"
+                >"It is checked!"</span
+              >); }
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Select (Dropdowns)</h4>
+            <p>
+              You have three ways to set a dropdown's selection. All three lines
+              below do the exact same thing:
+            </p>
+            <div class="code-block">
+              select.options[2].selected = <span class="keyword">true</span>;
+              <span class="comment">// By option index</span>
+              select.selectedIndex = 2;
+              <span class="comment">// By index shortcut</span> select.value =
+              <span class="string">'banana'</span>;
+              <span class="comment">// By the value attribute</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Focus & Blur -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Focus & Blur</h2>
+          <p class="slide-subtitle">When elements get (and lose) attention</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              <strong>Focus</strong> happens when you click or tab into an input
+              (it's ready to type). <strong>Blur</strong> happens when you click
+              away (you're done typing). These are perfect for live validation!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Validation Example</h4>
+            <div class="code-block">
+              input.onblur = <span class="keyword">function</span>() {
+              <span class="keyword">if</span> (!input.value.includes(<span
+                class="string"
+                >'@'</span
+              >)) { input.classList.add(<span class="string">'invalid'</span>);
+              error.innerHTML =
+              <span class="string">'Please enter a correct email.'</span>; } };
+              input.onfocus = <span class="keyword">function</span>() {
+              <span class="comment"
+                >// Hide the error when they try to fix it</span
+              >
+              <span class="keyword">this</span>.classList.remove(<span
+                class="string"
+                >'invalid'</span
+              >); error.innerHTML = <span class="string">""</span>; };
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Programmatic Focus:</strong> You can force focus using
+            <code>elem.focus()</code> or remove it with
+            <code>elem.blur()</code>. For example, forcing focus back to an
+            invalid email field so the user must fix it before moving on.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: tabindex -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Making Things Focusable</h2>
+          <p class="slide-subtitle">The tabindex attribute</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              By default, things like <code>&lt;div&gt;</code> or
+              <code>&lt;li&gt;</code> cannot be focused. You can't tab to them,
+              and they don't fire focus/blur events. The
+              <code>tabindex</code> attribute fixes this.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Tabindex Values</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Value</th>
+                  <th>Effect</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>tabindex="0"</code></td>
+                  <td>
+                    Makes it focusable, and it follows the natural Tab order of
+                    the page. Most common use.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>tabindex="-1"</code></td>
+                  <td>
+                    Makes it focusable via code (<code>elem.focus()</code>), but
+                    the Tab key will skip it.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>tabindex="1+"</code></td>
+                  <td>
+                    Makes it focusable, and it jumps to the FRONT of the Tab
+                    line. (Rarely used, can confuse users).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Delegation Warning:</strong> <code>focus</code> and
+            <code>blur</code> do <strong>not bubble up</strong>. If you want to
+            catch focus on any input inside a form, you must catch them during
+            the "capturing" phase, or use the modern <code>focusin</code> /
+            <code>focusout</code> events which do bubble.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Change vs Input -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Change vs. Input Events</h2>
+          <p class="slide-subtitle">When is a change actually a change?</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The biggest mistake developers make with forms is using the wrong
+              event for tracking typing. Here is the difference:
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The input Event</h4>
+            <p>
+              Fires <strong>immediately</strong> every single time the value
+              changes. Every keystroke, every paste, even speech-to-text
+              triggers it.
+            </p>
+            <div class="code-block">
+              input.oninput = <span class="keyword">function</span>() {
+              result.innerHTML = input.value; };
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>The change Event</h4>
+            <p>
+              Fires only after the user is <strong>finished</strong> and leaves
+              the field (blur). For text inputs, this means it fires on blur.
+              For checkboxes/selects, it fires right when you click them.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy:</strong> <code>input</code> is like
+            autocorrect—reacting to every letter. <code>change</code> is like
+            hitting "Send"—only caring about the final message. Use
+            <code>input</code> for live character counts, and
+            <code>change</code> for saving data to a server when the user leaves
+            the field.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Clipboard Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Clipboard Events</h2>
+          <p class="slide-subtitle">cut, copy, and paste</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You can intercept when a user copies, cuts, or pastes data. This
+              is useful for logging, or preventing users from pasting invalid
+              data (like in a password confirmation field).
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Intercepting Paste</h4>
+            <div class="code-block">
+              input.onpaste = <span class="keyword">function</span>(event) {
+              <span class="comment">// Read what is being pasted</span>
+              <span class="keyword">let</span> pastedText =
+              event.clipboardData.getData(<span class="string"
+                >'text/plain'</span
+              >); alert(<span class="string">"Pasting: "</span> + pastedText);
+
+              <span class="comment">// Prevent the paste entirely:</span>
+              event.preventDefault(); };
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Security Limits:</strong> The clipboard is an OS-level
+            feature. Browsers restrict access to it. You can only read clipboard
+            data safely inside the event handler itself. You can't save it and
+            read it later, and you cannot generate "fake" clipboard events via
+            code.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Form Submission -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Form Submission</h2>
+          <p class="slide-subtitle">The submit event</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              When a user clicks a Submit button or presses Enter inside an
+              input, the form tries to submit to the server. The
+              <code>submit</code> event is your last chance to check the data!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Catching Submission</h4>
+            <div class="code-block">
+              form.onsubmit = <span class="keyword">function</span>(event) {
+              <span class="keyword">if</span> (!isValid) { alert(<span
+                class="string"
+                >"Form is invalid!"</span
+              >); event.preventDefault();
+              <span class="comment">// STOP the submission!</span>
+              } };
+
+              <span class="comment">&lt;form onsubmit="return false"&gt;</span>
+              <span class="comment">// Quick HTML way to block</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>How forms submit:</strong> There are only two ways a form
+            naturally submits: 1) Clicking
+            <code>&lt;input type="submit"&gt;</code>, or 2) Pressing Enter
+            inside a text input. (Note: Pressing Enter actually triggers a
+            "click" on the submit button behind the scenes!)
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Programmatic Submit -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Programmatic Submission</h2>
+          <p class="slide-subtitle">form.submit()</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Sometimes you want to send a form using JavaScript, without the
+              user clicking a button. You can do this with
+              <code>form.submit()</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Sending a form via code</h4>
+            <div class="code-block">
+              <span class="keyword">let</span> form =
+              document.createElement(<span class="string">'form'</span>);
+              form.action =
+              <span class="string">'https://google.com/search'</span>;
+              form.method = <span class="string">'GET'</span>; form.innerHTML =
+              <span class="string">'&lt;input name="q" value="test"&gt;'</span>;
+
+              <span class="comment"
+                >// Form must be in the document to submit</span
+              >
+              document.body.append(form); form.submit();
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Skip the Event:</strong> When you call
+            <code>form.submit()</code>, the browser sends the data immediately.
+            It does <strong>not</strong> fire the <code>submit</code> event!
+            This is by design—because as the programmer, you are assumed to have
+            already validated the data before calling it.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">Key takeaways for Forms & Events</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>Navigation</h4>
+            <ul class="list-section">
+              <li><code>document.forms[name/index]</code> to find forms.</li>
+              <li><code>form.elements[name/index]</code> to find inputs.</li>
+              <li><code>element.form</code> to find the parent form.</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Values</h4>
+            <ul class="list-section">
+              <li>Text: <code>input.value</code></li>
+              <li>Checkboxes/Radios: <code>input.checked</code></li>
+              <li>
+                Selects: <code>select.value</code> or
+                <code>select.selectedIndex</code>
+              </li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Events</h4>
+            <ul class="list-section">
+              <li>
+                <strong>focus/blur:</strong> Element gets/loses attention. Use
+                <code>tabindex</code> for non-inputs.
+              </li>
+              <li>
+                <strong>input:</strong> Every character change (immediate).
+              </li>
+              <li>
+                <strong>change:</strong> After the change is committed (on
+                blur).
+              </li>
+              <li>
+                <strong>submit:</strong> Form is being sent. Use
+                <code>preventDefault()</code> to stop it.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Forms, Focus & Data Events Presentation | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

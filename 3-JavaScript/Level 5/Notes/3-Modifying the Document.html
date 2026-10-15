@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modifying Document & Styles</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Modifying the Document</h1>
+          <p class="slide-subtitle">
+            Creating, Inserting, and Styling Elements
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop"
+              alt="Code on screen"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              DOM modification is the key to creating "live" pages. This is how
+              we add new elements on the fly, move them around, and apply styles
+              dynamically to react to user actions.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Think of the web page as a Lego
+            castle. JavaScript gives you the power to snap new bricks onto the
+            castle, take bricks away, or paint them different colors—without
+            ever reloading the page.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Creating Elements -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Creating Elements</h2>
+          <p class="slide-subtitle">Building the bricks</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The 3-Step Process</h3>
+            <p>
+              Creating an element doesn't automatically put it on the page. It
+              exists only in JavaScript memory until you insert it. Here are the
+              steps:
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Step 1: Create the Node</h4>
+            <p>
+              Use <code>document.createElement(tag)</code> to create a new HTML
+              element, or <code>document.createTextNode(text)</code> for plain
+              text.
+            </p>
+            <div class="code-block">
+              <span class="keyword">let</span> div =
+              document.createElement(<span class="string">'div'</span>);
+              <span class="keyword">let</span> textNode =
+              document.createTextNode(<span class="string">'Here I am'</span>);
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Step 2: Configure it</h4>
+            <p>Add classes, text, or inner HTML to your new element.</p>
+            <div class="code-block">
+              div.className = <span class="string">"alert"</span>; div.innerHTML
+              =
+              <span class="string"
+                >"&lt;strong&gt;Hi there!&lt;/strong&gt; You've read an
+                important message."</span
+              >;
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Step 3: Insert it</h4>
+            <p>
+              Append it to an existing element on the page (like
+              <code>document.body</code>).
+            </p>
+            <div class="code-block">
+              document.body.append(div);
+              <span class="comment">// Now it's visible!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Insertion Methods -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Modern Insertion Methods</h2>
+          <p class="slide-subtitle">Where exactly should the brick go?</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              We don't always want to add elements at the very end. These modern
+              methods let you insert nodes or text strings at specific locations
+              relative to a reference element.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Big Five Methods</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Where does it go?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>node.append(...)</code></td>
+                  <td>Inside node, at the <strong>end</strong>.</td>
+                </tr>
+                <tr>
+                  <td><code>node.prepend(...)</code></td>
+                  <td>Inside node, at the <strong>beginning</strong>.</td>
+                </tr>
+                <tr>
+                  <td><code>node.before(...)</code></td>
+                  <td><strong>Before</strong> the node (outside).</td>
+                </tr>
+                <tr>
+                  <td><code>node.after(...)</code></td>
+                  <td><strong>After</strong> the node (outside).</td>
+                </tr>
+                <tr>
+                  <td><code>node.replaceWith(...)</code></td>
+                  <td>Replaces the node entirely.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong>Safety Feature:</strong> If you pass a string into these
+            methods (e.g., <code>ol.before('before')</code>), it is inserted as
+            <em>plain text</em>, not HTML. This protects you from accidental XSS
+            attacks.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: insertAdjacentHTML -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Inserting HTML Strings</h2>
+          <p class="slide-subtitle">insertAdjacentHTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              If you <em>do</em> want to insert a string and have it parsed as
+              HTML tags (like <code>innerHTML</code> does), use
+              <code>elem.insertAdjacentHTML(where, html)</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The 4 Positions</h4>
+            <div class="code-block">
+              <span class="comment">// &lt;p&gt;Hello&lt;/p&gt;</span>
+              <span class="comment">// &lt;div id="div"&gt;&lt;/div&gt;</span>
+              <span class="comment">// &lt;p&gt;Bye&lt;/p&gt;</span>
+
+              div.insertAdjacentHTML(<span class="string">'beforebegin'</span>,
+              <span class="string">'&lt;p&gt;Hello&lt;/p&gt;'</span>);
+              div.insertAdjacentHTML(<span class="string">'afterend'</span>,
+              <span class="string">'&lt;p&gt;Bye&lt;/p&gt;'</span>);
+
+              <span class="comment">// Inside the div:</span>
+              div.insertAdjacentHTML(<span class="string">'afterbegin'</span>,
+              <span class="string">'&lt;span&gt;Top&lt;/span&gt;'</span>);
+              div.insertAdjacentHTML(<span class="string">'beforeend'</span>,
+              <span class="string">'&lt;span&gt;Bottom&lt;/span&gt;'</span>);
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy:</strong> Think of <code>beforebegin</code> and
+            <code>afterend</code> as placing furniture in the hallway outside a
+            room. <code>afterbegin</code> and <code>beforeend</code> place
+            furniture inside the room, either at the entrance or at the back.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Removal & Moving -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Removal & Moving</h2>
+          <p class="slide-subtitle">Taking bricks away or moving them</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Removing Elements</h3>
+            <p>To remove a node, simply call <code>node.remove()</code>.</p>
+            <div class="code-block">
+              setTimeout(() => div.remove(), 1000);
+              <span class="comment">// Disappears after 1 sec</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Moving Elements</h3>
+            <p>
+              Here is a cool shortcut: if you want to move an element from one
+              place to another,
+              <strong>you don't need to remove it first!</strong> Insertion
+              methods automatically remove the node from its old spot.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Swapping Elements</h4>
+            <div class="code-block">
+              <span class="keyword">&lt;div</span> id="first"&gt;First<span
+                class="keyword"
+                >&lt;/div&gt;</span
+              >
+              <span class="keyword">&lt;div</span> id="second"&gt;Second<span
+                class="keyword"
+                >&lt;/div&gt;</span
+              >
+
+              <script>
+                <span class="comment">
+                  // Takes #first and moves it right after #second
+                </span>;
+                second.after(first);
+                <span class="comment">// No need to call first.remove()!</span>;
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Cloning & Fragments -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Cloning & DocumentFragment</h2>
+          <p class="slide-subtitle">Copying bricks and bulk shipments</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column text-section">
+              <h3>Cloning Nodes</h3>
+              <p>
+                Sometimes you have a complex element and want an exact
+                duplicate. Use <code>cloneNode(true)</code>.
+              </p>
+              <div class="code-block">
+                <span class="keyword">let</span> div2 = div.cloneNode(<span
+                  class="keyword"
+                  >true</span
+                >); <span class="comment">// Deep clone</span>
+
+                <span class="comment">// Change the clone's text</span>
+                div2.querySelector(<span class="string">'strong'</span
+                >).innerHTML = <span class="string">'Bye!'</span>;
+
+                <span class="comment">// Insert the clone</span>
+                div.after(div2);
+              </div>
+              <p>
+                <strong>Note:</strong> Passing <code>false</code> only clones
+                the outer tag, without children.
+              </p>
+            </div>
+            <div class="column text-section">
+              <h3>DocumentFragment</h3>
+              <p>
+                A <code>DocumentFragment</code> is a lightweight wrapper. You
+                can append nodes to it, and when you insert the fragment into
+                the DOM, the wrapper disappears, and only its contents are
+                inserted.
+              </p>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> Like a moving box. You pack multiple
+                items into the box, move the box to the new room, and then take
+                the items out. The box itself doesn't stay in the room.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Old School & document.write -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Old School Methods & document.write</h2>
+          <p class="slide-subtitle">What to avoid in modern code</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You might see these in legacy code, but modern methods
+              (<code>append</code>, <code>remove</code>) are much better.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The "Old School" Methods</h4>
+            <div class="list-section">
+              <ul>
+                <li>
+                  <code>parent.appendChild(node)</code> → Use
+                  <code>append()</code> instead.
+                </li>
+                <li>
+                  <code>parent.insertBefore(node, nextSibling)</code> → Use
+                  <code>before()</code> instead.
+                </li>
+                <li>
+                  <code>parent.removeChild(node)</code> → Use
+                  <code>remove()</code> instead.
+                </li>
+                <li>
+                  <code>parent.replaceChild(newElem, node)</code> → Use
+                  <code>replaceWith()</code> instead.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="warning-box">
+            <h4>⚠️ Beware of document.write()</h4>
+            <p>
+              <code>document.write(html)</code> writes HTML directly into the
+              page as it's loading. It's blazing fast, but has a fatal flaw:
+              <strong
+                >if you call it after the page has already loaded, it completely
+                erases the entire document!</strong
+              >
+              Never use this in modern, dynamic web applications.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Styles and Classes -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Styles and Classes</h2>
+          <p class="slide-subtitle">Painting the bricks</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Golden Rule</h3>
+            <p>
+              There are two ways to style an element: CSS Classes and Inline
+              Styles. <strong>Always prefer CSS classes.</strong> Only use
+              inline styles if you are calculating dynamic values (like exact
+              pixel coordinates).
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>className vs classList</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>What it does</th>
+                  <th>Best for...</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>elem.className</code></td>
+                  <td>
+                    Gets/sets the entire class string. Replaces all existing
+                    classes!
+                  </td>
+                  <td>Completely overwriting all classes.</td>
+                </tr>
+                <tr>
+                  <td><code>elem.classList</code></td>
+                  <td>
+                    An object with methods to manage individual classes easily.
+                  </td>
+                  <td>Adding, removing, or toggling one class.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="info-card">
+            <h4>classList Methods</h4>
+            <div class="code-block">
+              elem.classList.add(<span class="string">"class"</span>)
+              <span class="comment">// Adds the class</span>
+              elem.classList.remove(<span class="string">"class"</span>)
+              <span class="comment">// Removes the class</span>
+              elem.classList.toggle(<span class="string">"class"</span>)
+              <span class="comment"
+                >// Adds if missing, removes if present</span
+              >
+              elem.classList.contains(<span class="string">"class"</span>)
+              <span class="comment">// Returns true/false</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Element Style -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Element Style</h2>
+          <p class="slide-subtitle">elem.style & style.cssText</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The <code>elem.style</code> object lets you read and write inline
+              styles. Multi-word CSS properties are written in camelCase.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>CSS to JS Translation</h4>
+            <div class="code-block">
+              background-color => elem.style.backgroundColor z-index =>
+              elem.style.zIndex border-left-width => elem.style.borderLeftWidth
+
+              <span class="comment">// Example usage:</span>
+              document.body.style.backgroundColor = prompt(<span class="string"
+                >'background color?'</span
+              >, <span class="string">'green'</span>);
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Resetting & Rewriting</h4>
+            <p>
+              To remove a single inline style, set it to an empty string. To
+              rewrite ALL inline styles at once, use <code>style.cssText</code>.
+            </p>
+            <div class="code-block">
+              <span class="comment">// Remove a style</span> elem.style.display
+              = <span class="string">""</span>;
+              <span class="comment">// Reverts to CSS default</span>
+
+              <span class="comment"
+                >// Full rewrite (erases previous inline styles!)</span
+              >
+              div.style.cssText =
+              <span class="string"
+                >`color: red !important; background-color: yellow;`</span
+              >;
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Mind the Units!</strong> Don't forget to add "px" to
+            numeric values. <code>elem.style.top = 10</code> will NOT work. You
+            must write <code>elem.style.top = '10px'</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Computed Styles -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Computed Styles</h2>
+          <p class="slide-subtitle">getComputedStyle</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Problem with elem.style</h3>
+            <p>
+              <code>elem.style</code> only reads inline styles written in the
+              <code>style</code> attribute. It knows nothing about styles coming
+              from CSS classes in a <code>&lt;style&gt;</code> tag or external
+              stylesheet.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Checking
+            <code>elem.style</code> is like checking what color you personally
+            painted a house (inline). Checking <code>getComputedStyle</code> is
+            like looking at the house to see the final color it actually is,
+            including the builder's default paint (CSS classes).
+          </div>
+          <div class="info-card">
+            <h4>getComputedStyle(element)</h4>
+            <p>
+              This method returns the <strong>resolved</strong> value of all CSS
+              properties applied to an element, after all CSS rules and
+              inheritance have been calculated.
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;style&gt;</span> body { color: red;
+              margin: 5px; } <span class="keyword">&lt;/style&gt;</span>
+
+              <span class="keyword">let</span> computedStyle =
+              getComputedStyle(document.body); alert( computedStyle.marginTop );
+              <span class="comment">// "5px" (Resolved value!)</span> alert(
+              computedStyle.color );
+              <span class="comment">// "rgb(255, 0, 0)"</span>
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>Note:</strong> <code>getComputedStyle</code> requires the
+              full property name (like <code>paddingLeft</code> instead of just
+              <code>padding</code>) to guarantee the correct result. Also, for
+              security/privacy reasons, it cannot read the styles applied to
+              <code>:visited</code> links.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        DOM Modification & Styles Presentation | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

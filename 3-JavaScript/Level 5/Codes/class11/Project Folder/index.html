@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Normal vs Defer vs Async</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f9;
+        padding: 30px;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+      }
+
+      #status {
+        background: #eee;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 20px 0;
+        font-family: monospace;
+      }
+
+      button {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        background: #aaa;
+      }
+    </style>
+
+    <!-- Uncomment ONE at a time -->
+
+    <!-- Normal Script -->
+    <!-- <script src="normal.js"></script> -->
+
+    <!-- Deferred Script -->
+    <!-- <script defer src="defer.js"></script> -->
+
+    <!-- Async Script -->
+    <script async src="async.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Async vs Defer Demo</h2>
+
+      <p id="status">HTML is loading...</p>
+
+      <button id="btn" disabled>Click Me</button>
+    </div>
+  </body>
+</html>

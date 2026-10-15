@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Touch Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Stop page scrolling */
+      background-color: #2c3e50;
+      color: white;
+      font-family: sans-serif;
+      /* Crucial: Stops the browser from treating touches as scrolls */
+      touch-action: none; 
+    }
+    #instructions {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      pointer-events: none; /* Let clicks pass through the text */
+    }
+    .touch-point {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(46, 204, 113, 0.8);
+      transform: translate(-50%, -50%); /* Center the dot on the finger */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .is-primary {
+      background-color: rgba(231, 76, 60, 0.8); /* Red for primary */
+    }
+  </style>
+</head>
+<body>
+
+  <div id="instructions">
+    <h2>Touch the screen!</h2>
+    <p>Try using multiple fingers if you are on a mobile device.</p>
+  </div>
+
+  <script>
+    // An object to store all our active touch points
+    const activePointers = {};
+
+    // 1. When a finger touches down...
+    document.addEventListener('pointerdown', function(event) {
+      // Create a visual dot
+      const dot = document.createElement('div');
+      dot.className = 'touch-point';
+      
+      // If this is the FIRST finger, make it red
+      if (event.isPrimary) {
+        dot.classList.add('is-primary');
+      }
+      
+      // Put the ID number inside the dot
+      dot.innerText = event.pointerId;
+
+      // Position the dot exactly where the touch happened
+      dot.style.left = event.clientX + 'px';
+      dot.style.top = event.clientY + 'px';
+
+      // Add it to the screen
+      document.body.appendChild(dot);
+
+      // Save it in our memory dictionary using the unique ID
+      activePointers[event.pointerId] = dot;
+    });
+
+    // 2. When a finger moves...
+    document.addEventListener('pointermove', function(event) {
+      // Find the specific dot belonging to THIS finger ID
+      const dot = activePointers[event.pointerId];
+      
+      // If the dot exists, update its position
+      if (dot) {
+        dot.style.left = event.clientX + 'px';
+        dot.style.top = event.clientY + 'px';
+      }
+    });
+
+    // 3. When a finger is lifted off the screen...
+    document.addEventListener('pointerup', function(event) {
+      const dot = activePointers[event.pointerId];
+      if (dot) {
+        dot.remove(); // Remove it from the screen
+        delete activePointers[event.pointerId]; // Remove it from memory
+      }
+    });
+    
+    // 4. Handle pointercancel (in case the browser interrupts)
+    document.addEventListener('pointercancel', function(event) {
+      const dot = activePointers[event.pointerId];
+      if (dot) {
+        dot.remove();
+        delete activePointers[event.pointerId];
+      }
+    });
+  </script>
+</body>
+</html>

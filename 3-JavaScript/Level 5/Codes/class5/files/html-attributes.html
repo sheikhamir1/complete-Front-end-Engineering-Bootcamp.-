@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Topic 1: HTML Attributes</h2>
+
+    <button onclick="alert('You clicked the first button!')">
+      Direct JS Alert
+    </button>
+
+    <button onclick="countRabbits()">Count Rabbits</button>
+
+    <div id="output" style="margin-top: 15px; font-weight: bold"></div>
+
+    <script>
+      function countRabbits() {
+        const output = document.getElementById("output");
+        output.innerHTML = ""; // clear previous
+        for (let i = 1; i <= 3; i++) {
+          output.innerHTML += `Rabbit ${i}...<br>`;
+        }
+      }
+    </script>
+  </body>
+</html>

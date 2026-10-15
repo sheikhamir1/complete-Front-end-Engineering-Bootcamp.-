@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>MutationObserver Lab</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      button {
+        margin: 5px;
+        padding: 10px;
+      }
+
+      #playground {
+        border: 2px solid #ccc;
+        padding: 15px;
+        margin-top: 15px;
+      }
+
+      .log {
+        height: 250px;
+        overflow: auto;
+        border: 1px solid #aaa;
+        padding: 10px;
+        background: #f8f8f8;
+      }
+
+      pre {
+        background: #222;
+        color: #00ff99;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MutationObserver Playground</h1>
+
+    <div>
+      <button id="addChild">Add Child</button>
+      <button id="changeAttr">Change Attribute</button>
+      <button id="changeText">Change Text</button>
+      <button id="injectAd">Inject Fake Ad</button>
+      <button id="addCode">Add Code Block</button>
+      <button id="disconnect">Disconnect Observer</button>
+    </div>
+
+    <div id="playground">
+      <p id="textNode">Original Text</p>
+    </div>
+
+    <h2>Observer Logs</h2>
+    <div class="log" id="logs"></div>
+
+    <script>
+      const logs = document.getElementById("logs");
+      const playground = document.getElementById("playground");
+
+      function log(message) {
+        logs.innerHTML += `<div>${message}</div>`;
+        logs.scrollTop = logs.scrollHeight;
+      }
+
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          log(`Type: ${mutation.type}`);
+
+          if (mutation.type === "childList") {
+            mutation.addedNodes.forEach((node) => {
+              log(`Added: ${node.nodeName}`);
+
+              // USE CASE 1:
+              // Fake Ad Blocker
+
+              if (node.classList && node.classList.contains("ads")) {
+                log("🚫 Ad detected and removed");
+
+                node.remove();
+              }
+
+              // USE CASE 2:
+              // Auto code highlighter
+
+              if (node.tagName === "PRE") {
+                node.style.border = "3px solid lime";
+
+                log("✨ Code block auto-highlighted");
+              }
+            });
+          }
+
+          if (mutation.type === "attributes") {
+            log(
+              `Attribute changed:
+             ${mutation.attributeName}
+             old value:
+             ${mutation.oldValue}`,
+            );
+          }
+
+          if (mutation.type === "characterData") {
+            log(
+              `Text changed.
+             Old value:
+             ${mutation.oldValue}`,
+            );
+          }
+        });
+      });
+
+      observer.observe(playground, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        characterData: true,
+        attributeOldValue: true,
+        characterDataOldValue: true,
+      });
+
+      document.getElementById("addChild").addEventListener("click", () => {
+        const div = document.createElement("div");
+        div.textContent = "New Child";
+
+        playground.append(div);
+      });
+
+      document.getElementById("changeAttr").addEventListener("click", () => {
+        playground.setAttribute("data-random", Math.floor(Math.random() * 100));
+      });
+
+      document.getElementById("changeText").addEventListener("click", () => {
+        const textNode = document.getElementById("textNode").firstChild;
+
+        textNode.textContent = "Changed at " + Date.now();
+      });
+
+      document.getElementById("injectAd").addEventListener("click", () => {
+        const ad = document.createElement("div");
+
+        ad.className = "ads";
+
+        ad.innerHTML = "<h3>BUY NOW!!!</h3>";
+
+        playground.append(ad);
+      });
+
+      document.getElementById("addCode").addEventListener("click", () => {
+        const pre = document.createElement("pre");
+
+        pre.textContent = `function hello(){
+   console.log("Hello");
+}`;
+
+        playground.append(pre);
+      });
+
+      document.getElementById("disconnect").addEventListener("click", () => {
+        const pending = observer.takeRecords();
+
+        log(
+          `Pending records before disconnect:
+      ${pending.length}`,
+        );
+
+        observer.disconnect();
+
+        log("Observer disconnected");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Page Lifecycle & Script Loading</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .qa-pair {
+        margin-bottom: 25px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .question {
+        font-weight: 500;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .answer {
+        padding-left: 20px;
+      }
+
+      .protocol-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .protocol-icon {
+        font-size: 2rem;
+        color: #1a73e8;
+        margin-right: 15px;
+        width: 60px;
+        text-align: center;
+      }
+
+      .protocol-info {
+        flex: 1;
+      }
+
+      .protocol-info h4 {
+        margin-bottom: 5px;
+        color: #1a73e8;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title & Overview -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">The Lifecycle of an HTML Page</h1>
+          <p class="slide-subtitle">
+            Understanding Page Loading, Scripts, and Resources
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+              alt="Web Development Code"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              Just like a building has stages—foundation, structure, and finally
+              moving furniture—an HTML page goes through a lifecycle from the
+              moment a user requests it to the moment they leave.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Building a House 🏠<br />
+            1. <strong>DOMContentLoaded:</strong> The house structure is built.
+            You can walk through rooms, but no furniture or paint is there
+            yet.<br />
+            2. <strong>Load:</strong> The house is fully finished. Furniture is
+            moved in, pictures are hung.<br />
+            3. <strong>Beforeunload/Unload:</strong> You are moving out and
+            turning off the lights.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The 3 Main Lifecycle Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The 3 Main Lifecycle Events</h2>
+          <p class="slide-subtitle">What happens and when?</p>
+        </div>
+        <div class="slide-content">
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-code"></i></div>
+            <div class="protocol-info">
+              <h4>1. DOMContentLoaded</h4>
+              <p>
+                The browser fully loaded the HTML and built the DOM tree.
+                However, external resources like images and stylesheets may not
+                be loaded yet. <br /><strong>Use case:</strong> Safe to search
+                for DOM nodes and initialize your interface.
+              </p>
+            </div>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-image"></i></div>
+            <div class="protocol-info">
+              <h4>2. Load</h4>
+              <p>
+                Not only is the HTML loaded, but ALL external resources (images,
+                styles, iframes) are finished downloading. <br /><strong
+                  >Use case:</strong
+                >
+                You can now safely get image sizes or check applied CSS styles.
+              </p>
+            </div>
+          </div>
+          <div class="protocol-card">
+            <div class="protocol-icon"><i class="fas fa-door-open"></i></div>
+            <div class="protocol-info">
+              <h4>3. Beforeunload / Unload</h4>
+              <p>
+                The user is leaving the page. <br /><strong
+                  >Use case (beforeunload):</strong
+                >
+                Ask the user "Are you sure? You have unsaved changes!"<br /><strong
+                  >Use case (unload):</strong
+                >
+                Send final analytics data to the server.
+              </p>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Important:</strong> Always use
+            <code>document.addEventListener("DOMContentLoaded", ready);</code>
+            instead of <code>document.onDOMContentLoaded</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: DOMContentLoaded Deep Dive -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">DOMContentLoaded Deep Dive</h2>
+          <p class="slide-subtitle">What blocks the DOM from being ready?</p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card">
+                <h4><i class="fas fa-file-code"></i> Scripts Block It</h4>
+                <p>
+                  When the browser finds a <code>&lt;script&gt;</code>, it must
+                  execute it before continuing to build the DOM. This is because
+                  scripts might modify the HTML.
+                </p>
+                <p>
+                  <strong>Exceptions:</strong> Scripts with
+                  <code>async</code> or dynamically created scripts do NOT block
+                  DOMContentLoaded.
+                </p>
+              </div>
+              <div class="info-card">
+                <h4><i class="fas fa-paint-roller"></i> Styles & Scripts</h4>
+                <p>
+                  External stylesheets don't block DOMContentLoaded. BUT, if a
+                  script comes after a stylesheet, the script must wait for the
+                  style to load. Since DOMContentLoaded waits for scripts, it
+                  indirectly waits for styles too.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card">
+                <h4><i class="fas fa-robot"></i> Browser Autofill</h4>
+                <p>
+                  Did you know browsers try to autofill your login details on
+                  DOMContentLoaded? If your page has scripts that delay this
+                  event, the autofill gets delayed too. That's why some sites
+                  take a second to auto-fill your password!
+                </p>
+              </div>
+              <div class="highlight-box">
+                <strong>Analogy:</strong> You can't hang a picture (script)
+                until the paint (stylesheet) dries. And you can't finish
+                building the room (DOMContentLoaded) until the picture is hung!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Leaving the Page Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Leaving the Page: Unload & Beforeunload</h2>
+          <p class="slide-subtitle">Handling user exits safely</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>Beforeunload - The "Are you sure?" Prompt</h3>
+            <p>
+              When a user tries to close the tab or navigate away,
+              <code>beforeunload</code> triggers. If you cancel this event, the
+              browser warns the user.
+            </p>
+            <div class="highlight-box">
+              <strong>Crucial Note:</strong> Modern browsers ignore custom
+              messages in this prompt (to prevent malicious sites from scamming
+              users). You must use <code>event.returnValue</code> instead of
+              <code>event.preventDefault()</code>.
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Unload - The "Goodbye" Data Send</h3>
+            <p>
+              When the user is finally leaving, you can't show alerts or delay
+              them. However, you can send data (like analytics) to your server
+              using <code>navigator.sendBeacon(url, data)</code>.
+            </p>
+            <div class="info-card">
+              <h4>Why use sendBeacon?</h4>
+              <p>
+                It sends data in the background. It doesn't block the user from
+                leaving, it limits data to 64kb, and it ensures the data reaches
+                the server even though the page is closing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: document.readyState -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">document.readyState</h2>
+          <p class="slide-subtitle">Checking the current loading status</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              What if your script runs after the page is already loaded?
+              <code>DOMContentLoaded</code> won't fire! You can check
+              <code>document.readyState</code> to see where you are in the
+              lifecycle.
+            </p>
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Meaning</th>
+                <th>Real-World Analogy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>loading</strong></td>
+                <td>The document is still loading.</td>
+                <td>🚚 The delivery truck is on the way.</td>
+              </tr>
+              <tr>
+                <td><strong>interactive</strong></td>
+                <td>
+                  The document is parsed. Happens right before DOMContentLoaded.
+                </td>
+                <td>📦 The boxes are in the house, waiting to be unpacked.</td>
+              </tr>
+              <tr>
+                <td><strong>complete</strong></td>
+                <td>
+                  The document and all resources are loaded. Same time as
+                  window.onload.
+                </td>
+                <td>🏠 Everything is unpacked and put away.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="highlight-box">
+            <strong>Pro Tip:</strong> You can use the
+            <code>readystatechange</code> event to track these changes, but it's
+            rarely used today because <code>DOMContentLoaded</code> and
+            <code>load</code> are much simpler.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Scripts: async vs defer -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Scripts: async vs defer</h2>
+          <p class="slide-subtitle">Solving the "blocking script" problem</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Normally, when the browser hits a <code>&lt;script&gt;</code>, it
+              stops building the page, downloads the script, and runs it. This
+              blocks the user from seeing the page. <code>async</code> and
+              <code>defer</code> fix this.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #f1c40f">
+                <h4><i class="fas fa-bolt"></i> defer</h4>
+                <p>
+                  Tells the browser: "Download this in the background, but DON'T
+                  block the page. Run it only AFTER the HTML is fully parsed."
+                </p>
+                <ul class="list-section">
+                  <li>Never blocks the page.</li>
+                  <li>Runs before <code>DOMContentLoaded</code>.</li>
+                  <li>
+                    <strong>Keeps document order.</strong> (If script 1 is
+                    before script 2, script 1 runs first, even if script 2
+                    downloads faster).
+                  </li>
+                </ul>
+                <p>
+                  <strong>Analogy:</strong> A take-a-number system at a deli.
+                  Scripts run in the order they were added to the page.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-top: 4px solid #e74c3c">
+                <h4><i class="fas fa-wind"></i> async</h4>
+                <p>
+                  Tells the browser: "Download this in the background, and run
+                  it AS SOON AS it's ready, regardless of anything else."
+                </p>
+                <ul class="list-section">
+                  <li>Never blocks the page.</li>
+                  <li>Does NOT wait for <code>DOMContentLoaded</code>.</li>
+                  <li>
+                    <strong>Load-first order.</strong> (Whichever script
+                    downloads first, runs first. Order in HTML doesn't matter).
+                  </li>
+                </ul>
+                <p>
+                  <strong>Analogy:</strong> Fast-pass tickets at an amusement
+                  park. Independent scripts (like Google Analytics or Ads) run
+                  as soon as they arrive.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Dynamic Scripts -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Dynamic Scripts</h2>
+          <p class="slide-subtitle">
+            Loading scripts on the fly with JavaScript
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              You can create and add a script using JavaScript itself. These
+              scripts behave as <code>async</code> by default—meaning they run
+              as soon as they load.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Default Dynamic Script (Async behavior)</h4>
+            <pre
+              style="
+                background: #e8f0fe;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+              "
+            ><code>let script = document.createElement('script');
+script.src = "myScript.js";
+document.body.append(script); // Runs as soon as it loads</code></pre>
+          </div>
+          <div class="info-card">
+            <h4>Forcing Order in Dynamic Scripts (Defer behavior)</h4>
+            <p>
+              If you need dynamic scripts to run in a specific order, explicitly
+              set <code>async = false</code>.
+            </p>
+            <pre
+              style="
+                background: #e8f0fe;
+                padding: 10px;
+                border-radius: 5px;
+                overflow-x: auto;
+              "
+            ><code>let script1 = document.createElement('script');
+script1.src = "library.js";
+script1.async = false; // Forces document order
+
+let script2 = document.createElement('script');
+script2.src = "app.js";
+script2.async = false; // Will wait for library.js to finish first
+
+document.body.append(script1);
+document.body.append(script2);</code></pre>
+          </div>
+          <div class="highlight-box">
+            <strong>Best Practice:</strong> If your page uses defer/async, users
+            might see the page before scripts initialize. Always show "loading"
+            indicators and disable buttons until scripts are ready!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Resource Loading: onload & onerror -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Resource Loading: onload & onerror</h2>
+          <p class="slide-subtitle">
+            Tracking success and failure of external files
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="two-column">
+            <div class="column">
+              <div class="info-card" style="border-left: 4px solid #2ecc71">
+                <h4><i class="fas fa-check-circle"></i> onload</h4>
+                <p>
+                  Triggers when a resource (like an image or script)
+                  successfully loads and executes.
+                </p>
+                <p>
+                  <strong>Use case:</strong> Running a function that relies on a
+                  3rd-party library, only after that library is fully
+                  downloaded.
+                </p>
+              </div>
+            </div>
+            <div class="column">
+              <div class="info-card" style="border-left: 4px solid #e74c3c">
+                <h4><i class="fas fa-times-circle"></i> onerror</h4>
+                <p>
+                  Triggers when the loading fails (e.g., 404 error, server
+                  down).
+                </p>
+                <p>
+                  <strong>Limitation:</strong> You can't get specific HTTP error
+                  details (like 404 vs 500). You only know it failed.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="text-section">
+            <h3>Important Exceptions</h3>
+            <ul class="list-section">
+              <li>
+                <strong>Images:</strong> Start loading as soon as the
+                <code>src</code> attribute is set, even before they are added to
+                the page.
+              </li>
+              <li>
+                <strong>Iframes:</strong> Trigger <code>onload</code> even if
+                the page inside isn't found (404). For historical reasons, it
+                counts as "loaded" if the iframe frame itself rendered.
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <strong>Note:</strong> <code>onload/onerror</code> only track the
+            *loading* of the file. If a script loads successfully but contains a
+            bug (syntax error), <code>onload</code> still triggers! Use
+            <code>window.onerror</code> for script bugs.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Crossorigin Policy -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Crossorigin Policy (CORS)</h2>
+          <p class="slide-subtitle">
+            Why can't I see errors from other domains?
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Security rules prevent scripts on your site from reading the
+              details of scripts from another site. This means if an external
+              script throws an error, you only see
+              <code>Script error.</code> with no details.
+            </p>
+            <p>
+              <strong>Real-World Analogy:</strong> A package arrives from
+              another country without a customs declaration. You know it arrived
+              (loaded), but security won't let you open it to see what went
+              wrong inside.
+            </p>
+          </div>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Effect</th>
+                <th>Server Headers Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>No attribute</em></td>
+                <td>Access prohibited. You get no error details.</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td><code>crossorigin="anonymous"</code></td>
+                <td>Access allowed. No cookies sent to the remote server.</td>
+                <td><code>Access-Control-Allow-Origin: *</code></td>
+              </tr>
+              <tr>
+                <td><code>crossorigin="use-credentials"</code></td>
+                <td>Access allowed. Sends cookies/authorization.</td>
+                <td>
+                  <code>Access-Control-Allow-Origin: [your domain]</code> AND
+                  <code>Access-Control-Allow-Credentials: true</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="highlight-box">
+            <strong>Takeaway:</strong> If you manage the external server, add
+            the <code>crossorigin</code> attribute to your script tags and
+            configure the server to send the right headers so you can actually
+            debug errors!
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>HTML Page Lifecycle & Scripts Presentation</p>
+      </div>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Stop Propagation</title>
+    <style>
+      #overlay {
+        background-color: rgba(0, 0, 0, 0.7);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #modalCard {
+        background-color: white;
+        padding: 40px;
+        border-radius: 8px;
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="overlay">
+      <div id="modalCard">
+        <h2>Important Message</h2>
+        <p>
+          Clicking this white box does nothing. Clicking the dark gray
+          background will trigger the overlay click.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const overlay = document.getElementById("overlay");
+      const modalCard = document.getElementById("modalCard");
+
+      // 1. Clicking the background overlay closes the modal
+      overlay.addEventListener("click", function () {
+        alert("Overlay clicked! Closing modal...");
+      });
+
+      // 2. Clicking the white card stops the event from reaching the overlay
+      modalCard.addEventListener("click", function (event) {
+        event.stopPropagation();
+        alert("Card clicked. Bubbling stopped here.");
+      });
+    </script>
+  </body>
+</html>

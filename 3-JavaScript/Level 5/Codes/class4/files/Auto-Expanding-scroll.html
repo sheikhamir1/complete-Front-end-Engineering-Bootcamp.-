@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+      .scroll-box {
+        width: 250px;
+        height: 120px;
+        padding: 10px;
+        border: 2px solid darkblue;
+        background: #f0f8ff;
+        overflow-y: auto; /* Scrollbar appears if needed */
+        transition: height 0.3s ease;
+      }
+      button {
+        padding: 8px 12px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Topic 2: Scroll Properties</h2>
+    <div class="container">
+      <div>
+        <div id="contentBox" class="scroll-box">
+          Item 1<br />Item 2<br />Item 3<br />Item 4<br />Item 5<br />
+          Item 6<br />Item 7<br />Item 8<br />Item 9<br />Item 10
+        </div>
+        <button onclick="expandBox()">Expand to Full Height</button>
+        <button onclick="scrollDown()">Scroll Down 30px</button>
+      </div>
+    </div>
+
+    <script>
+      const box = document.getElementById("contentBox");
+
+      function expandBox() {
+        // Set the height exactly to the total size of the hidden content
+        box.style.height = `${box.scrollHeight}px`;
+      }
+
+      function scrollDown() {
+        // Programmatically push the scrollbar down
+        console.log("Current ScrollTop:", box.scrollTop);
+        box.scrollTop += 50;
+        console.log("Current ScrollTop:", box.scrollTop);
+      }
+    </script>
+  </body>
+</html>

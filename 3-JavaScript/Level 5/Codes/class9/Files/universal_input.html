@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointer Basics</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+    #smartButton {
+      padding: 20px 40px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      background-color: #3498db;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.1s;
+      /* Disable text selection when double clicking/tapping */
+      user-select: none; 
+    }
+    #smartButton:active {
+      transform: scale(0.95);
+    }
+    #output {
+      margin-top: 30px;
+      font-size: 20px;
+      font-family: monospace;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="smartButton">Press Me!</button>
+  <div id="output">Waiting for input...</div>
+
+  <script>
+    // 1. Select the HTML elements
+    const btn = document.getElementById('smartButton');
+    const output = document.getElementById('output');
+
+    // 2. Listen for the 'pointerdown' event (Replaces 'mousedown' and 'touchstart')
+    btn.addEventListener('pointerdown', function(event) {
+      
+      // 3. Read the 'pointerType' property from the event object
+      const deviceType = event.pointerType;
+
+      // 4. Update the screen based on what device they used
+      if (deviceType === 'mouse') {
+        output.innerText = '🖱️ You clicked with a MOUSE!';
+      } else if (deviceType === 'touch') {
+        output.innerText = '👆 You tapped with your FINGER!';
+      } else if (deviceType === 'pen') {
+        output.innerText = '🖊️ You poked with a STYLUS!';
+      } else {
+        output.innerText = `Unknown device: ${deviceType}`;
+      }
+    });
+
+    // 5. Reset the text when they lift their finger/mouse (pointerup)
+    btn.addEventListener('pointerup', function() {
+      setTimeout(() => {
+        output.innerText = 'Waiting for input...';
+      }, 1000); // Waits 1 second before resetting
+    });
+  </script>
+</body>
+</html>

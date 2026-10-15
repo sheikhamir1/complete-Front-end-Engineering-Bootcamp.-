@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Prevent Default Action</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      a {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      a:hover {
+        background-color: #2980b9;
+      }
+
+      #messageArea {
+        margin-top: 20px;
+        font-weight: bold;
+        padding: 10px;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Navigation Menu</h2>
+    <a href="https://example.com/dashboard" id="dashboardLink"
+      >Go to Dashboard</a
+    >
+
+    <p id="messageArea">Status: Waiting...</p>
+
+    <script>
+      // 1. Grab the link and message area elements
+      const link = document.getElementById("dashboardLink");
+      const messageArea = document.getElementById("messageArea");
+
+      // 2. Listen for the click event
+      link.addEventListener("click", function (event) {
+        // 3. THE MAGIC LINE: Stop the browser from navigating away!
+        event.preventDefault();
+
+        // 4. Run our own custom JavaScript logic instead
+        const targetUrl = link.getAttribute("href");
+        messageArea.innerText = `Status: Intercepted! The browser tried to go to ${targetUrl}, but we stopped it.`;
+        messageArea.style.color = "green";
+      });
+    </script>
+  </body>
+</html>

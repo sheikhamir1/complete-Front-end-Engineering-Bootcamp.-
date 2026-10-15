@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Range Playground</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      #text {
+        font-size: 24px;
+        border: 2px solid #ddd;
+        padding: 20px;
+        margin: 20px 0;
+      }
+
+      button {
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      .info {
+        background: #f4f4f4;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Range Playground</h1>
+
+    <p>
+      A Range is invisible. We create it manually and then display it using the
+      Selection API.
+    </p>
+
+    <p id="text">Hello JavaScript Students</p>
+
+    <div>
+      <button id="selectHello">Select Hello</button>
+
+      <button id="selectJavaScript">Select JavaScript</button>
+
+      <button id="selectStudents">Select Students</button>
+
+      <button id="selectAll">Select Entire Text</button>
+
+      <button id="clearSelection">Clear Selection</button>
+    </div>
+
+    <div class="info">
+      <h3>Current Range Info</h3>
+
+      <p>
+        Start Offset:
+        <span id="startOffset">-</span>
+      </p>
+
+      <p>
+        End Offset:
+        <span id="endOffset">-</span>
+      </p>
+
+      <p>
+        Selected Text:
+        <span id="selectedText">-</span>
+      </p>
+    </div>
+
+    <script>
+      const paragraph = document.getElementById("text");
+
+      const textNode = paragraph.firstChild;
+
+      function createRange(start, end) {
+        const range = new Range();
+
+        range.setStart(textNode, start);
+        range.setEnd(textNode, end);
+
+        const selection = window.getSelection();
+
+        selection.removeAllRanges();
+
+        selection.addRange(range);
+
+        document.getElementById("startOffset").textContent = start;
+
+        document.getElementById("endOffset").textContent = end;
+
+        document.getElementById("selectedText").textContent = range.toString();
+      }
+
+      document.getElementById("selectHello").addEventListener("click", () => {
+        createRange(0, 5);
+      });
+
+      document
+        .getElementById("selectJavaScript")
+        .addEventListener("click", () => {
+          createRange(6, 16);
+        });
+
+      document
+        .getElementById("selectStudents")
+        .addEventListener("click", () => {
+          createRange(17, 25);
+        });
+
+      document.getElementById("selectAll").addEventListener("click", () => {
+        createRange(0, textNode.length);
+      });
+
+      document
+        .getElementById("clearSelection")
+        .addEventListener("click", () => {
+          window.getSelection().removeAllRanges();
+
+          document.getElementById("startOffset").textContent = "-";
+
+          document.getElementById("endOffset").textContent = "-";
+
+          document.getElementById("selectedText").textContent = "-";
+        });
+    </script>
+  </body>
+</html>

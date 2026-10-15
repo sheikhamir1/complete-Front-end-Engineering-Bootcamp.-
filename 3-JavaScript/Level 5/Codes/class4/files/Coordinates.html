@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Window vs Document Coordinate System Demo</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        background: #f2f5f8;
+        height: 3200px;
+      }
+
+      header {
+        background: #1d3557;
+        color: white;
+        padding: 25px;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+
+      header h1 {
+        margin-bottom: 10px;
+      }
+
+      .info {
+        width: 90%;
+        margin: 25px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        line-height: 1.8;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      table th,
+      table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+      }
+
+      table th {
+        background: #457b9d;
+        color: white;
+      }
+
+      .fixedBox {
+        position: fixed;
+        right: 20px;
+        top: 490px;
+        width: 330px;
+        background: #222;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        z-index: 1000;
+        font-size: 14px;
+        line-height: 1.8;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .absoluteBox {
+        position: absolute;
+        left: 100px;
+        top: 1200px;
+        width: 250px;
+        height: 120px;
+        background: #e63946;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 10px;
+      }
+
+      .viewportMarker {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 4px dashed rgba(0, 100, 255, 0.25);
+        pointer-events: none;
+      }
+
+      .target {
+        width: 250px;
+        height: 160px;
+        background: orange;
+        margin: 800px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .target:hover {
+        transform: scale(1.05);
+      }
+
+      .output {
+        width: 90%;
+        margin: 40px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      }
+
+      .code {
+        background: #111;
+        color: #00ff88;
+        padding: 15px;
+        margin-top: 15px;
+        white-space: pre-wrap;
+        border-radius: 8px;
+        font-family: Consolas;
+      }
+
+      .footer {
+        margin-top: 100px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        color: #444;
+        padding-bottom: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="viewportMarker"></div>
+
+    <header>
+      <h1>Window vs Document Coordinate System</h1>
+
+      <p>
+        Scroll the page and move your mouse to see coordinates changing live.
+      </p>
+    </header>
+
+    <div class="fixedBox">
+      <h2>Live Mouse Coordinates</h2>
+
+      <hr />
+      <br />
+
+      <b>Window Coordinates</b><br />
+
+      clientX :
+      <span id="clientX">0</span>
+
+      <br />
+
+      clientY :
+      <span id="clientY">0</span>
+
+      <br /><br />
+
+      <b>Document Coordinates</b><br />
+
+      pageX :
+      <span id="pageX">0</span>
+
+      <br />
+
+      pageY :
+      <span id="pageY">0</span>
+
+      <br /><br />
+
+      <b>Scroll Position</b>
+
+      <br />
+
+      scrollX :
+      <span id="scrollX">0</span>
+
+      <br />
+
+      scrollY :
+      <span id="scrollY">0</span>
+    </div>
+
+    <div class="info">
+      <h2>Coordinate Systems</h2>
+
+      <p>The browser actually uses two coordinate systems.</p>
+
+      <table>
+        <tr>
+          <th>Coordinate System</th>
+          <th>Used By</th>
+          <th>Description</th>
+        </tr>
+
+        <tr>
+          <td>Window Coordinates</td>
+          <td>position:fixed</td>
+          <td>
+            Measured from the visible browser window. Changes while scrolling.
+          </td>
+        </tr>
+
+        <tr>
+          <td>Document Coordinates</td>
+          <td>position:absolute</td>
+          <td>
+            Measured from the top of the complete webpage. Never changes because
+            of scrolling.
+          </td>
+        </tr>
+      </table>
+
+      <br />
+
+      <h3>JavaScript Properties</h3>
+
+      <ul>
+        <li>clientX → Mouse X inside viewport</li>
+
+        <li>clientY → Mouse Y inside viewport</li>
+
+        <li>pageX → Mouse X inside entire webpage</li>
+
+        <li>pageY → Mouse Y inside entire webpage</li>
+
+        <li>window.scrollY → Current vertical scroll</li>
+
+        <li>window.scrollX → Current horizontal scroll</li>
+
+        <li>element.getBoundingClientRect()</li>
+      </ul>
+    </div>
+
+    <div class="target" id="target">Click Me</div>
+
+    <div class="absoluteBox">Absolute Box</div>
+
+    <div class="output">
+      <h2>getBoundingClientRect() Output</h2>
+
+      <p>Click the orange box after scrolling.</p>
+
+      <div class="code" id="result">Waiting...</div>
+    </div>
+
+    <div class="footer">Scroll to see how coordinates behave.</div>
+
+    <script>
+      document.addEventListener("mousemove", (e) => {
+        clientX.textContent = e.clientX;
+        clientY.textContent = e.clientY;
+
+        pageX.textContent = e.pageX;
+        pageY.textContent = e.pageY;
+      });
+
+      function updateScroll() {
+        scrollX.textContent = window.scrollX;
+
+        scrollY.textContent = window.scrollY;
+      }
+
+      updateScroll();
+
+      window.addEventListener("scroll", updateScroll);
+
+      const box = document.getElementById("target");
+
+      box.addEventListener("click", () => {
+        const rect = box.getBoundingClientRect();
+
+        const documentTop = rect.top + window.scrollY;
+        const documentLeft = rect.left + window.scrollX;
+
+        result.textContent = `
+getBoundingClientRect()
+
+top      : ${rect.top.toFixed(2)}
+
+left     : ${rect.left.toFixed(2)}
+
+bottom   : ${rect.bottom.toFixed(2)}
+
+right    : ${rect.right.toFixed(2)}
+
+width    : ${rect.width}
+
+height   : ${rect.height}
+
+
+Document Coordinates
+
+top  = rect.top + scrollY
+
+     = ${rect.top.toFixed(2)} + ${window.scrollY}
+
+     = ${documentTop.toFixed(2)}
+
+left = rect.left + scrollX
+
+     = ${rect.left.toFixed(2)} + ${window.scrollX}
+
+     = ${documentLeft.toFixed(2)}
+
+Explanation:
+
+✔ rect.top is measured from the visible browser window.
+
+✔ page coordinates are measured from the entire webpage.
+
+✔ When you scroll downward,
+rect.top decreases.
+
+✔ If the element goes above the screen,
+rect.top becomes NEGATIVE.
+
+✔ Document coordinates stay constant.
+
+`;
+      });
+
+      window.addEventListener("scroll", () => {
+        const rect = box.getBoundingClientRect();
+
+        if (rect.top < 0) {
+          result.textContent = `
+The orange box is above the viewport.
+
+Current rect.top = ${rect.top.toFixed(2)}
+
+Since rect.top is negative,
+the element has scrolled off the top
+of the visible window.
+
+This demonstrates that
+getBoundingClientRect()
+returns WINDOW coordinates.
+`;
+        }
+      });
+    </script>
+  </body>
+</html>

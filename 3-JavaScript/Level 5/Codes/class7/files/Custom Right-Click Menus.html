@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Default Prevented</title>
+    <style>
+      body {
+        height: 100vh;
+        padding: 20px;
+        font-family: sans-serif;
+      }
+      button {
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #e74c3c;
+        color: white;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Right-click anywhere on the white background.</p>
+    <button id="specialBtn">Right-Click ME Specifically</button>
+
+    <script>
+      const btn = document.getElementById("specialBtn");
+
+      // 1. The Child Handler (The Button)
+      btn.addEventListener("contextmenu", function (event) {
+        // Stop the browser's default right-click menu
+        event.preventDefault();
+        alert("Button Context Menu Opened!");
+      });
+
+      // 2. The Parent Handler (The Whole Document)
+      document.addEventListener("contextmenu", function (event) {
+        // Check: Did a child element already prevent the default action?
+        if (event.defaultPrevented) {
+          // If yes, we step aside and do nothing.
+          alert("Doc Alert Not Displayed");
+          return;
+        }
+
+        // Otherwise, stop the browser menu and show the Document menu
+        event.preventDefault();
+        alert("Document Context Menu Opened!");
+      });
+    </script>
+  </body>
+</html>

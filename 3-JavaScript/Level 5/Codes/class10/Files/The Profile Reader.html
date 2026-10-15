@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Navigation Basics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+      }
+      .container {
+        background: white;
+        padding: 20px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      input[type="text"],
+      select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      #output {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Create Profile</h2>
+      <form name="profileForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="BeginnerDev" />
+
+        <label for="role">Select Role:</label>
+        <select id="role" name="role">
+          <option value="admin">Admin</option>
+          <option value="user" selected>User</option>
+        </select>
+
+        <label>
+          <input type="checkbox" name="newsletter" checked />
+          Subscribe to Newsletter
+        </label>
+
+        <button type="button" id="readBtn">Read Values</button>
+      </form>
+
+      <div id="output"></div>
+    </div>
+    <script>
+      // 1. Target the button and the output div
+      const readBtn = document.getElementById("readBtn");
+      const outputDiv = document.getElementById("output");
+
+      // 2. Add a click event listener to the button
+      readBtn.addEventListener("click", function () {
+        // 3. Find the form using document.forms by its 'name' attribute
+        let myForm = document.forms.profileForm;
+        // console.log(myForm);
+
+        // 4. Access individual elements inside the form using .elements
+        // We grab the inputs by their 'name' attributes
+        let userField = myForm.elements.username;
+        let roleDropdown = myForm.elements.role;
+        let newsCheckbox = myForm.elements.newsletter;
+
+        // 5. Extract the actual data from those inputs
+        let currentName = userField.value; // Gets text
+        let currentRole = roleDropdown.value; // Gets selected option value
+        let isSubscribed = newsCheckbox.checked; // Gets true/false
+
+        // 6. Display the result on the screen
+        outputDiv.innerHTML = `
+    Name: ${currentName} <br>
+    Role: ${currentRole} <br>
+    Subscribed: ${isSubscribed ? "Yes" : "No"}
+  `;
+      });
+    </script>
+  </body>
+</html>

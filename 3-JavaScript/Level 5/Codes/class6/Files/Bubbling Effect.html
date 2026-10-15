@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Bubbling</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+
+      div {
+        padding: 40px;
+        margin: 10px;
+        border: 2px solid black;
+        cursor: pointer;
+      }
+
+      #grandparent {
+        background-color: #ffcccc;
+      }
+      #parent {
+        background-color: #ccffcc;
+      }
+      #child {
+        background-color: #ccccff;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="grandparent">
+      Grandparent
+      <div id="parent">
+        Parent
+        <div id="child">Child (Click me!)</div>
+      </div>
+    </div>
+
+    <script>
+      // 1. Select all three elements from the DOM
+      const grandparent = document.getElementById("grandparent");
+      const parent = document.getElementById("parent");
+      const child = document.getElementById("child");
+
+      // 2. Add click listeners to all of them
+      grandparent.addEventListener("click", function () {
+        alert("Grandparent was clicked!");
+      });
+
+      //   parent.addEventListener("click", function () {
+      //     alert("Parent was clicked!");
+      //   });
+
+      child.addEventListener("click", function () {
+        alert("Child was clicked!");
+      });
+    </script>
+  </body>
+</html>

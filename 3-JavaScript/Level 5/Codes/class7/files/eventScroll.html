@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Passive Event Listener Demo</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 30px;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      h2 {
+        color: #1565c0;
+      }
+
+      .scroll-box {
+        margin-top: 20px;
+        height: 250px;
+        overflow: auto;
+        border: 2px solid #1565c0;
+        padding: 15px;
+        background: #fafafa;
+      }
+
+      .item {
+        padding: 12px;
+        margin: 8px 0;
+        background: #e3f2fd;
+        border-radius: 5px;
+      }
+
+      #count {
+        font-size: 22px;
+        color: green;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Passive Event Listener Demo</h2>
+
+      <p>
+        📱 On a mobile device, drag your finger inside the box.<br />
+        The page continues scrolling smoothly because the listener is
+        <b>passive</b>.
+      </p>
+
+      <p>
+        Touch Events Fired:
+        <span id="count">0</span>
+      </p>
+
+      <div class="scroll-box" id="box">
+        <div class="item">Scroll Me</div>
+        <div class="item">Item 1</div>
+        <div class="item">Item 2</div>
+        <div class="item">Item 3</div>
+        <div class="item">Item 4</div>
+        <div class="item">Item 5</div>
+        <div class="item">Item 6</div>
+        <div class="item">Item 7</div>
+        <div class="item">Item 8</div>
+        <div class="item">Item 9</div>
+        <div class="item">Item 10</div>
+        <div class="item">Item 11</div>
+        <div class="item">Item 12</div>
+        <div class="item">Item 13</div>
+        <div class="item">Item 14</div>
+        <div class="item">Item 15</div>
+      </div>
+    </div>
+
+    <script>
+      let counter = 0;
+
+      // Passive touch listener
+      document.getElementById("box").addEventListener(
+        "touchmove",
+        function (event) {
+          counter++;
+          document.getElementById("count").textContent = counter;
+
+          console.log("Finger moving...");
+
+          // ❌ Don't do this:
+          // event.preventDefault();
+        },
+        { passive: true },
+      );
+    </script>
+  </body>
+</html>

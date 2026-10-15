@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic Drag and Drop</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background: #fafafa;
+      }
+      #ball {
+        font-size: 50px;
+        width: 50px;
+        height: 50px;
+        cursor: grab;
+        /* position: absolute will be added by JS */
+      }
+      #ball:active {
+        cursor: grabbing;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ball">⚽</div>
+
+    <script>
+      const ball = document.getElementById("ball");
+
+      // 1. Disable the browser's native drag-and-drop for images/text
+      ball.ondragstart = function () {
+        return false;
+      };
+
+      ball.addEventListener("mousedown", function (event) {
+        // 2. Prepare the element for dragging
+        ball.style.position = "absolute";
+        ball.style.zIndex = 1000;
+        document.body.append(ball); // Move it to the body to avoid container restrictions
+
+        // 3. Move the ball to the exact coordinates
+        function moveAt(pageX, pageY) {
+          // Notice: We add 'px' because CSS requires it!
+          ball.style.left = pageX + "px";
+          ball.style.top = pageY + "px";
+        }
+
+        // Move it immediately to where we clicked
+        moveAt(event.pageX, event.pageY);
+
+        // 4. Create the movement handler
+        function onMouseMove(event) {
+          moveAt(event.pageX, event.pageY);
+        }
+
+        // 5. Listen for moves on the DOCUMENT, not the ball.
+        // If we move the mouse too fast, it slips off the ball.
+        // Listening to the document ensures we never lose the connection.
+        document.addEventListener("mousemove", onMouseMove);
+
+        // 6. When the mouse is released, drop it
+        ball.addEventListener(
+          "mouseup",
+          function () {
+            document.removeEventListener("mousemove", onMouseMove);
+          },
+          { once: true },
+        ); // { once: true } auto-removes this listener after it runs!
+      });
+    </script>
+  </body>
+</html>

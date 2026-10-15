@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pointer, Keyboard & Scrolling Events</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Pointer, Keyboard & Scrolling</h1>
+          <p class="slide-subtitle">Modern input handling for every device</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop"
+              alt="Technology and devices"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              The web isn't just for mice anymore. Users interact with phones,
+              tablets, styluses, and keyboards. Modern JavaScript provides
+              Pointer Events to handle all pointing devices uniformly, Keyboard
+              Events for physical keys, and Scroll Events for page navigation.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Instead of learning a different
+            language for every remote control in your house (mouse, touch, pen),
+            Pointer Events give you a "Universal Remote" that works for all of
+            them.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Pointer Events Basics -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Pointer Events</h2>
+          <p class="slide-subtitle">The Universal Input API</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              In the past, we used Mouse Events. Then touch screens arrived, and
+              we had Touch Events. Now we have pens! Writing code for all of
+              them was a nightmare. <strong>Pointer Events</strong> solve this
+              by combining them into one system.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Event Mapping</h4>
+            <p>
+              For every <code>mouse</code> event, there is a matching
+              <code>pointer</code> event. You can literally swap "mouse" for
+              "pointer" in your code!
+            </p>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Mouse Event</th>
+                  <th>Pointer Event</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>mousedown</td>
+                  <td>pointerdown</td>
+                </tr>
+                <tr>
+                  <td>mousemove</td>
+                  <td>pointermove</td>
+                </tr>
+                <tr>
+                  <td>mouseup</td>
+                  <td>pointerup</td>
+                </tr>
+                <tr>
+                  <td>mouseover</td>
+                  <td>pointerover</td>
+                </tr>
+                <tr>
+                  <td>mouseout</td>
+                  <td>pointerout</td>
+                </tr>
+                <tr>
+                  <td>mouseenter</td>
+                  <td>pointerenter</td>
+                </tr>
+                <tr>
+                  <td>mouseleave</td>
+                  <td>pointerleave</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight-box">
+            <strong>Pro Tip:</strong> Unless you are supporting very old
+            browsers (like IE 10 or Safari 12), you should switch from mouse
+            events to pointer events. Your code will automatically work with
+            touch and pens!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Pointer Properties -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Pointer Event Properties</h2>
+          <p class="slide-subtitle">Identifying the input source</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Pointer events include all standard mouse properties (like
+              <code>clientX</code>), but add new ones specifically for
+              multi-device support.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Key Properties</h4>
+            <ul class="list-section">
+              <li>
+                <code>pointerId</code> – A unique ID for the pointer causing the
+                event. Essential for tracking multiple fingers.
+              </li>
+              <li>
+                <code>pointerType</code> – What kind of device? Returns
+                <code>"mouse"</code>, <code>"pen"</code>, or
+                <code>"touch"</code>.
+              </li>
+              <li>
+                <code>isPrimary</code> – Is this the primary pointer? (e.g., the
+                first finger in a multi-touch gesture).
+              </li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Multi-touch Support</h4>
+            <p>
+              When a user touches a screen with one finger,
+              <code>pointerdown</code> fires with <code>isPrimary=true</code>.
+              If they add a second finger, another
+              <code>pointerdown</code> fires with a new
+              <code>pointerId</code> and <code>isPrimary=false</code>.
+            </p>
+            <div class="highlight-box">
+              <strong>Analogy:</strong> Think of <code>pointerId</code> like a
+              name tag. If 5 fingers touch the screen, the browser hands out 5
+              name tags. You can track each finger individually as it moves and
+              lifts.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: pointercancel -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The pointercancel Event</h2>
+          <p class="slide-subtitle">
+            When the browser hijacks your interaction
+          </p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Sometimes, you start a pointer interaction (like dragging an
+              item), but the browser decides to take over. When this happens,
+              the <code>pointercancel</code> event fires, and you stop getting
+              <code>pointermove</code> events.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Why does the browser hijack it?</h4>
+            <ul class="list-section">
+              <li>The device orientation changed (tablet was rotated).</li>
+              <li>
+                The browser interpreted the action as a native gesture (like
+                scrolling or zooming).
+              </li>
+              <li>
+                The browser started its own native drag-and-drop for an image.
+              </li>
+            </ul>
+          </div>
+          <div class="warning-box">
+            <h4>⚠️ How to prevent it</h4>
+            <p>
+              To keep control and stop <code>pointercancel</code>, you must
+              disable the browser's default actions.
+            </p>
+            <ol class="list-section">
+              <li>
+                <strong>Disable native drag:</strong>
+                <code>ball.ondragstart = () => false;</code>
+              </li>
+              <li>
+                <strong>Disable touch gestures (like scroll/zoom):</strong> Add
+                CSS <code>touch-action: none;</code> to the dragged element.
+              </li>
+            </ol>
+            <div class="code-block">
+              <span class="comment">/* CSS */</span> #ball { touch-action: none;
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Pointer Capturing -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Pointer Capturing</h2>
+          <p class="slide-subtitle">Locking the pointer to an element</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Imagine building a custom slider. The user presses the slider
+              thumb and drags it. But if they move their finger too fast, the
+              pointer might leave the thumb element, breaking the interaction.
+            </p>
+            <div class="highlight-box">
+              <strong>The Solution:</strong>
+              <code>elem.setPointerCapture(pointerId)</code>. This acts like a
+              leash. Once set, all future pointer events (until
+              <code>pointerup</code>) are redirected to that element, no matter
+              where the mouse/finger actually is on the screen.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Slider Example Code</h4>
+            <div class="code-block">
+              thumb.onpointerdown = <span class="keyword">function</span>(event)
+              {
+              <span class="comment">// 1. Put a leash on the pointer</span>
+              thumb.setPointerCapture(event.pointerId); thumb.onpointermove =
+              <span class="keyword">function</span>(event) {
+              <span class="comment"
+                >// 2. Move slider (events are caught here even if pointer
+                leaves thumb)</span
+              >
+              <span class="keyword">let</span> newLeft = event.clientX -
+              slider.getBoundingClientRect().left; thumb.style.left = newLeft +
+              <span class="string">'px'</span>; }; thumb.onpointerup =
+              <span class="keyword">function</span>(event) {
+              <span class="comment"
+                >// 3. Leash is automatically removed on pointerup</span
+              >
+              thumb.onpointermove = <span class="keyword">null</span>;
+              thumb.onpointerup = <span class="keyword">null</span>; }; };
+            </div>
+          </div>
+          <div class="text-section">
+            <p>
+              <strong>Benefits:</strong> You no longer need to attach
+              <code>mousemove</code> to the whole <code>document</code>, and you
+              won't accidentally trigger hover effects on other elements while
+              dragging.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Keyboard Events -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Keyboard Events</h2>
+          <p class="slide-subtitle">keydown and keyup</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Keyboard events trigger when a user presses a physical key. Use
+              these for game controls or keyboard shortcuts (hotkeys).
+              <strong>Do not use them to track text input</strong>—use the
+              <code>input</code> event instead, because users can paste text or
+              use voice-to-text.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Event Sequence</h4>
+            <ul class="list-section">
+              <li>
+                <code>keydown</code> – Fires when a key is pressed down. Repeats
+                if held down.
+              </li>
+              <li><code>keyup</code> – Fires when the key is released.</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Auto-repeat</h4>
+            <p>
+              If a key is held down, <code>keydown</code> fires repeatedly. You
+              can check if an event is an auto-repeat by checking
+              <code>event.repeat</code> (it will be <code>true</code>).
+            </p>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Don't use keypress!</strong> The old
+            <code>keypress</code> event is deprecated. It was buggy and didn't
+            work for special keys. Always use <code>keydown/keyup</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: key vs code -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">event.key vs event.code</h2>
+          <p class="slide-subtitle">The character vs. the physical button</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Keyboard events provide two main properties that often confuse
+              developers. Understanding the difference is crucial for handling
+              international keyboards correctly.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Comparison</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>What it means</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>event.key</code></td>
+                  <td>
+                    The <strong>character</strong> produced. Changes based on
+                    language/layout and Shift key.
+                  </td>
+                  <td>"z", "Z", "1", "!"</td>
+                </tr>
+                <tr>
+                  <td><code>event.code</code></td>
+                  <td>
+                    The <strong>physical key</strong> on the keyboard. Always
+                    the same location.
+                  </td>
+                  <td>"KeyZ", "Digit1"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="info-card">
+            <h4>The Layout Problem</h4>
+            <p>
+              On a US QWERTY keyboard, the bottom-left letter key is "Z". On a
+              German QWERTZ keyboard, that exact same physical key types "Y".
+            </p>
+            <ul class="list-section">
+              <li>
+                If you press that key on a German keyboard:
+                <code>event.key</code> is "Y", but <code>event.code</code> is
+                still "KeyZ".
+              </li>
+            </ul>
+          </div>
+          <div class="highlight-box">
+            <strong>Which should you use?</strong>
+            <ul class="list-section">
+              <li>
+                Want to react to the <em>character typed</em>? Use
+                <code>event.key</code>.
+              </li>
+              <li>
+                Want a hotkey (like Ctrl+Z) that works regardless of language?
+                Use <code>event.code</code>.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Keyboard Default Actions -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Keyboard Default Actions</h2>
+          <p class="slide-subtitle">Filtering input safely</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Pressing a key usually does something (like typing a letter or
+              scrolling down). You can prevent these default actions by calling
+              <code>event.preventDefault()</code> in the
+              <code>keydown</code> handler.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example: Phone Number Input</h4>
+            <p>
+              We only want numbers, +, (, ), or -. We can prevent all other keys
+              from doing anything.
+            </p>
+            <div class="code-block">
+              <span class="keyword">function</span>
+              <span class="function">checkPhoneKey</span>(key) {
+              <span class="keyword">return</span> (key >=
+              <span class="string">'0'</span> && key <=
+              <span class="string">'9'</span>) || [<span class="string"
+                >'+'</span
+              >,<span class="string">'('</span>,<span class="string">')'</span
+              >,<span class="string">'-'</span>,<span class="string"
+                >'ArrowLeft'</span
+              >,<span class="string">'ArrowRight'</span>,<span class="string"
+                >'Delete'</span
+              >,<span class="string">'Backspace'</span>].includes(key); }
+              &lt;input onkeydown=<span class="string"
+                >"return checkPhoneKey(event.key)"</span
+              >
+              placeholder=<span class="string">"Phone"</span> type=<span
+                class="string"
+                >"tel"</span
+              >&gt;
+            </div>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ Don't forget navigation keys!</strong> If you filter
+            strictly for numbers, you might accidentally block the Backspace,
+            Delete, and Arrow keys. Always allow them in your filter! Also,
+            remember this won't stop users from pasting invalid text—handle that
+            with the <code>input</code> event.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Scrolling -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Scrolling Events</h2>
+          <p class="slide-subtitle">Reacting to page movement</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              The <code>scroll</code> event fires whenever an element or the
+              window is scrolled. This is perfect for features like "Back to
+              Top" buttons or infinite scrolling feeds.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Basic Usage</h4>
+            <div class="code-block">
+              window.addEventListener(<span class="string">'scroll'</span>,
+              <span class="keyword">function</span>() {
+              document.getElementById(<span class="string">'showScroll'</span
+              >).innerHTML = window.pageYOffset +
+              <span class="string">'px'</span>; });
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Preventing Scrolling</h4>
+            <p>
+              You <strong>cannot</strong> prevent scrolling by calling
+              <code>preventDefault()</code> inside the <code>scroll</code> event
+              listener, because the scroll has already happened by the time the
+              event fires!
+            </p>
+            <div class="highlight-box">
+              <strong>How to actually prevent scrolling:</strong>
+              <ul class="list-section">
+                <li>
+                  CSS: Use <code>overflow: hidden;</code> on the element or
+                  body.
+                </li>
+                <li>
+                  JavaScript: Call <code>event.preventDefault()</code> on the
+                  events that <em>cause</em> the scroll, like
+                  <code>keydown</code> (for PageDown/Space) or
+                  <code>wheel</code> (for mouse scroll).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">Key takeaways</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>Pointer Events</h4>
+            <ul class="list-section">
+              <li>
+                Replace <code>mouse*</code> events with
+                <code>pointer*</code> events to support mouse, touch, and pens.
+              </li>
+              <li>
+                Track multiple touches using <code>pointerId</code> and
+                <code>isPrimary</code>.
+              </li>
+              <li>
+                Prevent browser hijacking with
+                <code>touch-action: none</code> CSS and
+                <code>ondragstart = () => false</code>.
+              </li>
+              <li>
+                Use <code>setPointerCapture</code> to lock pointer events to an
+                element (great for sliders).
+              </li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Keyboard Events</h4>
+            <ul class="list-section">
+              <li>
+                Use <code>keydown/keyup</code> for hotkeys and game controls,
+                not for text input tracking.
+              </li>
+              <li>
+                <code>event.key</code> = the character ("A"). Changes with
+                language.
+              </li>
+              <li>
+                <code>event.code</code> = the physical key ("KeyA"). Stays the
+                same globally.
+              </li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Scrolling Events</h4>
+            <ul class="list-section">
+              <li><code>scroll</code> event fires after the scroll happens.</li>
+              <li>
+                Prevent scrolling using CSS (<code>overflow: hidden</code>) or
+                by preventing the events that cause it.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Pointer, Keyboard & Scrolling Events | Scroll down to continue &uarr; or
+        &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

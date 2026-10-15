@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubbling, Capturing & Event Delegation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .presentation-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .slide {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide-header {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 15px;
+      }
+
+      .slide-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        color: #1a73e8;
+        margin-bottom: 10px;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+        color: #5f6368;
+      }
+
+      .slide-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .text-section {
+        margin-bottom: 20px;
+      }
+
+      .text-section h3 {
+        font-family: "Montserrat", sans-serif;
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+      }
+
+      .text-section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .image-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .list-section {
+        margin-bottom: 20px;
+      }
+
+      .list-section ul {
+        padding-left: 25px;
+      }
+
+      .list-section li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .two-column {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .column {
+        flex: 1;
+      }
+
+      .highlight-box {
+        background-color: #e8f0fe;
+        border-left: 4px solid #1a73e8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .warning-box {
+        background-color: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .navigation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .nav-btn:hover {
+        background-color: #0d47a1;
+        transform: scale(1.1);
+      }
+
+      .progress-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 5px;
+        background-color: #1a73e8;
+        z-index: 101;
+        transition: width 0.3s ease;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #5f6368;
+        font-size: 0.9rem;
+      }
+
+      .info-card {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-card h4 {
+        color: #1a73e8;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border: 1px solid #e1e8ed;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .comparison-table th {
+        background-color: #e8f0fe;
+        color: #1a73e8;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      .code-block {
+        background-color: #283593;
+        color: #e8f0fe;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", Courier, monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .code-block .keyword {
+        color: #ff79c6;
+      }
+      .code-block .string {
+        color: #50fa7b;
+      }
+      .code-block .comment {
+        color: #6272a4;
+        font-style: italic;
+      }
+      .code-block .function {
+        color: #8be9fd;
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          padding: 20px;
+        }
+
+        .slide-title {
+          font-size: 1.8rem;
+        }
+
+        .two-column {
+          flex-direction: column;
+        }
+
+        .navigation {
+          bottom: 20px;
+          top: auto;
+          flex-direction: row;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <div class="navigation">
+      <button class="nav-btn" id="topBtn" title="Go to top">&#9650;</button>
+      <button class="nav-btn" id="downBtn" title="Go to bottom">&#9660;</button>
+    </div>
+
+    <div class="presentation-container">
+      <!-- Slide 1: Title -->
+      <div class="slide">
+        <div class="slide-header">
+          <h1 class="slide-title">Bubbling, Capturing & Delegation</h1>
+          <p class="slide-subtitle">How events travel through the DOM</p>
+        </div>
+        <div class="slide-content">
+          <div class="image-container">
+            <img
+              src="https://miro.medium.com/v2/resize:fit:1400/0*__5nhm_2qHSrTVoZ"
+              alt="Bubbles rising in water"
+            />
+          </div>
+          <div class="text-section">
+            <p>
+              When an event happens on an element, it doesn't just stay there.
+              It travels. Understanding how events travel through the DOM is the
+              key to writing efficient, clean JavaScript.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Real-World Analogy:</strong> Imagine a company. If a problem
+            happens in a specific department (the target), the local manager
+            handles it first. If they can't, it escalates to the general
+            manager, and finally to the CEO. Events in the DOM work exactly the
+            same way!
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Bubbling -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Bubbling</h2>
+          <p class="slide-subtitle">Events rise up like a bubble</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Bubbling Principle</h3>
+            <p>
+              When an event happens on an element, it first runs the handlers on
+              that element, then on its parent, then on its grandparent, and all
+              the way up to the <code>document</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Example: Nested Elements</h4>
+            <div class="code-block">
+              <span class="keyword">&lt;form</span> onclick=<span class="string"
+                >"alert('form')"</span
+              ><span class="keyword">&gt;</span> FORM
+              <span class="keyword">&lt;div</span> onclick=<span class="string"
+                >"alert('div')"</span
+              ><span class="keyword">&gt;</span> DIV
+              <span class="keyword">&lt;p</span> onclick=<span class="string"
+                >"alert('p')"</span
+              ><span class="keyword">&gt;</span> P
+              <span class="keyword">&lt;/p&gt;</span>
+              <span class="keyword">&lt;/div&gt;</span>
+              <span class="keyword">&lt;/form&gt;</span>
+            </div>
+            <p>
+              If you click on <code>&lt;p&gt;</code>, the alerts will fire in
+              this order: <strong>p → div → form</strong>. The event "bubbles"
+              up from the inside out.
+            </p>
+          </div>
+          <div class="highlight-box">
+            <strong>Almost all events bubble.</strong> There are a few
+            exceptions (like <code>focus</code>), but generally, if an event
+            happens to a child, the parents will hear about it.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: event.target -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Target vs. CurrentTarget</h2>
+          <p class="slide-subtitle">Who started it vs. Who is handling it</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              A parent's event handler can always find out exactly which child
+              element originally triggered the event.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Two Key Properties</h4>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>What it means</th>
+                  <th>Analogy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>event.target</code></td>
+                  <td>
+                    The <strong>actual element</strong> that triggered the
+                    event. Does not change as it bubbles.
+                  </td>
+                  <td>The employee who reported the problem.</td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>this</code> (or <code>event.currentTarget</code>)
+                  </td>
+                  <td>
+                    The element that is <strong>currently handling</strong> the
+                    event right now.
+                  </td>
+                  <td>The manager currently looking at the problem.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="info-card">
+            <h4>Example</h4>
+            <div class="code-block">
+              form.onclick = <span class="keyword">function</span>(event) {
+              <span class="comment">// 'this' is the &lt;form&gt;</span>
+              alert(<span class="string">"Handler is on: "</span> +
+              this.tagName);
+
+              <span class="comment"
+                >// event.target is the clicked element inside</span
+              >
+              alert(<span class="string">"Actual click was on: "</span> +
+              event.target.tagName); };
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Stopping Bubbling -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Stopping Bubbling</h2>
+          <p class="slide-subtitle">Putting a lid on the pot</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Sometimes, you don't want the event to reach the parent. You can
+              stop the bubbling process using
+              <code>event.stopPropagation()</code>.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>Usage</h4>
+            <div class="code-block">
+              <span class="keyword">&lt;body</span> onclick=<span class="string"
+                >"alert('Bubbling reached body!')"</span
+              ><span class="keyword">&gt;</span>
+              <span class="keyword">&lt;button</span> onclick=<span
+                class="string"
+                >"event.stopPropagation()"</span
+              ><span class="keyword">&gt;</span>
+              Click me
+              <span class="keyword">&lt;/button&gt;</span>
+              <span class="keyword">&lt;/body&gt;</span>
+
+              <span class="comment"
+                >// Clicking the button stops here. The body won't alert.</span
+              >
+            </div>
+          </div>
+          <div class="warning-box">
+            <h4>⚠️ Don't stop bubbling without a need!</h4>
+            <p>
+              Bubbling is extremely useful. If you stop it unnecessarily, you
+              create "dead zones" where higher-level analytics or features can't
+              track user clicks. Only use <code>stopPropagation()</code> when
+              you have a well-thought-out architectural reason.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>stopImmediatePropagation()</h4>
+            <p>
+              If an element has <em>multiple</em> handlers on the same event,
+              <code>stopPropagation</code> stops the parent, but the other
+              handlers on the same element still run.
+              <code>stopImmediatePropagation()</code> stops
+              <strong>everything</strong>—no other handlers run at all.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Capturing -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Capturing</h2>
+          <p class="slide-subtitle">The dive down</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              Before an event bubbles up, it actually travels
+              <strong>down</strong> first. This is called the Capturing Phase.
+              The DOM event standard describes 3 phases:
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The 3 Phases of an Event</h4>
+            <div class="list-section">
+              <ol>
+                <li>
+                  <strong>Capturing Phase:</strong> The event travels down from
+                  the document root to the target element.
+                </li>
+                <li>
+                  <strong>Target Phase:</strong> The event reaches the actual
+                  element that was clicked.
+                </li>
+                <li>
+                  <strong>Bubbling Phase:</strong> The event bubbles back up to
+                  the root.
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Analogy:</strong> A submarine diving down (Capturing),
+            hitting the ocean floor (Target), and then releasing a bubble that
+            rises back up (Bubbling).
+          </div>
+          <div class="info-card">
+            <h4>How to catch Capturing Events</h4>
+            <p>
+              By default, handlers only listen to the Target and Bubbling
+              phases. To catch an event on its way down, you must set the
+              <code>capture</code> option to <code>true</code>.
+            </p>
+            <div class="code-block">
+              elem.addEventListener(<span class="string">"click"</span>,
+              handler, {capture: <span class="keyword">true</span>});
+
+              <span class="comment"
+                >// Or simply pass true as the 3rd argument (shorthand)</span
+              >
+              elem.addEventListener(<span class="string">"click"</span>,
+              handler, <span class="keyword">true</span>);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Event Delegation -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Event Delegation</h2>
+          <p class="slide-subtitle">The most powerful event pattern</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <h3>The Core Idea</h3>
+            <p>
+              If you have many elements that need the same event handler, don't
+              assign a handler to each one. Instead, assign a
+              <strong>single handler to their common parent</strong>, and use
+              <code>event.target</code> to figure out which child was clicked.
+            </p>
+            <div class="highlight-box">
+              <strong>Real-World Analogy:</strong> Instead of giving every
+              employee in a company their own direct phone line, you have one
+              receptionist (the parent handler). The receptionist looks at who
+              the call is for (<code>event.target</code>) and routes it
+              correctly.
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>Example: Table Highlighting</h4>
+            <p>
+              Imagine a table with 9,000 cells. Instead of 9,000 handlers, we
+              put 1 on the <code>&lt;table&gt;</code>.
+            </p>
+            <div class="code-block">
+              table.onclick = <span class="keyword">function</span>(event) {
+              <span class="keyword">let</span> target = event.target;
+              <span class="comment">// Where was the click?</span>
+
+              <span class="keyword">if</span> (target.tagName !=
+              <span class="string">'TD'</span>)
+              <span class="keyword">return</span>;
+              <span class="comment">// Not on a cell? Ignore.</span>
+
+              highlight(target);
+              <span class="comment">// Highlight it!</span> };
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Delegation & closest() -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Delegation & The closest() Method</h2>
+          <p class="slide-subtitle">Handling nested elements safely</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              There is a problem with simple delegation. What if your
+              <code>&lt;td&gt;</code> has a <code>&lt;strong&gt;</code> tag
+              inside it? If the user clicks the text inside
+              <code>&lt;strong&gt;</code>, <code>event.target</code> will be the
+              <code>&lt;strong&gt;</code>, not the <code>&lt;td&gt;</code>!
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Solution: elem.closest()</h4>
+            <p>
+              We use <code>closest()</code> to search upwards from the target to
+              find the nearest element that matches our selector.
+            </p>
+            <div class="code-block">
+              table.onclick = <span class="keyword">function</span>(event) {
+              <span class="comment"
+                >// Find the closest TD to where the click happened</span
+              >
+              <span class="keyword">let</span> td = event.target.closest(<span
+                class="string"
+                >'td'</span
+              >);
+
+              <span class="keyword">if</span> (!td)
+              <span class="keyword">return</span>;
+              <span class="comment">// Click wasn't inside any TD</span>
+              <span class="keyword">if</span> (!table.contains(td))
+              <span class="keyword">return</span>;
+              <span class="comment">// Click was in another table</span>
+
+              highlight(td);
+              <span class="comment">// Safe to highlight!</span> };
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong>Why <code>table.contains(td)</code>?</strong> If your page
+            has multiple tables, a click deep in Table B might bubble up to a
+            <code>&lt;td&gt;</code> that belongs to Table B, but the handler is
+            on Table A. <code>contains()</code> ensures the clicked element is
+            actually inside our specific table.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Delegation - Actions in Markup -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Actions in Markup</h2>
+          <p class="slide-subtitle">Connecting HTML to JavaScript logic</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              We can use event delegation to map buttons to JavaScript methods
+              dynamically using <code>data-</code> attributes.
+            </p>
+          </div>
+          <div class="info-card">
+            <h4>The Pattern</h4>
+            <p>
+              1. Give elements a <code>data-action</code> attribute.<br />
+              2. The parent handler reads the attribute and calls the matching
+              method.
+            </p>
+            <div class="code-block">
+              <span class="keyword">&lt;div</span> id=<span class="string"
+                >"menu"</span
+              ><span class="keyword">&gt;</span>
+              <span class="keyword">&lt;button</span> data-action=<span
+                class="string"
+                >"save"</span
+              ><span class="keyword">&gt;</span>Save<span class="keyword"
+                >&lt;/button&gt;</span
+              >
+              <span class="keyword">&lt;button</span> data-action=<span
+                class="string"
+                >"load"</span
+              ><span class="keyword">&gt;</span>Load<span class="keyword"
+                >&lt;/button&gt;</span
+              >
+              <span class="keyword">&lt;/div&gt;</span>
+
+              <span class="keyword">&lt;script&gt;</span>
+              <span class="keyword">class</span> Menu {
+              <span class="function">constructor</span>(elem) { this._elem =
+              elem; elem.onclick = this.onClick.bind(<span class="keyword"
+                >this</span
+              >); } <span class="function">save</span>() { alert(<span
+                class="string"
+                >'saving'</span
+              >); } <span class="function">load</span>() { alert(<span
+                class="string"
+                >'loading'</span
+              >); }
+
+              <span class="function">onClick</span>(event) {
+              <span class="keyword">let</span> action =
+              event.target.dataset.action;
+              <span class="keyword">if</span> (action) {
+              <span class="keyword">this</span>[action]();
+              <span class="comment">// Calls this.save() or this.load()</span>
+              } }; }
+              <span class="keyword">new</span> Menu(menu);
+              <span class="keyword">&lt;/script&gt;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: The Behavior Pattern -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">The Behavior Pattern</h2>
+          <p class="slide-subtitle">Declaring actions directly in HTML</p>
+        </div>
+        <div class="slide-content">
+          <div class="text-section">
+            <p>
+              We can take delegation even further by adding "behaviors"
+              declaratively. We set a document-wide handler that looks for
+              elements with special attributes and performs actions
+              automatically.
+            </p>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>Behavior: Counter</h4>
+              <p>
+                Any element with <code>data-counter</code> will increase its
+                value on click.
+              </p>
+              <div class="code-block">
+                Counter: <span class="keyword">&lt;input</span> type=<span
+                  class="string"
+                  >"button"</span
+                >
+                value=<span class="string">"1"</span> data-counter<span
+                  class="keyword"
+                  >&gt;</span
+                >
+
+                <span class="keyword">&lt;script&gt;</span>
+                document.addEventListener(<span class="string">'click'</span>,
+                <span class="keyword">function</span>(event) {
+                <span class="keyword">if</span> (event.target.dataset.counter !=
+                <span class="keyword">undefined</span>) { event.target.value++;
+                } }); <span class="keyword">&lt;/script&gt;</span>
+              </div>
+            </div>
+            <div class="column info-card">
+              <h4>Behavior: Toggler</h4>
+              <p>
+                Clicking an element with <code>data-toggle-id</code> will
+                show/hide the element with that ID.
+              </p>
+              <div class="code-block">
+                <span class="keyword">&lt;button</span> data-toggle-id=<span
+                  class="string"
+                  >"subscribe-mail"</span
+                ><span class="keyword">&gt;</span>
+                Show form
+                <span class="keyword">&lt;/button&gt;</span>
+
+                <span class="keyword">&lt;form</span> id=<span class="string"
+                  >"subscribe-mail"</span
+                >
+                hidden<span class="keyword">&gt;</span> Your mail:
+                <span class="keyword">&lt;input</span> type=<span class="string"
+                  >"email"</span
+                ><span class="keyword">&gt;</span>
+                <span class="keyword">&lt;/form&gt;</span>
+
+                <span class="keyword">&lt;script&gt;</span>
+                document.addEventListener(<span class="string">'click'</span>,
+                <span class="keyword">function</span>(event) {
+                <span class="keyword">let</span> id =
+                event.target.dataset.toggleId;
+                <span class="keyword">if</span> (!id)
+                <span class="keyword">return</span>;
+                document.getElementById(id).hidden =
+                !document.getElementById(id).hidden; });
+                <span class="keyword">&lt;/script&gt;</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <strong
+              >Always use addEventListener for document-level handlers!</strong
+            >
+            If you use <code>document.onclick</code>, you risk overwriting
+            handlers set by other scripts. <code>addEventListener</code> allows
+            multiple scripts to listen safely.
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: Summary -->
+      <div class="slide">
+        <div class="slide-header">
+          <h2 class="slide-title">Summary</h2>
+          <p class="slide-subtitle">Benefits & Limitations of Delegation</p>
+        </div>
+        <div class="slide-content">
+          <div class="info-card">
+            <h4>The Delegation Algorithm</h4>
+            <ol class="list-section">
+              <li>Put a single handler on the container (parent).</li>
+              <li>
+                In the handler, check the source element using
+                <code>event.target</code> (or <code>closest()</code>).
+              </li>
+              <li>
+                If the event happened inside an element we care about, handle
+                it.
+              </li>
+            </ol>
+          </div>
+          <div class="two-column">
+            <div class="column info-card">
+              <h4>✅ Benefits</h4>
+              <ul class="list-section">
+                <li>Saves memory: No need to add hundreds of handlers.</li>
+                <li>
+                  Less code: No need to add/remove handlers when elements are
+                  added/removed dynamically.
+                </li>
+                <li>
+                  DOM modifications: Works perfectly with
+                  <code>innerHTML</code>.
+                </li>
+              </ul>
+            </div>
+            <div class="column info-card">
+              <h4>❌ Limitations</h4>
+              <ul class="list-section">
+                <li>
+                  Events must bubble. (Some, like <code>focus</code>, do not).
+                </li>
+                <li>
+                  Low-level handlers shouldn't use
+                  <code>stopPropagation()</code>, or the parent won't catch the
+                  event.
+                </li>
+                <li>
+                  Slight CPU load: The container handler reacts to
+                  <em>every</em> click inside it, even if we don't care about
+                  it.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Bubbling, Capturing & Event Delegation | Scroll down to continue &uarr;
+        or &darr;
+      </p>
+    </div>
+
+    <script>
+      // Navigation functionality
+      document.getElementById("topBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      document.getElementById("downBtn").addEventListener("click", function () {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+
+      // Progress bar functionality
+      window.addEventListener("scroll", function () {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+      });
+
+      // Add fade-in animation to slides when they come into view
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".slide").forEach((slide) => {
+        slide.style.opacity = "0";
+        slide.style.transform = "translateY(20px)";
+        slide.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(slide);
+      });
+    </script>
+  </body>
+</html>

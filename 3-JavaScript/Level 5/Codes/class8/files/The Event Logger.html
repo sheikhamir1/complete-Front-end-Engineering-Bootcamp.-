@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subtopic 1 - Click Sequence & Modifiers</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    padding:40px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+h2{
+    color:#333;
+    margin-bottom:10px;
+}
+
+p{
+    margin-bottom:20px;
+    color:#555;
+}
+
+#clickBox{
+    width:100%;
+    padding:50px 20px;
+    background:#3498db;
+    color:#fff;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    border-radius:10px;
+    cursor:pointer;
+    user-select:none;
+    transition:.25s;
+}
+
+#clickBox:hover{
+    background:#2980b9;
+}
+
+#log{
+    margin-top:25px;
+    list-style:none;
+    background:#fff;
+    border-radius:8px;
+    padding:15px;
+    height:250px;
+    overflow-y:auto;
+    border:2px solid #ddd;
+    font-family:monospace;
+}
+
+#log li{
+    padding:8px;
+    margin-bottom:6px;
+    background:#f4f4f4;
+    border-left:5px solid #3498db;
+}
+
+.info{
+    margin-top:15px;
+    color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Subtopic 1: The Click Sequence & Modifiers</h2>
+
+<p>
+Try these interactions:
+<ul class="info">
+<li>✔ Left Click</li>
+<li>✔ Right Click</li>
+<li>✔ Middle Click (Mouse Wheel)</li>
+<li>✔ Hold <b>Shift</b> while clicking</li>
+<li>✔ Hold <b>Ctrl</b> (or Cmd on Mac) while clicking</li>
+</ul>
+</p>
+
+<div id="clickBox">
+Interact With Me!<br><br>
+(Try Right Click or Hold Shift/Ctrl)
+</div>
+
+<ul id="log"></ul>
+
+</div>
+
+<script>
+const box = document.getElementById("clickBox");
+const log = document.getElementById("log");
+
+// Helper function to display logs
+function logEvent(message){
+    const item = document.createElement("li");
+    item.textContent = message;
+
+    // Add newest log at the top
+    log.prepend(item);
+
+    // Keep only latest 20 logs
+    while(log.children.length > 20){
+        log.removeChild(log.lastChild);
+    }
+}
+
+// Convert button number to readable text
+function getButtonName(button){
+    switch(button){
+        case 0: return "Left";
+        case 1: return "Middle";
+        case 2: return "Right";
+        default: return "Unknown";
+    }
+}
+
+// ------------------------
+// 1. Mouse Down
+// ------------------------
+box.addEventListener("mousedown", function(event){
+
+    console.log("event.button", event.button);
+    
+    logEvent(
+        `🔴 mousedown | Button: ${getButtonName(event.button)}`
+    );
+
+});
+
+// ------------------------
+// 2. Mouse Up
+// ------------------------
+box.addEventListener("mouseup", function(event){
+
+    logEvent(
+        `🟢 mouseup | Button: ${getButtonName(event.button)}`
+    );
+
+});
+
+// ------------------------
+// 3. Click
+// ------------------------
+box.addEventListener("click", function(event){
+
+    let modifiers = [];
+
+    if(event.shiftKey) modifiers.push("Shift");
+    if(event.ctrlKey) modifiers.push("Ctrl");
+    if(event.metaKey) modifiers.push("Cmd");
+    if(event.altKey) modifiers.push("Alt");
+
+    logEvent(
+        `💥 click fired! | Modifiers: ${
+            modifiers.length ? modifiers.join(", ") : "None"
+        }`
+    );
+
+});
+
+// ------------------------
+// Prevent browser menu on right click
+// ------------------------
+box.addEventListener("contextmenu", function(event){
+    event.preventDefault();
+    logEvent("🚫 Context Menu Prevented (Right Click)");
+});
+</script>
+
+</body>
+</html>
